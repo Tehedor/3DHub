@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import com.bezkoder.spring.login.payload.request.ManufacturerRequest;
 import com.bezkoder.spring.login.models.ERole;
 import com.bezkoder.spring.login.models.Role;
 import com.bezkoder.spring.login.models.User;
@@ -33,7 +33,8 @@ import com.bezkoder.spring.login.repository.RoleRepository;
 import com.bezkoder.spring.login.repository.UserRepository;
 import com.bezkoder.spring.login.security.jwt.JwtUtils;
 import com.bezkoder.spring.login.security.services.UserDetailsImpl;
-
+import com.bezkoder.spring.login.payload.request.PrinterRequest;
+import com.bezkoder.spring.login.payload.response.ManufacturerInfoResponse;
 //for Angular Client (withCredentials)
 //@CrossOrigin(origins = "http://localhost:8081", maxAge = 3600, allowCredentials="true")
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -70,14 +71,22 @@ public class AuthController {
     List<String> roles = userDetails.getAuthorities().stream()
         .map(item -> item.getAuthority())
         .collect(Collectors.toList());
-
+        
+    if (roles.contains("ROLE_MANUFACTURER")) {
+      //  respuesta para los fabricantes
+      return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
+          .body(new ManufacturerInfoResponse(userDetails.getId(),
+                                             userDetails.getUsername(),
+                                             userDetails.getEmail(),
+                                             roles));
+    }else{
     return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
         .body(new UserInfoResponse(userDetails.getId(),
                                    userDetails.getUsername(),
                                    userDetails.getEmail(),
                                    roles));
   }
-
+  }
   @PostMapping("/signup")
   public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
     if (userRepository.existsByUsername(signUpRequest.getUsername())) {
@@ -135,4 +144,47 @@ public class AuthController {
     return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString())
         .body(new MessageResponse("You've been signed out!"));
   }
+  @PostMapping("/registerManufacturer")
+  public ResponseEntity<?> registerManufacturer(@Valid @RequestBody ManufacturerRequest manufacturerRequest) {
+    User manufacturer = new User(manufacturerRequest.getUsername(),
+                   manufacturerRequest.getEmail(),
+                   encoder.encode(manufacturerRequest.getPassword()));
+
+    Set<String> strRoles = manufacturerRequest.getRole();
+    Set<Role> roles = new HashSet<>();
+
+    if (strRoles == null) {
+      Role manufacturerRole = roleRepository.findByName(ERole.ROLE_MANUFACTURER)
+        .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+      roles.add(manufacturerRole);
+    } else {
+      strRoles.forEach(role -> {
+      switch (role) {
+      case "manufacturer":
+        Role manufacturerRole = roleRepository.findByName(ERole.ROLE_MANUFACTURER)
+          .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        roles.add(manufacturerRole);
+        break;
+      default:
+        Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+          .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        roles.add(userRole);
+      }
+      });
+    }
+
+    manufacturer.setRoles(roles);
+    userRepository.save(manufacturer);
+  
+      return ResponseEntity.ok(new MessageResponse("Manufacturer registered successfully!"));
+  }
+  @PostMapping("/requestPrinter")
+public ResponseEntity<?> requestPrinter(@Valid @RequestBody PrinterRequest printerRequest) {
+    // Aquí es donde manejarías la lógica de la solicitud de la impresora.
+    // Esto podría implicar verificar la disponibilidad de la impresora, 
+    // actualizar la base de datos para reflejar la solicitud, etc.
+    // Por ahora, simplemente devolveremos un mensaje de éxito para demostrar que la solicitud fue recibida.
+
+    return ResponseEntity.ok("Solicitud de impresora recibida para el fabricante: " + printerRequest.getManufacturer());
+}
 }
