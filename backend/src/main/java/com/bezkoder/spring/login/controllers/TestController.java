@@ -34,4 +34,9 @@ public class TestController {
   public String adminAccess() {
     return "Admin Board.";
   }
+  @GetMapping("/manufacturer")
+@PreAuthorize("hasRole('MANUFACTURER')")
+public String manufacturerAccess() {
+    return "Manufacturer Content.";
+}
 }
