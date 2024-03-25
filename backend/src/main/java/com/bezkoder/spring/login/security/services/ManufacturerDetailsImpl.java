@@ -1,5 +1,6 @@
 package com.bezkoder.spring.login.security.services;
 
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -19,15 +20,18 @@ public class ManufacturerDetailsImpl implements UserDetails {
 
   private String name;
 
+  private String email;
+
   @JsonIgnore
   private String password;
 
   private Collection<? extends GrantedAuthority> authorities;
 
-  public ManufacturerDetailsImpl(Long id, String name, String password,
+  public ManufacturerDetailsImpl(Long id, String name, String email, String password,
       Collection<? extends GrantedAuthority> authorities) {
     this.id = id;
     this.name = name;
+    this.email = email;
     this.password = password;
     this.authorities = authorities;
   }
@@ -39,7 +43,8 @@ public class ManufacturerDetailsImpl implements UserDetails {
 
     return new ManufacturerDetailsImpl(
         manufacturer.getId(), 
-        manufacturer.getName(),
+        manufacturer.getName(), 
+        manufacturer.getEmail(),
         manufacturer.getPassword(), 
         authorities);
   }
@@ -51,6 +56,10 @@ public class ManufacturerDetailsImpl implements UserDetails {
 
   public Long getId() {
     return id;
+  }
+
+  public String getEmail() {
+    return email;
   }
 
   @Override
@@ -93,3 +102,4 @@ public class ManufacturerDetailsImpl implements UserDetails {
     return Objects.equals(id, manufacturer.id);
   }
 }
+
