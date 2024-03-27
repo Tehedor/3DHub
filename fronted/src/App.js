@@ -14,6 +14,11 @@ import LoginFabricante from "./components/fabricante/LoginFabricante";
 import RegisterFabricante from "./components/fabricante/RegisterFabricante";
 import ProfileFabricante from "./components/fabricante/ProfileFabricante";
 
+import Pedidos from "./components/disenador/Pedidos";
+import Carrito from "./components/disenador/Carrito";
+
+import Notificaciones from "./components/fabricante/Notificaciones";
+import ImpresorasFabri from "./components/fabricante/ImpresorasFabri";
 
 import NavBar from "./components/home/NavBar";
 import Error from "./components/home/Error";
@@ -89,7 +94,14 @@ const App = () => {
           <Route exact path="/loginFabricante" element={<LoginFabricante />} />
           <Route exact path="/registerFabricante" element={<RegisterFabricante />} />
           <Route exact path="/profileFabricante" element={<ProfileFabricante />} />
+
+          <Route exact path="/pedidos" element={<Pedidos />} />
+          <Route exact path="/carritocompra" element={<Carrito />} />
         
+          <Route exact path="/notificaciones" element={<Notificaciones />} />
+          <Route exact path="/impresorasfabri" element={<ImpresorasFabri />} />
+
+
           <Route path="/*" element={<Error/>}/>
         
         </Routes>

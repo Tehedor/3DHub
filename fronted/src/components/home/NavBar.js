@@ -67,7 +67,7 @@ function NavigationBar({ roll, query, setQuery, queryUbica, setQueryUbica, curre
               {roll === "fabricante" ?
                 <Button href="notificaciones" style={{backgroundColor: 'gray'}}>
                   <img src={"http://localhost:3000/iconos/bookmark_icon.svg"} alt="Notificaciones" />
-                  notifica
+                  Notificaciones
                 </Button>
               : null
               }     
@@ -101,14 +101,14 @@ function NavigationBar({ roll, query, setQuery, queryUbica, setQueryUbica, curre
               {roll === "diseñador"   ?
                 <Button href="carritocompra" style={{backgroundColor: 'gray'}}>
                   <img src={"http://localhost:3000/iconos/cart_icon.svg"} alt="Carrito" />
-                  {/* Carrito */}
+                    Carrito 
                 </Button>
                 : null
               }
               {roll === "fabricante"   ?
-                  <Button href="controlprinters" style={{backgroundColor: 'gray'}}>
+                  <Button href="impresorasfabri" style={{backgroundColor: 'gray'}}>
                     <img src={"http://localhost:3000/iconos/print_FILL0_icon.svg"} alt="Impresoras" />
-                    {/* Impersoras */}
+                      Impresoras
                   </Button>
                 : null
               }
