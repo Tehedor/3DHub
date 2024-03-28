@@ -40,19 +40,20 @@ public class SecurityConfig {
         
 
         http
-            // .csrf(csrf -> csrf.disable())
+            .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> {
                 auth.requestMatchers("/index**").permitAll();
-                // auth.requestMatchers("/loginDesigner**").permitAll();
+                auth.requestMatchers("/createUser**").permitAll();
+                auth.requestMatchers("/loginDesigner**").permitAll();
                 auth.requestMatchers("/loginManufacturer**").permitAll();
                 auth.anyRequest().authenticated();
             })
             .sessionManagement(session -> {
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
             })
-            .formLogin( 
-                form -> form.loginPage("/loginDesigner").permitAll()
-            )
+            // .formLogin( 
+            //     form -> form.loginPage("/loginDesigner").permitAll()
+            // )
             .addFilter(jwtAuthenticationFilter)
             .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
