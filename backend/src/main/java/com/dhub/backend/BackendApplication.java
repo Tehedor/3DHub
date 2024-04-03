@@ -1,7 +1,10 @@
 package com.dhub.backend;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.Set;
 
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -10,8 +13,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.dhub.backend.models.ERole;
+import com.dhub.backend.models.Order;
 import com.dhub.backend.models.Role;
 import com.dhub.backend.models.UserEntity;
+import com.dhub.backend.repository.OrderRepository;
 import com.dhub.backend.repository.UserRepository;
 
 @SpringBootApplication
@@ -26,6 +31,8 @@ public class BackendApplication {
 
 	@Autowired
 	UserRepository userRepository;
+	@Autowired
+	OrderRepository orderRepository;
 
 	@Bean
 	CommandLineRunner init(){
@@ -49,9 +56,25 @@ public class BackendApplication {
 				.roles(Set.of(Role.builder().name(ERole.ROLE_DESIGNER).build()))
 				.build();
 
+				SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+				Date date = (Date) formatter.parse("23/09/2022 14:30");
+
+			Order order = Order.builder()
+				.orderdaten(date)
+				
+				.number(null)
+				.specs("specs1")
+				.maxdate("maxdate1")
+				.pickupdate("pickupdate1")
+				
+				.build();
+
+			
+
 			userRepository.save(userEntity);
 			userRepository.save(userEntity2);
 			userRepository.save(userEntity3);
+			orderRepository.save(order);
 		};
 	}
 

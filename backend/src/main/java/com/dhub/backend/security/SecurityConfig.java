@@ -48,6 +48,7 @@ public class SecurityConfig {
                 auth.requestMatchers("/loginManufacturer**").permitAll();
                 auth.requestMatchers("/customerservice/sendMail**").permitAll();
                 auth.requestMatchers("/customerservice/sendMailFile**").permitAll();
+                auth.requestMatchers("/api/orders**").permitAll();
                
                 auth.anyRequest().authenticated();
             })
