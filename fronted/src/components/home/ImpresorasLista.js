@@ -21,7 +21,7 @@ export default function Lista(props) {
                                 <Card.Text style={{ overflow: "nowrap", overflowY:"hidden",maxHeight:"6.7em"}}>{items.description}</Card.Text>     
                             </Card.Body>
                             <div className="actions"  style={{ marginTop: "auto" }}>
-                                    <Link to={`/printers/${index}`}><Button variant="primary" className="show" style={{marginBottom:"10px"}}>ver</Button></Link>
+                                    <Link to={`/pedirpedido/${index}`}><Button variant="primary" className="show" style={{marginBottom:"10px"}}>ver</Button></Link>
                             </div>
                         </Card>
                         </div>
