@@ -56,17 +56,15 @@ public class BackendApplication {
 				.roles(Set.of(Role.builder().name(ERole.ROLE_DESIGNER).build()))
 				.build();
 
-				SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-				Date date = (Date) formatter.parse("23/09/2022 14:30");
+				// SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+				// Date date = new Date(System.currentTimeMillis());
 
 			Order order = Order.builder()
-				.orderdaten(date)
-				
-				.number(null)
+				.orderdaten("date")
+				.number("null")
 				.specs("specs1")
 				.maxdate("maxdate1")
 				.pickupdate("pickupdate1")
-				
 				.build();
 
 			

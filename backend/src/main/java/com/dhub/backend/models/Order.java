@@ -12,7 +12,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
-
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -34,16 +34,19 @@ import jakarta.persistence.OneToMany;
 @NoArgsConstructor
 @Builder
 @Entity 
-@Table(name = "orders")
+@Table(name = "orders",
+uniqueConstraints = {
+	@UniqueConstraint(columnNames = "number")
+})
 public class Order { 
 	@Id
 	 @GeneratedValue(strategy = GenerationType.IDENTITY) private Long Id;
 	 
-@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
-	private Date orderdaten;
-	// @NotBlank
-	// @Size(max = 20)
-	// private String orderdaten;
+// @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+	// private Date orderdaten;
+	@NotBlank
+	@Size(max = 20)
+	private String orderdaten;
 
 // @Lob
 // private byte[] file;
@@ -64,10 +67,10 @@ private String maxdate;
 @Size(max = 50)
 private String pickupdate;
 
-@JsonManagedReference
- @ManyToOne(cascade = CascadeType.ALL)
- @JoinColumn(name = "printer_id")
-private Printer printer;
+// @JsonManagedReference
+//  @ManyToOne(cascade = CascadeType.ALL)
+//  @JoinColumn(name = "printer_id")
+// private Printer printer;
 
 
 
