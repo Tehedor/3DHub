@@ -5,11 +5,17 @@ import Lista from './ImpresorasLista';
 import CONFIG from '../../config/config.js';
 import {printersexample} from '../../constants/printers.js';
 
+// Pruebas de la impresora para las vistas
+import {printersPruebas} from '../../constants/printersPruebas.js';
+
 import ImpresorasService from "../../services/imprsoras.service";
 
 
 const SERVER_URL = CONFIG.server_url;
-export default function SearchPage(props) {
+export default function Home(props) {
+    // Controlador de impresoras para que funcione el Location
+    const setControlPrinters = props.setControlPrinters;
+
     const [query, setQuery] = useState("");
     // const [printers, setprinters] = useState("");
     // const [printers, setprinters] = useState(props.theprinters);
@@ -69,6 +75,7 @@ export default function SearchPage(props) {
         // console.log(printersexample);
     }
     setThePrinters(downloadprinters);
+    setControlPrinters(printersPruebas);
     // console.log(downloadprinters);
     }
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import useLocalStorage from "./common/useLocalStorage";
 import { Routes, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
@@ -23,6 +24,8 @@ import ImpresorasFabri from "./components/fabricante/ImpresorasFabri";
 import NavBar from "./components/home/NavBar";
 import Error from "./components/home/Error";
 import FooterSection from "./components/home/FooterSection";
+import Location from "./components/home/Location";  
+import PedirPedido from "./components/home/PedirPedido";
 
 // import Home from "./components/Home";
 // import BoardUser from "./components/BoardUser";
@@ -42,6 +45,9 @@ const App = () => {
   const [queryUbica, setQueryUbica] = useState("");
   const [roll, setRoll] = useState();
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ 
+  // const [controlPrinters, setControlPrinters] = useState(""); 
+  const [controlPrinters, setControlPrinters] = useLocalStorage('printers',[]); 
 
 
   // Loggin Variables /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -85,8 +91,8 @@ const App = () => {
         
       <div className="container mt-3">
         <Routes>
-          <Route exact path={"/"} element={<Home />} />
-          <Route exact path={"/home"} element={<Home />} />
+          <Route exact path={"/"} element={<Home setControlPrinters={setControlPrinters} />} />
+          <Route exact path={"/home"} element={<Home setControlPrinters={setControlPrinters} />} />
           <Route exact path="/loginDisenador" element={<LoginDisenador />} />
           <Route exact path="/registerDisenador" element={<RegisterDisenador />} />
           <Route exact path="/profileDisenador" element={<ProfileDisenador />} />
@@ -100,7 +106,8 @@ const App = () => {
         
           <Route exact path="/notificaciones" element={<Notificaciones />} />
           <Route exact path="/impresorasfabri" element={<ImpresorasFabri />} />
-
+          {/* <Route path="/pedirpedido/:printerId" element={<Location roll={roll} query={query} setQuery={setQuery} queryUbica={queryUbica} setQueryUbica={setQueryUbica} currentUser={currentUser} logOut={logOut}/>}/> */}
+          <Route path="/pedirpedido/:printerId" element={<Location controlPrinters={controlPrinters} roll={roll} query={query} queryUbica={queryUbica} currentUser={currentUser} />}/>
 
           <Route path="/*" element={<Error/>}/>
         
