@@ -17,9 +17,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.dhub.backend.models.ERole;
 import com.dhub.backend.models.EStatus;
 import com.dhub.backend.models.Order;
+import com.dhub.backend.models.Ratings;
 import com.dhub.backend.models.Role;
 import com.dhub.backend.models.UserEntity;
 import com.dhub.backend.repository.OrderRepository;
+import com.dhub.backend.repository.RatingsRepository;
 import com.dhub.backend.repository.UserRepository;
 
 import ch.qos.logback.core.status.Status;
@@ -33,6 +35,8 @@ public class BackendApplication {
 
 	@Autowired
 	PasswordEncoder passwordEncoder;
+	@Autowired
+	RatingsRepository ratingsRepository;
 
 	@Autowired
 	UserRepository userRepository;
@@ -47,16 +51,19 @@ public class BackendApplication {
 				.username("denzel")
 				.password(passwordEncoder.encode("1111"))
 				.roles(Set.of(Role.builder().name(ERole.ROLE_ADMIN).build()))
+				
 				.build();
 			UserEntity userEntity2 = UserEntity.builder()
 				.email("sergio@gmail.com")
 				.username("sergio")
 				.password(passwordEncoder.encode("2222"))
+				
 				.roles(Set.of(Role.builder().name(ERole.ROLE_DESIGNER).build()))
 				.build();
 			UserEntity userEntity3 = UserEntity.builder()
 				.email("claudia@gmail.com")
 				.username("claudia")
+				
 				.password(passwordEncoder.encode("3333"))
 				.roles(Set.of(Role.builder().name(ERole.ROLE_DESIGNER).build()))
 				.build();
@@ -77,12 +84,22 @@ public class BackendApplication {
 				.pickupdate(new Date(System.currentTimeMillis()))
 				.build();
 
-			
+			Ratings rating = Ratings.builder()
+				.date(new Date(System.currentTimeMillis()))
+				.productrating(4)
+				.manufacturerating(3)
+				.textrating("good")
+				.file(null)
+				.idmanufacturer("sergio")
+				.designer("claudia")
+				
+				.build();
 
 			userRepository.save(userEntity);
 			userRepository.save(userEntity2);
 			userRepository.save(userEntity3);
 			orderRepository.save(order);
+			ratingsRepository.save(rating);
 		};
 	}
 

@@ -1,6 +1,9 @@
 package com.dhub.backend.models;
 
+import java.util.List;
 import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -19,6 +22,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 
 @Data
 @AllArgsConstructor
@@ -44,6 +48,8 @@ public class UserEntity {
     @Size(max = 50)
     private String email;
 
+    
+
     @NotBlank
     private String password;
 
@@ -52,6 +58,9 @@ public class UserEntity {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
+
+ 
+
 
     
 }
