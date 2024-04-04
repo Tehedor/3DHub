@@ -44,6 +44,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> {
                 auth.requestMatchers("/index**").permitAll();
                 auth.requestMatchers("/createUser**").permitAll();
+                auth.requestMatchers("/deleteUser**").permitAll();
                 auth.requestMatchers("/loginDesigner**").permitAll();
                 auth.requestMatchers("/loginManufacturer**").permitAll();
                 auth.anyRequest().authenticated();

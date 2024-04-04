@@ -80,13 +80,13 @@ public class AuthController {
     @PostMapping("/createUser")
     public ResponseEntity<?> CreateUSer(@Valid @RequestBody CreateUserDTO createUserDTO) {
 
-        // if (userRepository.existsByUsername(createUserDTO.getUsername())) {
-        //     return ResponseEntity.badRequest().body(new MessageResponse("Error: Nombre de usuario ya existe"));
-        //   }
+        if (userRepository.existsByUsername(createUserDTO.getUsername())) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Nombre de usuario ya existe"));
+          }
       
-        // if (userRepository.existsByEmail(createUserDTO.getEmail())) {
-        // return ResponseEntity.badRequest().body(new MessageResponse("Error: Email ya existe"));
-        // }
+        if (userRepository.existsByEmail(createUserDTO.getEmail())) {
+        return ResponseEntity.badRequest().body(new MessageResponse("Error: Email ya existe"));
+        }
        
         Set<Role> roles = createUserDTO.getRoles().stream()
             .map(role -> Role.builder()
