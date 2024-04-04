@@ -7,8 +7,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
@@ -36,36 +38,39 @@ import jakarta.persistence.OneToMany;
 @Entity 
 @Table(name = "orders",
 uniqueConstraints = {
-	@UniqueConstraint(columnNames = "number")
+	@UniqueConstraint(columnNames = "Id")
 })
 public class Order { 
 	@Id
 	 @GeneratedValue(strategy = GenerationType.IDENTITY) private Long Id;
+	
 	 
-// @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
-	// private Date orderdaten;
+ @JsonFormat(pattern = "dd/MM/yyyy")
+	 private Date orderdaten;
+
+	private Double number;
+
 	@NotBlank
-	@Size(max = 20)
-	private String orderdaten;
+	@Size(max = 50)
+	private String specs;
 
-// @Lob
-// private byte[] file;
+	@JsonFormat(pattern = "dd/MM/yyyy")
+	 private Date maxdate;
 
-@NotBlank
-@Size(max = 50)
-private String number;
+	@JsonFormat(pattern = "dd/MM/yyyy")
+	 private Date pickupdate;
 
-@NotBlank
-@Size(max = 50)
-private String specs;
+	 @JsonFormat(pattern = "dd/MM/yyyy")
+	 private Date manufacturerdate;
 
-@NotBlank
-@Size(max = 50)
-private String maxdate;
+	 @Lob
+	 private byte[] file;
 
-@NotBlank
-@Size(max = 50)
-private String pickupdate;
+	 
+	
+@Column(name = "status")
+	@Enumerated(EnumType.STRING)
+	private EStatus status;
 
 // @JsonManagedReference
 //  @ManyToOne(cascade = CascadeType.ALL)

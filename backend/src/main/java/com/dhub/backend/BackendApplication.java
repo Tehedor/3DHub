@@ -1,5 +1,7 @@
 package com.dhub.backend;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Set;
@@ -13,11 +15,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.dhub.backend.models.ERole;
+import com.dhub.backend.models.EStatus;
 import com.dhub.backend.models.Order;
 import com.dhub.backend.models.Role;
 import com.dhub.backend.models.UserEntity;
 import com.dhub.backend.repository.OrderRepository;
 import com.dhub.backend.repository.UserRepository;
+
+import ch.qos.logback.core.status.Status;
 
 @SpringBootApplication
 public class BackendApplication {
@@ -56,15 +61,20 @@ public class BackendApplication {
 				.roles(Set.of(Role.builder().name(ERole.ROLE_DESIGNER).build()))
 				.build();
 
-				// SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-				// Date date = new Date(System.currentTimeMillis());
+			// 	String filePath = "C:\\Users\\admin\\Desktop\\ISST PROYECTO\\3DHub\\backend\\descarga.zip";
 
+
+			// byte[] fileContent = Files.readAllBytes(Paths.get(filePath));
+			
 			Order order = Order.builder()
-				.orderdaten("date")
-				.number("null")
+			.orderdaten(new Date(System.currentTimeMillis()))
+				.number(2.0)
 				.specs("specs1")
-				.maxdate("maxdate1")
-				.pickupdate("pickupdate1")
+				.maxdate(new Date(System.currentTimeMillis()))
+				.manufacturerdate(new Date(System.currentTimeMillis()))
+				 .file(null)
+				.status(EStatus.SEND)
+				.pickupdate(new Date(System.currentTimeMillis()))
 				.build();
 
 			
