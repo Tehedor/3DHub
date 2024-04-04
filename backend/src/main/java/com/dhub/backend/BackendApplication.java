@@ -10,9 +10,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.dhub.backend.models.ERole;
+import com.dhub.backend.models.Printer;
 import com.dhub.backend.models.Role;
 import com.dhub.backend.models.UserEntity;
+import com.dhub.backend.repository.PrinterRepository;
 import com.dhub.backend.repository.UserRepository;
+
+//import jakarta.validation.constraints.Null;
 
 @SpringBootApplication
 public class BackendApplication {
@@ -26,6 +30,9 @@ public class BackendApplication {
 
 	@Autowired
 	UserRepository userRepository;
+
+	@Autowired
+	PrinterRepository printerRepository;
 
 	@Bean
 	CommandLineRunner init(){
@@ -52,6 +59,22 @@ public class BackendApplication {
 			userRepository.save(userEntity);
 			userRepository.save(userEntity2);
 			userRepository.save(userEntity3);
+
+			Printer printer = Printer.builder()
+				.model_name("ender 3")
+				.printer_location("creality")
+				.printer_type("Room 1")
+				.printer_photo(null)
+				.service_price(10.0)
+				.max_unities(1)
+				.manufacturation_speed("60")
+				.max_width(220.0)
+				.max_height(250.0)
+				.printer_precision(0.1)
+				.color("rojo")
+				.material("plastic")
+				.build();
+			printerRepository.save(printer);
 		};
 	}
 

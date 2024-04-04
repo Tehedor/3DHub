@@ -27,4 +27,6 @@ public class PrinterController {
         Printer createdPrinter = printerService.createPrinter(printer);
         return new ResponseEntity<>(createdPrinter, HttpStatus.CREATED);
     }
-}
+}//crear metodo gert para que me devuelva todos los datos de la impresora (de todas las impresoras) y que las muestre en la pagina de impresoras
+
+//Postman
