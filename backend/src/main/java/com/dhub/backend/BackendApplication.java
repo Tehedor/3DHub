@@ -15,19 +15,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.dhub.backend.models.ERole;
-<<<<<<< Updated upstream
 import com.dhub.backend.models.EStatus;
 import com.dhub.backend.models.Order;
 import com.dhub.backend.models.Ratings;
-=======
-import com.dhub.backend.models.Printer;
->>>>>>> Stashed changes
 import com.dhub.backend.models.Role;
 import com.dhub.backend.models.UserEntity;
 import com.dhub.backend.repository.OrderRepository;
 import com.dhub.backend.repository.RatingsRepository;
 import com.dhub.backend.repository.UserRepository;
-import com.dhub.backend.repository.PrinterRepository;
+// import com.dhub.backend.repository.PrinterRepository;
 
 
 import ch.qos.logback.core.status.Status;
@@ -50,8 +46,8 @@ public class BackendApplication {
 	OrderRepository orderRepository;
 
 	
-	@Autowired
-	PrinterRepository printerRepository;
+	// @Autowired
+	// PrinterRepository printerRepository;
 
 	@Bean
 	CommandLineRunner init(){
@@ -78,7 +74,6 @@ public class BackendApplication {
 				.roles(Set.of(Role.builder().name(ERole.ROLE_DESIGNER).build()))
 				.build();
 
-<<<<<<< Updated upstream
 			// 	String filePath = "C:\\Users\\admin\\Desktop\\ISST PROYECTO\\3DHub\\backend\\descarga.zip";
 
 
@@ -103,32 +98,13 @@ public class BackendApplication {
 				.idmanufacturer("sergio")
 				.designer("claudia")
 				
-=======
-			Printer printer = Printer.builder()
-				.name("HP Deskjet 2130")
-				.location("Sala 1")
-				.type("Inkjet")
-				.photo("null")
-				.price(200.0)
-				.unities(1)
-				.speed("20 ppm")
-				.width(20.0)
-				.height(10.0)
-				.precision(10.0)
-				.color("Black")
-				.material("Plastic")
->>>>>>> Stashed changes
 				.build();
 
 			userRepository.save(userEntity);
 			userRepository.save(userEntity2);
 			userRepository.save(userEntity3);
-<<<<<<< Updated upstream
 			orderRepository.save(order);
 			ratingsRepository.save(rating);
-=======
-			printerRepository.save(printer);
->>>>>>> Stashed changes
 		};
 	}
 
