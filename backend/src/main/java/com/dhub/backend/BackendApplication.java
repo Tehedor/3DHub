@@ -1,7 +1,12 @@
 package com.dhub.backend;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.Set;
 
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -10,9 +15,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.dhub.backend.models.ERole;
+import com.dhub.backend.models.EStatus;
+import com.dhub.backend.models.Order;
 import com.dhub.backend.models.Role;
 import com.dhub.backend.models.UserEntity;
+import com.dhub.backend.repository.OrderRepository;
 import com.dhub.backend.repository.UserRepository;
+
+import ch.qos.logback.core.status.Status;
 
 @SpringBootApplication
 public class BackendApplication {
@@ -26,6 +36,8 @@ public class BackendApplication {
 
 	@Autowired
 	UserRepository userRepository;
+	@Autowired
+	OrderRepository orderRepository;
 
 	@Bean
 	CommandLineRunner init(){
@@ -49,9 +61,28 @@ public class BackendApplication {
 				.roles(Set.of(Role.builder().name(ERole.ROLE_DESIGNER).build()))
 				.build();
 
+			// 	String filePath = "C:\\Users\\admin\\Desktop\\ISST PROYECTO\\3DHub\\backend\\descarga.zip";
+
+
+			// byte[] fileContent = Files.readAllBytes(Paths.get(filePath));
+			
+			Order order = Order.builder()
+			.orderdaten(new Date(System.currentTimeMillis()))
+				.number(2.0)
+				.specs("specs1")
+				.maxdate(new Date(System.currentTimeMillis()))
+				.manufacturerdate(new Date(System.currentTimeMillis()))
+				 .file(null)
+				.status(EStatus.SEND)
+				.pickupdate(new Date(System.currentTimeMillis()))
+				.build();
+
+			
+
 			userRepository.save(userEntity);
 			userRepository.save(userEntity2);
 			userRepository.save(userEntity3);
+			orderRepository.save(order);
 		};
 	}
 
