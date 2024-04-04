@@ -43,7 +43,8 @@ uniqueConstraints = {
 })
 public class Order { 
 	@Id
-	 @GeneratedValue(strategy = GenerationType.IDENTITY) private Long Id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 
+	private Long Id;
 	
 	 
  	@JsonFormat(pattern = "dd/MM/yyyy")
