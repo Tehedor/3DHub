@@ -1,5 +1,5 @@
 {
-  "name": "forended-3dhub",
+  "name": "fronted-3dhub",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -8,7 +8,7 @@
     "@testing-library/user-event": "14.5.2",
     "axios": "1.6.8",
     "bootstrap": "5.3.3",
-    "http-proxy-middleware": "2.0.6",
+    "http-proxy-middleware": "3.0.0",
     "react": "18.2.0",
     "react-bootstrap": "2.10.2",
     "react-dom": "18.2.0",

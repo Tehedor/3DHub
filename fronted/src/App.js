@@ -91,8 +91,8 @@ const App = () => {
         
       <div className="container mt-3">
         <Routes>
-          <Route exact path={"/"} element={<Home setControlPrinters={setControlPrinters} />} />
-          <Route exact path={"/home"} element={<Home setControlPrinters={setControlPrinters} />} />
+          <Route exact path={"/"} element={<Home setControlPrinters={setControlPrinters} controlPrinters={controlPrinters} />} />
+          <Route exact path={"/home"} element={<Home setControlPrinters={setControlPrinters} controlPrinters={controlPrinters} />} />
           <Route exact path="/loginDisenador" element={<LoginDisenador />} />
           <Route exact path="/registerDisenador" element={<RegisterDisenador />} />
           <Route exact path="/profileDisenador" element={<ProfileDisenador />} />

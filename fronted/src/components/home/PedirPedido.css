@@ -1,0 +1,68 @@
+.container_pedir {  display: grid;
+  grid-template-columns: 0.8fr 1.3fr 0.9fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "impresora-caracteristicas impresora-caracteristicas impresora-caracteristicas"
+    "reseñas subir-file cantidades"
+    "reseñas subir-file añadir";
+}
+
+.impresora-caracteristicas { grid-area: impresora-caracteristicas; }
+
+.reseñas { grid-area: reseñas; }
+
+.añadir { grid-area: añadir; }
+
+.cantidades { grid-area: cantidades; }
+
+.subir-file {  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 0.7fr 1.3fr 1fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "subir-file subir-file subir-file"
+    "descripción-pedido descripción-pedido descripción-pedido"
+    "descripción-pedido descripción-pedido descripción-pedido";
+  grid-area: subir-file;
+}
+
+.subir-file { grid-area: subir-file; }
+
+.descripción-pedido { grid-area: descripción-pedido; }
+
+
+<div class="container_pedir">
+    <div class="impresora-caracteristicas">
+      <Card.Text>Stock: {printers.Nombre_modelo}</Card.Text>
+      pruebas
+    </div>
+    <div class="reseñas">
+      pruebas
+    </div>
+    <div class="añadir">
+      pruebas
+    </div>
+    <div class="cantidades">
+      pruebas
+    </div>
+    <div class="subir-file">
+      <div class="subir-file">
+        <div class="form-group">
+					 
+           <label for="exampleInputFile">
+             File input
+           </label>
+           <input type="file" class="form-control-file" id="exampleInputFile"></input>
+           <p class="help-block">
+             Example block-level help text here.
+           </p>
+         </div>
+      </div>
+      <div class="descripción-pedido">
+        pruebas
+      </div>
+    </div>
+  </div>

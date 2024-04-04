@@ -1,7 +1,7 @@
 import { Button , Row, Col, InputGroup, Form} from "react-bootstrap";
 import { useEffect, useState } from "react";
 import {useGeolocated} from "react-geolocated";
-import Lista from './ImpresorasLista';
+import ImpresorasLista from './ImpresorasLista';
 import CONFIG from '../../config/config.js';
 import {printersexample} from '../../constants/printers.js';
 
@@ -71,12 +71,14 @@ export default function Home(props) {
         // );
         }
     }else{
-        downloadprinters=printersexample;
+        // downloadprinters=printersexample;
+        downloadprinters=printersPruebas;
         // console.log(printersexample);
     }
     setThePrinters(downloadprinters);
+    console.log(theprinters);
+
     setControlPrinters(printersPruebas);
-    // console.log(downloadprinters);
     }
 
     // Efecto que se ejecuta al cargar la página
@@ -98,7 +100,7 @@ export default function Home(props) {
             {loading ? <img id="loading" src={process.env.PUBLIC_URL + "/spinners/cxyduck.gif"} className="spinner" alt="spinner" />:
         
             <Row>
-                <Lista printers={theprinters.printers} />
+                <ImpresorasLista printers={props.controlPrinters.printers} />
             </Row>  
             }
         </div>
