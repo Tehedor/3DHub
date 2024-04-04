@@ -74,12 +74,11 @@ public class BackendApplication {
 			// byte[] fileContent = Files.readAllBytes(Paths.get(filePath));
 			
 			Order order = Order.builder()
-			.orderdaten(new Date(System.currentTimeMillis()))
-				.number(2.0)
+				.orderdate(new Date(System.currentTimeMillis()))
+				.number(2)
 				.specs("specs1")
-				.maxdate(new Date(System.currentTimeMillis()))
 				.manufacturerdate(new Date(System.currentTimeMillis()))
-				 .file(null)
+				.file(null)
 				.status(EStatus.SEND)
 				.pickupdate(new Date(System.currentTimeMillis()))
 				.build();

@@ -58,12 +58,12 @@ public class Ratings {
 	 private byte[] file;
 
 
-@NotBlank
+		@NotBlank
 	@Size(max = 50)
 	private String idmanufacturer;
 
 	
-@NotBlank
+	@NotBlank
 	@Size(max = 50)
 	private String designer;
 

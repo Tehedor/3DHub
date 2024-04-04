@@ -15,6 +15,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -45,30 +46,28 @@ public class Order {
 	 @GeneratedValue(strategy = GenerationType.IDENTITY) private Long Id;
 	
 	 
- @JsonFormat(pattern = "dd/MM/yyyy")
-	 private Date orderdaten;
+ 	@JsonFormat(pattern = "dd/MM/yyyy")
+	private Date orderdate;
 
-	private Double number;
+    @Min(value = 1, message = "Valoracion debe ser mayor o igual que 1")
+	private Integer number;
 
 	@NotBlank
 	@Size(max = 50)
 	private String specs;
 
 	@JsonFormat(pattern = "dd/MM/yyyy")
-	 private Date maxdate;
+	private Date pickupdate;
 
 	@JsonFormat(pattern = "dd/MM/yyyy")
-	 private Date pickupdate;
+	private Date manufacturerdate;
 
-	 @JsonFormat(pattern = "dd/MM/yyyy")
-	 private Date manufacturerdate;
-
-	 @Lob
-	 private byte[] file;
+	@Lob
+	private byte[] file;
 
 	 
 	
-@Column(name = "status")
+	@Column(name = "status")
 	@Enumerated(EnumType.STRING)
 	private EStatus status;
 
