@@ -1,7 +1,7 @@
 import {Container, Card,Row, Col, Button, Image} from "react-bootstrap";
 import {Link} from "react-router-dom";
 
-export default function Ver(props) {
+export default function VerPediros(props) {
 
     const printer = props.printer;
     

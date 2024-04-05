@@ -26,6 +26,7 @@ import Error from "./components/home/Error";
 import FooterSection from "./components/home/FooterSection";
 import Location from "./components/home/Location";  
 import PedirPedido from "./components/home/PedirPedido";
+import AtencionCliente from "./components/home/AtencionCliente";
 
 // import Home from "./components/Home";
 // import BoardUser from "./components/BoardUser";
@@ -93,6 +94,7 @@ const App = () => {
         <Routes>
           <Route exact path={"/"} element={<Home setControlPrinters={setControlPrinters} controlPrinters={controlPrinters} />} />
           <Route exact path={"/home"} element={<Home setControlPrinters={setControlPrinters} controlPrinters={controlPrinters} />} />
+
           <Route exact path="/loginDisenador" element={<LoginDisenador />} />
           <Route exact path="/registerDisenador" element={<RegisterDisenador />} />
           <Route exact path="/profileDisenador" element={<ProfileDisenador />} />
@@ -108,6 +110,8 @@ const App = () => {
           <Route exact path="/impresorasfabri" element={<ImpresorasFabri />} />
           {/* <Route path="/pedirpedido/:printerId" element={<Location roll={roll} query={query} setQuery={setQuery} queryUbica={queryUbica} setQueryUbica={setQueryUbica} currentUser={currentUser} logOut={logOut}/>}/> */}
           <Route path="/pedirpedido/:printerId" element={<Location controlPrinters={controlPrinters} roll={roll} query={query} queryUbica={queryUbica} currentUser={currentUser} />}/>
+
+          <Route exact path="/atencionCliente" element={<AtencionCliente />} />
 
           <Route path="/*" element={<Error/>}/>
         
