@@ -60,6 +60,7 @@ public class SecurityConfig {
             .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
+    
 
     @Bean
     PasswordEncoder passwordEncoder() {
