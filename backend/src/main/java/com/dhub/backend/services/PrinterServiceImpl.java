@@ -9,11 +9,12 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
-public class PrinterServiceImp implements PrinterService{
+public class PrinterServiceImpl implements PrinterService{
 
     @Autowired
     private PrinterRepository printerRepository;
 
+    @Override
     public Printer createPrinter(Printer printer) {
         return printerRepository.save(printer);
     }
@@ -23,13 +24,4 @@ public class PrinterServiceImp implements PrinterService{
         return StreamSupport.stream(printerRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());
     }
-
-    /*public List<Printer> getAllPrinters() {
-        Iterable<Printer> printersIterable = printerRepository.findAll();
-        System.out.println("Printers from repository: " + printersIterable); // Imprime los datos obtenidos del repositorio
-        List<Printer> printers = new ArrayList<>();
-        printersIterable.forEach(printers::add);
-        System.out.println("Printers as List: " + printers); // Imprime la lista de impresoras
-        return printers;
-    }*/
 }

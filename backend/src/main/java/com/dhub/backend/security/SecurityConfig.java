@@ -46,6 +46,8 @@ public class SecurityConfig {
                 auth.requestMatchers("/createUser**").permitAll();
                 auth.requestMatchers("/loginDesigner**").permitAll();
                 auth.requestMatchers("/loginManufacturer**").permitAll();
+                auth.requestMatchers("/printers**").permitAll();
+                auth.requestMatchers("/printers/**").permitAll();
                 auth.anyRequest().authenticated();
             })
             .sessionManagement(session -> {

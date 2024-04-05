@@ -12,7 +12,7 @@ import jakarta.validation.Valid;
 import lombok.Data;
 
 import com.dhub.backend.models.Printer;
-import com.dhub.backend.services.PrinterServiceImp;
+import com.dhub.backend.services.PrinterServiceImpl;
 import org.springframework.web.bind.annotation.GetMapping;
 import java.util.List;
 
@@ -22,7 +22,7 @@ import java.util.List;
 public class PrinterController {
 
     @Autowired
-    private PrinterServiceImp printerService;
+    private PrinterServiceImpl printerService;
 
     @PostMapping
     public ResponseEntity<Printer> createPrinter(@Valid @RequestBody Printer printer) {
@@ -31,13 +31,11 @@ public class PrinterController {
     }
     
     @GetMapping
-    public List<Printer> getAllPrinters() {
-        return printerService.getAllPrinters();
-    }
-
-    /*@GetMapping
     public ResponseEntity<List<Printer>> getAllPrinters() {
         List<Printer> printers = printerService.getAllPrinters();
+        if (printers.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
         return new ResponseEntity<>(printers, HttpStatus.OK);
-    }*/
+    }
 }
