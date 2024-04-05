@@ -15,6 +15,7 @@ function NavigationBar({ roll, query, setQuery, queryUbica, setQueryUbica, curre
   if (roll == "ROLE_ADMIN") {
     roll = "fabricante";
   }
+  roll = "diseñador";
   // roll = "fabricante";
 
   
@@ -39,10 +40,6 @@ function NavigationBar({ roll, query, setQuery, queryUbica, setQueryUbica, curre
     
     <Navbar sticky="top"  bg={roll !== "fabricante" ? "primary" : "secondary"} expand="sm">
       <Container fluid>
-{/*       
-        <Navbar.Brand href="./">
-          <Image className="logo" src={"http://localhost:3000/logo.png"} />
-        </Navbar.Brand> */}
 
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         
@@ -53,25 +50,35 @@ function NavigationBar({ roll, query, setQuery, queryUbica, setQueryUbica, curre
             <Nav className="me-auto">
                     
               <Navbar.Brand href="/">
-                <Image className="logo" src={"http://localhost:3000/logo.png"} />
+                <Image className="logo" src={"http://localhost:3000/logo_pato.png"} style={{width: '120px', height: '120px'}}/>
               </Navbar.Brand>
 
-              <div className="col-1 aling-item-lefth">
-              {roll === "diseñador" ?
-                <Button href="pedidos" style={{backgroundColor: 'gray'}}>
-                  <img src={"http://localhost:3000/iconos/inventory_2_icon.svg"} alt="Pedidos" />
-                  pedidos
-                </Button>
-              : null
-              }     
-              {roll === "fabricante" ?
-                <Button href="/notificaciones" style={{backgroundColor: 'gray'}}>
-                  <img src={"http://localhost:3000/iconos/bookmark_icon.svg"} alt="Notificaciones" />
-                  Notificaciones
-                </Button>
-              : null
-              }     
-              </div>
+                <Col className="d-flex align-items-center">
+                  <div className="col-1 aling-item-lefth justify-content-between">
+                  <Button href="/atencionCliente" style={{backgroundColor: 'gray'}}>
+                    <img src={"http://localhost:3000/iconos/support_icon.svg"} alt="Pedidos" />
+                    AtCliente
+                  </Button>
+                </div>
+              </Col>
+              <Col className="d-flex align-items-center">
+                <div className="col-1 aling-item-lefth justify-content-between">
+                {roll === "diseñador" ?
+                  <Button href="/pedidos" style={{backgroundColor: 'gray'}}>
+                    <img src={"http://localhost:3000/iconos/inventory_2_icon.svg"} alt="Pedidos" />
+                    pedidos
+                  </Button>
+                : null
+                }     
+                {roll === "fabricante" ?
+                  <Button href="/notificaciones" style={{backgroundColor: 'gray'}}>
+                    <img src={"http://localhost:3000/iconos/bookmark_icon.svg"} alt="Notificaciones" />
+                    Notificaciones
+                  </Button>
+                : null
+                }     
+                </div>
+              </Col>
             </Nav>
           </Container>
 
