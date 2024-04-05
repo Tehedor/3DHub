@@ -61,19 +61,20 @@ public class BackendApplication {
 			userRepository.save(userEntity3);
 
 			Printer printer = Printer.builder()
-				.model_name("ender 3")
-				.printer_location("creality")
-				.printer_type("Room 1")
-				.printer_photo(null)
-				.service_price(10.0)
-				.max_unities(1)
-				.manufacturation_speed("60")
-				.max_width(220.0)
-				.max_height(250.0)
-				.printer_precision(0.1)
+				.modelName("ender 3")
+				.printerLocation("creality")
+				.printerType("Room 1")
+				.printerPhoto(null)
+				.servicePrice(10.0)
+				.maxUnities(1)
+				.manufacturationSpeed("60")
+				.maxWidth(220.0)
+				.maxHeight(250.0)
+				.printerPrecision(0.1)
 				.color("rojo")
 				.material("plastic")
 				.build();
+
 			printerRepository.save(printer);
 		};
 	}

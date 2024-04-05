@@ -12,7 +12,9 @@ import jakarta.validation.Valid;
 import lombok.Data;
 
 import com.dhub.backend.models.Printer;
-import com.dhub.backend.services.PrinterService;
+import com.dhub.backend.services.PrinterServiceImp;
+import org.springframework.web.bind.annotation.GetMapping;
+import java.util.List;
 
 @Data
 @RestController
@@ -20,13 +22,22 @@ import com.dhub.backend.services.PrinterService;
 public class PrinterController {
 
     @Autowired
-    private PrinterService printerService;
+    private PrinterServiceImp printerService;
 
     @PostMapping
     public ResponseEntity<Printer> createPrinter(@Valid @RequestBody Printer printer) {
         Printer createdPrinter = printerService.createPrinter(printer);
         return new ResponseEntity<>(createdPrinter, HttpStatus.CREATED);
     }
-}//crear metodo gert para que me devuelva todos los datos de la impresora (de todas las impresoras) y que las muestre en la pagina de impresoras
+    
+    @GetMapping
+    public List<Printer> getAllOrders() {
+        return printerService.getAllPrinters();
+    }
 
-//Postman
+    /*@GetMapping
+    public ResponseEntity<List<Printer>> getAllPrinters() {
+        List<Printer> printers = printerService.getAllPrinters();
+        return new ResponseEntity<>(printers, HttpStatus.OK);
+    }*/
+}

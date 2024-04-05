@@ -32,35 +32,30 @@ public class Printer {
 
     @NotBlank
     @Size(max = 24)
-    private String model_name;
+    private String modelName;
 
     @NotBlank
-    private String printer_location;
+    private String printerLocation;
 
     @NotBlank
-    private String printer_type;
+    private String printerType;
     
     @Lob
-    private byte[] printer_photo;
+    private byte[] printerPhoto;
 
-    private Double service_price;
+    private Double servicePrice;
 
-    
-    private Integer max_unities;
+    private Integer maxUnities;
 
     @NotBlank
-    private String manufacturation_speed;
+    private String manufacturationSpeed;
 
-    
-    private Double max_width;
+    private Double maxWidth;
 
-    
-    private Double max_height;
+    private Double maxHeight;
 
-    
-    private Double printer_precision;
+    private Double printerPrecision;
 
-    
     private String color;
 
     @NotBlank

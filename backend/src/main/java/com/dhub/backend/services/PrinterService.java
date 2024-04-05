@@ -1,17 +1,8 @@
 package com.dhub.backend.services;
-
 import com.dhub.backend.models.Printer;
-import com.dhub.backend.repository.PrinterRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import java.util.List;
 
-@Service
-public class PrinterService {
-
-    @Autowired
-    private PrinterRepository printerRepository;
-
-    public Printer createPrinter(Printer printer) {
-        return printerRepository.save(printer);
-    }
+public interface PrinterService {
+    public Printer createPrinter(Printer printer);
+    public List<Printer> getAllPrinters();
 }
