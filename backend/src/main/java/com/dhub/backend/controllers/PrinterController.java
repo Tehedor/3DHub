@@ -31,7 +31,7 @@ public class PrinterController {
     }
     
     @GetMapping
-    public List<Printer> getAllOrders() {
+    public List<Printer> getAllPrinters() {
         return printerService.getAllPrinters();
     }
 
