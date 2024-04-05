@@ -8,12 +8,13 @@ import Ver from './Ver';
 
 import AuthService from "../../services/diseñador/auth.service";
 
-// function NavigationBar( props) {
-// function PedirPedido  ({ roll, query, setQuery, queryUbica, setQueryUbica, currentUser, logOut }) {
 function PedirPedido  (props) {
   const form = useRef();
   const checkBtn = useRef();
-
+      
+  // Impresora del pedido
+  const printer = props.printers[Number(props.printerId)]; 
+  //////////////////////////////////////////////////////7//////////////////////////////////////////////////////7
   const roll = props.roll;
   const query = props.query;
   const queryUbica = props.queryUbica;
@@ -27,9 +28,59 @@ function PedirPedido  (props) {
   }
   // roll = "fabricante";
 
+  // validación de los inputs //////////////////////////////////////////////////////7
+  //////////////////////////////////////////////////////7//////////////////////////////////////////////////////7
+  const required = (value) => {
+    if (!value) {
+      return (
+        <div className="invalid-feedback d-block">
+          This field is required!
+        </div>
+      );
+    }
+  };
 
-  const printer = props.printers[Number(props.printerId)]; 
+  const validFile = (value) => {
+    console.console.log("validFile");
+  };
 
+  const validCantidad = (value) => {
+    console.console.log("validCantidad");
+    // verificame que es un numero y que este es menor que el maximo que tolera una imprsoras
+    if (value < 1) {
+      return (
+        <div className="invalid-feedback d-block">
+          This field is required!
+        </div>
+      );
+    }
+    
+    if (value > printer.Unidades_max) {
+      return (
+        <div className="invalid-feedback d-block">
+          Value must be less than {printer.Unidades_max}
+        </div>
+      );
+    }
+
+
+  };
+
+  const validFechaFabricacion = (value) => {
+    console.console.log("validFechaFabricacion");
+  };
+
+  const validFechaEntrega = (value) => {
+    console.console.log("validFechaEntrega");
+  };
+
+  const validEspecificaciones = (value) => {
+    console.console.log("validEspecificaciones");
+  };
+
+  //////////////////////////////////////////////////////7//////////////////////////////////////////////////////7
+  //////////////////////////////////////////////////////7//////////////////////////////////////////////////////7
+  
   const [file, setFile] = useState(null);
   const [cantidad, setCantidad] = useState(1);
   const [fechaFabricacion, setFechaFabricacion] = useState(null);
@@ -40,37 +91,41 @@ function PedirPedido  (props) {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handlePedido = (e) => {
-    e.preventDefault();
+  // const handlePedido = (e) => {
+  //   console.log("handlePedido");
 
-    setMessage("");
-    setSuccessful(false);
+  // }
+  
+  
+  
+    const handlePedido = (e) => {
+      e.preventDefault();
 
-    form.current.validateAll();
+      setMessage("");
+      setSuccessful(false);
 
-    if (checkBtn.current.context._errors.length === 0) {
-      AuthService.order(file, cantidad, fechaFabricacion, fechaEntrega, especificaciones).then(
-        (response) => {
-          setMessage(response.data.message);
-          setSuccessful(true);
-        },
-        (error) => {
-          const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
+      form.current.validateAll();
 
-          setMessage(resMessage);
-          setSuccessful(false);
-        }
-      );
-    }
+      if (checkBtn.current.context._errors.length === 0) {
+        AuthService.order(file, cantidad, fechaFabricacion, fechaEntrega, especificaciones).then(
+          (response) => {
+            setMessage(response.data.message);
+            setSuccessful(true);
+          },
+          (error) => {
+            const resMessage =
+              (error.response &&
+                error.response.data &&
+                error.response.data.message) ||
+              error.message ||
+              error.toString();
 
-
-
-  };
+            setMessage(resMessage);
+            setSuccessful(false);
+          }
+        );
+      }
+    };
 
 
   return (
@@ -139,16 +194,16 @@ function PedirPedido  (props) {
           </Row>
           <Row className="Añadir" style={{display: 'flex', alignItems: 'flex-end'}}>
               {/* <Button variant="success" >Añadir al Carrito</Button> */}
-              <Button variant="success" onClick={() => alert(`File: ${file}, Cantidad: ${cantidad}, Fecha de Fabricación: ${fechaFabricacion}, Fecha de Entrega: ${fechaEntrega}, Especificaciones: ${especificaciones}`)}>Añadir al Carrito</Button>
-          
+              {/* <Button variant="success" onClick={() => alert(`File: ${file}, Cantidad: ${cantidad}, Fecha de Fabricación: ${fechaFabricacion}, Fecha de Entrega: ${fechaEntrega}, Especificaciones: ${especificaciones}`)}>Añadir al Carrito</Button> */}
+              <Button variant="success" onClick={handlePedido}>Añadir al Carrito</Button>
 
             
-              <button className="btn btn-primary btn-block" disabled={loading}>
+              {/* <button className="btn btn-primary btn-block" disabled={loading}>
                 {loading && (
                   <span className="spinner-border spinner-border-sm"></span>
                 )}
                 <span>Login</span>
-              </button>
+              </button> */}
 
           </Row>
         </Col>
