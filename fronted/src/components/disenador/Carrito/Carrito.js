@@ -6,51 +6,26 @@ import CarritoLista from './CarritoLista';
 
 // Pruebas de la impresora para las vistas
 import CONFIG from '../../config/config.js';
-import {printersexample} from '../../constants/printers.js';
-import {printersPruebas} from '../../constants/printersPruebas.js';
+import {carritoPruebas} from '../../../constants/carritoPruebas.js';
 
 // Apis
 import ImpresorasService from "../../services/imprsoras.service";
 
-
-const SERVER_URL = CONFIG.server_url;
-
 export default function Carrito(props) {
-    // Controlador de impresoras para que funcione el Location
-    const setControlPrinters = props.setControlPrinters;
+    
 
-    const [query, setQuery] = useState("");
-    // const [printers, setprinters] = useState("");
-    // const [printers, setprinters] = useState(props.theprinters);
 
-    // Contenido de la barra de ubicación
-    const [queryUbica, setQueryUbica] = useState("");
-  
     // Estado en el que muestra el spinner si esta cargando
     const [loading, setLoading] = useState(true);
  
      // Estado en el que se alamcenan las impresoras
-    const [theprinters, setThePrinters] = useState();
-
-
-    // Localizacion usuario
-    // https://www.npmjs.com/package/react-geolocated?activeTab=readme
-    const { coords, isGeolocationAvailable, isGeolocationEnabled } =
-    useGeolocated({
-        positionOptions: {
-            enableHighAccuracy: false,
-        },
-        userDecisionTimeout: 5000,
-    });
+    const [thePedidos, setThePedidos] = useState();
 
   
-    // Función que descarga las impresoras, en función de la localización en la que se encuentra
+    // Función que descarga todos los pedidos para comprar
     const download = async () => {
     let downloadprinters;
-    // Coordenadas de Madrid para que sean por defecto 
-    const latitude=40.4167;
-    const longitude=-3.70325;  
-
+    
     // Poner la manerad para solicitar las impresoras en función de la localizaciónSs
     if(CONFIG.use_server){
         try {

@@ -5,15 +5,12 @@ import NotificacionesLista from './NotificacionesLista';
 
 // Pruebas de la impresora para las vistas
 import CONFIG from '../../config/config.js';
-import {printersexample} from '../../constants/printers.js';
-import {printersPruebas} from '../../constants/printersPruebas.js';
+import {notificacionesPruebas} from '../../../constants/notificacionesPruebas.js';
 
 
 // Apis
 import ImpresorasService from "../../services/imprsoras.service";
 
-
-const SERVER_URL = CONFIG.server_url;
 export default function Notificaciones(props) {
     // Controlador de impresoras para que funcione el Location
     const setControlPrinters = props.setControlPrinters;

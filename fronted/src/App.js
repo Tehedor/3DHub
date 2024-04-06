@@ -4,9 +4,11 @@ import { Routes, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
+// Apis
+import AuthService from "./services/auth.service";
 
-import AuthService from "./services/diseñador/auth.service";
 
+// Componentes 
 import LoginDisenador from "./components/disenador/LoginDisenador";
 import RegisterDisenador from "./components/disenador/RegisterDisenador";
 import ProfileDisenador from "./components/disenador/ProfileDisenador";
@@ -16,6 +18,7 @@ import RegisterFabricante from "./components/fabricante/RegisterFabricante";
 import ProfileFabricante from "./components/fabricante/ProfileFabricante";
 
 import Pedidos from "./components/disenador/Pedidos";
+import PedidosHistorico from "./components/disenador/Pedidos/PedidosHistorico";
 import Carrito from "./components/disenador/Carrito";
 
 import Notificaciones from "./components/fabricante/Notificaciones";
@@ -25,7 +28,6 @@ import NavBar from "./components/home/NavBar";
 import Error from "./components/home/Error";
 import FooterSection from "./components/home/FooterSection";
 import Location from "./components/home/Location";  
-import PedirPedido from "./components/home/PedirPedido";
 import AtencionCliente from "./components/home/AtencionCliente";
 
 // import Home from "./components/Home";
@@ -103,7 +105,7 @@ const App = () => {
           <Route exact path="/registerFabricante" element={<RegisterFabricante />} />
           <Route exact path="/profileFabricante" element={<ProfileFabricante />} />
 
-          <Route exact path="/pedidos" element={<Pedidos />} />
+          <Route exact path="/pedidos" element={<PedidosHistorico />} />
           <Route exact path="/carritocompra" element={<Carrito />} />
         
           <Route exact path="/notificaciones" element={<Notificaciones />} />

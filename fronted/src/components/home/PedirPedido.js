@@ -8,7 +8,7 @@ import {MyValidationInput,  MyValidationButton, MyValidationForm} from '../../co
 
 import VerPedir from './VerPedir.js';
 
-import AuthService from "../../services/diseñador/auth.service";
+import AuthService from "../../services/auth.service";
 
 function PedirPedido  (props) {
   const form = useRef();

@@ -141,10 +141,14 @@ export default function AtencionCliente(props) {
                     />
                 </Row>
                 <Row className="Añadir" style={{display: 'flex', alignItems: 'flex-end'}}>
+                    <p></p>
                 <Button variant="success" onClick={subirSolicitud}>Mandar solicitud</Button>
                 <p>
                 </p>
                 <Button href="/" variant="danger">Vover</Button>
+                <p>
+                    
+                </p>
             </Row>
             </>
             )}
