@@ -113,10 +113,6 @@ public class BackendApplication {
 				.designer("claudia")
 				.build();
 
-			userRepository.save(userEntity);
-			userRepository.save(userEntity2);
-			userRepository.save(userEntity3);
-
 			Printer printer = Printer.builder()
 				.modelName("ender 3")
 				.printerLocation("creality")
@@ -132,7 +128,13 @@ public class BackendApplication {
 				.material("plastic")
 				.build();
 
+			
+			userRepository.save(userEntity);
+			userRepository.save(userEntity2);
+			userRepository.save(userEntity3);
+			orderRepository.save(order);
 			printerRepository.save(printer);
+			ratingsRepository.save(rating);	
 		};
 	}
 

@@ -43,16 +43,9 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> {
                 auth.requestMatchers("/index**").permitAll();
-                auth.requestMatchers("/api/auth/**").permitAll();
-                auth.requestMatchers("/createUser**").permitAll();
-                auth.requestMatchers("/deleteUser**").permitAll();
-                auth.requestMatchers("/loginDesigner**").permitAll();
-                auth.requestMatchers("/loginManufacturer**").permitAll();
+                auth.requestMatchers("/api/**").permitAll();
                 auth.requestMatchers("/customerservice/sendMail**").permitAll();
                 auth.requestMatchers("/customerservice/sendMailFile**").permitAll();
-                auth.requestMatchers("/api/orders**").permitAll();
-                auth.requestMatchers("/printers**").permitAll();
-                auth.requestMatchers("/printers/**").permitAll();
                 auth.anyRequest().authenticated();
             })
             .sessionManagement(session -> {
