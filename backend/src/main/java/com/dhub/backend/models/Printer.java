@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
+//import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
-import jakarta.persistence.ManyToOne;
+//import jakarta.persistence.ManyToOne;
 import jakarta.persistence.UniqueConstraint;
 
 @Data
@@ -23,56 +23,46 @@ import jakarta.persistence.UniqueConstraint;
 @Entity
 @Table(name = "printers",
         uniqueConstraints = 
-            @UniqueConstraint(columnNames = "name")
+            @UniqueConstraint(columnNames = "Id")
         )
 public class Printer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long Id;
 
     @NotBlank
     @Size(max = 24)
-    private String name;
+    private String modelName;
 
     @NotBlank
-    private String location;
+    private String printerLocation;
 
     @NotBlank
-    private String type;
+    private String printerType;
     
-    // @Lob
-    // private byte[] photo;
+    @Lob
+    private byte[] printerPhoto;
+
+    private Double servicePrice;
+
+    private Integer maxUnities;
 
     @NotBlank
-    private String photo;
+    private String manufacturationSpeed;
 
-    @NotBlank
-    private Double price;
+    private Double maxWidth;
 
-    @NotBlank
-    private Integer unities;
+    private Double maxHeight;
 
-    @NotBlank
-    private String speed;
+    private Double printerPrecision;
 
-    @NotBlank
-    private Double width;
-
-    @NotBlank
-    private Double height;
-
-    @NotBlank
-    private Double precision;
-
-    @NotBlank
     private String color;
 
     @NotBlank
     private String material;
 
-    // @ManyToOne
-    // @JoinColumn(name = "user_id")
-    // private UserEntity userEntity;
-
+    //@ManyToOne
+    //@JoinColumn(name = "manufacturer_id")
+    //private String manufacturer;
 
 }

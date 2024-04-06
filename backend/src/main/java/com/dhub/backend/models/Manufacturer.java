@@ -7,6 +7,6 @@ import jakarta.persistence.Table;
 @Table(name = "manufacturers")
 public class Manufacturer extends UserEntity{
 
-    
+
 
 }

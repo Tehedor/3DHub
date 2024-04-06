@@ -51,7 +51,8 @@ public class SecurityConfig {
                 auth.requestMatchers("/customerservice/sendMail**").permitAll();
                 auth.requestMatchers("/customerservice/sendMailFile**").permitAll();
                 auth.requestMatchers("/api/orders**").permitAll();
-               
+                auth.requestMatchers("/printers**").permitAll();
+                auth.requestMatchers("/printers/**").permitAll();
                 auth.anyRequest().authenticated();
             })
             .sessionManagement(session -> {
@@ -64,6 +65,7 @@ public class SecurityConfig {
             .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
+    
 
     @Bean
     PasswordEncoder passwordEncoder() {

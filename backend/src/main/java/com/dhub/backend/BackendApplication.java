@@ -17,18 +17,21 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.dhub.backend.models.ERole;
 import com.dhub.backend.models.EStatus;
 import com.dhub.backend.models.Order;
+import com.dhub.backend.models.Printer;
 import com.dhub.backend.models.Ratings;
 import com.dhub.backend.models.Role;
 import com.dhub.backend.models.UserEntity;
 import com.dhub.backend.repository.OrderRepository;
 import com.dhub.backend.repository.RatingsRepository;
 import com.dhub.backend.repository.UserRepository;
-// import com.dhub.backend.repository.PrinterRepository;
+import com.dhub.backend.repository.PrinterRepository;
 
 
 import ch.qos.logback.core.status.Status;
 
 import ch.qos.logback.core.status.Status;
+
+//import jakarta.validation.constraints.Null;
 
 @SpringBootApplication
 public class BackendApplication {
@@ -48,10 +51,9 @@ public class BackendApplication {
 	
 	@Autowired
 	OrderRepository orderRepository;
-
 	
-	// @Autowired
-	// PrinterRepository printerRepository;
+	@Autowired
+	PrinterRepository printerRepository;
 
 	@Bean
 	CommandLineRunner init(){
@@ -114,8 +116,23 @@ public class BackendApplication {
 			userRepository.save(userEntity);
 			userRepository.save(userEntity2);
 			userRepository.save(userEntity3);
-			orderRepository.save(order);
-			ratingsRepository.save(rating);
+
+			Printer printer = Printer.builder()
+				.modelName("ender 3")
+				.printerLocation("creality")
+				.printerType("Room 1")
+				.printerPhoto(null)
+				.servicePrice(10.0)
+				.maxUnities(1)
+				.manufacturationSpeed("60")
+				.maxWidth(220.0)
+				.maxHeight(250.0)
+				.printerPrecision(0.1)
+				.color("rojo")
+				.material("plastic")
+				.build();
+
+			printerRepository.save(printer);
 		};
 	}
 
