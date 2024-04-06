@@ -121,12 +121,12 @@ export default function AtencionCliente(props) {
                 </Row>
                 <Row class="subir">          
                     {/*  SUBIR PHOTO */}
-                    {/* <MyValidationInput
+                    <MyValidationInput
                         type="file" 
                         formlabel="Subir Imagen" 
                         onChange={(e) => setPhoto(e.target.files[0])}
                         validations={[validPhoto]} 
-                    /> */}
+                    />
             </Row>
                 <Row>
 

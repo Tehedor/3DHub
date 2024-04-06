@@ -1,83 +1,56 @@
-import { Button , Row, Col, InputGroup, Form} from "react-bootstrap";
+import { Button , Row, Col, InputGroup, Form, Container} from "react-bootstrap";
 import { useEffect, useState } from "react";
 
 import NotificacionesLista from './NotificacionesLista';
 
 // Pruebas de la impresora para las vistas
-import CONFIG from '../../config/config.js';
+import CONFIG from '../../../config/config.js';
 import {notificacionesPruebas} from '../../../constants/notificacionesPruebas.js';
 
 
 // Apis
-import ImpresorasService from "../../services/imprsoras.service";
+import NotificacionesService from "../../../services/fabricante/notificaciones.service";
+
+// Tabla de estados
+import TablaEstados from '../../../common/Tabla_estados.js';
+
 
 export default function Notificaciones(props) {
-    // Controlador de impresoras para que funcione el Location
-    const setControlPrinters = props.setControlPrinters;
 
-    const [query, setQuery] = useState("");
-    // const [printers, setprinters] = useState("");
-    // const [printers, setprinters] = useState(props.theprinters);
-
-    // Contenido de la barra de ubicación
-    const [queryUbica, setQueryUbica] = useState("");
-  
     // Estado en el que muestra el spinner si esta cargando
     const [loading, setLoading] = useState(true);
  
      // Estado en el que se alamcenan las impresoras
-    const [theprinters, setThePrinters] = useState();
+    const [thePedidos, setThePedidos] = useState();
 
 
-    // Localizacion usuario
-    // https://www.npmjs.com/package/react-geolocated?activeTab=readme
-    const { coords, isGeolocationAvailable, isGeolocationEnabled } =
-    useGeolocated({
-        positionOptions: {
-            enableHighAccuracy: false,
-        },
-        userDecisionTimeout: 5000,
-    });
 
-  
     // Función que descarga las impresoras, en función de la localización en la que se encuentra
     const download = async () => {
-    let downloadprinters;
-    // Coordenadas de Madrid para que sean por defecto 
-    const latitude=40.4167;
-    const longitude=-3.70325;  
-
-    // Poner la manerad para solicitar las impresoras en función de la localizaciónSs
-    if(CONFIG.use_server){
-        try {
-        // if(isGeolocationEnabled || !queryUbica===""){
-        //     if (!queryUbica===""){
-        //     // api que me permita sacar latitud y longitud de la ubicación a partir de la query 
-        //     }else{
-        //     latitude=coords.latitude;
-        //     longitude=coords.longitude;
-        //     }
-        // }
-        // let queryparams =  "?lat=" + latitude + "&lon=" + longitude;
-        let queryparams =  "";
-        const data = await ImpresorasService.descargar(queryparams);
-        console.log(data);
-
-        downloadprinters=printersexample;
-        } catch (error) {
-        // setResultados(
-        //   { "cod": error.cod, "message": cod.message}
-        // );
+        let downloadpedidos;
+    
+        // Poner la manerad para solicitar las impresoras en función de la localizaciónSs
+        if(CONFIG.use_server){
+            //////////////////////////////////////////////////////////////////////////////////////
+            //////////////////////////////////////////////////////////////////////////////////////
+            try {
+                
+                // const data = await NotificacionesService.descargar(queryparams);
+                // console.log(data);
+                
+                // downloadpedidos=data;
+            } catch (error) {
+                // setResultados(
+                    //   { "cod": error.cod, "message": cod.message}
+                    // );
+                }
+            }else{
+            downloadpedidos=notificacionesPruebas;
+            //////////////////////////////////////////////////////////////////////////////////////
+            //////////////////////////////////////////////////////////////////////////////////////
         }
-    }else{
-        // downloadprinters=printersexample;
-        downloadprinters=printersPruebas;
-        // console.log(printersexample);
-    }
-    setThePrinters(downloadprinters);
-    console.log(theprinters);
-
-    setControlPrinters(printersPruebas);
+        setThePedidos(downloadpedidos);
+        console.log(thePedidos);
     }
 
     // Efecto que se ejecuta al cargar la página
@@ -95,13 +68,25 @@ export default function Notificaciones(props) {
 
     return (
         <div>
-            <h2 id="catálogo">impresoras</h2> 
+            <h2 id="catálogo">Notificaciones</h2> 
             {loading ? <img id="loading" src={process.env.PUBLIC_URL + "/spinners/cxyduck.gif"} className="spinner" alt="spinner" />:
         
-            <Row>
-                <NotificacionesLista printers={props.controlPrinters.printers} />
-            </Row>  
-            }
+
+            <Container>
+                <Col sm={2}>
+                {/* // Carrito, Pagado, Rechazado, Bajo_revision,Creando, Enviado, Terminado */}             
+                    <TablaEstados />
+                </Col>
+                <Col sm={10}>
+                    {/* <Row>
+                        <NotificacionesLista printers={props.controlPrinters.printers} />
+                    </Row>   */}
+                    <Button id="volver" variant="primary"  href="/">Volver</Button>
+                </Col>
+            </Container>
+
+                }
+
         </div>
     );
 }

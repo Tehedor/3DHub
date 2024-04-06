@@ -9,20 +9,17 @@ import AuthService from "./services/auth.service";
 
 
 // Componentes 
-import LoginDisenador from "./components/disenador/LoginDisenador";
-import RegisterDisenador from "./components/disenador/RegisterDisenador";
-import ProfileDisenador from "./components/disenador/ProfileDisenador";
+import Login from "./components/home/Login";
+import Register from "./components/home/Register";
+import Profile from "./components/home/Profile";
 
-import LoginFabricante from "./components/fabricante/LoginFabricante";
-import RegisterFabricante from "./components/fabricante/RegisterFabricante";
-import ProfileFabricante from "./components/fabricante/ProfileFabricante";
-
-import Pedidos from "./components/disenador/Pedidos";
+// import Pedidos from "./components/disenador/Pedidos";
+// import Carrito from "./components/disenador/Carrito";
 import PedidosHistorico from "./components/disenador/Pedidos/PedidosHistorico";
-import Carrito from "./components/disenador/Carrito";
+import Carrito from "./components/disenador/Carrito/Carrito";
 
-import Notificaciones from "./components/fabricante/Notificaciones";
-import ImpresorasFabri from "./components/fabricante/ImpresorasFabri";
+import Notificaciones from "./components/fabricante/Notificaciones/Notificaciones";
+import ImpresorasFabri from "./components/fabricante/Impresoras/TodasImpresoras";
 
 import NavBar from "./components/home/NavBar";
 import Error from "./components/home/Error";
@@ -90,20 +87,17 @@ const App = () => {
   return (
     <div>
 
-      <NavBar roll={roll} query={query} setQuery={setQuery} queryUbica={queryUbica} setQueryUbica={setQueryUbica} currentUser={currentUser} logOut={logOut}/>
+      {/* <NavBar roll={roll} query={query} setQuery={setQuery} queryUbica={queryUbica} setQueryUbica={setQueryUbica} currentUser={currentUser} logOut={logOut}/> */}
+      <NavBar query={query} setQuery={setQuery} queryUbica={queryUbica} setQueryUbica={setQueryUbica} currentUser={currentUser} logOut={logOut}/>
         
       <div className="container mt-3">
         <Routes>
           <Route exact path={"/"} element={<Home setControlPrinters={setControlPrinters} controlPrinters={controlPrinters} />} />
           <Route exact path={"/home"} element={<Home setControlPrinters={setControlPrinters} controlPrinters={controlPrinters} />} />
 
-          <Route exact path="/loginDisenador" element={<LoginDisenador />} />
-          <Route exact path="/registerDisenador" element={<RegisterDisenador />} />
-          <Route exact path="/profileDisenador" element={<ProfileDisenador />} />
-
-          <Route exact path="/loginFabricante" element={<LoginFabricante />} />
-          <Route exact path="/registerFabricante" element={<RegisterFabricante />} />
-          <Route exact path="/profileFabricante" element={<ProfileFabricante />} />
+          <Route exact path="/login" element={<Login/>} />
+          <Route exact path="/register" element={<Register />} />
+          <Route exact path="/profile" element={<Profile />} />
 
           <Route exact path="/pedidos" element={<PedidosHistorico />} />
           <Route exact path="/carritocompra" element={<Carrito />} />

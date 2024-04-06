@@ -1,4 +1,4 @@
-export const impresorasPruebas = {
+export const printersPruebas = {
   "printers": [
     {
       "Id_impresora": 1,
