@@ -27,4 +27,14 @@ public class CreateUserDTO {
     private String password;
     private Set<String> roles;
     
+    // private byte[] profileImage;
+
+    private Double lat;
+
+    private Double lon;
+
+    private String address;
+
+    private String factAddress;
+
 }
