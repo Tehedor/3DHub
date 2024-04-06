@@ -11,20 +11,24 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateUserDTO {
-
+public class CreateManufacturerDTO {
     @NotBlank
     private String dni;
+
+    @NotBlank
+    private String username;
 
     @Email
     @NotBlank
     private String email;
-
-    @NotBlank
-    private String username;
     
     @NotBlank
     private String password;
+
+    // private byte[] profileImage;
+
+    private String address;
+
     private Set<String> roles;
     
 }

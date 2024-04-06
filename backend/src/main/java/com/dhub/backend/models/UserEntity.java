@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
 
 @Data
@@ -27,6 +28,7 @@ import jakarta.persistence.ManyToMany;
 @Entity
 @Table(name = "users",
         uniqueConstraints = {
+            @UniqueConstraint(columnNames = "dni"),
             @UniqueConstraint(columnNames = "username"),
             @UniqueConstraint(columnNames = "email")
         })
@@ -35,6 +37,10 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
+
+    @NotBlank
+    @Size(max = 10)
+    private String dni;
 
     @NotBlank
     @Size(max = 20)
@@ -46,6 +52,18 @@ public class UserEntity {
 
     @NotBlank
     private String password;
+
+    @Lob
+    private byte[] profileImage;
+
+    private String address;
+
+    //Designer
+    private Double lat;
+
+    private Double lon;
+
+    private String factAddress;
 
     @ManyToMany(fetch = FetchType.EAGER, targetEntity = Role.class, cascade = CascadeType.PERSIST)
     @JoinTable(name = "user_roles",
