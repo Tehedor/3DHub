@@ -1,28 +1,20 @@
 import { useState } from 'react';
 import './NavBar.css';
-import { Navbar, Nav, Form, FormControl, Button, Card, Container, Row, Col, InputGroup, Image, ButtonGroup, ToggleButton } from 'react-bootstrap';
+import { Navbar, Nav, Form, FormControl, Button, Card, Container, Row, Col, InputGroup, Image } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 
 // function NavigationBar( props) {
-// function NavigationBar({ roll, query, setQuery, queryUbica, setQueryUbica, currentUser, logOut }) {
-function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser, logOut }) {
-  // currentUser = "arrancar";
+function NavigationBar({ roll, query, setQuery, queryUbica, setQueryUbica, currentUser, logOut }) {
+  {/* <NavBar roll={roll} query={query} setQuery={setQuery} queryUbica={queryUbica} setQueryUbica={setQueryUbica}/> */}
   
-  const [checked, setChecked] = useState(false);
-  const [rollValue, setRollValue] = useState('diseñador');
 
-  const roll = [
-    { name: 'Diseñador', value: 'diseñador' },
-    { name: 'Fabricante', value: 'fabricante' },
-  ];
-
-  // if (roll == "ROLE_USER") {
-  //   roll = "diseñador";
-  // } 
-  // if (roll == "ROLE_ADMIN") {
-  //   roll = "fabricante";
-  // }
+  if (roll == "ROLE_USER") {
+    roll = "diseñador";
+  } 
+  if (roll == "ROLE_ADMIN") {
+    roll = "fabricante";
+  }
   // roll = "diseñador";
   // roll = "fabricante";
 
@@ -46,7 +38,7 @@ function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser
   return (
 
     
-    <Navbar sticky="top"  bg={rollValue !== "fabricante" ? "primary" : "secondary"} expand="sm">
+    <Navbar sticky="top"  bg={roll !== "fabricante" ? "primary" : "secondary"} expand="sm">
       <Container fluid>
 
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -71,14 +63,14 @@ function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser
               </Col>
               <Col className="d-flex align-items-center">
                 <div className="col-1 aling-item-lefth justify-content-between">
-                {currentUser && rollValue === "diseñador" ?
+                {roll === "diseñador" ?
                   <Button href="/pedidos" style={{backgroundColor: 'gray'}}>
                     <img src={"http://localhost:3000/iconos/inventory_2_icon.svg"} alt="Pedidos" />
                     pedidos
                   </Button>
                 : null
                 }     
-                {currentUser && rollValue === "fabricante" ?
+                {roll === "fabricante" ?
                   <Button href="/notificaciones" style={{backgroundColor: 'gray'}}>
                     <img src={"http://localhost:3000/iconos/bookmark_icon.svg"} alt="Notificaciones" />
                     Notificaciones
@@ -113,14 +105,14 @@ function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser
           {/* <Container ClassName="contenido3"> */}
             <div className="col-1 aling-item-lefth">
             {/* <Container ClassName="contenido3_1 col-1"> */}
-              {currentUser && rollValue === "diseñador"   ?
+              {roll === "diseñador"   ?
                 <Button href="/carritocompra" style={{backgroundColor: 'gray'}}>
                   <img src={"http://localhost:3000/iconos/cart_icon.svg"} alt="Carrito" />
                     Carrito 
                 </Button>
                 : null
               }
-              {currentUser && rollValue === "fabricante"   ?
+              {roll === "fabricante"   ?
                   <Button href="/impresorasfabri" style={{backgroundColor: 'gray'}}>
                     <img src={"http://localhost:3000/iconos/print_FILL0_icon.svg"} alt="Impresoras" />
                       Impresoras
@@ -131,36 +123,51 @@ function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser
             </div>
               
             <div className="col-9">
-
-              {!currentUser ? (
-                <Button variant="dark" className="btn-outline-diseñador" href="/login ">
-                  <img src={"http://localhost:3000/iconos/login_icon.svg"} alt="User Icon" />
-                  Login
-                </Button>
-              ) : (
-                <Container>
-                  <ButtonGroup>
-                    {roll.map((roll, idx) => (
-                      <ToggleButton
-                        key={idx}
-                        id={`roll-${idx}`}
-                        type="radio"
-                        variant={idx % 2 ? 'outline-warning' : 'outline-dark'}
-                        name="roll"
-                        value={roll.value}
-                        checked={rollValue === roll.value}
-                        onChange={(e) => setRollValue(e.currentTarget.value)}
-                      >
-                        {roll.name}
-                      </ToggleButton>
-                    ))}
-                  </ButtonGroup>
-
+              {currentUser && roll==="diseñador" ? (
+                <div>
+                  {/* <Button variant="dark" href="profileDisenador"  >UserDise</Button> */}
+                  <Button variant="dark" href="/profileDisenador" >
+                    <img src={"http://localhost:3000/iconos/account_circle_disenador_icon.svg"} alt="User Icon" />
+                    {/* UserDise */}
+                  </Button>
+                  <Button variant="dark" className="btn-outline-diseñador" href="/" onClick={logOut}> 
+                    <img src={"http://localhost:3000/iconos/logout_icon.svg"} alt="User Icon" />
+                    Diseñador
+                  </Button>
+                  <Button variant="dark" className="btn-outline-fabricante" href="/loginFabricante">
+                    <img src={"http://localhost:3000/iconos/login_icon.svg"} alt="User Icon" />
+                    Fabricante
+                  </Button>
+                </div> 
+                
+                ) : currentUser && roll==="fabricante" ? (
+                  <div>
+                  <Button variant="dark" href="/profileDisenador" >
+                    <img src={"http://localhost:3000/iconos/account_circle_fabricante_icon.svg"} alt="User Icon" />
+                    {/* UserDise */}
+                  </Button>
+                  <Button variant="dark" className="btn-outline-diseñador" href="/loginDisenador ">
+                    <img src={"http://localhost:3000/iconos/login_icon.svg"} alt="User Icon" />
+                    Diseñador
+                  </Button>
                   <Button variant="dark" className="btn-outline-fabricante" href="/" onClick={logOut}> 
                     <img src={"http://localhost:3000/iconos/logout_icon.svg"} alt="User Icon" />
+                    Fabricante
                   </Button>
-                </Container>
+                </div> 
+              ) : (
+                <div>
+                  <Button variant="dark" className="btn-outline-diseñador" href="/loginDisenador ">
+                    <img src={"http://localhost:3000/iconos/login_icon.svg"} alt="User Icon" />
+                    Diseñador
+                  </Button>
+                  <Button variant="dark" className="btn-outline-fabricante" href="/loginFabricante">
+                    <img src={"http://localhost:3000/iconos/login_icon.svg"} alt="User Icon" />
+                    Fabricante
+                  </Button>
+                </div> 
               )}
+
             </div>
 
           </Container>

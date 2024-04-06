@@ -8,6 +8,7 @@ const descargar = async (queryparams) => {
   return data;
 };
 
+
 const ImpresorasService = {
   descargar,
 }

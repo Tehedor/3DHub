@@ -4,7 +4,7 @@ import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import { isEmail } from "validator";
 
-import AuthService from "../../services/diseñador/auth.service";
+import AuthService from "../../services/auth.service";
 
 const required = (value) => {
   if (!value) {
@@ -104,7 +104,7 @@ const RegisterDisenador = (props) => {
     <div className="col-md-12">
       <div className="card card-container">
         <div className="text-center">
-            <h2>Registrar Diseñador</h2>  
+            <h2>Registrar</h2>  
         </div>
         <img
           src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"

@@ -1,7 +1,9 @@
 import React from "react";
-import AuthService from "../../services/fabricante/auth.service";
 
-const ProfileFabricante = () => {
+// Api
+import AuthService from "../../services/auth.service";
+
+const ProfileDisenador = () => {
   const currentUser = AuthService.getCurrentUser();
 
   return (
@@ -26,4 +28,4 @@ const ProfileFabricante = () => {
   );
 };
 
-export default ProfileFabricante;
+export default ProfileDisenador;
