@@ -19,14 +19,21 @@ import java.util.List;
 
 @Data
 @RestController
-@RequestMapping("/api/printers")
-@PreAuthorize("hasRole('ROLE_ADMIN')or hasRole('ROLE_DESIGNER')")
+@RequestMapping("/api/manufacturerPrinters")
+@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANUFACTURER')")
 
-public class PrinterController {
+public class ManufacturerPrinterController {
 
     @Autowired
     private PrinterServiceImpl printerService;
+
+    @PostMapping
+    public ResponseEntity<Printer> createPrinter(@Valid @RequestBody Printer printer) {
+        Printer createdPrinter = printerService.createPrinter(printer);
+        return new ResponseEntity<>(createdPrinter, HttpStatus.CREATED);
+    }
     
+    //Falta filtrar por manufacturer
     @GetMapping
     public ResponseEntity<List<Printer>> getAllPrinters() {
         List<Printer> printers = printerService.getAllPrinters();

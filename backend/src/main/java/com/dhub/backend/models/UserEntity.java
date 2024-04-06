@@ -78,7 +78,8 @@ public class UserEntity {
     private Set<Role> roles;
 
  
-
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "users")
+    private List<Printer> printers;
 
     
 }
