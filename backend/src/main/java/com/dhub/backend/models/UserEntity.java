@@ -78,7 +78,7 @@ public class UserEntity {
     private Set<Role> roles;
 
  
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "users")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userEntity")
     private List<Printer> printers;
 
     
