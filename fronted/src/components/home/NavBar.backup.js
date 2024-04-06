@@ -15,7 +15,7 @@ function NavigationBar({ roll, query, setQuery, queryUbica, setQueryUbica, curre
   if (roll == "ROLE_ADMIN") {
     roll = "fabricante";
   }
-  roll = "diseñador";
+  // roll = "diseñador";
   // roll = "fabricante";
 
   

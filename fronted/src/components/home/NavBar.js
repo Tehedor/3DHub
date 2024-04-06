@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 // function NavigationBar( props) {
 // function NavigationBar({ roll, query, setQuery, queryUbica, setQueryUbica, currentUser, logOut }) {
 function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser, logOut }) {
-  currentUser = "arrancar";
+  // currentUser = "arrancar";
   
   const [checked, setChecked] = useState(false);
   const [rollValue, setRollValue] = useState('diseñador');
