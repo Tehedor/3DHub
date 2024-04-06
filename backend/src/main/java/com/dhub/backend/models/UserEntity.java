@@ -54,8 +54,6 @@ public class UserEntity {
     @Size(max = 50)
     private String email;
 
-    
-
     @NotBlank
     private String password;
 
