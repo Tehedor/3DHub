@@ -1,7 +1,10 @@
 package com.dhub.backend.models;
 
+import com.dhub.backend.controllers.request.PrinterDTO;
+
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -79,5 +82,28 @@ public class UserEntity {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userEntity")
     private List<Printer> printers;
 
+    public List<PrinterDTO> getPrintersWithoutUserEntity() {
+        return printers.stream()
+            .map(printer -> {
+                PrinterDTO printerDTO = new PrinterDTO();
+                // Copiar todos los atributos de printer a printerDTO
+                printerDTO.setId(printer.getId());
+                printerDTO.setModelName(printer.getModelName());
+                printerDTO.setPrinterLocation(printer.getPrinterLocation());
+                printerDTO.setPrinterType(printer.getPrinterType());
+                printerDTO.setPrinterPhoto(printer.getPrinterPhoto());
+                printerDTO.setServicePrice(printer.getServicePrice());
+                printerDTO.setMaxUnities(printer.getMaxUnities());
+                printerDTO.setManufacturationSpeed(printer.getManufacturationSpeed());
+                printerDTO.setMaxWidth(printer.getMaxWidth());
+                printerDTO.setMaxHeight(printer.getMaxHeight());
+                printerDTO.setPrinterPrecision(printer.getPrinterPrecision());
+                printerDTO.setColor(printer.getColor());
+                printerDTO.setMaterial(printer.getMaterial());
+                
+                return printerDTO;
+            })
+            .collect(Collectors.toList());
+    }
     
 }

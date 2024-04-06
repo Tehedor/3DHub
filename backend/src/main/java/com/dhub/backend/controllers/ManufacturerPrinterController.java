@@ -1,5 +1,7 @@
 package com.dhub.backend.controllers;
 
+import com.dhub.backend.controllers.request.PrinterDTO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.http.HttpStatus;
@@ -25,7 +27,7 @@ import java.util.List;
 @Data
 @RestController
 @RequestMapping("/api/manufacturerPrinters")
-// @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANUFACTURER')")
+@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANUFACTURER')")
 
 public class ManufacturerPrinterController {
 
@@ -41,13 +43,18 @@ public class ManufacturerPrinterController {
                 .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
         Printer createdPrinter = printerService.createPrinter(printer);
         createdPrinter.setUserEntity(user);
-        return new ResponseEntity<>(createdPrinter, HttpStatus.CREATED);
+        user.getPrinters().add(createdPrinter);
+        userRepository.save(user);
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     //Falta filtrar por manufacturer
-    @GetMapping
-    public ResponseEntity<List<Printer>> getAllPrinters() {
-        List<Printer> printers = printerService.getAllPrinters();
+    @GetMapping("/{userId}")
+    public ResponseEntity<List<PrinterDTO>> getAllPrinters(@PathVariable Long userId) {
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
+        List<PrinterDTO> printers = user.getPrintersWithoutUserEntity();
         if (printers.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
