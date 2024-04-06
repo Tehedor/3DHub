@@ -28,6 +28,8 @@ import com.dhub.backend.repository.UserRepository;
 
 import ch.qos.logback.core.status.Status;
 
+import ch.qos.logback.core.status.Status;
+
 @SpringBootApplication
 public class BackendApplication {
 
@@ -37,11 +39,13 @@ public class BackendApplication {
 
 	@Autowired
 	PasswordEncoder passwordEncoder;
+
 	@Autowired
 	RatingsRepository ratingsRepository;
 
 	@Autowired
 	UserRepository userRepository;
+	
 	@Autowired
 	OrderRepository orderRepository;
 
@@ -53,6 +57,7 @@ public class BackendApplication {
 	CommandLineRunner init(){
 		return args -> {
 			UserEntity userEntity = UserEntity.builder()
+				.dni("11111111A")
 				.email("denzel@gmail.com")
 				.username("denzel")
 				.password(passwordEncoder.encode("1111"))
@@ -60,18 +65,25 @@ public class BackendApplication {
 				
 				.build();
 			UserEntity userEntity2 = UserEntity.builder()
+				.dni("222222222A")
 				.email("sergio@gmail.com")
 				.username("sergio")
 				.password(passwordEncoder.encode("2222"))
 				
 				.roles(Set.of(Role.builder().name(ERole.ROLE_DESIGNER).build()))
+				.lat(40.4165)
+				.lon(-3.70256)
+				.address("Calle de la Princesa, 1, 28008 Madrid, España")
+				.factAddress("Calle de la Princesa, 1, 28008 Madrid, España")
 				.build();
 			UserEntity userEntity3 = UserEntity.builder()
+				.dni("333333333A")
 				.email("claudia@gmail.com")
 				.username("claudia")
 				
 				.password(passwordEncoder.encode("3333"))
-				.roles(Set.of(Role.builder().name(ERole.ROLE_DESIGNER).build()))
+				.address("Calle de la Princesa, 1, 28008 Madrid, España")
+				.roles(Set.of(Role.builder().name(ERole.ROLE_MANUFACTURER).build()))
 				.build();
 
 			// 	String filePath = "C:\\Users\\admin\\Desktop\\ISST PROYECTO\\3DHub\\backend\\descarga.zip";
@@ -97,7 +109,6 @@ public class BackendApplication {
 				.file(null)
 				.idmanufacturer("sergio")
 				.designer("claudia")
-				
 				.build();
 
 			userRepository.save(userEntity);

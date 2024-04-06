@@ -1,15 +1,21 @@
 import { Button , Row, Col, InputGroup, Form} from "react-bootstrap";
 import { useEffect, useState } from "react";
 import {useGeolocated} from "react-geolocated";
-import Lista from './ImpresorasLista';
+import ImpresorasLista from './ImpresorasLista';
 import CONFIG from '../../config/config.js';
 import {printersexample} from '../../constants/printers.js';
+
+// Pruebas de la impresora para las vistas
+import {printersPruebas} from '../../constants/printersPruebas.js';
 
 import ImpresorasService from "../../services/imprsoras.service";
 
 
 const SERVER_URL = CONFIG.server_url;
-export default function SearchPage(props) {
+export default function Home(props) {
+    // Controlador de impresoras para que funcione el Location
+    const setControlPrinters = props.setControlPrinters;
+
     const [query, setQuery] = useState("");
     // const [printers, setprinters] = useState("");
     // const [printers, setprinters] = useState(props.theprinters);
@@ -65,11 +71,14 @@ export default function SearchPage(props) {
         // );
         }
     }else{
-        downloadprinters=printersexample;
+        // downloadprinters=printersexample;
+        downloadprinters=printersPruebas;
         // console.log(printersexample);
     }
     setThePrinters(downloadprinters);
-    // console.log(downloadprinters);
+    console.log(theprinters);
+
+    setControlPrinters(printersPruebas);
     }
 
     // Efecto que se ejecuta al cargar la página
@@ -91,7 +100,7 @@ export default function SearchPage(props) {
             {loading ? <img id="loading" src={process.env.PUBLIC_URL + "/spinners/cxyduck.gif"} className="spinner" alt="spinner" />:
         
             <Row>
-                <Lista printers={theprinters.printers} />
+                <ImpresorasLista printers={props.controlPrinters.printers} />
             </Row>  
             }
         </div>

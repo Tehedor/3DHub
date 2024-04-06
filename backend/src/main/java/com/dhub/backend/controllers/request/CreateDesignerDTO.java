@@ -11,20 +11,31 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateUserDTO {
+public class CreateDesignerDTO {
 
     @NotBlank
     private String dni;
 
+    @NotBlank
+    private String username;
+
     @Email
     @NotBlank
     private String email;
-
-    @NotBlank
-    private String username;
     
     @NotBlank
     private String password;
+
+    // private byte[] profileImage;
+
+    private Double lat;
+
+    private Double lon;
+
+    private String address;
+
+    private String factAddress;
+
     private Set<String> roles;
     
 }

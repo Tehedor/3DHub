@@ -52,7 +52,7 @@ function NavigationBar({ roll, query, setQuery, queryUbica, setQueryUbica, curre
           <Container ClassName="contenido1">
             <Nav className="me-auto">
                     
-              <Navbar.Brand href="./">
+              <Navbar.Brand href="/">
                 <Image className="logo" src={"http://localhost:3000/logo.png"} />
               </Navbar.Brand>
 
@@ -65,7 +65,7 @@ function NavigationBar({ roll, query, setQuery, queryUbica, setQueryUbica, curre
               : null
               }     
               {roll === "fabricante" ?
-                <Button href="notificaciones" style={{backgroundColor: 'gray'}}>
+                <Button href="/notificaciones" style={{backgroundColor: 'gray'}}>
                   <img src={"http://localhost:3000/iconos/bookmark_icon.svg"} alt="Notificaciones" />
                   Notificaciones
                 </Button>
@@ -99,14 +99,14 @@ function NavigationBar({ roll, query, setQuery, queryUbica, setQueryUbica, curre
             <div className="col-1 aling-item-lefth">
             {/* <Container ClassName="contenido3_1 col-1"> */}
               {roll === "diseñador"   ?
-                <Button href="carritocompra" style={{backgroundColor: 'gray'}}>
+                <Button href="/carritocompra" style={{backgroundColor: 'gray'}}>
                   <img src={"http://localhost:3000/iconos/cart_icon.svg"} alt="Carrito" />
                     Carrito 
                 </Button>
                 : null
               }
               {roll === "fabricante"   ?
-                  <Button href="impresorasfabri" style={{backgroundColor: 'gray'}}>
+                  <Button href="/impresorasfabri" style={{backgroundColor: 'gray'}}>
                     <img src={"http://localhost:3000/iconos/print_FILL0_icon.svg"} alt="Impresoras" />
                       Impresoras
                   </Button>
@@ -119,7 +119,7 @@ function NavigationBar({ roll, query, setQuery, queryUbica, setQueryUbica, curre
               {currentUser && roll==="diseñador" ? (
                 <div>
                   {/* <Button variant="dark" href="profileDisenador"  >UserDise</Button> */}
-                  <Button variant="dark" href="profileDisenador" >
+                  <Button variant="dark" href="/profileDisenador" >
                     <img src={"http://localhost:3000/iconos/account_circle_disenador_icon.svg"} alt="User Icon" />
                     {/* UserDise */}
                   </Button>
@@ -127,7 +127,7 @@ function NavigationBar({ roll, query, setQuery, queryUbica, setQueryUbica, curre
                     <img src={"http://localhost:3000/iconos/logout_icon.svg"} alt="User Icon" />
                     Diseñador
                   </Button>
-                  <Button variant="dark" className="btn-outline-fabricante" href="loginFabricante">
+                  <Button variant="dark" className="btn-outline-fabricante" href="/loginFabricante">
                     <img src={"http://localhost:3000/iconos/login_icon.svg"} alt="User Icon" />
                     Fabricante
                   </Button>
@@ -135,11 +135,11 @@ function NavigationBar({ roll, query, setQuery, queryUbica, setQueryUbica, curre
                 
                 ) : currentUser && roll==="fabricante" ? (
                   <div>
-                  <Button variant="dark" href="profileDisenador" >
+                  <Button variant="dark" href="/profileDisenador" >
                     <img src={"http://localhost:3000/iconos/account_circle_fabricante_icon.svg"} alt="User Icon" />
                     {/* UserDise */}
                   </Button>
-                  <Button variant="dark" className="btn-outline-diseñador" href="loginDisenador ">
+                  <Button variant="dark" className="btn-outline-diseñador" href="/loginDisenador ">
                     <img src={"http://localhost:3000/iconos/login_icon.svg"} alt="User Icon" />
                     Diseñador
                   </Button>
@@ -150,11 +150,11 @@ function NavigationBar({ roll, query, setQuery, queryUbica, setQueryUbica, curre
                 </div> 
               ) : (
                 <div>
-                  <Button variant="dark" className="btn-outline-diseñador" href="loginDisenador ">
+                  <Button variant="dark" className="btn-outline-diseñador" href="/loginDisenador ">
                     <img src={"http://localhost:3000/iconos/login_icon.svg"} alt="User Icon" />
                     Diseñador
                   </Button>
-                  <Button variant="dark" className="btn-outline-fabricante" href="loginFabricante">
+                  <Button variant="dark" className="btn-outline-fabricante" href="/loginFabricante">
                     <img src={"http://localhost:3000/iconos/login_icon.svg"} alt="User Icon" />
                     Fabricante
                   </Button>
