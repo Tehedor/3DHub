@@ -7,7 +7,7 @@
   - Spring Boot Extension Pack
 
 ## Java
-Java JDK 21
+Java JDK 17
 
 ## Maven
 Apache Maven 3.9.6 - https://maven.apache.org/download.cgi
@@ -19,13 +19,8 @@ Descargar ZIP Binario y descomprimirlo en un directorio
 - Agregar a la variable PATH la ruta apache-maven-3.9.6/bin
 
 ## MySQL
-<<<<<<< Updated upstream
 - MySQL 8.0.36 - https://dev.mysql.com/downloads/installer/
 - Nombre y contraseña root
-=======
-MySQL 8.0.36 - https://dev.mysql.com/downloads/installer/
-Nombre y contraseña root
->>>>>>> Stashed changes
 
 # Arrancar Servidor
 
