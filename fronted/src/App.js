@@ -20,6 +20,7 @@ import Carrito from "./components/disenador/Carrito/Carrito";
 
 import Notificaciones from "./components/fabricante/Notificaciones/Notificaciones";
 import ImpresorasFabri from "./components/fabricante/Impresoras/TodasImpresoras";
+import CrearImpresora from "./components/fabricante/Impresoras/CrearImpresora"; 
 
 import NavBar from "./components/home/NavBar";
 import Error from "./components/home/Error";
@@ -104,6 +105,8 @@ const App = () => {
         
           <Route exact path="/notificaciones" element={<Notificaciones />} />
           <Route exact path="/impresorasfabri" element={<ImpresorasFabri />} />
+          <Route exact path="/crearimpresora" element={<CrearImpresora />} />
+
           {/* <Route path="/pedirpedido/:printerId" element={<Location roll={roll} query={query} setQuery={setQuery} queryUbica={queryUbica} setQueryUbica={setQueryUbica} currentUser={currentUser} logOut={logOut}/>}/> */}
           <Route path="/pedirpedido/:printerId" element={<Location controlPrinters={controlPrinters} roll={roll} query={query} queryUbica={queryUbica} currentUser={currentUser} />}/>
 

@@ -8,6 +8,9 @@ import { Link } from 'react-router-dom';
 // function NavigationBar({ roll, query, setQuery, queryUbica, setQueryUbica, currentUser, logOut }) {
 function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser, logOut }) {
   // currentUser = "arrancar";
+  if (JSON.parse(localStorage.getItem("user")) != null) {
+    currentUser = JSON.parse(localStorage.getItem("user"));
+  } 
   
   const [checked, setChecked] = useState(false);
   const [rollValue, setRollValue] = useState('diseñador');

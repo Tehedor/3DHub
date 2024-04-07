@@ -1,12 +1,30 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3000/api/auth/";
+const API_URL = "http://localhost:8080/";
 
-const register = (username, email, password) => {
-  return axios.post(API_URL + "signup", {
-    username,
-    email,
-    password,
+const user = JSON.parse(localStorage.getItem("user"));
+
+const token = user ? user.accessToken : "";
+
+const app = axios.create({
+  baseURL: "http://localhost:8080/",
+  headers: {
+    "Content-type": "application/json",
+    "Authorization": `Bearer ${token}`,
+  },
+});
+
+const createPrinter = (modelName, printerLocation, printerType, printerPhoto, servicePrice, maxUnities, manufacturationSpeed, material) => {
+  // console.log(JSON.parse(localStorage.getItem("user")))
+  return app.post("api/printers", {
+    modelName, 
+    printerLocation, 
+    printerType, 
+    printerPhoto, 
+    servicePrice, 
+    maxUnities, 
+    manufacturationSpeed, 
+    material
   });
 };
 
@@ -37,10 +55,10 @@ const getCurrentUser = () => {
 };
 
 const AuthService = {
-  register,
-  login,
-  logout,
-  getCurrentUser,
+  createPrinter,
+  // login,
+  // logout,
+  // getCurrentUser,
 }
 
 export default AuthService;
