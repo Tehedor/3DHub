@@ -49,6 +49,10 @@ public class SecurityConfig {
                 // auth.requestMatchers("/api/manumanufacturerPrinters/{userId}").permitAll();
                 auth.requestMatchers("/customerservice/sendMail**").permitAll();
                 auth.requestMatchers("/customerservice/sendMailFile**").permitAll();
+                //auth.requestMatchers("/manufacturer/printers**").permitAll();
+                //auth.requestMatchers("/manufacturer/printers/**").permitAll();
+                //auth.requestMatchers("/printers**").permitAll();
+                //auth.requestMatchers("/printers/**").permitAll();
                 auth.anyRequest().authenticated();
             })
             .sessionManagement(session -> {
