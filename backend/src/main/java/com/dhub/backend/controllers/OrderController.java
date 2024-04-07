@@ -47,6 +47,10 @@ public class OrderController {
         }
     }
 
+    public List<Order> getOrdersByStatus(EStatus status) {
+        return orderService.getOrdersByStatus(status);
+    }
+
     @PostMapping
     public Order createOrder(@RequestBody Order order) {
         return orderService.createOrder(order);
@@ -98,5 +102,15 @@ public class OrderController {
         order.setStatus(newStatus);
         orderRepository.save(order);
         return ResponseEntity.ok(new MessageResponse("Petición " + id.toString() + " guardada como " + newStatus.toString()));
+    }
+
+    /*
+     * Get all orders from the kart
+     * TODO: User id modification
+     * SELECT * FROM orders WHERE status = 'KART' && user_id = 'user_id';
+     */
+    @GetMapping("/kart")
+    public List<Order> getKart() {
+        return orderService.getOrdersByStatus(EStatus.KART);
     }
 }
