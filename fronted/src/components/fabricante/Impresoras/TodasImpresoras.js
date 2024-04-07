@@ -76,13 +76,24 @@ export default function TodasImpresoras(props) {
         <div>
             <h2 id="catálogo">impresoras Fabricante</h2> 
             {loading ? <img id="loading" src={process.env.PUBLIC_URL + "/spinners/cxyduck.gif"} className="spinner" alt="spinner" />:
-        
+            <>
+                <Col>
+                
+                </Col>
+                <Col>
+                    <Row>
+                        <Button id="volver" variant="primary" href="/">Volverr</Button>
+                    </Row>  
+                    <Row>
+                        <Button id="createPriter" variant="success" href="/crearImpresora">Crear Impresora</Button>
+                    </Row>
+                
+                </Col>
+            </>
             // <Row>
             //     <TodasImpresorasLista printers={props.controlPrinters.printers} />
             // </Row>  
-            <Row>
-                <Button id="volver" variant="primary" href="/">Volverr</Button>
-            </Row>  
+
             }
         </div>
     );

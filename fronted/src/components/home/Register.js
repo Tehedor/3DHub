@@ -6,7 +6,7 @@ import { isEmail } from "validator";
 
 import { Form as BootstrapForm} from 'react-bootstrap';
 
-import {MyValidationCheck, MyValidationGroup} from '../../common/ValidationComponents.js';
+import {MyValidationCheck} from '../../common/ValidationComponents.js';
 
 import AuthService from "../../services/auth.service";
 
