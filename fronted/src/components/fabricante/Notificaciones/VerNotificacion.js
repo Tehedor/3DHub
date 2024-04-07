@@ -1,9 +1,59 @@
 import {Container, Card,Row, Col, Button, Image} from "react-bootstrap";
 import {Link} from "react-router-dom";
 
-export default function VerNotificacion(props) {
+import PedirPedido from "../../home/PedirPedido";
+
+import NotificacionService from "../../../services/fabricante/notificaciones.service.js";
+
+export default function VerNotificaciones(props) {
 
     const printer = props.printer;
+
+
+    const confirmarPedido = () => {
+        NotificacionService.aceptadoCreando(printer.id_pedido)
+    }
+
+    const rechazrPedido = () => {
+        NotificacionService.cancelarPedido(printer.id_pedido)
+    }
+    
+    const revisarPedido = () => {
+        NotificacionService.noAceptadoRevision(printer.id_pedido)
+    }
+    
+    
+    const terminarPedido = () => {
+        NotificacionService.creadoEnviado(printer.id_pedido)
+    }           
+
+    const ControlEstados = () => {
+        if (printer.Estado === "PAY"){
+            <Image src={"http://localhost:3000/iconos_estados/pagado.svg"} className="icon" alt="pagado" />
+            {<Button variant="success" size="sm" onClick={confirmarPedido}>Aceptar pedido</Button>}
+            {<Button variant="warning" size="sm" onClick={rechazrPedido}>Rechazar Pedido</Button>}
+            {<Button variant="danger" size="sm" onClick={revisarPedido}>Mandar a revisar</Button>}
+            {<p>Esperando respuesta del Fabricante</p>}
+        }else if(printer.Estado === "CANCELLED"){
+            <Image src={"http://localhost:3000/iconos_estados/rechazado.svg"} className="icon" alt="rechazado" />
+            {<p>Pedido Cancelado/Rechazado</p>}
+        }else if(printer.Estado === "REVISION"){
+            <Image src={"http://localhost:3000/iconos_estados/bajo_revision.svg"} className="icon" alt="bajo_revision" />
+            {<p>Esperando revision del diseñador</p>}
+        }else if(printer.Estado === "CREATING"){
+            <Image src={"http://localhost:3000/iconos_estados/creando.svg"} className="icon" alt="creando" />
+            {<p>Creando Pedido...</p>}
+            {<Button variant="info" size="sm" onClick={terminarPedido}>Pedido Terminado</Button>}
+        }else if(printer.Estado === "SEND"){
+            <Image src={"http://localhost:3000/iconos_estados/enviado.svg"} className="icon" alt="enviado" />
+            {<p>Espere a que el pedido llegue al diseñador</p>}
+        }else if(printer.Estado === "DELIVERED"){
+            <Image src={"http://localhost:3000/iconos_estados/terminado.svg"} className="icon" alt="terminado" />
+        }
+    }
+    
+       
+
     
     return(
         <Card border="gray" style={{ backgroundColor: "white", marginTop: '0' }}> 
@@ -15,7 +65,7 @@ export default function VerNotificacion(props) {
                     {/* <Image src={printer.Foto_impresora} thumbnail  style={{ maxWidth: "100%" }}/> */}
                     <Card.Img src={printer.Foto_impresora} thumbnail  style={{ maxWidth: "100%" }}/>
                 </Col>
-                <Col sm={9} class="datos_impresora">
+                <Col sm={7} class="datos_impresora">
                     <Row >
                         <Col sm={4}>
                             <Card.Text style={{color: 'black'}}>Nombre: {printer.Nombre_modelo}</Card.Text>
@@ -56,6 +106,9 @@ export default function VerNotificacion(props) {
                     </Row>
                     {/* <Card.Text>Stock: {printer.Nombre_modelo}</Card.Text> */}
                 </Col> 
+                <Col sm={2} class="boton" className="d-flex justify-content-center align-items-center">
+                    {ControlEstados()}
+                </Col>
             </Row>
             </Card.Body>
         </Card>  

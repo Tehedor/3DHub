@@ -36,10 +36,11 @@ export default function PedidosHistorico(props) {
             //////////////////////////////////////////////////////////////////////////////////////
             try {
                 
-                // const data = await PedidosService.descargar(queryparams);
+                // const data = await PedidosService.getPedidos();
                 // console.log(data);
                 
                 // downloadpedidos=data;
+                downloadpedidos=pedidosPruebas;
             } catch (error) {
                 // setResultados(
                     //   { "cod": error.cod, "message": cod.message}
@@ -76,15 +77,15 @@ export default function PedidosHistorico(props) {
                 <Col sm={2}>
                 {/* // Carrito, Pagado, Rechazado, Bajo_revision,Creando, Enviado, Terminado */}             
                     <TablaEstados />
+                    <Button id="volver" variant="primary"  href="/">Volver</Button>
                 </Col>
                 <Col sm={10}>
-                    <Button id="volver" variant="primary"  href="/">Volver</Button>
+                    <Row>
+                       <PedidosLista pedidos={props.thePedidos.pedidos} />
+                    </Row>  
                 </Col>
             </Container>
 
-            // <Row>
-            //     <PedidosLista pedidos={props.thePedidos.pedidos} />
-            // </Row>  
             }
         </div>
     );

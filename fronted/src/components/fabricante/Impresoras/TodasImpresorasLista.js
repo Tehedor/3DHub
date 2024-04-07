@@ -9,9 +9,7 @@ export default function TodasImpresorasLista(props) {
    return(
         <div id="productosresultados" >
                 {lista.map((items,index) => (
-                    <Link to={`/pedirpedido/${index}`} style={{ textDecoration: 'none' }}>
-                        <VerImpresora printer={items}/>
-                    </Link>
+                        <VerImpresora printer={items}/>   
                 ))}
         </div>);
 }

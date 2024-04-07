@@ -43,9 +43,15 @@ const getImpresorasFabricante = () => {
 
 }
 
+const deletePrinter = (id) => {
+  return app.
+    delete(`/api/printers/${id}`);
+}
+
 const ImpresorasServiceFabri = {
   createPrinter,
   getImpresorasFabricante,
+  deletePrinter,
 }
 
 

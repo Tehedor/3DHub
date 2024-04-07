@@ -141,7 +141,7 @@ function PedirPedido  (props) {
     form.current.validateAll();
 
     if (checkBtn.current.context._errors.length === 0) {
-      PedidosService.añadirPedido(file, cantidad, fechaFabricacion, fechaEntrega, especificaciones).then(
+      PedidosService.añadirPedido(file, cantidad, fechaFabricacion.current, fechaEntrega, especificaciones, printer).then(
           (response) => {
             setMessage(response.data.message);
             setSuccessful(true);
