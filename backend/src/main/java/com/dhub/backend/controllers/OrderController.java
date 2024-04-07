@@ -40,9 +40,6 @@ public class OrderController {
     private PrinterRepository printerRepository;
 
 
-    @Autowired
-    private PrinterRepository printerRepository;
-
     // @Autowired
     public OrderController(OrderService orderService) {
         this.orderService = orderService;
@@ -157,6 +154,21 @@ public class OrderController {
         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
 
         List<OrderDTO> orders = user.getOrdersWithoutUserEntity();
+        if(orders.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(orders, HttpStatus.OK);
+    }
+    @GetMapping("/designerExcludingKart")
+    public ResponseEntity<List<OrderDTO>> getDesignerOrdersExcludingKart() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = (authentication != null) ? authentication.getName() : null;
+        UserEntity user = userRepository.findByUsername(username)
+        .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
+
+        List<OrderDTO> orders = user.getOrdersWithoutUserEntity();
+        List<OrderDTO> status = orderService.getOrdersExcludingStatus(EStatus.KART, orders);
+        orders = orderService.getOrdersByUserId(user.getId(), status);
         if(orders.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

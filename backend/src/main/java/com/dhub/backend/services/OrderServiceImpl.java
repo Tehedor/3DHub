@@ -56,6 +56,18 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<OrderDTO> getOrdersExcludingStatus(EStatus status, List<OrderDTO> orders) {
+        List<OrderDTO> ordersExcludingStatus = new ArrayList<>();
+        for (OrderDTO order : orders) {
+            if (!order.getStatus().equals(status)) {
+                ordersExcludingStatus.add(order);
+            }
+        }
+        return ordersExcludingStatus;
+    }
+
+
+    @Override
     public List<OrderDTO> getOrdersByUserId(Long userId, List<OrderDTO> orders) {
         List<OrderDTO> ordersByUserId = new ArrayList<>();
         for (OrderDTO order : orders) {
