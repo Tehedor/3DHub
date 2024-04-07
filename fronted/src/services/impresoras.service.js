@@ -33,17 +33,20 @@ const descargarPrinters = async (queryparams) => {
   // return data;
 };
 
-const enviarEmail = async (correo, subject, message) => {
-  const data = await app.post("customerservice/sendMail", {
-    toUser: [correo],
-    subject: subject,
-    message: message,
+// const enviarEmail = async (correo, subject, message) => {
+const enviarEmail =  (email, asunto ,solicitud, photo) => {
+  console.log(email, asunto, solicitud, photo);
+  return app
+  .post("api/customerService/sendMail", {
+    toUser: [email],
+    subject: asunto,
+    message: solicitud,
   });
-  // return data;
 };
 
 const ImpresorasService = {
   descargarPrinters,
+  enviarEmail,
 }
 
 export default ImpresorasService;

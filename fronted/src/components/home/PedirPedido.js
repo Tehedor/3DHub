@@ -8,7 +8,7 @@ import {MyValidationInput,  MyValidationButton, MyValidationForm} from '../../co
 
 import VerPedir from './VerPedir.js';
 
-import AuthService from "../../services/auth.service";
+import PedidosService from "../../services/diseñador/pedidos.service.js";
 
 function PedirPedido  (props) {
   const form = useRef();
@@ -141,23 +141,23 @@ function PedirPedido  (props) {
     form.current.validateAll();
 
     if (checkBtn.current.context._errors.length === 0) {
-        // AuthService.order(file, cantidad, fechaFabricacion, fechaEntrega, especificaciones).then(
-        //   (response) => {
-        //     setMessage(response.data.message);
-        //     setSuccessful(true);
-        //   },
-        //   (error) => {
-        //     const resMessage =
-        //       (error.response &&
-        //         error.response.data &&
-        //         error.response.data.message) ||
-        //       error.message ||
-        //       error.toString();
+      PedidosService.añadirPedido(file, cantidad, fechaFabricacion, fechaEntrega, especificaciones).then(
+          (response) => {
+            setMessage(response.data.message);
+            setSuccessful(true);
+          },
+          (error) => {
+            const resMessage =
+              (error.response &&
+                error.response.data &&
+                error.response.data.message) ||
+              error.message ||
+              error.toString();
 
-        //     setMessage(resMessage);
-        //     setSuccessful(false);
-        //   }
-        // );
+            setMessage(resMessage);
+            setSuccessful(false);
+          }
+        );
         console.log("file: ", file);
       }
   };
@@ -188,7 +188,8 @@ function PedirPedido  (props) {
               type="file" 
               formlabel="Subir file" 
               onChange={(e) => setFile(e.target.files[0])}
-              validations={[required]} 
+              // validations={[required]} 
+              // validations={} 
             />
           </Row>
           <Row>
