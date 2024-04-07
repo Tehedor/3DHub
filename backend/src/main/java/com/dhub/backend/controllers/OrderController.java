@@ -19,6 +19,8 @@ import java.sql.Date;
 import java.util.List;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 
 @RestController
@@ -75,6 +77,11 @@ public class OrderController {
     */
     @PostMapping("/create")
     public ResponseEntity<?> createOrder(@RequestBody OrderDTO orderDTO) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = (authentication != null) ? authentication.getName() : null;
+        UserEntity user = userRepository.findByUsername(username)
+        .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
+
         EStatus status = EStatus.KART;
         Order order = Order.builder()
             .orderdate(new Date(System.currentTimeMillis()))
@@ -83,6 +90,7 @@ public class OrderController {
             .pickupdate(orderDTO.getPickupdate())
             .number(orderDTO.getNumber())
             .status(status)
+            .userEntity(user)
             .build();
 
         orderRepository.save(order);
@@ -107,9 +115,11 @@ public class OrderController {
     }
 
     //Todos los pedidos de un diseñador menos los que estén en el carrito
-    @GetMapping("/designer/{id}")
-    public ResponseEntity<List<OrderDTO>> getDesignerOrders(@PathVariable Long id) {
-        UserEntity user = userRepository.findById(id)
+    @GetMapping("/designer")
+    public ResponseEntity<List<OrderDTO>> getDesignerOrders() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = (authentication != null) ? authentication.getName() : null;
+        UserEntity user = userRepository.findByUsername(username)
         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
 
         List<OrderDTO> orders = user.getOrdersWithoutUserEntity();
