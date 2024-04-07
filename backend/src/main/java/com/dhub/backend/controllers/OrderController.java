@@ -168,10 +168,10 @@ public class OrderController {
 
         List<OrderDTO> orders = user.getOrdersWithoutUserEntity();
         List<OrderDTO> status = orderService.getOrdersExcludingStatus(EStatus.KART, orders);
-        orders = orderService.getOrdersByUserId(user.getId(), status);
-        if(orders.isEmpty()) {
+        List<OrderDTO> order1 = orderService.getOrdersByUserId(user.getId(), status);
+        if(order1.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(orders, HttpStatus.OK);
+        return new ResponseEntity<>(order1, HttpStatus.OK);
     }
 }
