@@ -6,5 +6,6 @@ public interface PrinterService {
 
     List<Printer> getAllPrinters();
     Printer createPrinter(Printer printer);
+    //List<Printer> getPrintersByManufacturer(Long manufacturerUsername);
     
 }
