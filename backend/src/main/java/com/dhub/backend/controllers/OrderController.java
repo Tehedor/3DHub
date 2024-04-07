@@ -10,6 +10,7 @@ import com.dhub.backend.models.UserEntity;
 import com.dhub.backend.repository.OrderRepository;
 import com.dhub.backend.repository.UserRepository;
 import com.dhub.backend.services.OrderService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,9 @@ import java.sql.Date;
 import java.util.List;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 
 
 @RestController
@@ -32,8 +36,6 @@ public class OrderController {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private UserRepository userRepository;
 
     // @Autowired
     public OrderController(OrderService orderService) {
@@ -55,9 +57,9 @@ public class OrderController {
         }
     }
 
-    public List<Order> getOrdersByStatus(EStatus status) {
-        return orderService.getOrdersByStatus(status, getAllOrders());
-    }
+    // public List<OrderDTO> getOrdersByStatus(EStatus status) {
+    //     return orderService.getOrdersByStatus(status, getAllOrders());
+    // }
 
     @PostMapping
     public Order createOrder(@RequestBody Order order) {
@@ -124,10 +126,14 @@ public class OrderController {
      * Gets the user of the last order in the list of orders
      */
     @GetMapping("/kart")
-    public List<Order> getKart() {
-        List<Order> orders = getAllOrders();
-        UserEntity user = orders.get(orders.size() - 1).getUserEntity();
-        List<Order> status = orderService.getOrdersByStatus(EStatus.KART, orders);
+    public List<OrderDTO> getKart() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = (authentication != null) ? authentication.getName() : null;
+        UserEntity user = userRepository.findByUsername(username)
+        .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
+        
+        List<OrderDTO> orders = user.getOrdersWithoutUserEntity();
+        List<OrderDTO> status = orderService.getOrdersByStatus(EStatus.KART, orders);
         return orderService.getOrdersByUserId(user.getId(), status);
         // return orderService.getOrdersByUserId(userDetails.getId(), status);
     }
