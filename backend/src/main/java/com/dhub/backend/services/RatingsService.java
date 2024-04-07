@@ -1,4 +1,8 @@
+package com.dhub.backend.services;
+
 import java.util.List;
+
+import com.dhub.backend.models.Ratings;
 
 public interface RatingsService {
     
