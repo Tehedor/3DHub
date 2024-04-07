@@ -1,9 +1,17 @@
 import {Container, Card,Row, Col, Button, Image} from "react-bootstrap";
 import {Link} from "react-router-dom";
 
+import ImpresorasServiceFabri from "../../../services/fabricante/impresoras.fabri.service"; 
+
 export default function VerImpresora(props) {
 
     const printer = props.printer;
+    const printerId = props.printerId;
+
+
+    const deletePrinter = () => {
+        ImpresorasServiceFabri.añadirPedido(printerId);
+    };
     
     return(
         <Card border="gray" style={{ backgroundColor: "white", marginTop: '0' }}> 
@@ -56,6 +64,9 @@ export default function VerImpresora(props) {
                     </Row>
                     {/* <Card.Text>Stock: {printer.Nombre_modelo}</Card.Text> */}
                 </Col> 
+                <Col>
+                    <Button variant="primary" onClick={deletePrinter} >Eliminar \n Impresoras</Button>
+                </Col>
             </Row>
             </Card.Body>
         </Card>  
