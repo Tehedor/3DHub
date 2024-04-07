@@ -14,10 +14,10 @@ const app = axios.create({
   },
 });
 
-const createPrinter = (modelName, printerLocation, printerType, printerPhoto, servicePrice, maxUnities, manufacturationSpeed, material) => {
+const createPrinter = (modelName, printerLocation, printerType, printerPhoto, servicePrice, maxUnities, manufacturationSpeed, material, maxWidth,maxHeight, printerPrecision,color) => {
   // console.log(JSON.parse(localStorage.getItem("user")))
   return app.
-    post("api/printers", {
+    post("api/printers/createPrinter", {
     modelName, 
     printerLocation, 
     printerType, 
@@ -25,7 +25,11 @@ const createPrinter = (modelName, printerLocation, printerType, printerPhoto, se
     servicePrice, 
     maxUnities, 
     manufacturationSpeed, 
-    material
+    material,
+    maxWidth,
+    maxHeight,
+    printerPrecision,
+    color
   });
 };
 
@@ -47,7 +51,9 @@ const getImpresorasFabricante = () => {
 
 const deletePrinter = (id) => {
   return app.
-    delete(`/api/printers/${id}`);
+    delete(`deletePrinter`, 
+    {id}
+  );
 }
 
 const ImpresorasServiceFabri = {
