@@ -24,10 +24,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+
 @Data
 @RestController
 @RequestMapping("/api/manufacturerPrinters")
-// @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANUFACTURER')")
+@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANUFACTURER')")
 
 public class ManufacturerPrinterController {
 
@@ -59,5 +63,13 @@ public class ManufacturerPrinterController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(printers, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/username")
+    public String getUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = (authentication != null) ? authentication.getName() : null;
+        return username;
     }
 }
