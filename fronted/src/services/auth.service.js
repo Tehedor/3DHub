@@ -1,12 +1,21 @@
 import axios from "axios";
 
+// const API_URL = "http://localhost:8080/";
+
 const API_URL = "http://localhost:8080/";
+const app = axios.create({
+  baseURL: API_URL,
+  headers: {
+    "Content-type": "application/json",
+  },
+  // withCredentials: true,
+});
 
 
 const register = (dni, username, email, password, lat, lon, address, factAdress, roles) => {
 
 // const register = (dni,username, email, password, address, roles) => {
-  return axios.post(API_URL + "api/auth/createUser", {
+  return app.post( "api/auth/createUser", {
     dni,
     username,
     email,
@@ -18,6 +27,7 @@ const register = (dni, username, email, password, lat, lon, address, factAdress,
     roles,
   });
 };
+
 
 const login = (username, password) => {
   return axios
