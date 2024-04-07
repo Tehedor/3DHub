@@ -48,6 +48,8 @@ const Login = () => {
     form.current.validateAll();
 
     if (checkBtn.current.context._errors.length === 0) {
+      console.log(username, password);
+      // AuthService.login(username, password).then(
       AuthService.login(username, password).then(
         () => {
           navigate("/");

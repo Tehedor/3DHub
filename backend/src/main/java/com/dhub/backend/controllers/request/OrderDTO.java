@@ -12,13 +12,19 @@ import jakarta.persistence.Lob;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class OrderDTO {
     // @NotBlank
     // @Lob
     // private byte[] file;
+
+    private Long Id;
+
+    private Date orderdate;
 
     @NotBlank
     @DateTimeFormat(pattern = "dd/MM/yyyy")

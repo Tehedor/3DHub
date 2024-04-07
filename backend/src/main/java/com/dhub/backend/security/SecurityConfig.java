@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
 import com.dhub.backend.security.jwt.JwtAuthenticationFilter;
 import com.dhub.backend.security.jwt.JwtAuthorizationFilter;
@@ -40,11 +41,12 @@ public class SecurityConfig {
         
 
         http
+            .cors(cors -> cors.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()))
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> {
                 auth.requestMatchers("/index**").permitAll();
                 auth.requestMatchers("/api/**").permitAll();
-                auth.requestMatchers("/api/manumanufacturerPrinters/{userId}").permitAll();
+                // auth.requestMatchers("/api/manumanufacturerPrinters/{userId}").permitAll();
                 auth.requestMatchers("/customerservice/sendMail**").permitAll();
                 auth.requestMatchers("/customerservice/sendMailFile**").permitAll();
                 auth.anyRequest().authenticated();

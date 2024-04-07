@@ -97,27 +97,7 @@ public class BackendApplication {
 
 			// byte[] fileContent = Files.readAllBytes(Paths.get(filePath));
 			
-			Order order = Order.builder()
-				.orderdate(new Date(System.currentTimeMillis()))
-				.number(2)
-				.specs("specs1")
-				.manufacturerdate(new Date(System.currentTimeMillis()))
-				.file(null)
-				.status(EStatus.SEND)
-				.pickupdate(new Date(System.currentTimeMillis()))
-				.userEntity(userEntity)
-				.build();
 
-			Order order2 = Order.builder()
-				.orderdate(new Date(System.currentTimeMillis()))
-				.number(2)
-				.specs("specs1")
-				.manufacturerdate(new Date(System.currentTimeMillis()))
-				.file(null)
-				.status(EStatus.SEND)
-				.pickupdate(new Date(System.currentTimeMillis()))
-				.userEntity(userEntity)
-				.build();
 
 			Printer printer = Printer.builder()
 				.modelName("ender 3")
@@ -150,6 +130,30 @@ public class BackendApplication {
 				.userEntity(userEntity)
 				.build();
 
+			Order order = Order.builder()
+				.orderdate(new Date(System.currentTimeMillis()))
+				.number(2)
+				.specs("specs1")
+				.manufacturerdate(new Date(System.currentTimeMillis()))
+				.file(null)
+				.status(EStatus.SEND)
+				.pickupdate(new Date(System.currentTimeMillis()))
+				.userEntity(userEntity)
+				.printer(printer)
+				.build();
+
+			Order order2 = Order.builder()
+				.orderdate(new Date(System.currentTimeMillis()))
+				.number(2)
+				.specs("specs1")
+				.manufacturerdate(new Date(System.currentTimeMillis()))
+				.file(null)
+				.status(EStatus.SEND)
+				.pickupdate(new Date(System.currentTimeMillis()))
+				.userEntity(userEntity)
+				.printer(printer2)
+				.build();
+
 			Ratings rating = Ratings.builder()
 				.date(new Date(System.currentTimeMillis()))
 				.productRating(4)
@@ -164,10 +168,10 @@ public class BackendApplication {
 			userRepository.save(userEntity);
 			userRepository.save(userEntity2);
 			userRepository.save(userEntity3);
-			orderRepository.save(order);
-			orderRepository.save(order2);
 			printerRepository.save(printer);
 			printerRepository.save(printer2);
+			orderRepository.save(order);
+			orderRepository.save(order2);
 			ratingsRepository.save(rating);	
 		};
 	}

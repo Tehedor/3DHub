@@ -1,46 +1,64 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3000/api/auth/";
+// const API_URL = "http://localhost:3000/api/auth/";
 
-const register = (username, email, password) => {
-  return axios.post(API_URL + "signup", {
-    username,
-    email,
-    password,
-  });
-};
+const user = JSON.parse(localStorage.getItem("user"));
 
-const login = (username, password) => {
-  return axios
-    .post(API_URL + "signin", {
-      username,
-      password,
+const token = user ? user.accessToken : "";
+
+const app = axios.create({
+  baseURL: "http://localhost:8080/",
+  headers: {
+    "Content-type": "application/json",
+    // "Authorization": `Bearer ${token}`,
+  },
+});
+
+const noAceptadoRevision = (id) => {
+  return app
+    .post(`api/orders/${id}/status`, {
+      "name": "REVISION"
     })
-    .then((response) => {
-      if (response.data.username) {
-        localStorage.setItem("user", JSON.stringify(response.data));
-      }
-
-      return response.data;
-    });
-};
-
-const logout = () => {
-  localStorage.removeItem("user");
-  return axios.post(API_URL + "signout").then((response) => {
-    return response.data;
-  });
-};
-
-const getCurrentUser = () => {
-  return JSON.parse(localStorage.getItem("user"));
-};
-
-const AuthService = {
-  register,
-  login,
-  logout,
-  getCurrentUser,
 }
 
-export default AuthService;
+const cancelarPedido = (id) => { 
+  return app
+  .post(`api/orders/${id}/status`, {
+    "name": "CANCELLED"
+  })
+
+}
+
+const aceptadoCreando = (id) => { 
+  return app
+  .post(`api/orders/${id}/status`, {
+    "name": "CREATING"
+  })
+
+}
+
+const creadoEnviado = (id) => { 
+  return app
+  .post(`api/orders/${id}/status`, {
+    "name": "SEND"
+  })
+
+}
+
+// CANCELLED,
+// DELIVERED,
+// KART,
+// PAY,
+// REVISION,
+// CREATING,
+// SEND
+
+
+const NotificacionService = {
+  noAceptadoRevision,
+  cancelarPedido,
+  aceptadoCreando,
+  creadoEnviado,
+}
+
+export default NotificacionService;

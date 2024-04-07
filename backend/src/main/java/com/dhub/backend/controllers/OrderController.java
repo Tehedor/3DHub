@@ -11,6 +11,7 @@ import com.dhub.backend.repository.OrderRepository;
 import com.dhub.backend.repository.UserRepository;
 import com.dhub.backend.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,9 @@ public class OrderController {
     private final OrderService orderService;
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private UserRepository userRepository;
+
     @Autowired
     private UserRepository userRepository;
 
@@ -126,5 +130,18 @@ public class OrderController {
         List<Order> status = orderService.getOrdersByStatus(EStatus.KART, orders);
         return orderService.getOrdersByUserId(user.getId(), status);
         // return orderService.getOrdersByUserId(userDetails.getId(), status);
+    }
+  
+    //Todos los pedidos de un diseñador menos los que estén en el carrito
+    @GetMapping("/designer/{id}")
+    public ResponseEntity<List<OrderDTO>> getDesignerOrders(@PathVariable Long id) {
+        UserEntity user = userRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
+
+        List<OrderDTO> orders = user.getOrdersWithoutUserEntity();
+        if(orders.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 }

@@ -10,7 +10,7 @@ import {MyValidationInput,  MyValidationButton, MyValidationForm} from '../../co
 
 import Ver from './VerPedir.js';
 
-
+import ImpresorasService from '../../services/impresoras.service.js';
 
 export default function AtencionCliente(props) {
     const form = useRef();
@@ -24,6 +24,7 @@ export default function AtencionCliente(props) {
     const [email, setEmail] = useState("");
     const [solicitud, setSolicitud] = useState(null);
     const [photo, setPhoto] = useState(null);
+    const [asunto, setAsunto] = useState(null);
 
     const required = (value) => {
         if (!value) {
@@ -65,27 +66,29 @@ export default function AtencionCliente(props) {
         setSuccessful(false);
 
         form.current.validateAll();
+        console.log("llega");
+        if (checkBtn.current.context._errors.length === 0) {
+        // if (checkBtn.current && checkBtn.current.isEmpty()) {
+            console.log(email, asunto, solicitud, photo);
+            ImpresorasService.enviarEmail(email, asunto,solicitud, photo).then(
+              (response) => {
+                setMessage(response.data.message);
+                setSuccessful(true);
+              },
+              (error) => {
+                const resMessage =
+                  (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                  error.message ||
+                  error.toString();
 
-        // if (checkBtn.current.context._errors.length === 0) {
-            // AuthService.order(file, cantidad, fechaFabricacion, fechaEntrega, especificaciones).then(
-            //   (response) => {
-            //     setMessage(response.data.message);
-            //     setSuccessful(true);
-            //   },
-            //   (error) => {
-            //     const resMessage =
-            //       (error.response &&
-            //         error.response.data &&
-            //         error.response.data.message) ||
-            //       error.message ||
-            //       error.toString();
-
-            //     setMessage(resMessage);
-            //     setSuccessful(false);
-            //   }
-            // );
+                setMessage(resMessage);
+                setSuccessful(false);
+              }
+            );
             // console.log("file: ");
-        // }
+        }
     };
 
     return (
@@ -127,7 +130,19 @@ export default function AtencionCliente(props) {
                         onChange={(e) => setPhoto(e.target.files[0])}
                         validations={[validPhoto]} 
                     />
-            </Row>
+                </Row>
+                <Row>
+
+                    <MyValidationInput
+                        as="textarea"
+                        formlabel="Asunto"
+                        rows={1}
+                        maxLength={30}
+                        value={asunto}
+                        onChange={e => setAsunto(e.target.value)}
+                        validations={[required]} // Agrega tus validaciones aquí
+                    />
+                </Row>
                 <Row>
 
                     <MyValidationInput
@@ -143,18 +158,20 @@ export default function AtencionCliente(props) {
                 <Row className="Añadir" style={{display: 'flex', alignItems: 'flex-end'}}>
                     <p></p>
                 <Button variant="success" onClick={subirSolicitud}>Mandar solicitud</Button>
+                {/* <div className="form-group">
+                    <button className="btn btn-primary btn-block" onClick={subirSolicitud}>Mandar Solicitud</button>
+                </div> */}
+                
                 <p>
                 </p>
                 <Button href="/" variant="danger">Vover</Button>
                 <p>
-                    
                 </p>
             </Row>
             </>
             )}
-            </Form> 
             {message && (
-                    <div className="form-group">
+                <div className="form-group">
                         <div
                         className={
                             successful ? "alert alert-success" : "alert alert-danger"
@@ -163,9 +180,14 @@ export default function AtencionCliente(props) {
                         >
                         {message}
                         </div>
+                        <p>
+                        <Button href="/" variant="danger">Vover</Button>
+                        </p>
+                        
                     </div>
             )}
-            {/* <CheckButton style={{ display: "none" }} ref={checkBtn} /> */}
+            <CheckButton style={{ display: "none" }} ref={checkBtn} />
+            </Form> 
         
         </Container>
     
