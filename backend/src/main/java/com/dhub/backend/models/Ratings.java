@@ -35,39 +35,36 @@ uniqueConstraints = {
 
 public class Ratings {
     @Id
-	 @GeneratedValue(strategy = GenerationType.IDENTITY) private Long Id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY) private Long Id;
 
-     
-
- @JsonFormat(pattern = "dd/MM/yyyy")
-	 private Date date;
+ 	@JsonFormat(pattern = "dd/MM/yyyy")
+	private Date date;
     
     @Min(value = 1, message = "Valoracion debe ser mayor o igual que 1")
     @Max(value = 5, message = "El número debe ser menor o igual que 5")
-    private  Integer productrating;
+    private  Integer productRating;
 
     @Min(value = 1, message = "Valoracion debe ser mayor o igual que 1")
     @Max(value = 5, message = "El número debe ser menor o igual que 5")
-    private Integer manufacturerating;
+    private Integer manufacturerRating;
 
     @NotBlank
 	@Size(max = 50)
-	private String textrating;
+	private String textRating;
 
     @Lob
-	 private byte[] file;
+	private byte[] file;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "designer_id")
+	private UserEntity designer;
 
-		@NotBlank
-	@Size(max = 50)
-	private String idmanufacturer;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "manufacturer_id")
+	private UserEntity manufacturer;
 
-	
-	@NotBlank
-	@Size(max = 50)
-	private String designer;
-
- 
-
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "printer_id")
+    private Printer printer;
 
 }

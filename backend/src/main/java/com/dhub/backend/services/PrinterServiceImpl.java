@@ -24,4 +24,6 @@ public class PrinterServiceImpl implements PrinterService{
         return StreamSupport.stream(printerRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());
     }
+
+
 }

@@ -73,6 +73,10 @@ public class Order {
 	@Enumerated(EnumType.STRING)
 	private EStatus status;
 
+	@ManyToOne
+    @JoinColumn(name = "users_id")
+    private UserEntity userEntity;
+
 // @JsonManagedReference
 //  @ManyToOne(cascade = CascadeType.ALL)
 //  @JoinColumn(name = "printer_id")

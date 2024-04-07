@@ -44,6 +44,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> {
                 auth.requestMatchers("/index**").permitAll();
                 auth.requestMatchers("/api/**").permitAll();
+                auth.requestMatchers("/api/manumanufacturerPrinters/{userId}").permitAll();
                 auth.requestMatchers("/customerservice/sendMail**").permitAll();
                 auth.requestMatchers("/customerservice/sendMailFile**").permitAll();
                 auth.anyRequest().authenticated();

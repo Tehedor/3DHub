@@ -20,18 +20,12 @@ import java.util.List;
 @Data
 @RestController
 @RequestMapping("/api/printers")
-@PreAuthorize("hasRole('ROLE_ADMIN')or hasRole('ROLE_DESIGNER') or hasRole('ROLE_MANUFACTURER')")
+@PreAuthorize("hasRole('ROLE_ADMIN')or hasRole('ROLE_DESIGNER')")
 
 public class PrinterController {
 
     @Autowired
     private PrinterServiceImpl printerService;
-
-    @PostMapping
-    public ResponseEntity<Printer> createPrinter(@Valid @RequestBody Printer printer) {
-        Printer createdPrinter = printerService.createPrinter(printer);
-        return new ResponseEntity<>(createdPrinter, HttpStatus.CREATED);
-    }
     
     @GetMapping
     public ResponseEntity<List<Printer>> getAllPrinters() {
