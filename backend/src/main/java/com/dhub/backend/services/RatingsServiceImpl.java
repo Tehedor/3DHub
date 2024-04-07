@@ -1,3 +1,12 @@
+package com.dhub.backend.services;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.dhub.backend.models.Ratings;
+import com.dhub.backend.repository.RatingsRepository;
+
 public class RatingsServiceImpl implements RatingsService {
     @Autowired
     private RatingsRepository ratingsRepository;
@@ -17,8 +26,8 @@ public class RatingsServiceImpl implements RatingsService {
     public Ratings updateRatings(long id, Ratings newRatings) {
         Ratings existingRatings = ratingsRepository.findById(id).orElse(null);
         if (existingRatings != null) {
-            existingRating.setProductRatings(newRating.getProductRatings());
-            existingRating.setManufacturerRatings(newRating.getManufacturerRatings());
+            existingRatings.setProductRatings(newRatings.getProductRatings());
+            existingRatings.setManufacturerRatings(newRatings.getManufacturerRatings());
             return ratingsRepository.save(existingRatings);
         }
         return null;
