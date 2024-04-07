@@ -1,10 +1,12 @@
 package com.dhub.backend.services;
 
 
+import com.dhub.backend.models.EStatus;
 import com.dhub.backend.models.Order;
 import com.dhub.backend.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -39,5 +41,27 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void deleteOrder(Long id) {
         orderRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Order> getOrdersByStatus(EStatus status, List<Order> orders) {
+        List<Order> ordersByStatus = new ArrayList<>();
+        for (Order order : orders) {
+            if (order.getStatus().equals(status)) {
+                ordersByStatus.add(order);
+            }
+        }
+        return ordersByStatus;
+    }
+
+    @Override
+    public List<Order> getOrdersByUserId(Long userId, List<Order> orders) {
+        List<Order> ordersByUserId = new ArrayList<>();
+        for (Order order : orders) {
+            if (order.getUserEntity().getId().equals(userId)) {
+                ordersByUserId.add(order);
+            }
+        }
+        return ordersByUserId;
     }
 }

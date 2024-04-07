@@ -13,6 +13,7 @@ import com.dhub.backend.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
@@ -26,9 +27,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class OrderController {
 
     private final OrderService orderService;
-
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -53,6 +55,10 @@ public class OrderController {
         }
     }
 
+    public List<Order> getOrdersByStatus(EStatus status) {
+        return orderService.getOrdersByStatus(status, getAllOrders());
+    }
+
     @PostMapping
     public Order createOrder(@RequestBody Order order) {
         return orderService.createOrder(order);
@@ -71,10 +77,14 @@ public class OrderController {
 
     /*
      * creates the order, saving the status as KART
-     * TODO: add the file to the order
+     * TODO: add the file to the order. When logging works, we should get the user id from the token
     */
     @PostMapping("/create")
     public ResponseEntity<?> createOrder(@RequestBody OrderDTO orderDTO) {
+        UserEntity user = userRepository.findById(orderDTO.getUser_id()).get();
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
         EStatus status = EStatus.KART;
         Order order = Order.builder()
             .orderdate(new Date(System.currentTimeMillis()))
@@ -83,6 +93,7 @@ public class OrderController {
             .pickupdate(orderDTO.getPickupdate())
             .number(orderDTO.getNumber())
             .status(status)
+            .userEntity(user)
             .build();
 
         orderRepository.save(order);
@@ -106,6 +117,21 @@ public class OrderController {
         return ResponseEntity.ok(new MessageResponse("Petición " + id.toString() + " guardada como " + newStatus.toString()));
     }
 
+    /*
+     * Get all orders from the kart
+     * TODO: To be modified. When logging works, we should get the user id from the token
+     * No parameters
+     * Gets the user of the last order in the list of orders
+     */
+    @GetMapping("/kart")
+    public List<Order> getKart() {
+        List<Order> orders = getAllOrders();
+        UserEntity user = orders.get(orders.size() - 1).getUserEntity();
+        List<Order> status = orderService.getOrdersByStatus(EStatus.KART, orders);
+        return orderService.getOrdersByUserId(user.getId(), status);
+        // return orderService.getOrdersByUserId(userDetails.getId(), status);
+    }
+  
     //Todos los pedidos de un diseñador menos los que estén en el carrito
     @GetMapping("/designer/{id}")
     public ResponseEntity<List<OrderDTO>> getDesignerOrders(@PathVariable Long id) {
@@ -118,5 +144,4 @@ public class OrderController {
         }
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
-
 }

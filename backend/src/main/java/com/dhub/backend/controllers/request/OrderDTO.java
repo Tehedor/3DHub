@@ -6,6 +6,7 @@ import java.util.Set;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.dhub.backend.models.EStatus;
+import com.dhub.backend.models.UserEntity;
 
 import jakarta.persistence.Lob;
 import jakarta.validation.constraints.NotBlank;
@@ -39,4 +40,7 @@ public class OrderDTO {
 
     @NotBlank
     private String specs;
+
+    @NotBlank
+    private Long user_id;
 }
