@@ -160,6 +160,17 @@ public class BackendApplication {
 				.manufacturer(userEntity3)
 				.printer(printer)
 				.build();
+
+				Ratings rating2 = Ratings.builder()
+				.date(new Date(System.currentTimeMillis()))
+				.productRating(4)
+				.manufacturerRating(3)
+				.textRating("good")
+				.file(null)
+				.designer(userEntity2)
+				.manufacturer(userEntity3)
+				.printer(printer)
+				.build();
 			
 			userRepository.save(userEntity);
 			userRepository.save(userEntity2);
@@ -169,6 +180,7 @@ public class BackendApplication {
 			printerRepository.save(printer);
 			printerRepository.save(printer2);
 			ratingsRepository.save(rating);	
+			ratingsRepository.save(rating2);	
 		};
 	}
 

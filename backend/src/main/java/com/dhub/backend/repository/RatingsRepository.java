@@ -1,12 +1,12 @@
 package com.dhub.backend.repository;
 
-import java.util.Set;
+import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import com.dhub.backend.models.Ratings;
 @Repository
 public interface RatingsRepository extends CrudRepository<Ratings, Long>{
-    Set<Ratings> findAll();
-    Set<Ratings> findByCategory(String manufacturer);
+    List<Ratings> findAll();
+    // List<Ratings> findByCategory(String manufacturer);
 }
