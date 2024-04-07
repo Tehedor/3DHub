@@ -28,7 +28,13 @@ export default function CrearImpresora(props) {
     const [maxUnities, setMaxUnities] = useState("");
     const [manufacturationSpeed, setManufacturationSpeed] = useState("");
     const [material, setMaterial] = useState("");
+    const [maxWidth, setMaxWidth] = useState("");
+    const [maxHeight, setMaxHeight] = useState("");
+    const [printerPrecision, setPrinterPrecision] = useState("");
+    const [color, setColor] = useState("");
 
+
+  
     
     const required = (value) => {
       if (!value) {
@@ -58,7 +64,7 @@ export default function CrearImpresora(props) {
       form.current.validateAll();
   
       if (checkBtn.current.context._errors.length === 0) {
-        ImpresorasService.createPrinter(modelName, printerLocation, printerType, printerPhoto, servicePrice, maxUnities, manufacturationSpeed, material).then(
+        ImpresorasService.createPrinter(modelName, printerLocation, printerType, printerPhoto, servicePrice, maxUnities, manufacturationSpeed, material,   maxWidth,maxHeight, printerPrecision,color).then(
           (response) => {
             setMessage(response.data.message);
             setSuccessful(true);
@@ -175,6 +181,61 @@ export default function CrearImpresora(props) {
               />
             </div>
           </Row>
+          {/* maxWidth,maxHeight, printerPrecision,color */}
+          <Row class="maxwidth">
+            {/* ANCHO MÁXIMO */}
+            <label htmlFor="maxWidth">Ancho máximo</label>
+            <MyValidationInput
+                type="number" 
+                // max={5000} 
+                min="0" 
+                value={maxWidth} 
+                onChange={e => setMaxWidth(e.target.value)}
+                validations={[required]} 
+              />
+          </Row>
+          <Row class="maxheight">
+            {/* ALTO MÁXIMO */}
+            <label htmlFor="maxHeight">Alto máximo</label>
+            <MyValidationInput
+                type="number" 
+                // max={5000} 
+                min="0" 
+                value={maxHeight} 
+                onChange={e => setMaxHeight(e.target.value)}
+                validations={[required]} 
+              />
+          </Row>
+          <Row class="printerprecision">
+            {/* PRECISIÓN DE LA IMPRESORA */}
+            <label htmlFor="printerPrecision">Precisión de la impresora</label>
+            <MyValidationInput
+                type="number" 
+                // max={5000} 
+                min="0" 
+                value={printerPrecision} 
+                onChange={e => setPrinterPrecision(e.target.value)}
+                validations={[required]} 
+              />
+          </Row>
+          <Row class="color">
+            {/* COLOR */}
+            <div className="form-group">
+              <label htmlFor="color">Color</label>
+              <Input
+                type="text"
+                className="form-control"
+                name="color"
+                value={color}
+                onChange={e => setColor(e.target.value)}
+                validations={[required]}
+              />
+            </div>
+          </Row>
+
+              
+
+
           <Row class="serviceprice">
           </Row>
           <div className="form-group">

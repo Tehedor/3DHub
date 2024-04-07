@@ -1,4 +1,4 @@
-import { Button , Row, Col, InputGroup, Form} from "react-bootstrap";
+import { Button , Row, Col, InputGroup, Form, Container} from "react-bootstrap";
 import { useEffect, useState } from "react";
 
 import TodasImpresorasLista from './TodasImpresorasLista.js';
@@ -27,9 +27,9 @@ export default function TodasImpresoras(props) {
         let downloadprinters;
         if(CONFIG.use_server){
             try {
-            const data = await ImpresorasServiceFabri.getImresorasFabricante();
+            const data = await ImpresorasServiceFabri.getImpresorasFabricante();
             console.log(data);
-
+            downloadprinters=data;
             
             } catch (error) {
                 // setResultados(
@@ -41,7 +41,7 @@ export default function TodasImpresoras(props) {
             downloadprinters=printersPruebas;
             // console.log(printersexample);
         }
-        setThePrinters(downloadprinters);
+        setThePrinters(downloadprinters.data);
         console.log(theprinters);
     }
 
@@ -62,24 +62,23 @@ export default function TodasImpresoras(props) {
         <div>
             <h2 id="catálogo">impresoras Fabricante</h2> 
             {loading ? <img id="loading" src={process.env.PUBLIC_URL + "/spinners/cxyduck.gif"} className="spinner" alt="spinner" />:
-            <>
-                <Col>
-                
-                </Col>
-                <Col>
-                    <Row>
-                        <Button id="volver" variant="primary" href="/">Volverr</Button>
-                    </Row>  
-                    <Row>
-                        <Button id="createPriter" variant="success" href="/crearImpresora">Crear Impresora</Button>
-                    </Row>
-                
-                </Col>
-            </>
-            // <Row>
-            //     <TodasImpresorasLista printers={props.controlPrinters.printers} />
-            // </Row>  
-
+            <Container>
+                <Row>
+                    <Col md={9}>
+                        <TodasImpresorasLista printers={theprinters} />
+                    </Col>
+                    <Col md={3}>
+                        <Row>
+                            <Button id="createPriter" variant="success" href="/crearImpresora">Crear Impresora</Button>
+                        </Row>
+                        <p></p>
+                        <p></p>
+                        <Row>
+                            <Button id="volver" variant="primary" href="/">Volverr</Button>
+                        </Row>
+                    </Col>
+                </Row>
+            </Container>
             }
         </div>
     );
