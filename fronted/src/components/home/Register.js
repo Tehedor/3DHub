@@ -4,6 +4,10 @@ import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import { isEmail } from "validator";
 
+import { Form as BootstrapForm} from 'react-bootstrap';
+
+import {MyValidationCheck, MyValidationGroup} from '../../common/ValidationComponents.js';
+
 import AuthService from "../../services/auth.service";
 
 const required = (value) => {
@@ -26,6 +30,51 @@ const validEmail = (value) => {
   }
 };
 
+const validDNI_CIF_NIE = (value) => {
+  const dniRegex = /^[0-9]{8}[A-Za-z]$/;
+  const cifRegex = /^[A-Za-z][0-9]{7}[A-Za-z0-9]$/;
+  const nieRegex = /^[XYZ][0-9]{7}[A-Za-z]$/;
+
+  if (!dniRegex.test(value) && !cifRegex.test(value) && !nieRegex.test(value)) {
+    return (
+      <div className="invalid-feedback d-block">
+        This is not a valid DNI, CIF or NIE.
+      </div>
+    );
+  }
+};
+
+const validAddress = (value) => {
+  if (value.length < 5 && value.length > 0) {
+    return (
+      <div className="invalid-feedback d-block">
+        The address must be at least 5 characters long.
+      </div>
+    );
+  }
+};
+
+const validLatitude = (value) => {
+  if (value < -90 || value > 90) {
+    return (
+      <div className="invalid-feedback d-block">
+        Latitude must be between -90 and 90.
+      </div>
+    );
+  }
+};
+
+const validLongitude = (value) => {
+  if (value < -180 || value > 180) {
+    return (
+      <div className="invalid-feedback d-block">
+        Longitude must be between -180 and 180.
+      </div>
+    );
+  }
+};
+
+
 const vusername = (value) => {
   if (value.length < 3 || value.length > 20) {
     return (
@@ -46,15 +95,42 @@ const vpassword = (value) => {
   }
 };
 
+
+
 const RegisterDisenador = (props) => {
   const form = useRef();
   const checkBtn = useRef();
+  
 
+  const rolesCheckDesigner = useRef("ROLE_DESIGNER");
+  const rolesCheckManufacturer = useRef();
+
+  const [dni, setDNI] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [lat, setLat] = useState("");
+  const [lon, setLon] = useState("");
+  const [address, setAddress] = useState("");
+  const [factAdress, setFactAdress] = useState(""); 
+  const [roles, setRoles] = useState(["ROLE_DESIGNER"]);
+  
   const [successful, setSuccessful] = useState(false);
   const [message, setMessage] = useState("");
+
+  
+
+  const validRoles = (roll) => {
+    const uniqueRoles = [rolesCheckManufacturer.current,rolesCheckDesigner.current];  
+    if (!uniqueRoles.includes("ROLE_MANUFACTURER") && !uniqueRoles.includes("ROLE_DESIGNER")) {
+      return (
+        <div className="invalid-feedback d-block">
+         Debes seleccionar al menos un roll: Diseñador o Fabricante.
+        </div>
+      );
+    }
+  };
+
 
   const onChangeUsername = (e) => {
     const username = e.target.value;
@@ -80,7 +156,7 @@ const RegisterDisenador = (props) => {
     form.current.validateAll();
 
     if (checkBtn.current.context._errors.length === 0) {
-      AuthService.register(username, email, password).then(
+      AuthService.register(dni, username, email, password, lat, lon, address, factAdress, roles).then(
         (response) => {
           setMessage(response.data.message);
           setSuccessful(true);
@@ -116,7 +192,7 @@ const RegisterDisenador = (props) => {
           {!successful && (
             <div>
               <div className="form-group">
-                <label htmlFor="username">Username</label>
+                <label htmlFor="username">Username <span style={{color: 'red'}}>*</span></label>
                 <Input
                   type="text"
                   className="form-control"
@@ -128,7 +204,19 @@ const RegisterDisenador = (props) => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="email">Email</label>
+                <label htmlFor="username">DNI/CIF/NIE<span style={{color: 'red'}}>*</span></label>
+                <Input
+                  type="text"
+                  className="form-control"
+                  name="dni"
+                  value={dni}
+                  onChange={e => setDNI(e.target.value)}
+                  validations={[required, validDNI_CIF_NIE]}
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="email">Email<span style={{color: 'red'}}>*</span></label>
                 <Input
                   type="text"
                   className="form-control"
@@ -140,7 +228,7 @@ const RegisterDisenador = (props) => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="password">Password</label>
+                <label htmlFor="password">Password<span style={{color: 'red'}}>*</span></label>
                 <Input
                   type="password"
                   className="form-control"
@@ -151,6 +239,100 @@ const RegisterDisenador = (props) => {
                 />
               </div>
 
+{/*  */}
+
+              <div className="form-group">
+                <label htmlFor="Latitud">Lat</label>
+                <Input
+                  type="number"
+                  step="any"
+                  className="form-control"
+                  name="latitude"
+                  value={lat}
+                  onChange={e => setLat(e.target.value)}
+                  validations={[validLatitude]}
+                />
+
+
+                <label htmlFor="Longitud">Lon</label>
+                <Input
+                  type="number"
+                  step="any"
+                  className="form-control"
+                  name="longitude"
+                  value={lon}
+                  onChange={e => setLon(e.target.value)}
+                  validations={[validLongitude]}
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="addres">Dirección</label>
+                <Input
+                  type="text"
+                  className="form-control"
+                  name="direccion"
+                  value={address}
+                  onChange={e => setAddress(e.target.value)}
+                  validations={[validAddress]}
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="factaddres">Dirección de facturación</label>
+                <Input
+                  type="text"
+                  className="form-control"
+                  name="factaddres"
+                  value={factAdress}
+                  onChange={e => setFactAdress(e.target.value)}
+                  validations={[validAddress]}
+                />
+              </div>
+              
+              
+              <BootstrapForm>
+              <label>Roles<span style={{color: 'red'}}>*</span></label>
+              {['checkbox'].map((type) => (
+                <div key={`inline-${type}`} className="mb-3">
+                  <BootstrapForm.Check
+                    inline
+                    label="Diseñador"
+                    name="group1"
+                    type={type}
+                    id={`inline-${type}-1`}
+                    defaultChecked={true}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setRoles([...roles, "ROLE_DESIGNER"]);
+                        rolesCheckDesigner.current = "ROLE_DESIGNER";
+                      } else {
+                        setRoles(roles.filter(role => role !== "ROLE_DESIGNER"));
+                        rolesCheckDesigner.current = null;
+                      }
+                    }}
+                    />
+                  <MyValidationCheck
+                  inline
+                  label="Fabricante"
+                  name="group1"
+                  type={type}
+                  id={`inline-${type}-2`}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setRoles([...roles, "ROLE_MANUFACTURER"]);
+                        rolesCheckManufacturer.current = "ROLE_MANUFACTURER";
+                      } else {
+                        setRoles(roles.filter(role => role !== "ROLE_MANUFACTURER"));
+                        rolesCheckManufacturer.current = null;
+                      }
+                    }}
+                    validations={[validRoles]}
+                    />
+                </div>
+              ))} 
+              </BootstrapForm>
+              
               <div className="form-group">
                 <button className="btn btn-primary btn-block">Sign Up</button>
               </div>

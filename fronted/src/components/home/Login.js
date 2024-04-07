@@ -48,7 +48,9 @@ const Login = () => {
     form.current.validateAll();
 
     if (checkBtn.current.context._errors.length === 0) {
-      AuthService.login(username, password).then(
+      console.log(username, password);
+      // AuthService.login(username, password).then(
+      AuthService.login("claudia", "3333").then(
         () => {
           navigate("/");
           window.location.reload();

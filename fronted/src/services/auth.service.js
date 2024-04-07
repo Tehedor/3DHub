@@ -2,24 +2,36 @@ import axios from "axios";
 
 const API_URL = "http://localhost:8080/";
 
-const register = (username, email, password) => {
-  return axios.post(API_URL + "createUser", {
+
+const register = (dni, username, email, password, lat, lon, address, factAdress, roles) => {
+
+// const register = (dni,username, email, password, address, roles) => {
+  return axios.post(API_URL + "api/auth/createUser", {
+    dni,
     username,
     email,
     password,
-    roles: ["ROLE_DESIGNER"],
+    lat,
+    lon,
+    address,
+    factAdress,
+    roles,
   });
 };
 
 const login = (username, password) => {
   return axios
-    .post(API_URL + "loginDesigner", {
-      username,
-      password,
+    .post(API_URL + "login", {
+      // username,
+      // password,
+      username : "claudia",
+      password : "3333",
     })
     .then((response) => {
-      if (response.data.username) {
+      // if (response.data.username) {
+      if (response.data.Username) {
         localStorage.setItem("user", JSON.stringify(response.data)); // localStorage.setItem("user", JSON.stringify(response.data));: Si la propiedad username existe, entonces se almacena el objeto data de la respuesta en el almacenamiento local del navegador bajo la clave "user". Antes de almacenarlo, el objeto data se convierte en una cadena JSON.
+        console.log(response.data.token);
       }
 
       return response.data;
