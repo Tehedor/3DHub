@@ -2,9 +2,8 @@ import axios from "axios";
 
 // const API_URL = "http://localhost:8080/";
 
-const API_URL = "http://localhost:8080/";
 const app = axios.create({
-  baseURL: API_URL,
+  baseURL: "http://localhost:8080/",
   headers: {
     "Content-type": "application/json",
   },
@@ -30,18 +29,18 @@ const register = (dni, username, email, password, lat, lon, address, factAdress,
 
 
 const login = (username, password) => {
-  return axios
-    .post(API_URL + "login", {
-      // username,
-      // password,
-      username : "claudia",
-      password : "3333",
+  return app
+    .post("login", {
+      username,
+      password,
+      // username : "claudia",
+      // password : "3333",
     })
     .then((response) => {
       // if (response.data.username) {
       if (response.data.Username) {
-        localStorage.setItem("user", JSON.stringify(response.data)); // localStorage.setItem("user", JSON.stringify(response.data));: Si la propiedad username existe, entonces se almacena el objeto data de la respuesta en el almacenamiento local del navegador bajo la clave "user". Antes de almacenarlo, el objeto data se convierte en una cadena JSON.
-        console.log(response.data.token);
+        localStorage.setItem("token", JSON.stringify(response.data)); // localStorage.setItem("user", JSON.stringify(response.data));: Si la propiedad username existe, entonces se almacena el objeto data de la respuesta en el almacenamiento local del navegador bajo la clave "user". Antes de almacenarlo, el objeto data se convierte en una cadena JSON.
+        console.log(token,JSON.parse(localStorage.getItem("token")));
       }
 
       return response.data;
@@ -50,7 +49,7 @@ const login = (username, password) => {
 
 const logout = () => {
   localStorage.removeItem("user");
-  return axios.post(API_URL + "signout").then((response) => {
+  return app.post("signout").then((response) => {
     return response.data;
   });
 };

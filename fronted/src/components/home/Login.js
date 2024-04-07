@@ -50,7 +50,7 @@ const Login = () => {
     if (checkBtn.current.context._errors.length === 0) {
       console.log(username, password);
       // AuthService.login(username, password).then(
-      AuthService.login("claudia", "3333").then(
+      AuthService.login(username, password).then(
         () => {
           navigate("/");
           window.location.reload();
