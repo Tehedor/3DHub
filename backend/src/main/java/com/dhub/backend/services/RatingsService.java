@@ -17,4 +17,10 @@ public interface RatingsService {
     Ratings updateManufacturerRatings(long ratingsId, Ratings newRating);
     
     void deleteManufacturerRatings(long ratingsId);
+    List<Ratings> getRatingsByPrinter(Long printerId);
+    
+    Double getAverageRatingByDesigners(Long printerId);
+    
+    Double getAverageRatingByManufacturer(Long printerId);
+
 }
