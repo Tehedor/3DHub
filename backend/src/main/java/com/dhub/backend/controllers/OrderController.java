@@ -12,9 +12,11 @@ import com.dhub.backend.repository.OrderRepository;
 import com.dhub.backend.repository.PrinterRepository;
 import com.dhub.backend.repository.UserRepository;
 import com.dhub.backend.services.OrderService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
@@ -30,12 +32,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class OrderController {
 
     private final OrderService orderService;
-
     @Autowired
     private OrderRepository orderRepository;
-
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private PrinterRepository printerRepository;
+
 
     @Autowired
     private PrinterRepository printerRepository;
@@ -60,6 +63,10 @@ public class OrderController {
         }
     }
 
+    // public List<OrderDTO> getOrdersByStatus(EStatus status) {
+    //     return orderService.getOrdersByStatus(status, getAllOrders());
+    // }
+
     @PostMapping
     public Order createOrder(@RequestBody Order order) {
         return orderService.createOrder(order);
@@ -78,7 +85,7 @@ public class OrderController {
 
     /*
      * creates the order, saving the status as KART
-     * TODO: add the file to the order
+     * TODO: add the file to the order. When logging works, we should get the user id from the token
     */
     @PostMapping("/create/{id}")
     public ResponseEntity<?> createOrder(@PathVariable Long id, @RequestBody OrderDTO orderDTO) {
@@ -122,6 +129,25 @@ public class OrderController {
         return ResponseEntity.ok(new MessageResponse("Petición " + id.toString() + " guardada como " + newStatus.toString()));
     }
 
+    /*
+     * Get all orders from the kart
+     * TODO: To be modified. When logging works, we should get the user id from the token
+     * No parameters
+     * Gets the user of the last order in the list of orders
+     */
+    @GetMapping("/kart")
+    public List<OrderDTO> getKart() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = (authentication != null) ? authentication.getName() : null;
+        UserEntity user = userRepository.findByUsername(username)
+        .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
+        
+        List<OrderDTO> orders = user.getOrdersWithoutUserEntity();
+        List<OrderDTO> status = orderService.getOrdersByStatus(EStatus.KART, orders);
+        return orderService.getOrdersByUserId(user.getId(), status);
+        // return orderService.getOrdersByUserId(userDetails.getId(), status);
+    }
+  
     //Todos los pedidos de un diseñador menos los que estén en el carrito
     @GetMapping("/designer")
     public ResponseEntity<List<OrderDTO>> getDesignerOrders() {
@@ -136,5 +162,4 @@ public class OrderController {
         }
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
-
 }

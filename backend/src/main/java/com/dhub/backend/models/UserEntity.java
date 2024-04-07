@@ -128,6 +128,7 @@ public class UserEntity {
                 orderDTO.setPickupdate(order.getPickupdate());
                 orderDTO.setNumber(order.getNumber());
                 orderDTO.setStatus(order.getStatus());
+                orderDTO.setUser_id(order.getId());
                 
                 return orderDTO;
             })
