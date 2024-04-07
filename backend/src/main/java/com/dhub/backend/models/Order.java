@@ -46,15 +46,13 @@ public class Order {
 	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	private Long Id;
 	
-	 
- 	@JsonFormat(pattern = "dd/MM/yyyy")
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date orderdate;
 
     @Min(value = 1, message = "Valoracion debe ser mayor o igual que 1")
 	private Integer number;
 
-	// TODO: Turn into NotBlank
-	//@NotBlank
+	@NotBlank
 	@Size(max = 50)
 	private String specs;
 
@@ -67,8 +65,6 @@ public class Order {
 	@Lob
 	private byte[] file;
 
-	 
-	
 	@Column(name = "status")
 	@Enumerated(EnumType.STRING)
 	private EStatus status;

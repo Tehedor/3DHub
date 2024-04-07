@@ -6,10 +6,13 @@ import com.dhub.backend.controllers.response.MessageResponse;
 import com.dhub.backend.models.EStatus;
 import com.dhub.backend.models.Order;
 import com.dhub.backend.models.Status;
+import com.dhub.backend.models.UserEntity;
 import com.dhub.backend.repository.OrderRepository;
+import com.dhub.backend.repository.UserRepository;
 import com.dhub.backend.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
@@ -23,9 +26,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class OrderController {
 
     private final OrderService orderService;
-
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     // @Autowired
     public OrderController(OrderService orderService) {
@@ -48,7 +52,7 @@ public class OrderController {
     }
 
     public List<Order> getOrdersByStatus(EStatus status) {
-        return orderService.getOrdersByStatus(status);
+        return orderService.getOrdersByStatus(status, getAllOrders());
     }
 
     @PostMapping
@@ -69,10 +73,14 @@ public class OrderController {
 
     /*
      * creates the order, saving the status as KART
-     * TODO: add the file to the order
+     * TODO: add the file to the order. When logging works, we should get the user id from the token
     */
     @PostMapping("/create")
     public ResponseEntity<?> createOrder(@RequestBody OrderDTO orderDTO) {
+        UserEntity user = userRepository.findById(orderDTO.getUser_id()).get();
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
         EStatus status = EStatus.KART;
         Order order = Order.builder()
             .orderdate(new Date(System.currentTimeMillis()))
@@ -81,6 +89,7 @@ public class OrderController {
             .pickupdate(orderDTO.getPickupdate())
             .number(orderDTO.getNumber())
             .status(status)
+            .userEntity(user)
             .build();
 
         orderRepository.save(order);
@@ -106,11 +115,16 @@ public class OrderController {
 
     /*
      * Get all orders from the kart
-     * TODO: User id modification
-     * SELECT * FROM orders WHERE status = 'KART' && user_id = 'user_id';
+     * TODO: To be modified. When logging works, we should get the user id from the token
+     * No parameters
+     * Gets the user of the last order in the list of orders
      */
     @GetMapping("/kart")
     public List<Order> getKart() {
-        return orderService.getOrdersByStatus(EStatus.KART);
+        List<Order> orders = getAllOrders();
+        UserEntity user = orders.get(orders.size() - 1).getUserEntity();
+        List<Order> status = orderService.getOrdersByStatus(EStatus.KART, orders);
+        return orderService.getOrdersByUserId(user.getId(), status);
+        // return orderService.getOrdersByUserId(userDetails.getId(), status);
     }
 }

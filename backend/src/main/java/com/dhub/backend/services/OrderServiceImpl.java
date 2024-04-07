@@ -44,8 +44,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getOrdersByStatus(EStatus status) {
-        List<Order> orders = getAllOrders();
+    public List<Order> getOrdersByStatus(EStatus status, List<Order> orders) {
         List<Order> ordersByStatus = new ArrayList<>();
         for (Order order : orders) {
             if (order.getStatus().equals(status)) {
@@ -53,5 +52,16 @@ public class OrderServiceImpl implements OrderService {
             }
         }
         return ordersByStatus;
+    }
+
+    @Override
+    public List<Order> getOrdersByUserId(Long userId, List<Order> orders) {
+        List<Order> ordersByUserId = new ArrayList<>();
+        for (Order order : orders) {
+            if (order.getUserEntity().getId().equals(userId)) {
+                ordersByUserId.add(order);
+            }
+        }
+        return ordersByUserId;
     }
 }
