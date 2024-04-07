@@ -81,6 +81,9 @@ public class UserEntity {
  
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userEntity")
     private List<Printer> printers;
+ 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userEntity")
+    private List<Order> orders;
 
     public List<PrinterDTO> getPrintersWithoutUserEntity() {
         return printers.stream()

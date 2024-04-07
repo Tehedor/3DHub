@@ -105,6 +105,18 @@ public class BackendApplication {
 				.file(null)
 				.status(EStatus.SEND)
 				.pickupdate(new Date(System.currentTimeMillis()))
+				.userEntity(userEntity)
+				.build();
+
+			Order order2 = Order.builder()
+				.orderdate(new Date(System.currentTimeMillis()))
+				.number(2)
+				.specs("specs1")
+				.manufacturerdate(new Date(System.currentTimeMillis()))
+				.file(null)
+				.status(EStatus.SEND)
+				.pickupdate(new Date(System.currentTimeMillis()))
+				.userEntity(userEntity)
 				.build();
 
 			Ratings rating = Ratings.builder()
@@ -153,6 +165,7 @@ public class BackendApplication {
 			// userRepository.save(userEntity2);
 			// userRepository.save(userEntity3);
 			orderRepository.save(order);
+			orderRepository.save(order2);
 			printerRepository.save(printer);
 			printerRepository.save(printer2);
 			ratingsRepository.save(rating);	
