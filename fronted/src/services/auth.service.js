@@ -33,14 +33,12 @@ const login = (username, password) => {
     .post("login", {
       username,
       password,
-      // username : "claudia",
-      // password : "3333",
     })
     .then((response) => {
       // if (response.data.username) {
       if (response.data.Username) {
-        localStorage.setItem("token", JSON.stringify(response.data)); // localStorage.setItem("user", JSON.stringify(response.data));: Si la propiedad username existe, entonces se almacena el objeto data de la respuesta en el almacenamiento local del navegador bajo la clave "user". Antes de almacenarlo, el objeto data se convierte en una cadena JSON.
-        console.log(token,JSON.parse(localStorage.getItem("token")));
+        localStorage.setItem("user", JSON.stringify(response.data)); // localStorage.setItem("user", JSON.stringify(response.data));: Si la propiedad username existe, entonces se almacena el objeto data de la respuesta en el almacenamiento local del navegador bajo la clave "user". Antes de almacenarlo, el objeto data se convierte en una cadena JSON.
+        console.log(JSON.parse(localStorage.getItem("user")));
       }
 
       return response.data;
