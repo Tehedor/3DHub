@@ -9,8 +9,8 @@ export default function PedidosLista(props) {
         <div id="productosresultados" >
                 {lista.map((items,index) => (
         
-                    <VerPediros printer={items}/>
-               
+                    // <VerPediros printer={items}/>
+               <></>
                 ))}
         </div>);
 }

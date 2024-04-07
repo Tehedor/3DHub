@@ -81,7 +81,7 @@ export default function PedidosHistorico(props) {
                 </Col>
                 <Col sm={10}>
                     <Row>
-                       <PedidosLista pedidos={props.thePedidos.pedidos} />
+                       {/* <PedidosLista pedidos={props.thePedidos.pedidos} /> */}
                     </Row>  
                 </Col>
             </Container>
