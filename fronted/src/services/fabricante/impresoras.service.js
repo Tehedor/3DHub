@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/";
+// const API_URL = "http://localhost:8080/";
 
 const user = JSON.parse(localStorage.getItem("user"));
 
@@ -16,7 +16,8 @@ const app = axios.create({
 
 const createPrinter = (modelName, printerLocation, printerType, printerPhoto, servicePrice, maxUnities, manufacturationSpeed, material) => {
   // console.log(JSON.parse(localStorage.getItem("user")))
-  return app.post("api/printers", {
+  return app.
+    post("api/printers", {
     modelName, 
     printerLocation, 
     printerType, 
@@ -28,37 +29,24 @@ const createPrinter = (modelName, printerLocation, printerType, printerPhoto, se
   });
 };
 
-const login = (username, password) => {
-  return axios
-    .post(API_URL + "signin", {
-      username,
-      password,
-    })
+const getImresorasFabricante = () => {
+  return app.
+    get("/api/manufacturerPrinters")
     .then((response) => {
-      if (response.data.username) {
-        localStorage.setItem("user", JSON.stringify(response.data));
+
+      if (response.data.Printers) {
+        localStorage.setItem("printers", JSON.stringify(response.data)); // localStorage.setItem("user", JSON.stringify(response.data));: Si la propiedad username existe, entonces se almacena el objeto data de la respuesta en el almacenamiento local del navegador bajo la clave "user". Antes de almacenarlo, el objeto data se convierte en una cadena JSON.
+        console.log(JSON.parse(localStorage.getItem("printers")));
       }
+      return response.Printers;
+    }); 
 
-      return response.data;
-    });
-};
-
-const logout = () => {
-  localStorage.removeItem("user");
-  return axios.post(API_URL + "signout").then((response) => {
-    return response.data;
-  });
-};
-
-const getCurrentUser = () => {
-  return JSON.parse(localStorage.getItem("user"));
-};
-
-const AuthService = {
-  createPrinter,
-  // login,
-  // logout,
-  // getCurrentUser,
 }
 
-export default AuthService;
+const ImpresorasServiceFabri = {
+  createPrinter,
+  getImresorasFabricante,
+}
+
+
+export default ImpresorasServiceFabri;

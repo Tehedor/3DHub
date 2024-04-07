@@ -55,24 +55,11 @@ const getCurrentUser = () => {
   return JSON.parse(localStorage.getItem("user"));
 };
 
-const order = () => {
-  return axios
-    .post(API_URL + "order", {
-      headers: {
-        Authorization: `Bearer ${getCurrentUser().token}`,
-      },
-    })
-    .then((response) => {
-      return response.data;
-    });
-}
-
 const AuthService = {
   register,
   login,
   logout,
   getCurrentUser,
-  order,
 }
 
 export default AuthService;
