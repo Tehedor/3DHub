@@ -1,19 +1,29 @@
 package com.dhub.backend.controllers;
 
 
+import com.dhub.backend.controllers.request.OrderDTO;
+import com.dhub.backend.controllers.response.MessageResponse;
+import com.dhub.backend.models.EStatus;
 import com.dhub.backend.models.Order;
+import com.dhub.backend.repository.OrderRepository;
 import com.dhub.backend.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
 
     private final OrderService orderService;
+
+    @Autowired
+    private OrderRepository orderRepository;
 
     // @Autowired
     public OrderController(OrderService orderService) {
@@ -50,4 +60,19 @@ public class OrderController {
     public void deleteOrder(@PathVariable Long id) {
         orderService.deleteOrder(id);
     }
+
+    @PostMapping("/create")
+    public ResponseEntity<?> createOrder(@RequestBody OrderDTO orderDTO) {
+        EStatus status = EStatus.KART;
+        Order order = Order.builder()
+            .manufacturerdate(orderDTO.getManufacturerdate())
+            .pickupdate(orderDTO.getPickupdate())
+            .number(orderDTO.getNumber())
+            .status(status)
+            .build();
+
+        orderRepository.save(order);
+        return ResponseEntity.ok(new MessageResponse("Añadido al carrito"));
+    }
+    
 }
