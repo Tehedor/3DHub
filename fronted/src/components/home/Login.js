@@ -4,7 +4,7 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 
-import AuthService from "../../services/fabricante/auth.service";
+import AuthService from "../../services/auth.service";
 
 import { Link } from "react-router-dom";
 
@@ -18,7 +18,7 @@ const required = (value) => {
   }
 };
 
-const LoginFabricante = () => {
+const Login = () => {
   const form = useRef();
   const checkBtn = useRef();
 
@@ -74,7 +74,7 @@ const LoginFabricante = () => {
     <div className="col-md-12">
       <div className="card card-container">
         <div className="text-center">
-          <h2>Login fabricante</h2>  
+          <h2>Login</h2>  
         </div>
         <img
           src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
@@ -117,13 +117,13 @@ const LoginFabricante = () => {
           </div>
 
           <div className="form-group">
-            <Link to="/registerFabricante">
+            <Link to="/register">
               <button className="btn btn-secondary btn-block">
                 <span>Register</span>
               </button>
             </Link>
           </div>
-          
+
           {message && (
             <div className="form-group">
               <div className="alert alert-danger" role="alert">
@@ -138,4 +138,4 @@ const LoginFabricante = () => {
   );
 };
 
-export default LoginFabricante;
+export default Login;

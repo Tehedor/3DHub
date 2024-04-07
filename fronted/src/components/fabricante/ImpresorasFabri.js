@@ -12,7 +12,7 @@ export default function ImpresorasFabri(props) {
                 
             </div>
             <div>
-                <Link to="/"><Button id="volver" variant="primary" >Volver</Button></Link>
+                <Button id="volver" variant="primary" href="/">Volver</Button>
             </div>
         </div>
     );

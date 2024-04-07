@@ -1,14 +1,19 @@
 import { useState, useRef } from 'react';
-import { Container, Row, Col, Table,Button} from 'react-bootstrap';
+import { Navbar, Nav , FormControl, Card, Container, Row, Col, InputGroup, Image, Table, FormControlm, InputGroup } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+// import './PedirPedido.css';
+// import DatePicker from "react-bootstrap-date-picker";
 
 import Form from 'react-validation/build/form';
+import Input from 'react-validation/build/input';
 import CheckButton from 'react-validation/build/button';
 
-import {MyValidationInput,  MyValidationButton, MyValidationForm} from '../../common/ValidationComponents.js';
+import { useValidation } from 'react-validation';
 
-import VerPedir from './VerPedir.js';
 
-import AuthService from "../../services/auth.service";
+import Ver from '../VerPedir';
+
+import AuthService from "../../../services/diseñador/auth.service";
 
 function PedirPedido  (props) {
   const form = useRef();
@@ -31,6 +36,21 @@ function PedirPedido  (props) {
   // roll = "fabricante";
 
 
+  //////////////////////////////////////////////////////7//////////////////////////////////////////////////////7
+  /////////////////////7Elemeneto de validación necesarios para sustituir componetes react-validation//////////////////////////////////////////////////////7
+  // const [especificaciones, setEspecificaciones] = useState('');
+  const { validate, getErrorMessages } = useValidation();
+
+  // const handleEspecificacionesChange = e => {
+  //   const value = e.target.value;
+  //   validate(validEspecificaciones, value);
+  //   setEspecificaciones(value);
+  // };
+  //////////////////////////////////////////////////////7//////////////////////////////////////////////////////7
+  //////////////////////////////////////////////////////7//////////////////////////////////////////////////////7
+
+
+
   // validación de los inputs //////////////////////////////////////////////////////7
   //////////////////////////////////////////////////////7//////////////////////////////////////////////////////7
   const required = (value) => {
@@ -45,7 +65,6 @@ function PedirPedido  (props) {
 
   const validFile = (value) => {
     // console.console.log("validFile");
-    // meter la api
   };
 
   const validCantidad = (value) => {
@@ -73,6 +92,7 @@ function PedirPedido  (props) {
     const fecha = new Date(value);
     const fechaSinHora = new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate());
     if (fechaSinHora <  today) {
+    // if (new Date(value).getTime() < Date.now()) {
       return (
         <div className="invalid-feedback d-block">
           Imposible to fabricate in the past!
@@ -103,6 +123,13 @@ function PedirPedido  (props) {
         </div>
       );
     }
+    // return(
+    //   <div>
+    //     {fechaSinHora.toLocaleDateString()} 
+    //     <p> </p>
+    //     {fechaFabricacionSinHora.toLocaleDateString()}
+    //   </div>
+    // );
   };
 
   const validEspecificaciones = (value) => {
@@ -129,18 +156,22 @@ function PedirPedido  (props) {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // const handlePedido = (e) => {
+  //   console.log("handlePedido");
+
+  // }
   
   
   
-  const handlePedido = (e) => {
-    e.preventDefault();
+    const handlePedido = (e) => {
+      e.preventDefault();
 
-    setMessage("");
-    setSuccessful(false);
+      setMessage("");
+      setSuccessful(false);
 
-    form.current.validateAll();
+      form.current.validateAll();
 
-    if (checkBtn.current.context._errors.length === 0) {
+      if (checkBtn.current.context._errors.length === 0) {
         // AuthService.order(file, cantidad, fechaFabricacion, fechaEntrega, especificaciones).then(
         //   (response) => {
         //     setMessage(response.data.message);
@@ -160,13 +191,13 @@ function PedirPedido  (props) {
         // );
         console.log("file: ", file);
       }
-  };
+    };
 
 
   return (
   <Container>
     <Row class="impresora-caracteristicas">
-      <VerPedir printer={printer}/>
+      <Ver printer={printer}/>
       {/* <Col sm={3} class="imagen">
         <Image src={printers.Imagen} thumbnail />
       </Col>
@@ -182,26 +213,30 @@ function PedirPedido  (props) {
           reseñas
         </Col>
         <Col sm={6} class="central">
-          <Row class="subir">          
-            {/*  SUBIR FIL */}
-            <MyValidationInput
-              type="file" 
-              formlabel="Subir file" 
-              onChange={(e) => setFile(e.target.files[0])}
-              validations={[required]} 
-            />
-          </Row>
+        <Input 
+      type="file" 
+      onChange={(e) => setFile(e.target.files[0])}
+      validations={[required]} 
+    />
+          {/* <Row class="subir">
+            <Form.Group controlId="formFile" className="mb-3">
+              <Form.Label>Subir file</Form.Label>
+              <Form.Control type="file" onChange={(e) => setFile(e.target.files[0])}/>
+            </Form.Group>
+          </Row> */}
           <Row>
-            {/* ESPECIFICACIONES */}
-            <MyValidationInput
-              as="textarea"
-              formlabel="Especificaciones del pedido"
-              rows={7}
-              maxLength={400}
-              value={especificaciones}
-              onChange={e => setEspecificaciones(e.target.value)}
-              validations={[required,validEspecificaciones]} // Agrega tus validaciones aquí
-            />
+            {/* <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1"> */}
+              {/* <Form.Label>Especificaciones del pedido</Form.Label> */}
+              <Input 
+                type="formFile" 
+                style={{ height: '7em', width: '100%' }}
+                maxLength={400} 
+                value={especificaciones} 
+                onChange={e => setEspecificaciones(e.target.value)}
+                validations={[required, validEspecificaciones]} 
+              />
+
+            {/* </Form.Group> */}
           </Row>
         </Col>
         <Col sm={3} class="derecha">
@@ -211,52 +246,69 @@ function PedirPedido  (props) {
                 <tr>
                   <td>Cantidad</td>
                   <td>
-                    {/* CANTIDAD */}
-                    <MyValidationInput
-                      type="number" 
-                      max={printer.Unidades_max+3} 
-                      min="0" 
-                      value={cantidad} 
-                      onChange={e => setCantidad(e.target.value)}
-                      validations={[required, validCantidad]} 
-                    />
+                    {/* <input type="number" max={printer.Unidades_max} min="1" placeholder="1"/> */}
+                    <Input 
+                        type="number" 
+                        max={printer.Unidades_max+3} 
+                        min="0" 
+                        value={cantidad} 
+                        onChange={e => setCantidad(e.target.value)}
+                        validations={[required, validCantidad]} 
+                      />
+                      {/* <p> Max:{printer.Unidades_max}</p> */}
                   </td>
                 </tr>
                 <tr>
                   <td>Límite de fabricación</td>
+                  {/* <td>Inpur de fecha</td> */}
+                  {/* <td><DatePicker id="example-datepicker" value={this.state.value} onChange={this.handleChange} /></td> */}
                   <td>
-                    {/* LIMITE FABRICACION */}
-                    <MyValidationInput
+                    {/* <input type="date" name="fecha" /> */}
+                    {/* <input type="date" name="fecha" value={fechaFabricacion} onChange={e => setFechaFabricacion(e.target.value)} /> */}
+                    <Input 
                       type="date" 
                       name="fechaFabricacion" 
                       // value={fechaFabricacion} 
                       onChange={e => {fechaFabricacion.current = e.target.value}}
                       // onChange={e => setFechaFabricacion(e.target.value)}
                       validations={[required, validFechaFabricacion]} 
-                      />
+                    />
 
                   </td>
                 </tr>
                 <tr>
                   <td>Límite de entrega</td>
                   <td>
-                      {/* LIMITE ENTREGA */}
-                    <MyValidationInput
-                        type="date" 
-                        name="fechaEntrega" 
-                        onChange={e => setFechaEntrega(e.target.value)}
-                        validations={[required, validFechaEntrega]}
+                  <Input 
+                      type="date" 
+                      name="fechaEntrega" 
+                      // value={fechaEntrega} 
+                      onChange={e => setFechaEntrega(e.target.value)}
+                      validations={[required, validFechaEntrega]} 
                     />
+                    {/* <input type="date" name="fecha" value={fechaEntrega} onChange={e => setFechaEntrega(e.target.value)} /> */}
+                    {/* <input type="date" name="fecha" value={fechaEntrega} /> */}
                   </td>
+                  
+                  {/* <td>Inpur de fecha</td> */}
                 </tr>
               </tbody>
             </Table>
           </Row>
           <Row className="Añadir" style={{display: 'flex', alignItems: 'flex-end'}}>
-            <Button variant="success" onClick={handlePedido}>Añadir al Carrito</Button>
-            <p>
-            </p>
-              <Button href="/" variant="danger">Vover</Button>
+            {/* <Button variant="success" >Añadir al Carrito</Button> */}
+            {/* <Button variant="success" onClick={() => alert(`File: ${file}, Cantidad: ${cantidad}, Fecha de Fabricación: ${fechaFabricacion}, Fecha de Entrega: ${fechaEntrega}, Especificaciones: ${especificaciones}`)}>Añadir al Carrito</Button> */}
+            <div className="form-group">
+                <button className="btn btn-primary btn-block">Añadir al Carrito</button>
+            </div>
+          
+            {/* <button className="btn btn-primary btn-block" disabled={loading}>
+              {loading && (
+                <span className="spinner-border spinner-border-sm"></span>
+              )}
+              <span>Login</span>
+            </button> */}
+
           </Row>
         
         </Col>

@@ -53,7 +53,8 @@ public class Order {
     @Min(value = 1, message = "Valoracion debe ser mayor o igual que 1")
 	private Integer number;
 
-	@NotBlank
+	// TODO: Turn into NotBlank
+	//@NotBlank
 	@Size(max = 50)
 	private String specs;
 

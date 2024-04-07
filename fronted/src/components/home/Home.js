@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import {useGeolocated} from "react-geolocated";
 import ImpresorasLista from './ImpresorasLista';
 import CONFIG from '../../config/config.js';
-import {printersexample} from '../../constants/printers.js';
 
 // Pruebas de la impresora para las vistas
+import {printersexample} from '../../constants/printersPruebas.js';
 import {printersPruebas} from '../../constants/printersPruebas.js';
 
 import ImpresorasService from "../../services/imprsoras.service";
@@ -64,7 +64,7 @@ export default function Home(props) {
         const data = await ImpresorasService.descargar(queryparams);
         console.log(data);
 
-        downloadprinters=printersexample;
+        downloadprinters=printersPruebas;
         } catch (error) {
         // setResultados(
         //   { "cod": error.cod, "message": cod.message}
