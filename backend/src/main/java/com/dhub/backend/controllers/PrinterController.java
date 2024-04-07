@@ -37,8 +37,8 @@ public class PrinterController {
     private UserRepository userRepository;
 
     @GetMapping
-    public ResponseEntity<List<Printer>> getAllPrinters() {
-        List<Printer> printers = printerService.getAllPrinters();
+    public ResponseEntity<List<PrinterDTO>> getAllPrinters() {
+        List<PrinterDTO> printers = printerService.getAllPrintersWithoutUser();
         if (printers.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
