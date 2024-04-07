@@ -3,19 +3,20 @@ package com.dhub.backend.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+//import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.web.bind.annotation.PostMapping;
+//import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.validation.Valid;
+//import jakarta.validation.Valid;
 import lombok.Data;
 
 import com.dhub.backend.models.Printer;
 import com.dhub.backend.services.PrinterServiceImpl;
 import org.springframework.web.bind.annotation.GetMapping;
 import java.util.List;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Data
 @RestController
@@ -29,10 +30,19 @@ public class PrinterController {
     
     @GetMapping
     public ResponseEntity<List<Printer>> getAllPrinters() {
-        List<Printer> printers = printerService.getAllPrinters();
-        if (printers.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(printers, HttpStatus.OK);
+                    List<Printer> printers = printerService.getAllPrinters();
+                    if (printers.isEmpty()) {
+                        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                    }
+                    return new ResponseEntity<>(printers, HttpStatus.OK);
+                }
+                
+                @GetMapping("/manufacturer/{manufacturerUsername}")
+                public ResponseEntity<List<Printer>> getPrintersByManufacturer(@PathVariable Long manufacturerUsername) {
+                    List<Printer> printers = printerService.getPrintersByManufacturer(manufacturerUsername);
+                    if (printers.isEmpty()) {
+                        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                    }
+                    return new ResponseEntity<>(printers, HttpStatus.OK);
+                }
     }
-}

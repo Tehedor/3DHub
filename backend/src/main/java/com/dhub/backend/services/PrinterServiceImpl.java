@@ -25,5 +25,8 @@ public class PrinterServiceImpl implements PrinterService{
                 .collect(Collectors.toList());
     }
 
-
+    @Override
+    public List<Printer> getPrintersByManufacturer(Long manufacturerUsername) {
+        return printerRepository.findByManufacturerUsername(manufacturerUsername);
+    }
 }
