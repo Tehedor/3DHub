@@ -4,6 +4,8 @@ import {Link} from "react-router-dom";
 export default function Ver(props) {
 
     const printer = props.printer;
+
+    // const printerId = props.printerId;
     
     return(
         <Card border="gray" style={{ backgroundColor: "white", marginTop: '0' }}> 

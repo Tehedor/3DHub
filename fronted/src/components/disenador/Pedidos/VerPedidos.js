@@ -1,9 +1,49 @@
 import {Container, Card,Row, Col, Button, Image} from "react-bootstrap";
 import {Link} from "react-router-dom";
 
+import PedirPedido from "../../home/PedirPedido";
+
+import PedidosService from "../../../services/diseñador/pedidos.service.js";
+
 export default function VerPediros(props) {
 
     const printer = props.printer;
+
+
+    const confirmarEntrega = () => {
+        PedidosService.confirmarEntrga(printer.id_pedido)
+    }
+
+    const confirmarRevision = () => {
+        PedidosService.confirmarRevision(printer.id_pedido)
+    }
+
+
+    const ControlEstados = () => {
+        if (printer.Estado === "PAY"){
+            <Image src={"http://localhost:3000/iconos_estados/pagado.svg"} className="icon" alt="pagado" />
+            {<p>Esperando respuesta del Fabricante</p>}
+        }else if(printer.Estado === "CANCELLED"){
+            <Image src={"http://localhost:3000/iconos_estados/rechazado.svg"} className="icon" alt="rechazado" />
+            {<p>Pedido Cancelado/Rechazado</p>}
+        }else if(printer.Estado === "REVISION"){
+            <Image src={"http://localhost:3000/iconos_estados/bajo_revision.svg"} className="icon" alt="bajo_revision" />
+            {<Button variant="warning" size="sm" onClick={confirmarRevision}>Revisiar Pedido</Button>}
+        }else if(printer.Estado === "CREATING"){
+            <Image src={"http://localhost:3000/iconos_estados/creando.svg"} className="icon" alt="creando" />
+            {<p>Creando Pedido...</p>}
+        }else if(printer.Estado === "SEND"){
+            <Image src={"http://localhost:3000/iconos_estados/enviado.svg"} className="icon" alt="enviado" />
+            {<Button variant="warning" size="sm" onClick={confirmarEntrega} >Confirmar Entrega</Button>}
+            {<p>Confirme cuando el pedido haya llegado</p>}
+        }else if(printer.Estado === "DELIVERED"){
+            <Image src={"http://localhost:3000/iconos_estados/terminado.svg"} className="icon" alt="terminado" />
+        }
+    }
+    
+    
+       
+
     
     return(
         <Card border="gray" style={{ backgroundColor: "white", marginTop: '0' }}> 
@@ -15,7 +55,7 @@ export default function VerPediros(props) {
                     {/* <Image src={printer.Foto_impresora} thumbnail  style={{ maxWidth: "100%" }}/> */}
                     <Card.Img src={printer.Foto_impresora} thumbnail  style={{ maxWidth: "100%" }}/>
                 </Col>
-                <Col sm={9} class="datos_impresora">
+                <Col sm={7} class="datos_impresora">
                     <Row >
                         <Col sm={4}>
                             <Card.Text style={{color: 'black'}}>Nombre: {printer.Nombre_modelo}</Card.Text>
@@ -56,6 +96,9 @@ export default function VerPediros(props) {
                     </Row>
                     {/* <Card.Text>Stock: {printer.Nombre_modelo}</Card.Text> */}
                 </Col> 
+                <Col sm={2} class="boton" className="d-flex justify-content-center align-items-center">
+                    {ControlEstados()}
+                </Col>
             </Row>
             </Card.Body>
         </Card>  

@@ -28,18 +28,29 @@ const confirmarEntrga = (id) => {
     })
 }
 
-const añadirPedido = (file, cantidad, fechaFabricacion, fechaEntrega, especificaciones) => {
-  const fechaFabricacionFormated = new Date(fechaFabricacion).toISOString().split('T')[0];
-  const fechaEntregaFormated = new Date(fechaEntrega).toISOString().split('T')[0];
+const getPedidos = () => {
   return app
-    .post(`api/orders/create`, {
+    .get(`api/orders`)
+}
+
+
+const añadirPedido = (file, cantidad, fechaFabricacion, fechaEntrega, especificaciones, printer) => {
+
+  // const fechaFabricacionFormated = new Date(fechaFabricacion);
+  const fechaFabricacionFormated = new Date(fechaFabricacion).toISOString().split('T')[0];
+  // console.log(fechaFabricacionFormated);
+  const fechaEntregaFormated = new Date(fechaEntrega).toISOString().split('T')[0];
+  // console.log(fechaEntregaFormated);
+  return app
+    .post(`api/orders/create/${printer}`, {
       manufacturerdate: fechaFabricacionFormated,
       pickupdate: fechaEntregaFormated,
       number : cantidad,
       specs :especificaciones,
       // "name": "KART"
-    })
-  }
+  })
+
+}
   
   // "manufacturerdate": "2022-11-15",
   // "pickupdate":"2023-10-14",
@@ -49,6 +60,7 @@ const añadirPedido = (file, cantidad, fechaFabricacion, fechaEntrega, especific
 const PedidosService = {
   revisado,
   confirmarEntrga,
+  añadirPedido,
 }
 
 export default PedidosService;
