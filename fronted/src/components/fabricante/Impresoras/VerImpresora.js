@@ -6,7 +6,7 @@ import ImpresorasServiceFabri from "../../../services/fabricante/impresoras.fabr
 export default function VerImpresora(props) {
 
     const printer = props.printer;
-    const printerId = props.printerId;
+    const printerId = props.id;
 
 
     const deletePrinter = () => {
@@ -21,8 +21,7 @@ export default function VerImpresora(props) {
             <Row>
                 <Col sm={3} class="imagen" className="d-flex justify-content-center align-items-center">
                     {/* <Image src={printer.Foto_impresora} thumbnail  style={{ maxWidth: "100%" }}/> */}
-                    <Card.Img src={printer.Foto_impresora} thumbnail  style={{ maxWidth: "100%" }}/>
-                </Col>
+                    <Card.Img src={printer.Foto_impresora || 'https://m.media-amazon.com/images/I/61L4aoIqYOL._AC_SX466_.jpg'} style={{ maxWidth: "100%" }}/>                </Col>
                 <Col sm={9} class="datos_impresora">
                     <Row >
                         <Col sm={4}>
@@ -65,7 +64,7 @@ export default function VerImpresora(props) {
                     {/* <Card.Text>Stock: {printer.Nombre_modelo}</Card.Text> */}
                 </Col> 
                 <Col>
-                    <Button variant="primary" onClick={deletePrinter} >Eliminar \n Impresoras</Button>
+                    <Button variant="primary" onClick={deletePrinter} >Eliminar Impresoras</Button>
                 </Col>
             </Row>
             </Card.Body>

@@ -4,7 +4,7 @@ import axios from "axios";
 
 const user = JSON.parse(localStorage.getItem("user"));
 
-const token = user ? user.accessToken : "";
+const token = user ? user.token : "";
 
 const app = axios.create({
   baseURL: "http://localhost:8080/",
@@ -30,15 +30,17 @@ const createPrinter = (modelName, printerLocation, printerType, printerPhoto, se
 };
 
 const getImpresorasFabricante = () => {
+  // console.log("user",user);
+  // console.log("token",token);
   return app.
-    get("/api/manufacturerPrinters")
+    get("api/printers/printers")
     .then((response) => {
 
-      if (response.data.Printers) {
-        localStorage.setItem("printersFabricante", JSON.stringify(response.data)); // localStorage.setItem("user", JSON.stringify(response.data));: Si la propiedad username existe, entonces se almacena el objeto data de la respuesta en el almacenamiento local del navegador bajo la clave "user". Antes de almacenarlo, el objeto data se convierte en una cadena JSON.
-        console.log(JSON.parse(localStorage.getItem("printers")));
+      if (response.data) {
+        localStorage.setItem("printersFabri", JSON.stringify(response.data)); // localStorage.setItem("user", JSON.stringify(response.data));: Si la propiedad username existe, entonces se almacena el objeto data de la respuesta en el almacenamiento local del navegador bajo la clave "user". Antes de almacenarlo, el objeto data se convierte en una cadena JSON.
+        console.log(JSON.parse(localStorage.getItem("printersFabri")));
       }
-      return response.Printers;
+      return response;
     }); 
 
 }
