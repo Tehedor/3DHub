@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
 import java.util.List;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -61,10 +62,16 @@ public class OrderController {
         orderService.deleteOrder(id);
     }
 
+    /*
+     * creates the order, saving the status as KART
+     * TODO: add the file to the order
+    */
     @PostMapping("/create")
     public ResponseEntity<?> createOrder(@RequestBody OrderDTO orderDTO) {
         EStatus status = EStatus.KART;
         Order order = Order.builder()
+            .orderdate(new Date(System.currentTimeMillis()))
+            .specs(orderDTO.getSpecs())
             .manufacturerdate(orderDTO.getManufacturerdate())
             .pickupdate(orderDTO.getPickupdate())
             .number(orderDTO.getNumber())

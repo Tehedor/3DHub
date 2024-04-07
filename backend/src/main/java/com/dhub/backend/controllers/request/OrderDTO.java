@@ -30,4 +30,7 @@ public class OrderDTO {
     @NotBlank
     private Integer number;
     private EStatus status;
+
+    @NotBlank
+    private String specs;
 }
