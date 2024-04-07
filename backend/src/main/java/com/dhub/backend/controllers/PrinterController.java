@@ -20,7 +20,7 @@ import java.util.List;
 @Data
 @RestController
 @RequestMapping("/api/printers")
-@PreAuthorize("hasRole('ROLE_ADMIN')or hasRole('ROLE_DESIGNER')")
+// @PreAuthorize("hasRole('ROLE_ADMIN')or hasRole('ROLE_DESIGNER')")
 
 public class PrinterController {
 

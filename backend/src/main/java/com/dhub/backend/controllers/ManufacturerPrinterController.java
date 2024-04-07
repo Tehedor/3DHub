@@ -27,7 +27,7 @@ import java.util.List;
 @Data
 @RestController
 @RequestMapping("/api/manufacturerPrinters")
-@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANUFACTURER')")
+// @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANUFACTURER')")
 
 public class ManufacturerPrinterController {
 
