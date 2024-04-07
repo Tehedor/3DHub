@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import com.dhub.backend.models.Ratings;
 @Repository
-public interface RatingsRepository extends JpaRepository<Ratings, Long>{
-    
+public interface RatingsRepository extends CrudRepository<Ratings, Long>{
+    Set<Ratings> findAll();
+    Set<Ratings> findByCategory(String manufacturer);
 }
