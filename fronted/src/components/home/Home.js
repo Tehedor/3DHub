@@ -8,7 +8,7 @@ import CONFIG from '../../config/config.js';
 import {printersexample} from '../../constants/printersPruebas.js';
 import {printersPruebas} from '../../constants/printersPruebas.js';
 
-import ImpresorasService from "../../services/imprsoras.service";
+import ImpresorasService from "../../services/impresoras.service.js";
 
 
 const SERVER_URL = CONFIG.server_url;

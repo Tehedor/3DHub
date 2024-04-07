@@ -29,13 +29,13 @@ const createPrinter = (modelName, printerLocation, printerType, printerPhoto, se
   });
 };
 
-const getImresorasFabricante = () => {
+const getImpresorasFabricante = () => {
   return app.
     get("/api/manufacturerPrinters")
     .then((response) => {
 
       if (response.data.Printers) {
-        localStorage.setItem("printers", JSON.stringify(response.data)); // localStorage.setItem("user", JSON.stringify(response.data));: Si la propiedad username existe, entonces se almacena el objeto data de la respuesta en el almacenamiento local del navegador bajo la clave "user". Antes de almacenarlo, el objeto data se convierte en una cadena JSON.
+        localStorage.setItem("printersFabricante", JSON.stringify(response.data)); // localStorage.setItem("user", JSON.stringify(response.data));: Si la propiedad username existe, entonces se almacena el objeto data de la respuesta en el almacenamiento local del navegador bajo la clave "user". Antes de almacenarlo, el objeto data se convierte en una cadena JSON.
         console.log(JSON.parse(localStorage.getItem("printers")));
       }
       return response.Printers;
@@ -45,7 +45,7 @@ const getImresorasFabricante = () => {
 
 const ImpresorasServiceFabri = {
   createPrinter,
-  getImresorasFabricante,
+  getImpresorasFabricante,
 }
 
 

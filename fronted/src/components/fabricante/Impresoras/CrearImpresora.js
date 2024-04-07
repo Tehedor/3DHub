@@ -9,7 +9,7 @@ import {MyValidationInput} from '../../../common/ValidationComponents.js';
 // import {MyValidationInput} from '../../ValidationComponents.js';
 
 
-import ImpresorasService from "../../../services/fabricante/impresoras.service.js";
+import ImpresorasService from "../../../services/fabricante/impresoras.fabri.service.js";
 
 export default function CrearImpresora(props) {
     const form = useRef();

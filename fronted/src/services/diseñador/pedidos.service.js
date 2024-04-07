@@ -28,6 +28,23 @@ const confirmarEntrga = (id) => {
     })
 }
 
+const añadirPedido = (file, cantidad, fechaFabricacion, fechaEntrega, especificaciones) => {
+  const fechaFabricacionFormated = new Date(fechaFabricacion).toISOString().split('T')[0];
+  const fechaEntregaFormated = new Date(fechaEntrega).toISOString().split('T')[0];
+  return app
+    .post(`api/orders/create`, {
+      manufacturerdate: fechaFabricacionFormated,
+      pickupdate: fechaEntregaFormated,
+      number : cantidad,
+      specs :especificaciones,
+      // "name": "KART"
+    })
+  }
+  
+  // "manufacturerdate": "2022-11-15",
+  // "pickupdate":"2023-10-14",
+  // "number": 3,
+  // "specs": "Debe de tener cosas"
 
 const PedidosService = {
   revisado,
