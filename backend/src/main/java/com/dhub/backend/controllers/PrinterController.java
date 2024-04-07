@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 //import org.springframework.web.bind.annotation.PostMapping;
 //import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 //import jakarta.validation.Valid;
@@ -15,12 +16,21 @@ import lombok.Data;
 import com.dhub.backend.controllers.request.PrinterDTO;
 import com.dhub.backend.models.Printer;
 import com.dhub.backend.services.PrinterServiceImpl;
+
+import jakarta.validation.Valid;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 import java.util.List;
 //import org.springframework.web.bind.annotation.PathVariable;
 import com.dhub.backend.models.UserEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+
+import com.dhub.backend.repository.PrinterRepository;
 import com.dhub.backend.repository.UserRepository;
 
 @Data
@@ -35,6 +45,9 @@ public class PrinterController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PrinterRepository printerRepository;
 
     @GetMapping
     public ResponseEntity<List<PrinterDTO>> getAllPrinters() {
@@ -58,6 +71,27 @@ public class PrinterController {
         }
         return new ResponseEntity<>(printers, HttpStatus.OK);
     }
+
+    @PostMapping("/createPrinter")
+    public ResponseEntity<Printer> createPrinter(@Valid @RequestBody Printer printer) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = (authentication != null) ? authentication.getName() : null;
+        UserEntity user = userRepository.findByUsername(username)
+        .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
+        Printer createdPrinter = printerService.createPrinter(printer);
+        createdPrinter.setUserEntity(user);
+        user.getPrinters().add(createdPrinter);
+        userRepository.save(user);
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/deletePrinter")
+    public String deleteUser(@RequestParam String id){
+        printerRepository.deleteById(Long.parseLong(id));
+        return "Se ha eliminado el usuario con id: ".concat(id);
+    }
+
                 
                 /*@GetMapping("/manufacturer/{manufacturerUsername}")
                 public ResponseEntity<List<Printer>> getPrintersByManufacturer(@PathVariable Long manufacturerUsername) {

@@ -41,17 +41,17 @@ public class ManufacturerPrinterController {
     @Autowired
     private UserRepository userRepository;
 
-    @PostMapping("/{userId}")
-    public ResponseEntity<Printer> createPrinter(@Valid @PathVariable Long userId, @RequestBody Printer printer) {
-        UserEntity user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
-        Printer createdPrinter = printerService.createPrinter(printer);
-        createdPrinter.setUserEntity(user);
-        user.getPrinters().add(createdPrinter);
-        userRepository.save(user);
+    // @PostMapping("/{userId}")
+    // public ResponseEntity<Printer> createPrinter(@Valid @PathVariable Long userId, @RequestBody Printer printer) {
+    //     UserEntity user = userRepository.findById(userId)
+    //             .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
+    //     Printer createdPrinter = printerService.createPrinter(printer);
+    //     createdPrinter.setUserEntity(user);
+    //     user.getPrinters().add(createdPrinter);
+    //     userRepository.save(user);
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
+    //     return new ResponseEntity<>(HttpStatus.CREATED);
+    // }
 
     //Falta filtrar por manufacturer
     @GetMapping("/{userId}")
