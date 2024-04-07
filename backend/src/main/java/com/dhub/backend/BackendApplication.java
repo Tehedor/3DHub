@@ -69,28 +69,28 @@ public class BackendApplication {
 				.address("Calle de la Princesa, 1, 28008 Madrid, España")
 				.factAddress("Calle de la Princesa, 1, 28008 Madrid, España")
 				.build();
-			// UserEntity userEntity2 = UserEntity.builder()
-			// 	.dni("222222222A")
-			// 	.email("sergio@gmail.com")
-			// 	.username("sergio")
-			// 	.password(passwordEncoder.encode("2222"))
-			// 	.roles(Set.of(Role.builder().name(ERole.ROLE_DESIGNER).build()))
-			// 	.lat(40.4165)
-			// 	.lon(-3.70256)
-			// 	.address("Calle de la Princesa, 1, 28008 Madrid, España")
-			// 	.factAddress("Calle de la Princesa, 1, 28008 Madrid, España")
-			// 	.build();
-			// UserEntity userEntity3 = UserEntity.builder()
-			// 	.dni("333333333A")
-			// 	.email("claudia@gmail.com")
-			// 	.username("claudia")
-			// 	.password(passwordEncoder.encode("3333"))
-			// 	.roles(Set.of(Role.builder().name(ERole.ROLE_MANUFACTURER).build()))
-			// 	.lat(40.4165)
-			// 	.lon(-3.70256)
-			// 	.address("Calle de la Princesa, 1, 28008 Madrid, España")
-			// 	.factAddress("Calle de la Princesa, 1, 28008 Madrid, España")
-			// 	.build();
+			UserEntity userEntity2 = UserEntity.builder()
+				.dni("222222222A")
+				.email("sergio@gmail.com")
+				.username("sergio")
+				.password(passwordEncoder.encode("2222"))
+				.roles(Set.of(Role.builder().name(ERole.ROLE_DESIGNER).build()))
+				.lat(40.4165)
+				.lon(-3.70256)
+				.address("Calle de la Princesa, 1, 28008 Madrid, España")
+				.factAddress("Calle de la Princesa, 1, 28008 Madrid, España")
+				.build();
+			UserEntity userEntity3 = UserEntity.builder()
+				.dni("333333333A")
+				.email("claudia@gmail.com")
+				.username("claudia")
+				.password(passwordEncoder.encode("3333"))
+				.roles(Set.of(Role.builder().name(ERole.ROLE_MANUFACTURER).build()))
+				.lat(40.4165)
+				.lon(-3.70256)
+				.address("Calle de la Princesa, 1, 28008 Madrid, España")
+				.factAddress("Calle de la Princesa, 1, 28008 Madrid, España")
+				.build();
 
 			// 	String filePath = "C:\\Users\\admin\\Desktop\\ISST PROYECTO\\3DHub\\backend\\descarga.zip";
 
@@ -121,12 +121,12 @@ public class BackendApplication {
 
 			Ratings rating = Ratings.builder()
 				.date(new Date(System.currentTimeMillis()))
-				.productrating(4)
-				.manufacturerating(3)
-				.textrating("good")
+				.productRating(4)
+				.manufacturerRating(3)
+				.textRating("good")
 				.file(null)
-				.idmanufacturer("sergio")
-				.designer("claudia")
+				.designer(userEntity2)
+				.manufacturer(userEntity3)
 				.build();
 
 			Printer printer = Printer.builder()
@@ -162,8 +162,8 @@ public class BackendApplication {
 
 			
 			userRepository.save(userEntity);
-			// userRepository.save(userEntity2);
-			// userRepository.save(userEntity3);
+			userRepository.save(userEntity2);
+			userRepository.save(userEntity3);
 			orderRepository.save(order);
 			orderRepository.save(order2);
 			printerRepository.save(printer);
