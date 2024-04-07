@@ -5,9 +5,11 @@ import com.dhub.backend.controllers.request.OrderDTO;
 import com.dhub.backend.controllers.response.MessageResponse;
 import com.dhub.backend.models.EStatus;
 import com.dhub.backend.models.Order;
+import com.dhub.backend.models.Printer;
 import com.dhub.backend.models.Status;
 import com.dhub.backend.models.UserEntity;
 import com.dhub.backend.repository.OrderRepository;
+import com.dhub.backend.repository.PrinterRepository;
 import com.dhub.backend.repository.UserRepository;
 import com.dhub.backend.services.OrderService;
 
@@ -35,6 +37,8 @@ public class OrderController {
     private OrderRepository orderRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private PrinterRepository printerRepository;
 
 
     // @Autowired
@@ -81,12 +85,15 @@ public class OrderController {
      * creates the order, saving the status as KART
      * TODO: add the file to the order. When logging works, we should get the user id from the token
     */
-    @PostMapping("/create")
-    public ResponseEntity<?> createOrder(@RequestBody OrderDTO orderDTO) {
-        UserEntity user = userRepository.findById(orderDTO.getUser_id()).get();
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
+    @PostMapping("/create/{id}")
+    public ResponseEntity<?> createOrder(@PathVariable Long id, @RequestBody OrderDTO orderDTO) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = (authentication != null) ? authentication.getName() : null;
+        UserEntity user = userRepository.findByUsername(username)
+        .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
+        Printer printer = printerRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Error: Impresora no encontrada."));
+
         EStatus status = EStatus.KART;
         Order order = Order.builder()
             .orderdate(new Date(System.currentTimeMillis()))
@@ -96,6 +103,7 @@ public class OrderController {
             .number(orderDTO.getNumber())
             .status(status)
             .userEntity(user)
+            .printer(printer)
             .build();
 
         orderRepository.save(order);
