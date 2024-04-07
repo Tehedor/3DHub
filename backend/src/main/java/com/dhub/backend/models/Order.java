@@ -12,6 +12,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
@@ -78,9 +79,11 @@ public class Order {
     @JoinColumn(name = "users_id")
     private UserEntity userEntity;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
-	private List<Printer> printers;
-	
+	// @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
+	// private List<Printer> printers;
+	@ManyToOne(fetch =  FetchType.LAZY)
+	@JoinColumn(name = "printer_id")
+	private Printer printer;
 
 // @JsonManagedReference
 //  @ManyToOne(cascade = CascadeType.ALL)

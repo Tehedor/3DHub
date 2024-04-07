@@ -30,13 +30,11 @@ public class JwtUtils {
     private String timeExpiration;
 
     //Generar token de acceso
-    public String generateAccessToken(String username, Collection<GrantedAuthority> collection) {
+    public String generateAccessToken(String username) {
 
 
         return Jwts.builder()
-            .claim("Username", username)
-            .claim("Roles", collection.toString())
-            // .subject(collection.toString())
+            .subject(username)
             .issuedAt(new Date(System.currentTimeMillis()))
             .expiration(new Date(System.currentTimeMillis() + Long.parseLong(timeExpiration)))
             .signWith(getSignatureKey()) 
