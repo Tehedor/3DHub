@@ -25,12 +25,7 @@ public class RatingsController {
     @Autowired
     private RatingsService ratingsService;
 
-    @GetMapping
-    public ResponseEntity<List<Ratings>> getAllRatings() {
-        List<Ratings> ratings = ratingsService.getAllRatings();
-        return new ResponseEntity<>(ratings, HttpStatus.OK);
-    }
-
+ 
     @GetMapping("/{id}")
     public ResponseEntity<Ratings> getRatingsById(@PathVariable("id") long id) {
         Ratings ratings = ratingsService.getRatingsById(id);
