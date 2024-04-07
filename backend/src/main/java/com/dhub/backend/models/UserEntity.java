@@ -1,5 +1,6 @@
 package com.dhub.backend.models;
 
+import com.dhub.backend.controllers.request.OrderDTO;
 import com.dhub.backend.controllers.request.PrinterDTO;
 
 import java.util.List;
@@ -111,6 +112,24 @@ public class UserEntity {
                 printerDTO.setMaterial(printer.getMaterial());
                 
                 return printerDTO;
+            })
+            .collect(Collectors.toList());
+    }
+
+    public List<OrderDTO> getOrdersWithoutUserEntity() {
+        return orders.stream()
+            .map(order -> {
+                OrderDTO orderDTO = new OrderDTO();
+                // Copiar todos los atributos de order a orderDTO
+                orderDTO.setId(order.getId());
+                orderDTO.setOrderdate(order.getOrderdate());
+                orderDTO.setSpecs(order.getSpecs());
+                orderDTO.setManufacturerdate(order.getManufacturerdate());
+                orderDTO.setPickupdate(order.getPickupdate());
+                orderDTO.setNumber(order.getNumber());
+                orderDTO.setStatus(order.getStatus());
+                
+                return orderDTO;
             })
             .collect(Collectors.toList());
     }
