@@ -74,4 +74,8 @@ public class Printer {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "printer")
     private List<Ratings> ratings;
 
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
+
 }

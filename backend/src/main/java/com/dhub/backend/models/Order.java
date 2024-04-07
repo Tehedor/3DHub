@@ -3,6 +3,7 @@ package com.dhub.backend.models;
 import java.sql.Date;
 import java.util.HashSet;
 
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -76,6 +77,10 @@ public class Order {
 	@ManyToOne
     @JoinColumn(name = "users_id")
     private UserEntity userEntity;
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
+	private List<Printer> printers;
+	
 
 // @JsonManagedReference
 //  @ManyToOne(cascade = CascadeType.ALL)

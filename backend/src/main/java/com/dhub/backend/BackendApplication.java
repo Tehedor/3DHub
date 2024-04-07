@@ -133,6 +133,7 @@ public class BackendApplication {
 				.color("rojo")
 				.material("plastic")
 				.userEntity(userEntity)
+				.order(order2)
 				.build();
 			Printer printer2 = Printer.builder()
 				.modelName("ender 3")
@@ -148,6 +149,7 @@ public class BackendApplication {
 				.color("rojo")
 				.material("plastic")
 				.userEntity(userEntity)
+				.order(order2)
 				.build();
 
 			Ratings rating = Ratings.builder()
