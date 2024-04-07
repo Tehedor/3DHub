@@ -119,16 +119,6 @@ public class BackendApplication {
 				.userEntity(userEntity)
 				.build();
 
-			Ratings rating = Ratings.builder()
-				.date(new Date(System.currentTimeMillis()))
-				.productRating(4)
-				.manufacturerRating(3)
-				.textRating("good")
-				.file(null)
-				.designer(userEntity2)
-				.manufacturer(userEntity3)
-				.build();
-
 			Printer printer = Printer.builder()
 				.modelName("ender 3")
 				.printerLocation("creality")
@@ -160,6 +150,16 @@ public class BackendApplication {
 				.userEntity(userEntity)
 				.build();
 
+			Ratings rating = Ratings.builder()
+				.date(new Date(System.currentTimeMillis()))
+				.productRating(4)
+				.manufacturerRating(3)
+				.textRating("good")
+				.file(null)
+				.designer(userEntity2)
+				.manufacturer(userEntity3)
+				.printer(printer)
+				.build();
 			
 			userRepository.save(userEntity);
 			userRepository.save(userEntity2);

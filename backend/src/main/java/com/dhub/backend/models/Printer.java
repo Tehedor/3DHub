@@ -1,5 +1,8 @@
 package com.dhub.backend.models;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
@@ -15,6 +18,7 @@ import jakarta.persistence.JoinColumn;
 //import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 //import jakarta.persistence.ManyToOne;
 import jakarta.persistence.UniqueConstraint;
 
@@ -66,5 +70,8 @@ public class Printer {
     @ManyToOne
     @JoinColumn(name = "users_id")
     private UserEntity userEntity;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "printer")
+    private List<Ratings> ratings;
 
 }
