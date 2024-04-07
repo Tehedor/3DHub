@@ -5,6 +5,7 @@ import com.dhub.backend.controllers.request.OrderDTO;
 import com.dhub.backend.controllers.response.MessageResponse;
 import com.dhub.backend.models.EStatus;
 import com.dhub.backend.models.Order;
+import com.dhub.backend.models.Status;
 import com.dhub.backend.repository.OrderRepository;
 import com.dhub.backend.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,4 +83,20 @@ public class OrderController {
         return ResponseEntity.ok(new MessageResponse("Añadido al carrito"));
     }
     
+    /*
+     * Changes the status of the order
+     * Post syntax: "name": "CANCELLED"
+     */
+    @PostMapping("/{id}/status")
+    public ResponseEntity<?> changeStatus(@PathVariable Long id, @RequestBody Status status) {
+        EStatus newStatus = status.getName();
+        Order order = getOrderById(id).getBody();
+        // If the order does not exist, return 404
+        if (order == null) {
+            return ResponseEntity.notFound().build();
+        }
+        order.setStatus(newStatus);
+        orderRepository.save(order);
+        return ResponseEntity.ok(new MessageResponse("Petición " + id.toString() + " guardada como " + newStatus.toString()));
+    }
 }
