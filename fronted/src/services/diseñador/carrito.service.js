@@ -4,7 +4,8 @@ import axios from "axios";
 
 const user = JSON.parse(localStorage.getItem("user"));
 
-const token = user ? user.accessToken : "";
+const token = user ? user.token : "";
+// const token = "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJkaXNlw7FhZG9yIiwiaWF0IjoxNzEyNTMxOTU0LCJleHAiOjE3MTI2MTgzNTR9.Nts95aYoJJ_XufHbAIl9SkGz9Mk5W4ac6JRic2yqsrLfvyVRoLfJDrLochpPip76";
 
 const app = axios.create({
   baseURL: "http://localhost:8080/",
@@ -15,18 +16,20 @@ const app = axios.create({
 });
 
 
-const getPedidsoCarrito = (username, password) => {
+
+const getPedidsoCarrito = () => {
   return app
-    .get("pedidosCarrit", {
+    .get("api/orders/designer", {
       // username,
       // password,
     })
     .then((response) => {
-      if (response.data.carrito) {
-        localStorage.setItem("carrito", JSON.stringify(response.data)); // localStorage.setItem("user", JSON.stringify(response.data));: Si la propiedad username existe, entonces se almacena el objeto data de la respuesta en el almacenamiento local del navegador bajo la clave "user". Antes de almacenarlo, el objeto data se convierte en una cadena JSON.
+      if (response.data) {
+        localStorage.setItem("carrito", JSON.stringify(response)); 
+        console.log(JSON.parse(localStorage.getItem("carrito"))); 
       }
-
-      return response.data.carrito;
+      console.log(response.data);
+      return response;
     });
 };
 

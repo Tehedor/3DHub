@@ -4,7 +4,7 @@ import axios from "axios";
 
 const user = JSON.parse(localStorage.getItem("user"));
 
-const token = user ? user.accessToken : "";
+const token = user ? user.token : "";
 
 const app = axios.create({
   baseURL: "http://localhost:8080/",
@@ -35,19 +35,19 @@ const getPedidos = () => {
 
 
 const añadirPedido = (file, cantidad, fechaFabricacion, fechaEntrega, especificaciones, printer) => {
-
   // const fechaFabricacionFormated = new Date(fechaFabricacion);
   const fechaFabricacionFormated = new Date(fechaFabricacion).toISOString().split('T')[0];
   // console.log(fechaFabricacionFormated);
   const fechaEntregaFormated = new Date(fechaEntrega).toISOString().split('T')[0];
+  const stringsprinter = String(printer);
+  console.log(file, cantidad, fechaFabricacionFormated, fechaEntregaFormated, especificaciones, printer);
   // console.log(fechaEntregaFormated);
   return app
     .post(`api/orders/create/${printer}`, {
       manufacturerdate: fechaFabricacionFormated,
       pickupdate: fechaEntregaFormated,
       number : cantidad,
-      specs :especificaciones,
-      // "name": "KART"
+      specs : especificaciones,
   })
 
 }

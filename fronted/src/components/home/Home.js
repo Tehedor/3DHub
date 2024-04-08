@@ -41,56 +41,79 @@ export default function Home(props) {
     });
 
   
-    // Función que descarga las impresoras, en función de la localización en la que se encuentra
-    const download = async () => {
-    let downloadprinters;
-    // Coordenadas de Madrid para que sean por defecto 
-    const latitude=40.4167;
-    const longitude=-3.70325;  
+    // Función que = () => {
+    // const downloadprinters;
+    // // Coordenadas de Madrid para que sean por defecto 
+    // const latitude=40.4167;
+    // const longitude=-3.70325;  
 
     // Poner la manerad para solicitar las impresoras en función de la localizaciónSs
-    if(CONFIG.use_server){
-        try {
-        // if(isGeolocationEnabled || !queryUbica===""){
-        //     if (!queryUbica===""){
-        //     // api que me permita sacar latitud y longitud de la ubicación a partir de la query 
-        //     }else{
-        //     latitude=coords.latitude;
-        //     longitude=coords.longitude;
-        //     }
-        // }
-        // let queryparams =  "?lat=" + latitude + "&lon=" + longitude;
-        let queryparams =  "";
-        const data = await ImpresorasService.descargar(queryparams);
-        console.log(data);
-
-        downloadprinters=printersPruebas;
-        } catch (error) {
-        // setResultados(
-        //   { "cod": error.cod, "message": cod.message}
-        // );
+    // if(CONFIG.use_server){
+    //     try {
+    //     // if(isGeolocationEnabled || !queryUbica===""){
+    //     //     if (!queryUbica===""){
+    //     //     // api que me permita sacar latitud y longitud de la ubicación a partir de la query 
+    //     //     }else{
+    //     //     latitude=coords.latitude;
+    //     //     longitude=coords.longitude;
+    //     //     }
+    //     // }
+    //     // let queryparams =  "?lat=" + latitude + "&lon=" + longitude;
+    //     let queryparams =  "";
+    //     // const data = await ImpresorasService.(queryparams);
+    //     // console.log(JSON.parse(localStorage.getItem("printers")));
+    //     const data = ImpresorasService.descargarPrinters();
+        
+    //     console.log(data);
+    //     } catch (error) {
+    //     // setResultados(
+    //     //   { "cod": error.cod, "message": cod.message}
+    //     // );
+    //     }
+    // }else{
+    //     // downloadprinters=printersexample;
+    //     downloadprinters=printersPruebas;
+    //     // console.log(printersexample);
+    // }descarga las impresoras, en función de la localización en la que se encuentra
+    // const download 
+    // setThePrinters(downloadprinters);
+    // console.log(theprinters);
+    // // setControlPrinters(downloadprinters);
+    // // console.log(props.controlPrinters);
+    // }
+    const download = async () => {
+        let downloadprinters;
+        if(CONFIG.use_server){
+            try {
+            const data = await ImpresorasService.descargarPrinters();
+            console.log(data);
+            downloadprinters=data;
+            
+            } catch (error) {
+                // setResultados(
+                // { "cod": error.cod, "message": cod.message}
+                // );
+            }
+        }else{
+            // downloadprinters=printersexample;
+            downloadprinters=printersPruebas;
+            // console.log(printersexample);
         }
-    }else{
-        // downloadprinters=printersexample;
-        downloadprinters=printersPruebas;
-        // console.log(printersexample);
+        setThePrinters(downloadprinters.data);
+        console.log(theprinters);
     }
-    setThePrinters(downloadprinters);
-    console.log(theprinters);
 
-    setControlPrinters(printersPruebas);
-    }
 
     // Efecto que se ejecuta al cargar la página
     useEffect(() => {
-    setLoading(true);
-        async function fetchData() {
-        await download();
-        setTimeout(()=>{
-            setLoading(false);
-        },800);		
-    }
-    fetchData();
+        setLoading(true);
+            async function fetchData() {
+            await download();
+            setTimeout(()=>{
+                setLoading(false);
+            },800);		
+        }
+        fetchData();
     }, []);
 
 
@@ -100,7 +123,7 @@ export default function Home(props) {
             {loading ? <img id="loading" src={process.env.PUBLIC_URL + "/spinners/cxyduck.gif"} className="spinner" alt="spinner" />:
         
             <Row>
-                <ImpresorasLista printers={props.controlPrinters.printers} />
+                <ImpresorasLista printers={theprinters} />
             </Row>  
             }
         </div>

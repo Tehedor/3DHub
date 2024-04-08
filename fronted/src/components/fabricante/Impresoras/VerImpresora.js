@@ -21,7 +21,8 @@ export default function VerImpresora(props) {
             <Row>
                 <Col sm={3} class="imagen" className="d-flex justify-content-center align-items-center">
                     {/* <Image src={printer.Foto_impresora} thumbnail  style={{ maxWidth: "100%" }}/> */}
-                    <Card.Img src={printer.printerPhoto || 'https://m.media-amazon.com/images/I/61L4aoIqYOL._AC_SX466_.jpg'} style={{ maxWidth: "100%" }}/>                </Col>
+                    <Card.Img src={printer.printerPhoto || 'https://m.media-amazon.com/images/I/61L4aoIqYOL._AC_SX466_.jpg'} style={{ maxWidth: "100%" }}/>               
+                </Col>
                 <Col sm={9} class="datos_impresora">
                     <Row >
                         <Col sm={4}>
