@@ -25,44 +25,69 @@ export default function VerPediros(props) {
             console.log(pedidos.status);
             return (
                 <>
-                    <Image src={"http://localhost:3000/iconos_estados/pagado.svg"} className="icon" alt="pagado" />
-                    <p>Esperando respuesta del Fabricante</p>
+                    <Row  className="justify-content-md-center align-items-center"> 
+                         <Image src={"http://localhost:3000/iconos_estados/pagado.svg"} className="icon" alt="pagado" style={{width: "70px", height: "70px"}} />
+                        
+                    </Row>
+                    <Row>
+                        <p>Esperando respuesta del Fabricante</p>
+                    </Row>
                 </>
             );
             
         }else if(pedidos.status === "CANCELLED"){
             return (
-            <>
-                <Image src={"http://localhost:3000/iconos_estados/rechazado.svg"} className="icon" alt="rechazado" />
-                <p>Pedido Cancelado/Rechazado</p>
-            </>
+                <>
+                    <Row  className="justify-content-md-center align-items-center"> 
+                        <Image src={"http://localhost:3000/iconos_estados/rechazado.svg"} className="icon" alt="rechazado" style={{width: "70px", height: "70px"}}/>
+                    </Row>
+                    <Row>
+                        <p>Pedido Cancelado/Rechazado</p>
+                    </Row>
+                </>
             )
         }else if(pedidos.status === "REVISION"){
             return (
-                <>
-                    <Image src={"http://localhost:3000/iconos_estados/bajo_revision.svg"} className="icon" alt="bajo_revision" />
-                    <Button variant="warning" size="sm" onClick={confirmarRevision}>Revisiar Pedido</Button>
+                <>  
+                     <Row  className="justify-content-md-center align-items-center"> 
+                        <Image src={"http://localhost:3000/iconos_estados/bajo_revision.svg"} className="icon" alt="bajo_revision" style={{width: "70px", height: "70px"}}/>
+                    </Row>
+                    <Row>
+                        <Button variant="warning" size="sm" onClick={confirmarRevision}>Revisiar Pedido</Button>
+                    </Row>
                 </>
             )
 
         }else if(pedidos.status === "CREATING"){
             return (
                 <>
-                    <Image src={"http://localhost:3000/iconos_estados/creando.svg"} className="icon" alt="creando" />
-                    <p>Creando Pedido...</p>
+                    <Row  className="justify-content-md-center align-items-center">
+                        <Image src={"http://localhost:3000/iconos_estados/creando.svg"} className="icon" alt="creando" style={{width: "70px", height: "70px"}}/>
+                    </Row>
+                    <Row>    
+                        <p>Creando Pedido...</p>
+                    </Row>
                 </>
             )
         }else if(pedidos.status === "SEND"){
             return (
                 <>
-                <Image src={"http://localhost:3000/iconos_estados/enviado.svg"} className="icon" alt="enviado" />
-                <Button variant="warning" size="sm" onClick={confirmarEntrega} >Confirmar Entrega</Button>
-                <p>Confirme cuando el pedido haya llegado</p>
+                <Row  className="justify-content-md-center align-items-center"> 
+                    <Image src={"http://localhost:3000/iconos_estados/enviado.svg"} className="icon"  alt="enviado" style={{width: "70px", height: "70px"}} />
+                </Row>
+                <Row>
+                    <Button variant="warning" size="sm" onClick={confirmarEntrega} >Confirmar Entrega</Button>
+                </Row>
+                <Row>
+                <   p>Confirme cuando el pedido haya llegado</p>
+                </Row>
                 </>
             )
         }else if(pedidos.status === "DELIVERED"){
             return (
-                <Image src={"http://localhost:3000/iconos_estados/terminado.svg"} className="icon" alt="terminado" />
+                <Row  className="justify-content-md-center align-items-center"> 
+                    <Image src={"http://localhost:3000/iconos_estados/terminado.svg"} className="icon" alt="terminado" style={{width: "70px", height: "70px"}}/>
+                </Row>
             )
         }
     }
@@ -90,7 +115,8 @@ export default function VerPediros(props) {
                     
                         {/* <Card.Text>Stock: {pedidos.Nombre_modelo}</Card.Text> */}
                     </Col> 
-                    <Col sm={3} class="boton" className="d-flex justify-content-center align-items-center">
+                    {/* <Col sm={3} class="boton" className="d-flex justify-content-center align-items-center"> */}
+                    <Col sm={3} class="controlEstados "  >
                         {ControlEstados()}
                     </Col>
                 </Row>
