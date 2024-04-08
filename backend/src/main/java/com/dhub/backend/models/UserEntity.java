@@ -111,6 +111,7 @@ public class UserEntity {
                 printerDTO.setColor(printer.getColor());
                 printerDTO.setMaterial(printer.getMaterial());
                 
+                
                 return printerDTO;
             })
             .collect(Collectors.toList());
@@ -129,6 +130,27 @@ public class UserEntity {
                 orderDTO.setNumber(order.getNumber());
                 orderDTO.setStatus(order.getStatus());
                 orderDTO.setUser_id(order.getUserEntity().getId());
+                orderDTO.setPrinter_id(order.getPrinter().getId());
+                
+                return orderDTO;
+            })
+            .collect(Collectors.toList());
+    }
+
+    public List<OrderDTO> getOrdersAndPrintersWithoutUserEntity() {
+        return orders.stream()
+            .map(order -> {
+                OrderDTO orderDTO = new OrderDTO();
+                // Copiar todos los atributos de order a orderDTO
+                orderDTO.setId(order.getId());
+                orderDTO.setOrderdate(order.getOrderdate());
+                orderDTO.setSpecs(order.getSpecs());
+                orderDTO.setManufacturerdate(order.getManufacturerdate());
+                orderDTO.setPickupdate(order.getPickupdate());
+                orderDTO.setNumber(order.getNumber());
+                orderDTO.setStatus(order.getStatus());
+                orderDTO.setUser_id(order.getUserEntity().getId());
+                orderDTO.setPrinter_id(order.getUserEntity().getId());
                 
                 return orderDTO;
             })

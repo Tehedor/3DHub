@@ -2,6 +2,7 @@ package com.dhub.backend.controllers;
 
 
 import com.dhub.backend.controllers.request.OrderDTO;
+import com.dhub.backend.controllers.request.PrinterDTO;
 import com.dhub.backend.controllers.response.MessageResponse;
 import com.dhub.backend.models.EStatus;
 import com.dhub.backend.models.Order;
@@ -12,6 +13,7 @@ import com.dhub.backend.repository.OrderRepository;
 import com.dhub.backend.repository.PrinterRepository;
 import com.dhub.backend.repository.UserRepository;
 import com.dhub.backend.services.OrderService;
+import com.dhub.backend.services.PrinterService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +22,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.security.core.Authentication;
@@ -38,6 +43,9 @@ public class OrderController {
     private UserRepository userRepository;
     @Autowired
     private PrinterRepository printerRepository;
+
+    @Autowired
+    private PrinterService printerService;
 
 
     // @Autowired
@@ -173,5 +181,34 @@ public class OrderController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(order1, HttpStatus.OK);
+    }
+
+    @GetMapping("/manufacturerOrders")
+    public ResponseEntity<List<Object>>  getManufacturerOrders() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = (authentication != null) ? authentication.getName() : null;
+        UserEntity user = userRepository.findByUsername(username)
+        .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
+
+        List<OrderDTO> orders = user.getOrdersWithoutUserEntity();
+        List<Long> printerIds = orders.stream()
+            .map(order -> order.getPrinter_id())
+            .distinct()
+            .collect(Collectors.toList());
+        
+        List<PrinterDTO> printers = new ArrayList<>();
+        for (Long printerId : printerIds) {
+            PrinterDTO printer = printerService.getPrinterById(printerId);
+            printers.add(printer);
+        }
+
+        List<Object> listaCombinada = new ArrayList<>();
+        listaCombinada.addAll(printers);
+        listaCombinada.addAll(orders);
+                
+        if(listaCombinada.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(listaCombinada, HttpStatus.OK);
     }
 }

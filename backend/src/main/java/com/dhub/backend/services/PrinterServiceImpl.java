@@ -33,5 +33,26 @@ public class PrinterServiceImpl implements PrinterService{
                 printer.getMaxUnities(), printer.getManufacturationSpeed(), printer.getMaxWidth(), printer.getMaxHeight(), printer.getPrinterPrecision(), printer.getColor(), printer.getMaterial()))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public PrinterDTO getPrinterById(Long id) {
+        Printer printer = printerRepository.findById(id).orElse(null);
+        PrinterDTO printerDTO = new PrinterDTO();
+        // Copiar todos los atributos de printer a printerDTO
+        printerDTO.setId(printer.getId());
+        printerDTO.setModelName(printer.getModelName());
+        printerDTO.setPrinterLocation(printer.getPrinterLocation());
+        printerDTO.setPrinterType(printer.getPrinterType());
+        printerDTO.setPrinterPhoto(printer.getPrinterPhoto());
+        printerDTO.setServicePrice(printer.getServicePrice());
+        printerDTO.setMaxUnities(printer.getMaxUnities());
+        printerDTO.setManufacturationSpeed(printer.getManufacturationSpeed());
+        printerDTO.setMaxWidth(printer.getMaxWidth());
+        printerDTO.setMaxHeight(printer.getMaxHeight());
+        printerDTO.setPrinterPrecision(printer.getPrinterPrecision());
+        printerDTO.setColor(printer.getColor());
+        printerDTO.setMaterial(printer.getMaterial());
+        return printerDTO;
+    }
     
 }

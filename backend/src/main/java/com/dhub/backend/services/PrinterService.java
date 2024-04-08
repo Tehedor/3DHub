@@ -10,5 +10,6 @@ public interface PrinterService {
     //List<Printer> getPrintersByManufacturer(Long manufacturerUsername);
 
     public List<PrinterDTO> getAllPrintersWithoutUser();
+    PrinterDTO getPrinterById(Long id);
     
 }

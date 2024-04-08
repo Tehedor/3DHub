@@ -77,4 +77,17 @@ public class OrderServiceImpl implements OrderService {
         }
         return ordersByUserId;
     }
+
+    @Override
+    public List<OrderDTO> getOrdersByPrinterId(Long printerId , List<OrderDTO> orders){
+        List<OrderDTO> ordersByPrinterId = new ArrayList<>();
+        for (OrderDTO order : orders) {
+            if (order.getPrinter_id()==printerId) {
+                ordersByPrinterId.add(order);
+            }
+        }
+        return ordersByPrinterId;
+    }
+
+
 }

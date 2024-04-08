@@ -10,6 +10,7 @@ public interface OrderService {
     List<OrderDTO> getOrdersByStatus(EStatus status, List<OrderDTO> orders);
     List<OrderDTO> getOrdersExcludingStatus(EStatus status, List<OrderDTO> orders);
     List<OrderDTO> getOrdersByUserId(Long userId, List<OrderDTO> orders);
+    List<OrderDTO> getOrdersByPrinterId(Long printerId , List<OrderDTO> orders);
     Order getOrderById(Long id);
     Order createOrder(Order order);
     Order updateOrder(Order order);

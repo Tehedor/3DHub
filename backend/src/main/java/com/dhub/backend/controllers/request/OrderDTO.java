@@ -43,4 +43,7 @@ public class OrderDTO {
 
     @NotBlank
     private Long user_id;
+
+    @NotBlank
+    private Long printer_id;
 }
