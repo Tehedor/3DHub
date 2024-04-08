@@ -3,60 +3,21 @@ import {Link} from "react-router-dom";
 
 export default function VerPedidoCarrito(props) {
 
-    const printer = props.printer;
+    const carrito = props.carrito;
     
     return(
         <Card border="gray" style={{ backgroundColor: "white", marginTop: '0' }}> 
         {/* <Card border="gray" style={{ backgroundColor: "white", marginTop: '0', height: '320px' }}>  */}
             <Card.Body>
 
-            <Row>
-                <Col sm={3} class="imagen" className="d-flex justify-content-center align-items-center">
-                    {/* <Image src={printer.Foto_impresora} thumbnail  style={{ maxWidth: "100%" }}/> */}
-                    <Card.Img src={printer.Foto_impresora} thumbnail  style={{ maxWidth: "100%" }}/>
-                </Col>
-                <Col sm={9} class="datos_impresora">
-                    <Row >
-                        <Col sm={4}>
-                            <Card.Text style={{color: 'black'}}>Nombre: {printer.Nombre_modelo}</Card.Text>
-                        </Col>
-                        <Col sm={4}>
-                            <Row noGutters>
-                                <Container>
-                                 <Image src="http://localhost:3000/iconos/star_fill_icon.svg" height="20px" width="20px"/>
-                                 <Image src="http://localhost:3000/iconos/star_fill_icon.svg" height="20px" width="20px"/>
-                                 <Image src="http://localhost:3000/iconos/star_fill_icon.svg" height="20px" width="20px"/>
-                                 <Image src="http://localhost:3000/iconos/star_fill_icon.svg" height="20px" width="20px"/>
-                                 <Image src="http://localhost:3000/iconos/star_fill_icon.svg" height="20px" width="20px"/>
-                                </Container>
-                            </Row>
-                            
-                        </Col>
-                        <Col sm={4}>
-                            <Card.Text>Fabricante: {printer.Fabricante}</Card.Text>
-                        </Col>
-                        
+                <Row>id: {carrito.id}</Row>
+                <Row>Fecha de pedido: {carrito.orderdate}</Row>
+                <Row>Fecha de fabricación: {carrito.manufacturerdate}</Row>
+                <Row>Fecha de recogida: {carrito.pickupdate}</Row>
+                <Row>Número de impresoras: {carrito.number}</Row>
+                <Row>Estado: {carrito.status}</Row>
+                <Row>Especificaciones: {carrito.specs}</Row>
 
-                    </Row>
-                    <Row>
-                        <Col sm={6}>
-                            <Card.Text>Tipo: {printer.Tipo_impresora}</Card.Text>
-                            <Card.Text>Max_unid: {printer.Unidades_max}</Card.Text>
-                            <Card.Text>Velocidad: {printer.Velo_fabricacion}</Card.Text>
-                            <Card.Text>Max_ancho: {printer.Max_ancho}</Card.Text>
-                            <Card.Text>Max_alto: {printer.Max_alto}</Card.Text>
-                        
-                        </Col>
-                        <Col sm={6}>
-                            <Card.Text>Precisión: {printer.Precision}</Card.Text>
-                            <Card.Text>Colores: {printer.Colores_disponibles}</Card.Text>
-                            <Card.Text>Acabados: {printer.Acabados_disponibles}</Card.Text>
-                            <Card.Text>Precio: {printer.Precio_servicio} €/mm³/</Card.Text>
-                        </Col>
-                    </Row>
-                    {/* <Card.Text>Stock: {printer.Nombre_modelo}</Card.Text> */}
-                </Col> 
-            </Row>
             </Card.Body>
         </Card>  
 

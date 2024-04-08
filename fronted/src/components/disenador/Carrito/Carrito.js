@@ -25,28 +25,16 @@ export default function Carrito(props) {
     // Función que descarga todos los pedidos para comprar
     const download = async () => {
         let downloadCarrito;
-        
-        // Poner la manerad para solicitar las impresoras en función de la localizaciónSs
         if(CONFIG.use_server){
             try {
-            // if(isGeolocationEnabled || !queryUbica===""){
-            //     if (!queryUbica===""){
-            //     // api que me permita sacar latitud y longitud de la ubicación a partir de la query 
-            //     }else{
-            //     latitude=coords.latitude;
-            //     longitude=coords.longitude;
-            //     }
-            // }
-            // let queryparams =  "?lat=" + latitude + "&lon=" + longitude;
-            // let queryparams =  "";
-            // const data = await CarritoService.descargar(queryparams);
-            // console.log(data);
-
-            // setTheCarrito=data;
+            const response = await CarritoService.getPedidsoCarrito();
+            console.log(response.data);
+            downloadCarrito=response.data;
+            
             } catch (error) {
-            // setResultados(
-            //   { "cod": error.cod, "message": cod.message}
-            // );
+                // setResultados(
+                // { "cod": error.cod, "message": cod.message}
+                // );
             }
         }else{
             // downloadprinters=printersexample;
@@ -54,20 +42,29 @@ export default function Carrito(props) {
             // console.log(printersexample);
         }
         setTheCarrito(downloadCarrito);
-        // console.log(theprinters);
+        console.log(theCarrito);
     }
 
-    // Efecto que se ejecuta al cargar la página
+
+     // Efecto que se ejecuta al cargar la página
     useEffect(() => {
-    setLoading(true);
-        async function fetchData() {
-        await download();
-        setTimeout(()=>{
-            setLoading(false);
-        },800);		
-    }
-    fetchData();
+        setLoading(true);
+            async function fetchData() {
+            await download();
+            setTimeout(()=>{
+                setLoading(false);
+            },800);		
+        }
+        fetchData();
     }, []);
+
+
+    const comprar = async () => {
+        for (let i = 0; i < theCarrito.length; i++) {
+            CarritoService.order(theCarrito[i].id);
+        }
+        
+    }
 
 
     return (
@@ -76,31 +73,34 @@ export default function Carrito(props) {
             {loading ? <img id="loading" src={process.env.PUBLIC_URL + "/spinners/cxyduck.gif"} className="spinner" alt="spinner" />:
         
             <Container>
-                <Col sm={10}>
-                    <Row>
-                        {/* <CarritoLista pedidos={props.theCarrito.pedidos} /> */}
-                    </Row>  
-                </Col>
-                <Col sm={2}>
-                    <Table  bordered variant="gray">
+                <Row>
 
-                        <tbody style={{border: '3px solid black'}}>
-                            <tr>
-                                <th  style={{fontWeight: 'normal', textDecoration: 'none'}}>Pedidos</th>
-                                <th style={{color: 'gray'}}>99 €</th>
-                            </tr>
-                            <tr>
-                                <th  style={{fontWeight: 'normal', textDecoration: 'none'}}>Envio</th>
-                                <th style={{color: 'gray'}}>20 €</th>
-                            </tr>
-                           <tr style={{border: '3px solid black'}} >
-                                <th style={{fontWeight: 'bold'}}>Total</th>
-                                <th style={{fontWeight: 'bold'}}>Mucho</th>
-                            </tr>
-                        </tbody>
-                    </Table>
-                    <Button id="volver" variant="primary"  href="/">Comprar</Button>
-                </Col>
+                    <Col sm={10}>
+                        <Row>
+                            <CarritoLista theCarrito={theCarrito} />
+                        </Row>  
+                    </Col>
+                    <Col sm={2}>
+                        <Table  bordered variant="gray">
+
+                            <tbody style={{border: '3px solid black'}}>
+                                <tr>
+                                    <th  style={{fontWeight: 'normal', textDecoration: 'none'}}>Pedidos</th>
+                                    <th style={{color: 'gray'}}>99 €</th>
+                                </tr>
+                                <tr>
+                                    <th  style={{fontWeight: 'normal', textDecoration: 'none'}}>Envio</th>
+                                    <th style={{color: 'gray'}}>20 €</th>
+                                </tr>
+                                <tr style={{border: '3px solid black'}} >
+                                    <th style={{fontWeight: 'bold'}}>Total</th>
+                                    <th style={{fontWeight: 'bold'}}>Mucho</th>
+                                </tr>
+                            </tbody>
+                        </Table>
+                        <Button id="volver" variant="primary"  onClick={comprar} href="/">Comprar</Button>
+                    </Col>
+                </Row>
             </Container>
 
             }

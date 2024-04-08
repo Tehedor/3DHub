@@ -4,14 +4,12 @@ import {Link} from "react-router-dom";
 import VerPedidoCarrito from "./VerPedidoCarrito";
 
 export default function CarritoLista(props) {
-    let lista = props.printers;    
+    let lista = props.theCarrito;    
 
    return(
         <div id="productosresultados" >
                 {lista.map((items,index) => (
-                    <Link to={`/pedirpedido/${index}`} style={{ textDecoration: 'none' }}>
-                        <VerPedidoCarrito printer={items}/>
-                    </Link>
+                        <VerPedidoCarrito carrito={items}/>
                 ))}
         </div>);
 }

@@ -18,20 +18,39 @@ const app = axios.create({
 //   return data;
 // };
 
-const descargarPrinters = async (queryparams) => {
-  const data =  await app.
-    get("/api/printers")
+// const descargarPrinters = () => {
+//   return  app.
+//     get("api/printers")
+//     .then((response) => {
+
+//       if (response.data) {
+//         // localStorage.setItem("printers", JSON.stringify(response.data)); // localStorage.setItem("user", JSON.stringify(response.data));: Si la propiedad username existe, entonces se almacena el objeto data de la respuesta en el almacenamiento local del navegador bajo la clave "user". Antes de almacenarlo, el objeto data se convierte en una cadena JSON.
+//         // console.log(JSON.parse(localStorage.getItem("printers")));
+//       }
+//       console.log(response);
+//       return response;
+
+//     }); 
+//   // console.log(data);   
+//   // return data;
+// };
+
+
+const descargarPrinters = () => {
+  // console.log("user",user);
+  // console.log("token",token);
+  return app.
+    get("api/printers")
     .then((response) => {
 
-      if (response.data.Printers) {
+      if (response.data) {
         localStorage.setItem("printers", JSON.stringify(response.data)); // localStorage.setItem("user", JSON.stringify(response.data));: Si la propiedad username existe, entonces se almacena el objeto data de la respuesta en el almacenamiento local del navegador bajo la clave "user". Antes de almacenarlo, el objeto data se convierte en una cadena JSON.
         console.log(JSON.parse(localStorage.getItem("printers")));
       }
-      return response.Printers;
+      return response;
     }); 
-  // console.log(data);   
-  // return data;
-};
+
+}
 
 // const enviarEmail = async (correo, subject, message) => {
 const enviarEmail =  (email, asunto ,solicitud, photo) => {

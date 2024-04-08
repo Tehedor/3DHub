@@ -4,7 +4,7 @@ import axios from "axios";
 
 const user = JSON.parse(localStorage.getItem("user"));
 
-const token = user ? user.accessToken : "";
+const token = user ? user.token : "";
 
 const app = axios.create({
   baseURL: "http://localhost:8080/",
