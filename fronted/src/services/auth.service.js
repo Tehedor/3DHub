@@ -45,9 +45,9 @@ const login = (username, password) => {
 
 const logout = () => {
   localStorage.removeItem("user");
-  return app.post("signout").then((response) => {
-    return response.data;
-  });
+  // return app.post("signout").then((response) => {
+  //   return response.data;
+  // });
 };
 
 const getCurrentUser = () => {
