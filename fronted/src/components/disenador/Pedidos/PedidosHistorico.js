@@ -23,16 +23,26 @@ export default function PedidosHistorico(props) {
  
      // Estado en el que se alamcenan las impresoras
     const [thePedidos, setThePedidos] = useState();
+    
+    const [thePrinters, setThePrinters] = useState();
+    const [theFabricantes, setTheFabricantes] = useState();
 
 
    // Función que descarga todos los pedidos para comprar
     const download = async () => {
         let downloadPedidos;
+        let downloadprinters;
+        let downloadFabricantes;
             if(CONFIG.use_server){
                 try {
                 const response = await PedidosService.getPedidosCarrito();
                 console.log(response.data);
-                downloadPedidos=response.data;
+                downloadPedidos=response.data.orders;
+                console.log(downloadPedidos);
+                downloadprinters=response.data.printers;
+                console.log(downloadprinters);
+                downloadFabricantes=response.data.users;
+                console.log(downloadFabricantes);
                 
                 } catch (error) {
                     // setResultados(
@@ -45,7 +55,11 @@ export default function PedidosHistorico(props) {
                 // console.log(printersexample);
             }
         setThePedidos(downloadPedidos);
-        console.log(thePedidos);
+        setThePrinters(downloadprinters);
+        setTheFabricantes(downloadFabricantes);
+        console.log("pedidos",thePedidos);
+        console.log("printers",thePrinters);
+        console.log("fabricantes",theFabricantes);
     }
 
 
@@ -77,7 +91,7 @@ export default function PedidosHistorico(props) {
                     </Col>
                     <Col sm={10}>
                         <Row>
-                        <PedidosLista pedidos={thePedidos} />
+                            <PedidosLista pedidos={thePedidos} printers={thePrinters} fabricantes={theFabricantes} />
                         </Row>  
                     </Col>
                 </Row>
