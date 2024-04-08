@@ -86,42 +86,45 @@ const App = () => {
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
   return (
-    <div>
+    <div className="App">
+      <div className="containerr">
+
 
       {/* <NavBar roll={roll} query={query} setQuery={setQuery} queryUbica={queryUbica} setQueryUbica={setQueryUbica} currentUser={currentUser} logOut={logOut}/> */}
-      <NavBar query={query} setQuery={setQuery} queryUbica={queryUbica} setQueryUbica={setQueryUbica} currentUser={currentUser} logOut={logOut}/>
-        
-      <div className="container mt-3">
-        <Routes>
-          <Route exact path={"/"} element={<Home setControlPrinters={setControlPrinters} controlPrinters={controlPrinters} />} />
-          <Route exact path={"/home"} element={<Home setControlPrinters={setControlPrinters} controlPrinters={controlPrinters} />} />
+        <NavBar query={query} setQuery={setQuery} queryUbica={queryUbica} setQueryUbica={setQueryUbica} currentUser={currentUser} logOut={logOut}/>
+          
+        <div className="container mt-3">
+          <Routes>
+            <Route exact path={"/"} element={<Home setControlPrinters={setControlPrinters} controlPrinters={controlPrinters} />} />
+            <Route exact path={"/home"} element={<Home setControlPrinters={setControlPrinters} controlPrinters={controlPrinters} />} />
 
-          <Route exact path="/login" element={<Login/>} />
-          <Route exact path="/register" element={<Register />} />
-          <Route exact path="/profile" element={<Profile />} />
+            <Route exact path="/login" element={<Login/>} />
+            <Route exact path="/register" element={<Register />} />
+            <Route exact path="/profile" element={<Profile />} />
 
-          <Route exact path="/pedidos" element={<PedidosHistorico />} />
-          <Route exact path="/carritocompra" element={<Carrito />} />
-        
-          <Route exact path="/notificaciones" element={<Notificaciones />} />
-          <Route exact path="/impresorasfabri" element={<ImpresorasFabri />} />
-          <Route exact path="/crearimpresora" element={<CrearImpresora />} />
+            <Route exact path="/pedidos" element={<PedidosHistorico />} />
+            <Route exact path="/carritocompra" element={<Carrito />} />
+          
+            <Route exact path="/notificaciones" element={<Notificaciones />} />
+            <Route exact path="/impresorasfabri" element={<ImpresorasFabri />} />
+            <Route exact path="/crearimpresora" element={<CrearImpresora />} />
 
-          {/* <Route path="/pedirpedido/:printerId" element={<Location roll={roll} query={query} setQuery={setQuery} queryUbica={queryUbica} setQueryUbica={setQueryUbica} currentUser={currentUser} logOut={logOut}/>}/> */}
-          <Route path="/pedirpedido/:printerId" element={<Location controlPrinters={controlPrinters} roll={roll} query={query} queryUbica={queryUbica} currentUser={currentUser} />}/>
+            {/* <Route path="/pedirpedido/:printerId" element={<Location roll={roll} query={query} setQuery={setQuery} queryUbica={queryUbica} setQueryUbica={setQueryUbica} currentUser={currentUser} logOut={logOut}/>}/> */}
+            <Route path="/pedirpedido/:printerId" element={<Location controlPrinters={controlPrinters} roll={roll} query={query} queryUbica={queryUbica} currentUser={currentUser} />}/>
 
-          <Route exact path="/atencionCliente" element={<AtencionCliente />} />
+            <Route exact path="/atencionCliente" element={<AtencionCliente />} />
 
-          <Route path="/*" element={<Error/>}/>
-        
-        </Routes>
-      </div>
+            <Route path="/*" element={<Error/>}/>
+          
+          </Routes>
+        </div>
 
-      <footer>
-        <FooterSection/>
-      </footer>
+        {/* <footer> */}
+        {/* </footer> */}
 
-      {/* <AuthVerify logOut={logOut}/> */}
+        {/* <AuthVerify logOut={logOut}/> */}
+        </div>  
+          <FooterSection/>
     </div>
   );
 };
