@@ -30,7 +30,7 @@ public class PrinterServiceImpl implements PrinterService{
     public List<PrinterDTO> getAllPrintersWithoutUser() {
         return StreamSupport.stream(printerRepository.findAll().spliterator(), false)
                 .map(printer -> new PrinterDTO(printer.getId(), printer.getModelName(), printer.getPrinterLocation(), printer.getPrinterType(), printer.getPrinterPhoto(), printer.getServicePrice(), 
-                printer.getMaxUnities(), printer.getManufacturationSpeed(), printer.getMaxWidth(), printer.getMaxHeight(), printer.getPrinterPrecision(), printer.getColor(), printer.getMaterial()))
+                printer.getMaxUnities(), printer.getManufacturationSpeed(), printer.getMaxWidth(), printer.getMaxHeight(), printer.getPrinterPrecision(), printer.getColor(), printer.getMaterial(), printer.getUserEntity().getUsername()))
                 .collect(Collectors.toList());
     }
 

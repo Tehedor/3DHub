@@ -43,5 +43,7 @@ public class PrinterDTO {
 
     @NotBlank
     private String material;
+
+    private String userIdFabricante;
     
 }

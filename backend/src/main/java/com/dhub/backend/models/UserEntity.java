@@ -126,6 +126,7 @@ public class UserEntity {
                 printerDTO.setPrinterPrecision(printer.getPrinterPrecision());
                 printerDTO.setColor(printer.getColor());
                 printerDTO.setMaterial(printer.getMaterial());
+                printerDTO.setUserIdFabricante((printer.getUserEntity().getUsername()));
                 
                 
                 return printerDTO;
