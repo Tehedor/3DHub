@@ -1,10 +1,14 @@
 footer {
-    /* display: grid; */
-    /* grid-template-columns: min-content; */
-    background-color: #0c304e; 
-    /* padding: 15px;  */
-    /* align-items: center; */
-   
+    margin-top: auto;
+
+    background-color: #0c304e;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    padding: 25px 0;     
+
 }
 
 .logo {

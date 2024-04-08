@@ -30,3 +30,15 @@ label {
   -webkit-border-radius: 50%;
   border-radius: 50%;
 }
+
+.App {
+  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  
+  
+}
+
+.containerr {
+}
