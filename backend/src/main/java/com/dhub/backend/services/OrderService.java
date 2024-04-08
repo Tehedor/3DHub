@@ -11,6 +11,7 @@ public interface OrderService {
     List<OrderDTO> getOrdersExcludingStatus(EStatus status, List<OrderDTO> orders);
     List<OrderDTO> getOrdersByUserId(Long userId, List<OrderDTO> orders);
     List<OrderDTO> getOrdersByPrinterId(Long printerId , List<OrderDTO> orders);
+    List<Order> getOrdersByPrinterId2(List<Long> ids, List<Order> allOrders);
     Order getOrderById(Long id);
     Order createOrder(Order order);
     Order updateOrder(Order order);

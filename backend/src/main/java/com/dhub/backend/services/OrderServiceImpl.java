@@ -89,5 +89,16 @@ public class OrderServiceImpl implements OrderService {
         return ordersByPrinterId;
     }
 
+    @Override
+    public List<Order> getOrdersByPrinterId2(List<Long> ids, List<Order> allOrders){
+        List<Order> ordersByPrinterId = new ArrayList<>();
+        for (Order order : allOrders) {
+            if (ids.contains(order.getPrinter().getId())) {
+                ordersByPrinterId.add(order);
+            }
+        }
+        return ordersByPrinterId;
+    }
+
 
 }
