@@ -43,4 +43,5 @@ public class PrinterDTO {
 
     @NotBlank
     private String material;
+    
 }

@@ -3,6 +3,7 @@ package com.dhub.backend.controllers;
 
 import com.dhub.backend.controllers.request.OrderDTO;
 import com.dhub.backend.controllers.request.PrinterDTO;
+import com.dhub.backend.controllers.request.UserDTO;
 import com.dhub.backend.controllers.response.MessageResponse;
 import com.dhub.backend.models.EStatus;
 import com.dhub.backend.models.Order;
@@ -23,7 +24,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -184,7 +187,7 @@ public class OrderController {
     }
 
     @GetMapping("/manufacturerOrders")
-    public ResponseEntity<List<Object>>  getManufacturerOrders() {
+    public ResponseEntity< Map<String, Object>>  getManufacturerOrders() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = (authentication != null) ? authentication.getName() : null;
         UserEntity user = userRepository.findByUsername(username)
@@ -202,13 +205,29 @@ public class OrderController {
             printers.add(printer);
         }
 
-        List<Object> listaCombinada = new ArrayList<>();
-        listaCombinada.addAll(printers);
-        listaCombinada.addAll(orders);
+        List<UserDTO> users = new ArrayList<>();
+        for (PrinterDTO printer : printers) {
+            UserEntity userEntity = userRepository.findById(printer.getId())
+                .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
+            users.add(userEntity.getUsersWithoutEntity());
+        }
+
+        // List<Object> listaCombinada = new ArrayList<>();
+        // listaCombinada.addAll(printers);
+        // listaCombinada.addAll(orders);
                 
-        if(listaCombinada.isEmpty()) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("printers", printers);
+        response.put("orders", orders);
+        response.put("users", users);
+
+        if(response.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(listaCombinada, HttpStatus.OK);
+
+        if(response.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

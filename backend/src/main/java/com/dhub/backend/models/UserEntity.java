@@ -2,6 +2,7 @@ package com.dhub.backend.models;
 
 import com.dhub.backend.controllers.request.OrderDTO;
 import com.dhub.backend.controllers.request.PrinterDTO;
+import com.dhub.backend.controllers.request.UserDTO;
 
 import java.util.List;
 import java.util.Set;
@@ -91,6 +92,21 @@ public class UserEntity {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "manufacturer")
     private List<Ratings> ratingsManufacturer;
+
+    public UserDTO getUsersWithoutEntity() {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(this.Id);
+        userDTO.setDni(this.dni);
+        userDTO.setEmail(this.email);
+        userDTO.setUsername(this.username);
+        userDTO.setPassword(this.password);
+        userDTO.setRoles(this.roles.stream().map(role -> role.getName().name()).collect(Collectors.toSet()));
+        userDTO.setLat(this.lat);
+        userDTO.setLon(this.lon);
+        userDTO.setAddress(this.address);
+        userDTO.setFactAddress(this.factAddress);
+        return userDTO;
+    }
 
     public List<PrinterDTO> getPrintersWithoutUserEntity() {
         return printers.stream()
