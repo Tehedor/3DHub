@@ -11,5 +11,7 @@ public interface PrinterService {
 
     public List<PrinterDTO> getAllPrintersWithoutUser();
     PrinterDTO getPrinterById(Long id);
+
+    void deletePrinterById(Long id);
     
 }

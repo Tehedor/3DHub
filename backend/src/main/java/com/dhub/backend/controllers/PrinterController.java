@@ -21,6 +21,7 @@ import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -86,10 +87,9 @@ public class PrinterController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/deletePrinter")
-    public String deleteUser(@RequestParam String id){
-        printerRepository.deleteById(Long.parseLong(id));
-        return "Se ha eliminado el usuario con id: ".concat(id);
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable Long id){
+        printerService.deletePrinterById(id);
     }
 
                 
@@ -101,4 +101,9 @@ public class PrinterController {
                     }
                     return new ResponseEntity<>(printers, HttpStatus.OK);
                 }*/
+
+
+                
+    
     }
+    

@@ -55,4 +55,10 @@ public class PrinterServiceImpl implements PrinterService{
         return printerDTO;
     }
     
+    @Override
+    public void deletePrinterById(Long id) {
+        printerRepository.deleteById(id);
+    }
+
+    
 }
