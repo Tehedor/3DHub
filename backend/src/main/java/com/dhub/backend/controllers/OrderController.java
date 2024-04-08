@@ -158,17 +158,41 @@ public class OrderController {
   
     //Todos los pedidos de un diseñador menos los que estén en el carrito
     @GetMapping("/designer")
-    public ResponseEntity<List<OrderDTO>> getDesignerOrders() {
+    public ResponseEntity<Map<String, Object>> getDesignerOrders() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = (authentication != null) ? authentication.getName() : null;
         UserEntity user = userRepository.findByUsername(username)
         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
 
         List<OrderDTO> orders = user.getOrdersWithoutUserEntity();
-        if(orders.isEmpty()) {
+        List<Long> printerIds = orders.stream()
+            .map(order -> order.getPrinter_id())
+            .distinct()
+            .collect(Collectors.toList());
+
+        List<PrinterDTO> printers = new ArrayList<>();
+        for (Long printerId : printerIds) {
+            PrinterDTO printer = printerService.getPrinterById(printerId);
+            printers.add(printer);
+        }
+        List<UserDTO> users = new ArrayList<>();
+        for (OrderDTO order : orders) {
+            UserEntity userEntity = userRepository.findById(order.getUser_id())
+                .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
+            users.add(userEntity.getUsersWithoutEntity());
+        }
+
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("printers", printers);
+        response.put("orders", orders);
+        response.put("users", users);
+        
+
+        if(response	.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(orders, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @GetMapping("/designerExcludingKart")
     public ResponseEntity<List<OrderDTO>> getDesignerOrdersExcludingKart() {
@@ -221,9 +245,6 @@ public class OrderController {
         response.put("orders", orders);
         response.put("users", users);
 
-        if(response.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
 
         if(response.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
