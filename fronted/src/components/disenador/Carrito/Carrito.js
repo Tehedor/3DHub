@@ -10,26 +10,39 @@ import {carritoPruebas} from '../../../constants/carritoPruebas.js';
 
 // Apis
 import CarritoService from "../../../services/diseñador/carrito.service";
+import PedidosService from "../../../services/diseñador/pedidos.service.js";
 
 export default function Carrito(props) {
     
 
-
     // Estado en el que muestra el spinner si esta cargando
     const [loading, setLoading] = useState(true);
- 
-     // Estado en el que se alamcenan las impresoras
+    
+    // Estado en el que se alamcenan las impresoras
+    // const [thePedidos, setThePedidos] = useState();
     const [theCarrito, setTheCarrito] = useState();
 
+    const [thePrinters, setThePrinters] = useState();
+    const [theFabricantes, setTheFabricantes] = useState();
+     // Estado en el que se alamcenan las impresoras
+
   
-    // Función que descarga todos los pedidos para comprar
+   // Función que descarga todos los pedidos para comprar
     const download = async () => {
-        let downloadCarrito;
+    let downloadCarrito;
+    let downloadprinters;
+    let downloadFabricantes;
         if(CONFIG.use_server){
             try {
-            const response = await CarritoService.getPedidosCarrito();
+            // const response = await CarritoService.getPedidosCarrito();
+            const response = await PedidosService.getPedidosCarrito();
             console.log(response.data);
-            downloadCarrito=response.data;
+            downloadCarrito=response.data.orders;
+            console.log(downloadCarrito);
+            downloadprinters=response.data.printers;
+            console.log(downloadprinters);
+            downloadFabricantes=response.data.users;
+            console.log(downloadFabricantes);
             
             } catch (error) {
                 // setResultados(
@@ -38,12 +51,17 @@ export default function Carrito(props) {
             }
         }else{
             // downloadprinters=printersexample;
-            downloadCarrito=carritoPruebas;
+            downloadPedidos=carritoPruebas;
             // console.log(printersexample);
         }
-        setTheCarrito(downloadCarrito);
-        console.log(theCarrito);
-    }
+    setTheCarrito(downloadCarrito);
+    setThePrinters(downloadprinters);
+    setTheFabricantes(downloadFabricantes);
+    console.log("pedidos",theCarrito);
+    console.log("printers",thePrinters);
+    console.log("fabricantes",theFabricantes);
+}
+
 
 
      // Efecto que se ejecuta al cargar la página
@@ -59,8 +77,9 @@ export default function Carrito(props) {
     }, []);
 
 
-    const comprar = async () => {
+    const comprar = () => {
         for (let i = 0; i < theCarrito.length; i++) {
+            console.log("carrito",theCarrito[i].id);
             CarritoService.order(theCarrito[i].id);
         }
         
@@ -75,9 +94,10 @@ export default function Carrito(props) {
             <Container>
                 <Row>
 
-                    <Col sm={6}>
+                    <Col sm={10}>
                         <Row>
-                            <CarritoLista theCarrito={theCarrito} />
+                            <CarritoLista theCarrito={theCarrito}  printers={thePrinters} fabricantes={theFabricantes}/>
+                            {/* <PedidosLista pedidos={thePedidos} printers={thePrinters} fabricantes={theFabricantes} /> */}
                         </Row>  
                     </Col>
                     <Col sm={2}>

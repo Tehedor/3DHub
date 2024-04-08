@@ -6,11 +6,13 @@ import ImpresorasServiceFabri from "../../../services/fabricante/impresoras.fabr
 export default function VerImpresora(props) {
 
     const printer = props.printer;
-    const printerId = props.printer.id;
+    const printerId = printer.id;
+
 
 
     const deletePrinter = () => {
-        ImpresorasServiceFabri.añadirPedido(printerId);
+        // console.log("ideliminar", printerId);      
+        ImpresorasServiceFabri.deletePrinter(printerId);
     };
     
     return(

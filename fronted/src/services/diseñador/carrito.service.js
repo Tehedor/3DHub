@@ -34,17 +34,24 @@ const getPedidosCarrito = () => {
 };
 
 const order = (id) => {
+  console.log("id",id);
   return app
     .post(`api/orders/${id}/status`, {
+    // .post(`api/orders/${id}/status`, {
       "name": "PAY"
     })
 }
 
+const deletePedido = (id) => {
+  return app
+    .delete(`api/orders/${id}`)
+}
 
 
 const CarritoService = {
   getPedidosCarrito,
   order,
+  deletePedido,
 }
 
 export default CarritoService;

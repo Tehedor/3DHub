@@ -27,6 +27,10 @@ const confirmarEntrga = (id) => {
       "name": "DELIVERED"
     })
 }
+// return app
+// .post(`api/orders/${id}/status`, {
+//   "name": "PAY"
+// })
 
 const getPedidos = () => {
   return app

@@ -49,7 +49,13 @@ const getImpresorasFabricante = () => {
 
 }
 
+// const deletePrinter = (id) => {
+//   // console.log("id",id);
+//   return app.
+//     delete(`deletePrinter/${id}`);
+// }
 const deletePrinter = (id) => {
+  // console.log("id",id);
   return app.
     delete(`deletePrinter`, 
     {id}

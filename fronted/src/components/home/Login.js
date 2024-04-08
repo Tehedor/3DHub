@@ -108,7 +108,7 @@ const Login = () => {
               validations={[required]}
             />
           </div>
-
+          <p></p>
           <div className="form-group">
             <button className="btn btn-primary btn-block" disabled={loading}>
               {loading && (
@@ -117,6 +117,7 @@ const Login = () => {
               <span>Login</span>
             </button>
           </div>
+          <p></p>
 
           <div className="form-group">
             <Link to="/register">
