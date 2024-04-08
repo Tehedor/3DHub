@@ -10,6 +10,8 @@ import {MyValidationCheck} from '../../common/ValidationComponents.js';
 
 import AuthService from "../../services/auth.service";
 
+import {Button, Col, Row} from 'react-bootstrap';
+
 const required = (value) => {
   if (!value) {
     return (
@@ -348,7 +350,29 @@ const RegisterDisenador = (props) => {
                 role="alert"
               >
                 {message}
+
+
               </div>
+              
+              <Col>
+              
+                  <Row>
+                    <Button href="/login" variant="info" size="sm" >
+                      Login
+                    </Button>
+                    
+                  </Row>
+                  <p>
+                    
+                  </p>
+                  <Row>
+                    <Button href="/" variant="danger" size="sm" >
+                      Volver
+                    </Button>
+                    
+                  </Row>
+              </Col>
+                
             </div>
           )}
           <CheckButton style={{ display: "none" }} ref={checkBtn} />

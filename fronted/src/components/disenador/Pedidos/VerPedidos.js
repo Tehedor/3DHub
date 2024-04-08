@@ -10,14 +10,17 @@ export default function VerPediros(props) {
     // const pedidos = props.pedidos;
 
     const pedidos = props.pedidos;
-
+    const printer = props.printer;
+    const fabricante = props.fabricante;
 
     const confirmarEntrega = () => {
-        PedidosService.confirmarEntrga(pedidos.id_pedido)
+        // PedidosService.confirmarEntrga(pedidos.id_pedido)
+        PedidosService.confirmarEntrga(pedidos.id)
     }
 
     const confirmarRevision = () => {
-        PedidosService.confirmarRevision(pedidos.id_pedido)
+        // PedidosService.confirmarRevision(pedidos.id_pedido)
+        PedidosService.confirmarRevision(pedidos.id)
     }
 
     const ControlEstados = () => {
@@ -78,16 +81,18 @@ export default function VerPediros(props) {
                 <Row>
                     <Button variant="warning" size="sm" onClick={confirmarEntrega} >Confirmar Entrega</Button>
                 </Row>
-                <Row>
-                <   p>Confirme cuando el pedido haya llegado</p>
-                </Row>
                 </>
             )
         }else if(pedidos.status === "DELIVERED"){
             return (
-                <Row  className="justify-content-md-center align-items-center"> 
-                    <Image src={"http://localhost:3000/iconos_estados/terminado.svg"} className="icon" alt="terminado" style={{width: "70px", height: "70px"}}/>
-                </Row>
+                <>
+                    <Row  className="justify-content-md-center align-items-center"> 
+                        <Image src={"http://localhost:3000/iconos_estados/terminado.svg"} className="icon" alt="terminado" style={{width: "70px", height: "70px"}}/>
+                    </Row>
+                    <Row>
+                    <   p> Completado </p>
+                    </Row>
+                </>
             )
         }
     }
@@ -99,9 +104,24 @@ export default function VerPediros(props) {
     return(
         <Card border="gray" style={{ backgroundColor: "white", marginTop: '0' }}> 
         {/* <Card border="gray" style={{ backgroundColor: "white", marginTop: '0', height: '320px' }}>  */}
-            <Card.Body>
+            <Card.Header   style={{ backgroundColor: 'blue', color: 'white', fontWeight: 'bold' }}>
                 <Row>
-                    <Col sm={9} class="datos_impresora">
+                    <Col>
+                        Fabricante: Juan
+                        {/* Fabricante: {fabricante.username} */}
+                    </Col>
+                    <Col>
+                        
+                        Printer: {printer.modelName}, ID_Impresora: {pedidos.id}
+                        
+                    </Col>
+ 
+                </Row>
+            </Card.Header>
+            <Card.Body>
+                
+                <Row>
+                    <Col sm={6} class="datos_impresora">
                         
 
                         <Row>id: {pedidos.id}</Row>
@@ -115,6 +135,9 @@ export default function VerPediros(props) {
                     
                         {/* <Card.Text>Stock: {pedidos.Nombre_modelo}</Card.Text> */}
                     </Col> 
+                    <Col sm={3}>
+
+                    </Col>
                     {/* <Col sm={3} class="boton" className="d-flex justify-content-center align-items-center"> */}
                     <Col sm={3} class="controlEstados "  >
                         {ControlEstados()}

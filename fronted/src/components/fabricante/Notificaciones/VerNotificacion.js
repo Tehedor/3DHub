@@ -8,6 +8,8 @@ import NotificacionService from "../../../services/fabricante/notificaciones.ser
 export default function VerNotificaciones(props) {
 
     const pedidos = props.pedidos;
+    const printer = props.printer;
+    const diseñador = props.diseñador;
 
 
     const confirmarPedido = () => {
@@ -72,9 +74,24 @@ export default function VerNotificaciones(props) {
     return(
         <Card border="gray" style={{ backgroundColor: "white", marginTop: '0' }}> 
         {/* <Card border="gray" style={{ backgroundColor: "white", marginTop: '0', height: '320px' }}>  */}
-            <Card.Body>
+            <Card.Header>
                 <Row>
-                    <Col sm={9} class="datos_impresora">
+                    <Col>
+                        Fabricante: Juan
+                        {/* Fabricante: {diseñador.username} */}
+                    </Col>
+                    <Col>
+                        
+                        Printer: {printer.modelName}, ID_Impresora: {pedidos.id}
+                        
+                    </Col>
+ 
+                </Row>
+            </Card.Header>
+            <Card.Body>
+                
+                <Row>
+                    <Col sm={6} class="datos_impresora">
                         
 
                         <Row>id: {pedidos.id}</Row>
@@ -88,7 +105,11 @@ export default function VerNotificaciones(props) {
                     
                         {/* <Card.Text>Stock: {pedidos.Nombre_modelo}</Card.Text> */}
                     </Col> 
-                    <Col sm={3} class="boton" className="d-flex justify-content-center align-items-center">
+                    <Col sm={3}>
+
+                    </Col>
+                    {/* <Col sm={3} class="boton" className="d-flex justify-content-center align-items-center"> */}
+                    <Col sm={3} class="controlEstados "  >
                         {ControlEstados()}
                     </Col>
                 </Row>

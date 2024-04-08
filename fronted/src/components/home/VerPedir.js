@@ -35,7 +35,7 @@ export default function Ver(props) {
                             
                         </Col>
                         <Col sm={4}>
-                            <Card.Text>Fabricante: {printer.Fabricante}</Card.Text>
+                            <Card.Text>Fabricante: {printer.userIdFabricante}</Card.Text>
                             <Card.Text>Id: {printer.id}</Card.Text>
                         </Col>
                         
