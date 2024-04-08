@@ -10,7 +10,7 @@ const app = axios.create({
   baseURL: "http://localhost:8080/",
   headers: {
     "Content-type": "application/json",
-    // "Authorization": `Bearer ${token}`,
+    "Authorization": `Bearer ${token}`,
   },
 });
 
@@ -45,6 +45,22 @@ const creadoEnviado = (id) => {
 
 }
 
+const getPedidosFabricante = () => {
+  return app
+    .get("api/printers/printers", {
+      // username,
+      // password,
+    })
+    .then((response) => {
+      if (response.data) {
+        localStorage.setItem("pedidosFabri", JSON.stringify(response)); 
+        console.log(JSON.parse(localStorage.getItem("pedidosFabri"))); 
+      }
+      console.log(response.data);
+      return response;
+    });
+};
+
 // CANCELLED,
 // DELIVERED,
 // KART,
@@ -59,6 +75,7 @@ const NotificacionService = {
   cancelarPedido,
   aceptadoCreando,
   creadoEnviado,
+  getPedidosFabricante,
 }
 
 export default NotificacionService;

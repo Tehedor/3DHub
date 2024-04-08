@@ -27,7 +27,7 @@ export default function Carrito(props) {
         let downloadCarrito;
         if(CONFIG.use_server){
             try {
-            const response = await CarritoService.getPedidsoCarrito();
+            const response = await CarritoService.getPedidosCarrito();
             console.log(response.data);
             downloadCarrito=response.data;
             
@@ -75,7 +75,7 @@ export default function Carrito(props) {
             <Container>
                 <Row>
 
-                    <Col sm={10}>
+                    <Col sm={6}>
                         <Row>
                             <CarritoLista theCarrito={theCarrito} />
                         </Row>  

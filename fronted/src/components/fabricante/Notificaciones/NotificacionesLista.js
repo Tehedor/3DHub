@@ -4,14 +4,13 @@ import {Link} from "react-router-dom";
 import VerNotificacion from "./VerNotificacion";
 
 export default function NotificacionesLista(props) {
-    let lista = props.printers;    
+    let lista = props.pedidos;    
 
    return(
         <div id="productosresultados" >
                 {lista.map((items,index) => (
-                    <Link to={`/pedirpedido/${index}`} style={{ textDecoration: 'none' }}>
-                        <VerNotificacion printer={items}/>
-                    </Link>
+                        <VerNotificacion pedidos={items}/>
+                  
                 ))}
         </div>);
 }

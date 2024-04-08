@@ -52,6 +52,23 @@ const añadirPedido = (file, cantidad, fechaFabricacion, fechaEntrega, especific
 
 }
   
+
+
+const getPedidosCarrito = () => {
+  return app
+    .get("api/orders/designer", {
+      // username,
+      // password,
+    })
+    .then((response) => {
+      if (response.data) {
+        localStorage.setItem("orderDesigner", JSON.stringify(response)); 
+        console.log(JSON.parse(localStorage.getItem("orderDesigner"))); 
+      }
+      console.log(response.data);
+      return response;
+    });
+};
   // "manufacturerdate": "2022-11-15",
   // "pickupdate":"2023-10-14",
   // "number": 3,
@@ -61,6 +78,7 @@ const PedidosService = {
   revisado,
   confirmarEntrga,
   añadirPedido,
+  getPedidosCarrito,
 }
 
 export default PedidosService;

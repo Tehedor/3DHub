@@ -3,14 +3,13 @@ import {Link} from "react-router-dom";
 import VerPediros from "./VerPedidos";
 
 export default function PedidosLista(props) {
-    let lista = props.printers;    
+    let lista = props.pedidos;    
 
    return(
         <div id="productosresultados" >
                 {lista.map((items,index) => (
         
-                    // <VerPediros printer={items}/>
-               <></>
+                    <VerPediros pedidos={items}/>
                 ))}
         </div>);
 }

@@ -17,9 +17,9 @@ const app = axios.create({
 
 
 
-const getPedidsoCarrito = () => {
+const getPedidosCarrito = () => {
   return app
-    .get("api/orders/designer", {
+    .get("api/orders/kart", {
       // username,
       // password,
     })
@@ -43,7 +43,7 @@ const order = (id) => {
 
 
 const CarritoService = {
-  getPedidsoCarrito,
+  getPedidosCarrito,
   order,
 }
 
