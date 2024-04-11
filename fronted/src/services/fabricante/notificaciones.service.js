@@ -68,7 +68,6 @@ const deletePedido = (id) => {
 }
 
 
-
 // CANCELLED,
 // DELIVERED,
 // KART,
