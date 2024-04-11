@@ -39,7 +39,7 @@ export default function VerNotificaciones(props) {
         if (pedidos.status === "PAY"){
             return (
                 <>
-                    <Image src={"http://localhost:3000/iconos_estados/pagado.svg"} className="icon" alt="pagado" />
+                    <Image src={"http://localhost:3000/iconos_estados/pagado.svg"} className="icon" alt="pagado" style={{width: "70px", height: "70px"}} />
                     <Button variant="success" size="sm" onClick={confirmarPedido}>Aceptar pedido</Button>
                     <Button variant="warning" size="sm" onClick={rechazrPedido}>Rechazar Pedido</Button>
                     <Button variant="danger" size="sm" onClick={revisarPedido}>Mandar a revisar</Button>

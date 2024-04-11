@@ -79,14 +79,13 @@ export default function Carrito(props) {
 
     const comprar = () => {
         for (let i = 0; i < theCarrito.length; i++) {
-            if(theCarrito.order.status === "KART"){
+            console.log("carrito",theCarrito[i].id);    
+            if(theCarrito[i].status === "KART"){
                 CarritoService.order(theCarrito[i].id);
-                console.log("carrito",theCarrito[i].id);
             }
         }
         
     }
-
 
     return (
         <div>

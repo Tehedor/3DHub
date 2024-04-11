@@ -34,14 +34,21 @@ const getPedidosCarrito = () => {
     });
 };
 
+// const order = (id) => {
+//   console.log("id",id);
+//   return app
+//     .post(`api/orders/${id}/status`, {
+//       "name": "PAY"
+//     })
+// }
+
 const order = (id) => {
-  console.log("id",id);
   return app
     .post(`api/orders/${id}/status`, {
-    // .post(`api/orders/${id}/status`, {
       "name": "PAY"
     })
 }
+
 
 // const revisado = (id) => {
 //   return app
