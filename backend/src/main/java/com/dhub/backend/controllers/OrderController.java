@@ -126,6 +126,10 @@ public class OrderController {
      */
     @PostMapping("/{id}/status")
     public ResponseEntity<?> changeStatus(@PathVariable Long id, @RequestBody Status status) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = (authentication != null) ? authentication.getName() : null;
+        UserEntity user = userRepository.findByUsername(username)
+        .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
         EStatus newStatus = status.getName();
         Order order = getOrderById(id).getBody();
         // If the order does not exist, return 404
@@ -134,7 +138,7 @@ public class OrderController {
         }
         order.setStatus(newStatus);
         orderRepository.save(order);
-        return ResponseEntity.ok(new MessageResponse("Petición " + id.toString() + " guardada como " + newStatus.toString()));
+        return ResponseEntity.ok(new MessageResponse("Petición de"+ user.getUsername() +" del pedido " + id.toString() + " guardada como " + newStatus.toString()));
     }
 
     @GetMapping("/kart")
