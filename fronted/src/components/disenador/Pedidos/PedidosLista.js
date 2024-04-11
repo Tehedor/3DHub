@@ -41,7 +41,7 @@ export default function PedidosLista(props) {
 
    return(
         <div id="productosresultados" >
-                {lista.map((items,index) => (
+                { Array.isArray(lista) && lista.length > 0 &&lista.map((items,index) => (
                     items.status !== "KART" && 
                     // <VerPedidos pedidos={items} printer={searchPrinter(items.printer_id)} fabricante={searchFabricante(items.printer_id)} />
                     <VerPedidos pedidos={items} printer={searchPrinter(items.printer_id)}/>

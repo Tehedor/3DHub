@@ -34,7 +34,7 @@ export default function NotificacionesLista(props) {
 
    return(
         <div id="productosresultados" >
-                {lista.map((items,index) => (
+                { Array.isArray(lista) && lista.length > 0 &&lista.map((items,index) => (
                              items.status !== "KART" && 
                         <VerNotificacion pedidos={items} printer={searchPrinter(items.printer_id)} diseñador={searchDiseñador(items.user_id)}/>
                   

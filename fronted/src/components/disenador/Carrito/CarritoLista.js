@@ -41,7 +41,8 @@ export default function CarritoLista(props) {
    
     return(
         <div id="productosresultados" >
-                {lista.map((items,index) => (
+                {  Array.isArray(lista) && lista.length > 0 &&
+                    lista.map((items,index) => (
                     items.status === "KART" && 
                         <VerPedidoCarrito carrito={items} printer={searchPrinter(items.printer_id)} fabricante={searchFabricante(items.printer_id)}/>
                 ))}
