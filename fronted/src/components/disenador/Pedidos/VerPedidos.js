@@ -16,11 +16,17 @@ export default function VerPediros(props) {
     const confirmarEntrega = () => {
         // PedidosService.confirmarEntrga(pedidos.id_pedido)
         PedidosService.confirmarEntrga(pedidos.id)
+            .then(() => {
+                window.location.reload();
+            });
     }
 
     const confirmarRevision = () => {
         // PedidosService.confirmarRevision(pedidos.id_pedido)
         PedidosService.confirmarRevision(pedidos.id)
+            .then(() => {
+                window.location.reload();
+            });
     }
 
     const ControlEstados = () => {

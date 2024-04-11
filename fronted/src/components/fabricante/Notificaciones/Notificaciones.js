@@ -17,11 +17,20 @@ import TablaEstados from '../../../common/Tabla_estados.js';
 
 export default function Notificaciones(props) {
 
-     // Estado en el que muestra el spinner si esta cargando
-     const [loading, setLoading] = useState(true);
+    //  // Estado en el que muestra el spinner si esta cargando
+    //  const [loading, setLoading] = useState(true);
  
-     // Estado en el que se alamcenan las impresoras
-    const [thePedidos, setThePedidos] = useState();
+    //  // Estado en el que se alamcenan las impresoras
+    // const [thePedidos, setThePedidos] = useState();
+
+    const [loading, setLoading] = useState(true);
+ 
+    // Estado en el que se alamcenan las impresoras
+   const [thePedidos, setThePedidos] = useState();
+   
+   const [thePrinters, setThePrinters] = useState();
+   const [theFabricantes, setTheFabricantes] = useState();
+
 
 
    // Función que descarga todos los pedidos para comprar
