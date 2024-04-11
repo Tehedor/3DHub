@@ -90,7 +90,6 @@ public class OrderController {
     public void deleteOrder(@PathVariable Long id) {
         orderService.deleteOrder(id);
     }
-    
 
     /*
      * creates the order, saving the status as KART
@@ -138,25 +137,43 @@ public class OrderController {
         return ResponseEntity.ok(new MessageResponse("Petición " + id.toString() + " guardada como " + newStatus.toString()));
     }
 
-    /*
-     * Get all orders from the kart
-     * TODO: To be modified. When logging works, we should get the user id from the token
-     * No parameters
-     * Gets the user of the last order in the list of orders
-     */
     @GetMapping("/kart")
-    public List<OrderDTO> getKart() {
+    public ResponseEntity<Map<String, Object>> getKart() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = (authentication != null) ? authentication.getName() : null;
         UserEntity user = userRepository.findByUsername(username)
         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
-        
+
         List<OrderDTO> orders = user.getOrdersWithoutUserEntity();
         List<OrderDTO> status = orderService.getOrdersByStatus(EStatus.KART, orders);
-        return orderService.getOrdersByUserId(user.getId(), status);
-        // return orderService.getOrdersByUserId(userDetails.getId(), status);
+        List<Long> printerIds = status.stream()
+            .map(order -> order.getPrinter_id())
+            .distinct()
+            .collect(Collectors.toList());
+        List<PrinterDTO> printers = new ArrayList<>();
+        for (Long printerId : printerIds) {
+            PrinterDTO printer = printerService.getPrinterById(printerId);
+            printers.add(printer);
+        }
+
+        List<UserDTO> users = new ArrayList<>();
+        for (Long printerId : printerIds) {
+            UserEntity userEntity = userRepository.findById(printerId)
+                .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
+            users.add(userEntity.getUsersWithoutEntity());
+        }
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("printers", printers);
+        response.put("orders", status);
+        response.put("users", users);
+        
+        if(response	.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
-  
+
     //Todos los pedidos de un diseñador menos los que estén en el carrito
     @GetMapping("/designer")
     public ResponseEntity<Map<String, Object>> getDesignerOrders() {
@@ -182,7 +199,6 @@ public class OrderController {
                 .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
             users.add(userEntity.getUsersWithoutEntity());
         }
-
 
         Map<String, Object> response = new HashMap<>();
         response.put("printers", printers);
