@@ -30,7 +30,7 @@ export default function VerNotificaciones(props) {
     }           
 
     const ControlEstados = () => {
-        if (pedidos.Estado === "PAY"){
+        if (pedidos.status === "PAY"){
             return (
                 <>
                     <Image src={"http://localhost:3000/iconos_estados/pagado.svg"} className="icon" alt="pagado" />
@@ -40,30 +40,30 @@ export default function VerNotificaciones(props) {
                     <p>Esperando respuesta del Fabricante</p>
                 </>
             )
-        }else if(pedidos.Estado === "CANCELLED"){
+        }else if(pedidos.status === "CANCELLED"){
             return (<>
-            <Image src={"http://localhost:3000/iconos_estados/rechazado.svg"} className="icon" alt="rechazado" />
+            <Image src={"http://localhost:3000/iconos_estados/rechazado.svg"} className="icon" alt="rechazado" style={{width: "70px", height: "70px"}} />
             <p>Pedido Cancelado/Rechazado</p>
             </>)
-        }else if(pedidos.Estado === "REVISION"){
+        }else if(pedidos.status === "REVISION"){
             return (<>
-                <Image src={"http://localhost:3000/iconos_estados/bajo_revision.svg"} className="icon" alt="bajo_revision" />
+                <Image src={"http://localhost:3000/iconos_estados/bajo_revision.svg"} className="icon" alt="bajo_revision" style={{width: "70px", height: "70px"}} />
                 <p>Esperando revision del diseñador</p>
             </>)
-        }else if(pedidos.Estado === "CREATING"){
+        }else if(pedidos.status === "CREATING"){
             return (<>
-                <Image src={"http://localhost:3000/iconos_estados/creando.svg"} className="icon" alt="creando" />
+                <Image src={"http://localhost:3000/iconos_estados/creando.svg"} className="icon" alt="creando" style={{width: "70px", height: "70px"}} />
                 <p>Creando Pedido...</p>
                 <Button variant="info" size="sm" onClick={terminarPedido}>Pedido Terminado</Button>
             </>)
-        }else if(pedidos.Estado === "SEND"){
+        }else if(pedidos.status === "SEND"){
             return (<>
-                <Image src={"http://localhost:3000/iconos_estados/enviado.svg"} className="icon" alt="enviado" />
+                <Image src={"http://localhost:3000/iconos_estados/enviado.svg"} className="icon" alt="enviado" style={{width: "70px", height: "70px"}} />
                 <p>Espere a que el pedido llegue al diseñador</p>
             </>)
-        }else if(pedidos.Estado === "DELIVERED"){
+        }else if(pedidos.status === "DELIVERED"){
             return (
-                <Image src={"http://localhost:3000/iconos_estados/terminado.svg"} className="icon" alt="terminado" />
+                <Image src={"http://localhost:3000/iconos_estados/terminado.svg"} className="icon" alt="terminado" style={{width: "70px", height: "70px"}} />
             )
         }
     }
@@ -77,7 +77,7 @@ export default function VerNotificaciones(props) {
             <Card.Header>
                 <Row>
                     <Col>
-                        Fabricante: Juan
+                        diseñador: {diseñador.username}
                         {/* Fabricante: {diseñador.username} */}
                     </Col>
                     <Col>

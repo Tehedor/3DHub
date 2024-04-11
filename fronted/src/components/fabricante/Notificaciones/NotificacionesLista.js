@@ -6,12 +6,12 @@ import VerNotificacion from "./VerNotificacion";
 export default function NotificacionesLista(props) {
     
     let lista = props.pedidos;    
-    let diseñador = props.diseñador;
+    let diseñadores = props.diseñadores;
     let printers = props.printers;
     
     console.log("lista",lista);
     console.log("printers",printers);
-    console.log("fabricantes",fabricantes);
+    console.log("diseñador",diseñadores);
 
     const searchPrinter = (id) => {
         for (let i = 0; i < printers.length; i++) {
@@ -22,10 +22,10 @@ export default function NotificacionesLista(props) {
         }
     }
 
-    const searchDiseñador = (id) => {ç
-        for (let i = 0; i < diseñador.length; i++) {
-            if (fabricantes[i].id == id) {
-                return fabricantes[i];
+    const searchDiseñador = (id) => {
+        for (let i = 0; i < diseñadores.length; i++) {
+            if (diseñadores[i].id == id) {
+                return diseñadores[i];
             }
         }
 
@@ -36,7 +36,7 @@ export default function NotificacionesLista(props) {
         <div id="productosresultados" >
                 {lista.map((items,index) => (
                              items.status !== "KART" && 
-                        <VerNotificacion pedidos={items} printer={searchPrinter(items.idImpresora)} diseñador={searchDiseñador(items.IdDisñador)}/>
+                        <VerNotificacion pedidos={items} printer={searchPrinter(items.printer_id)} diseñador={searchDiseñador(items.user_id)}/>
                   
                 ))}
         </div>);

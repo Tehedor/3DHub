@@ -113,8 +113,9 @@ export default function VerPediros(props) {
             <Card.Header   style={{ backgroundColor: 'blue', color: 'white', fontWeight: 'bold' }}>
                 <Row>
                     <Col>
-                        Fabricante: Juan
-                        {/* Fabricante: {fabricante.username} */}
+                        {/* Fabricante: Juan */}
+                        {/* Fabricante: {fabricante.username || "No disponible"} */}
+                        Fabricante: {fabricante ? fabricante.username : printer.userIdFabricante}
                     </Col>
                     <Col>
                         

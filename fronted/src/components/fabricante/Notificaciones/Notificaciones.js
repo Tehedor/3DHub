@@ -29,18 +29,27 @@ export default function Notificaciones(props) {
    const [thePedidos, setThePedidos] = useState();
    
    const [thePrinters, setThePrinters] = useState();
-   const [theFabricantes, setTheFabricantes] = useState();
+   const [theDiseñadores, setTheDiseñadores] = useState();
 
 
 
    // Función que descarga todos los pedidos para comprar
     const download = async () => {
         let downloadPedidos;
+        let downloadprinters;
+        let downloadDiseñadores;
+
             if(CONFIG.use_server){
                 try {
                 const response = await NotificacionesService.getPedidosFabricante();
                 console.log(response.data);
-                downloadPedidos=response.data;
+                downloadPedidos=response.data.orders;
+                console.log(downloadPedidos);
+                downloadprinters=response.data.printers;
+                console.log(downloadprinters);
+                downloadDiseñadores=response.data.users;
+                console.log(downloadDiseñadores);
+
                 
                 } catch (error) {
                     // setResultados(
@@ -53,6 +62,8 @@ export default function Notificaciones(props) {
                 // console.log(printersexample);
             }
         setThePedidos(downloadPedidos);
+        setThePrinters(downloadprinters);
+        setTheDiseñadores(downloadDiseñadores);
         console.log(thePedidos);
     }
 
@@ -85,8 +96,8 @@ export default function Notificaciones(props) {
                     </Col>
                     <Col sm={10}>
                         <Row>
-                            <NotificacionesLista  pedidos={thePedidos} />
-                        </Row>  
+                            <NotificacionesLista  pedidos={thePedidos} printers={thePrinters} diseñadores={theDiseñadores} />
+                        </Row>   
                         <Button id="volver" variant="primary"  href="/">Volver</Button>
                     </Col>
                 </Row>

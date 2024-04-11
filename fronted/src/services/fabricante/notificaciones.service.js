@@ -47,7 +47,7 @@ const creadoEnviado = (id) => {
 
 const getPedidosFabricante = () => {
   return app
-    .get("api/printers/printers", {
+    .get("api/orders/manufacturerOrders", {
       // username,
       // password,
     })
