@@ -19,7 +19,8 @@ const app = axios.create({
 
 const getPedidosCarrito = () => {
   return app
-    .get("api/orders/kart", {
+    // .get("api/orders/kart", {
+    .get("api/orders/designer", {
       // username,
       // password,
     })
@@ -41,6 +42,14 @@ const order = (id) => {
       "name": "PAY"
     })
 }
+
+// const revisado = (id) => {
+//   return app
+//     .post(`api/orders/${id}/status`, {
+//       "name": "PAY"
+//     })
+// }
+
 
 const deletePedido = (id) => {
   return app

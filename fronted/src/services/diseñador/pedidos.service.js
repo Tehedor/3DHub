@@ -65,7 +65,7 @@ const getPedidosCarrito = () => {
       // password,
     })
     .then((response) => {
-      if (response.data) {
+      if (response) {
         localStorage.setItem("orderDesigner", JSON.stringify(response)); 
         console.log(JSON.parse(localStorage.getItem("orderDesigner"))); 
       }
@@ -73,6 +73,7 @@ const getPedidosCarrito = () => {
       return response;
     });
 };
+
   // "manufacturerdate": "2022-11-15",
   // "pickupdate":"2023-10-14",
   // "number": 3,

@@ -30,9 +30,9 @@ export default function CarritoLista(props) {
                 const printer = searchPrinter(id);
                 const idFabricante = printer.userIdFabricante;
                 for (let i = 0; i < fabricantes.length; i++) {
-                if (fabricantes[i].id == id) {
-                        return fabricantes[i];
-                }
+                    if (fabricantes[i].id == id) {
+                            return fabricantes[i];
+                    }
                 }
         }       
 
@@ -41,9 +41,20 @@ export default function CarritoLista(props) {
    
     return(
         <div id="productosresultados" >
-                {lista.map((items,index) => (
-                    items.status === "KART" && 
-                        <VerPedidoCarrito carrito={items} printer={searchPrinter(items.printer_id)} fabricante={searchFabricante(items.printer_id)}/>
-                ))}
+            {
+                Array.isArray(lista) && lista.length > 0 ? (
+                    lista.map((items, index) =>
+                        items.status === "KART" ? (
+                            <VerPedidoCarrito
+                            carrito={items}
+                            printer={searchPrinter(items.printer_id)}
+                            fabricante={searchFabricante(items.printer_id)}
+                            />
+                        ) : null
+                        )
+                ) : (
+                    <p>El carrito está vacío</p>
+                )
+            }
         </div>);
 }

@@ -27,9 +27,9 @@ export default function TodasImpresoras(props) {
         let downloadprinters;
         if(CONFIG.use_server){
             try {
-            const data = await ImpresorasServiceFabri.getImpresorasFabricante();
-            console.log(data);
-            downloadprinters=data;
+            const response = await ImpresorasServiceFabri.getImpresorasFabricante();
+            downloadprinters=response.data;
+            console.log(downloadprinters);
             
             } catch (error) {
                 // setResultados(
@@ -41,7 +41,7 @@ export default function TodasImpresoras(props) {
             downloadprinters=printersPruebas;
             // console.log(printersexample);
         }
-        setThePrinters(downloadprinters.data);
+        setThePrinters(downloadprinters);
         console.log(theprinters);
     }
 

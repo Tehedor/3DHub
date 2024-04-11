@@ -12,17 +12,17 @@ export default function VerPedidoCarrito(props) {
     const eliminarPedido = () => { 
         console.log("Eliminando pedido");
         console.log(carrito.id);
-        CarritoService.deletePedido(carrito.id)
+        CarritoService.deletePedido(carrito.id);
     }
     
     return(
         <Card border="gray" > 
-        {/* <Card border="gray" style={{ backgroundColor: "white", marginTop: '0', height: '320px' }}>  */}
+        {/* <Card border="gray: ender 3" style={{ backgroundColor: "white", marginTop: '0', height: '320px' }}>  */}
             <Card.Header   style={{ backgroundColor: 'orange', color: 'white', fontWeight: 'bold' }}>
                 <Row>
                     <Col lm={5}>
-                        Fabricante: Juan
-                        {/* Fabricante: {fabricante.username} */}
+                        {/* Fabricante: Juan */}
+                        Fabricante: {fabricante ? fabricante.username : printer.userIdFabricante}
                     </Col>
                     <Col lm={5}>
                         

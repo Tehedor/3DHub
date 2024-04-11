@@ -61,6 +61,14 @@ const getPedidosFabricante = () => {
     });
 };
 
+
+const deletePedido = (id) => {
+  return app
+    .delete(`api/orders/${id}`)
+}
+
+
+
 // CANCELLED,
 // DELIVERED,
 // KART,
@@ -76,6 +84,7 @@ const NotificacionService = {
   aceptadoCreando,
   creadoEnviado,
   getPedidosFabricante,
+  deletePedido,
 }
 
 export default NotificacionService;
