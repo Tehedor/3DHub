@@ -285,8 +285,8 @@ public class OrderController {
         // }
 
         List<UserDTO> users = new ArrayList<>();
-        for (PrinterDTO printer : printers) {
-            UserEntity userEntity = userRepository.findById(printer.getId())
+        for (OrderDTO order : getOrdersWithoutUserEntity) {
+            UserEntity userEntity = userRepository.findById(order.getUser_id())
                 .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
             users.add(userEntity.getUsersWithoutEntity());
         }
