@@ -11,6 +11,8 @@ export default function VerNotificaciones(props) {
     const printer = props.printer;
     const diseñador = props.diseñador;
 
+    const diseñadorUsername = diseñador.username;
+
 
     const confirmarPedido = () => {
         NotificacionService.aceptadoCreando(pedidos.id_pedido)
@@ -28,6 +30,10 @@ export default function VerNotificaciones(props) {
     const terminarPedido = () => {
         NotificacionService.creadoEnviado(pedidos.id_pedido)
     }           
+
+    const deletePedido = () => {
+        NotificacionService.deletePedido(pedidos.id_pedido)
+    }
 
     const ControlEstados = () => {
         if (pedidos.status === "PAY"){
@@ -77,13 +83,16 @@ export default function VerNotificaciones(props) {
             <Card.Header>
                 <Row>
                     <Col>
-                        diseñador: {diseñador.username}
+                        diseñador: {diseñadorUsername}
                         {/* Fabricante: {diseñador.username} */}
                     </Col>
                     <Col>
                         
                         Printer: {printer.modelName}, ID_Impresora: {pedidos.id}
                         
+                    </Col>
+                    <Col>
+                        <Button variant="danger" size="sm" onClick={deletePedido}>Eliminar</Button>
                     </Col>
  
                 </Row>

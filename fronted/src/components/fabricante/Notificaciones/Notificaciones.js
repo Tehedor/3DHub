@@ -58,7 +58,7 @@ export default function Notificaciones(props) {
                 }
             }else{
                 // downloadprinters=printersexample;
-                downloadPedidos=carritoPruebas;
+                // downloadPedidos=carritoPruebas;
                 // console.log(printersexample);
             }
         setThePedidos(downloadPedidos);

@@ -23,6 +23,8 @@ function PedirPedido  (props) {
   const queryUbica = props.queryUbica;
   const currentUser = props.currentUser;
 
+  const PrinterMaxUnities = printer.MaxUnidades;
+
   if (roll == "ROLE_USER") {
     roll = "diseñador";
   } 
@@ -59,10 +61,10 @@ function PedirPedido  (props) {
       );
     }
     
-    if (value > printer.maxUnities) {
+    if (value > PrinterMaxUnities) {
       return (
         <div className="invalid-feedback d-block">
-          Value must be less than {printer.maxUnities}
+          Value must be less than {PrinterMaxUnities}
         </div>
       );
     }
@@ -218,7 +220,7 @@ function PedirPedido  (props) {
                      {/* CANTIDAD */}
                      <MyValidationInput
                       type="number" 
-                       max={printer.maxUnities} 
+                       max={PrinterMaxUnities} 
                        min="0" 
                        value={cantidad} 
                        onChange={e => setCantidad(e.target.value)}

@@ -34,11 +34,11 @@ export default function Carrito(props) {
     let downloadFabricantes;
         if(CONFIG.use_server){
             try {
-            // const response = await CarritoService.getPedidosCarrito();
-            const response = await PedidosService.getPedidosCarrito();
+            const response = await CarritoService.getPedidosCarrito();
+            // const response = await PedidosService.getPedidosCarrito();
             console.log(response.data);
             downloadCarrito=response.data.orders;
-            console.log(downloadCarrito);
+            console.log("carrito",downloadCarrito);
             downloadprinters=response.data.printers;
             console.log(downloadprinters);
             downloadFabricantes=response.data.users;
@@ -51,7 +51,7 @@ export default function Carrito(props) {
             }
         }else{
             // downloadprinters=printersexample;
-            downloadPedidos=carritoPruebas;
+            // downloadPedidos=carritoPruebas;
             // console.log(printersexample);
         }
     setTheCarrito(downloadCarrito);
@@ -79,8 +79,10 @@ export default function Carrito(props) {
 
     const comprar = () => {
         for (let i = 0; i < theCarrito.length; i++) {
-            console.log("carrito",theCarrito[i].id);
-            CarritoService.order(theCarrito[i].id);
+            if(theCarrito.order.status === "KART"){
+                CarritoService.order(theCarrito[i].id);
+                console.log("carrito",theCarrito[i].id);
+            }
         }
         
     }
@@ -88,7 +90,7 @@ export default function Carrito(props) {
 
     return (
         <div>
-            <h2 id="catálogo">impresoras</h2> 
+            <h2 id="catálogo">Carrito</h2> 
             {loading ? <img id="loading" src={process.env.PUBLIC_URL + "/spinners/cxyduck.gif"} className="spinner" alt="spinner" />:
         
             <Container>

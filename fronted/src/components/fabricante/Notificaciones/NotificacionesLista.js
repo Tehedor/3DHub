@@ -17,6 +17,7 @@ export default function NotificacionesLista(props) {
         for (let i = 0; i < printers.length; i++) {
             console.log(printers[i].id);
             if (printers[i].id == id) {
+                console.log(printers[i]);
                 return printers[i];
             }
         }
@@ -25,6 +26,7 @@ export default function NotificacionesLista(props) {
     const searchDiseñador = (id) => {
         for (let i = 0; i < diseñadores.length; i++) {
             if (diseñadores[i].id == id) {
+                console.log(diseñadores[i]);
                 return diseñadores[i];
             }
         }
