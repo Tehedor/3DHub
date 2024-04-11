@@ -29,13 +29,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 
 @RestController
+// @PreAuthorize("hasRole('ROLE_MANUFACTURER' or 'ROLE_DESIGNER' or 'ROLE_ADMIN')")
 @RequestMapping("/api/orders")
 public class OrderController {
 
@@ -88,7 +88,13 @@ public class OrderController {
 
     @DeleteMapping("/{id}")
     public void deleteOrder(@PathVariable Long id) {
-        orderService.deleteOrder(id);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = (authentication != null) ? authentication.getName() : null;
+        UserEntity user = userRepository.findByUsername(username)
+        .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
+        if (user.getId() == orderService.getOrderById(id).getUserEntity().getId() || user.getId() == orderService.getOrderById(id).getPrinter().getUserEntity().getId()) {
+            orderService.deleteOrder(id);
+        }
     }
 
     /*
