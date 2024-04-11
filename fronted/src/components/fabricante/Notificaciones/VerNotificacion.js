@@ -15,24 +15,39 @@ export default function VerNotificaciones(props) {
 
 
     const confirmarPedido = () => {
-        NotificacionService.aceptadoCreando(pedidos.id_pedido)
+        NotificacionService.aceptadoCreando(pedidos.id)
+        .then(() => {
+            window.location.reload();
+        });
     }
 
     const rechazrPedido = () => {
-        NotificacionService.cancelarPedido(pedidos.id_pedido)
+        NotificacionService.cancelarPedido(pedidos.id)
+        .then(() => {
+            window.location.reload();
+        });
     }
     
     const revisarPedido = () => {
-        NotificacionService.noAceptadoRevision(pedidos.id_pedido)
+        NotificacionService.noAceptadoRevision(pedidos.id)
+        .then(() => {
+            window.location.reload();
+        });
     }
     
     
     const terminarPedido = () => {
-        NotificacionService.creadoEnviado(pedidos.id_pedido)
+        NotificacionService.creadoEnviado(pedidos.id)
+        .then(() => {
+            window.location.reload();
+        });
     }           
 
     const deletePedido = () => {
-        NotificacionService.deletePedido(pedidos.id_pedido)
+        NotificacionService.deletePedido(pedidos.id)
+        .then(() => {
+            window.location.reload();
+        });
     }
 
     const ControlEstados = () => {
@@ -41,8 +56,8 @@ export default function VerNotificaciones(props) {
                 <>
                     <Image src={"http://localhost:3000/iconos_estados/pagado.svg"} className="icon" alt="pagado" style={{width: "70px", height: "70px"}} />
                     <Button variant="success" size="sm" onClick={confirmarPedido}>Aceptar pedido</Button>
-                    <Button variant="warning" size="sm" onClick={rechazrPedido}>Rechazar Pedido</Button>
-                    <Button variant="danger" size="sm" onClick={revisarPedido}>Mandar a revisar</Button>
+                    <Button variant="warning" size="sm" onClick={revisarPedido}>Mandar a revisar</Button>
+                    <Button variant="danger" size="sm" onClick={rechazrPedido}>Rechazar Pedido</Button>
                     <p>Esperando respuesta del Fabricante</p>
                 </>
             )
