@@ -103,7 +103,7 @@ export default function VerNotificaciones(props) {
                     </Col>
                     <Col>
                         
-                        Printer: {printer.modelName}, ID_Impresora: {pedidos.id}
+                        Printer: {printer.modelName}, ID_Impresora: {printer.id}
                         
                     </Col>
                     <Col>

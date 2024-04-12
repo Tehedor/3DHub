@@ -15,7 +15,7 @@ function PedirPedido  (props) {
   const checkBtn = useRef();
       
   // Impresora del pedido
-  const numberPrinter=Number(props.printerId)
+  const numberPrinter=Number(props.printerId);
   const printer = props.printers[numberPrinter]; 
   //////////////////////////////////////////////////////7//////////////////////////////////////////////////////7
   const roll = props.roll;

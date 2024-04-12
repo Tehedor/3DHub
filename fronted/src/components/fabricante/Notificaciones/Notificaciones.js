@@ -75,7 +75,7 @@ export default function Notificaciones(props) {
             await download();
             setTimeout(()=>{
                 setLoading(false);
-            },800);		
+            },50);		
         }
         fetchData();
     }, []);

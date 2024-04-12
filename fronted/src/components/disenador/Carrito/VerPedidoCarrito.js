@@ -26,7 +26,7 @@ export default function VerPedidoCarrito(props) {
                     </Col>
                     <Col lm={5}>
                         
-                        Printer: {printer.modelName}, ID_Impresora: {carrito.id}
+                        Printer: {printer.modelName}, ID_Impresora: {printer.id}
                         
                     </Col>
 

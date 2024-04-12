@@ -15,8 +15,10 @@ import Profile from "./components/home/Profile";
 
 // import Pedidos from "./components/disenador/Pedidos";
 // import Carrito from "./components/disenador/Carrito";
-import PedidosHistorico from "./components/disenador/Pedidos/PedidosHistorico";
+// import ControlPedidos from "./components/disenador/Pedidos/ControPedidos";
+import ControlPedidos from "./components/disenador/Pedidos/ControlPedidos";
 import Carrito from "./components/disenador/Carrito/Carrito";
+// import LocationReseña from "./components/disenador/Pedidos/LocationReseña";
 
 import Notificaciones from "./components/fabricante/Notificaciones/Notificaciones";
 import ImpresorasFabri from "./components/fabricante/Impresoras/TodasImpresoras";
@@ -102,7 +104,10 @@ const App = () => {
             <Route exact path="/register" element={<Register />} />
             <Route exact path="/profile" element={<Profile />} />
 
-            <Route exact path="/pedidos" element={<PedidosHistorico />} />
+            {/* <Route exact path="/pedidos/*" element={<ControlPedidos />} /> */}
+            <Route exact path="/pedidos/*" element={<ControlPedidos />} />
+            {/* <Route path="/reseña/:pedidoId" element={<LocationReseña controlPrinters={controlPrinters} roll={roll} query={query} queryUbica={queryUbica} currentUser={currentUser} />}/> */}
+            
             <Route exact path="/carritocompra" element={<Carrito />} />
           
             <Route exact path="/notificaciones" element={<Notificaciones />} />

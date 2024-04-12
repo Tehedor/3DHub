@@ -1,14 +1,21 @@
 import {Container, Card,Row, Col, Button, Image} from "react-bootstrap";
 import {Link} from "react-router-dom";
 
+import StarRatings from 'react-star-ratings';
+
+
 import PedirPedido from "../../home/PedirPedido";
+
 
 import PedidosService from "../../../services/diseñador/pedidos.service.js";
 
-export default function VerPediros(props) {
+export default function VerPedidos(props) {
 
     // const pedidos = props.pedidos;
-
+    const control = props.thecontrol !== undefined ? props.thecontrol : true;
+    
+    const controlReseña = props.reseña === false ? false : true;
+    
     const pedidos = props.pedidos;
     const printer = props.printer;
     const fabricante = props.fabricante;
@@ -98,6 +105,45 @@ export default function VerPediros(props) {
                     <Row>
                     <   p> Completado </p>
                     </Row>
+    
+
+
+                    <Row>
+                        {!controlReseña ? 
+                            <Link to={`./reseña/${pedidos.id}`}>
+                                <Button variant="warning" size="sm">Añadir Reseña</Button>
+                            </Link>
+                        : 
+                        <Container>
+
+                            <Row>
+                                <label>Valoración del producto</label>
+                                <StarRatings
+                                    rating={props.reseña.valorProducto}
+                                    starRatedColor="orange"
+                                    numberOfStars={5}
+                                    name='ratingProducto'
+                                />
+                            </Row>
+                            <Row>
+                                <label>Valoración del fabricante</label>
+                                <StarRatings
+                                    rating={props.reseña.valorFabricante}
+                                    starRatedColor="yellow"
+                                    numberOfStars={5}
+                                    name='ratingFabricante'
+                                />
+                            </Row>
+                            <Row>
+                                <p>
+                                    {props.reseña.reseñaTexto}
+                                </p>
+                            </Row>
+                        </Container>
+                        
+                        }
+                    </Row>
+                    
                 </>
             )
         }
@@ -109,6 +155,7 @@ export default function VerPediros(props) {
     
     return(
         <Card border="gray" style={{ backgroundColor: "white", marginTop: '0' }}> 
+            
         {/* <Card border="gray" style={{ backgroundColor: "white", marginTop: '0', height: '320px' }}>  */}
             <Card.Header   style={{ backgroundColor: 'blue', color: 'white', fontWeight: 'bold' }}>
                 <Row>
@@ -119,7 +166,7 @@ export default function VerPediros(props) {
                     </Col>
                     <Col>
                         
-                        Printer: {printer.modelName}, ID_Impresora: {pedidos.id}
+                        Printer: {printer.modelName}, ID_Impresora: {printer.id}
                         
                     </Col>
  
@@ -146,8 +193,8 @@ export default function VerPediros(props) {
 
                     </Col>
                     {/* <Col sm={3} class="boton" className="d-flex justify-content-center align-items-center"> */}
-                    <Col sm={3} class="controlEstados "  >
-                        {ControlEstados()}
+                    <Col sm={3} className="controlEstados">
+                        {control ? ControlEstados() : null}
                     </Col>
                 </Row>
            
@@ -155,20 +202,5 @@ export default function VerPediros(props) {
         </Card>  
 
     );
- 
+
 }
-
-
-// Nombre_modelo": "Elegoo Saturn",
-//       "Ubicación_imp": "Taller",
-//       "Tipo_impresora": "SLA",
-//       "Foto_impresora": "https://www.prusa3d.com/content/images/product/default/224.jpg",
-//       "Precio_servicio": 0.26,
-//       "Unidades_max": 1,
-//       "Velo_fabricacion": 60,
-//       "Max_ancho": 219,
-//       "Max_alto": 120,
-//       "Precision": 50,
-//       "Colores_disponibles": ["Gris", "Negro"],
-//       "Acabados_disponibles": ["Mate"],
-//       "Fabricante": "Elegoo"

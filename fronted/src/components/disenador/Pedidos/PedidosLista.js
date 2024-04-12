@@ -7,17 +7,21 @@ export default function PedidosLista(props) {
     let fabricantes = props.fabricantes;
     let printers = props.printers;
     
+    let reseñas = props.reseñas;
+
     // console.log("lista",lista);
     // console.log("printers",printers);
     // console.log("fabricantes",fabricantes);
 
     const searchPrinter = (id) => {
         for (let i = 0; i < printers.length; i++) {
+        // for (let i = 0; i < props.printers.length; i++) {
             if (printers[i].id == id) {
                 return printers[i];
             }
         }
     }
+    
 
     // const searchFabricante = (id) => {
     //     const printer = searchPrinter(id);
@@ -37,6 +41,16 @@ export default function PedidosLista(props) {
     //     return {usernmae: "no encontrado"};
     // }
     
+    const searchReseña = (id) => {
+		if (reseñas !== undefined){
+			for (let i=0; i < reseñas.length; i++ ) {
+				if (reseñas.id == id) {
+					return reseñas[i];
+				}
+			}
+		}
+		return false;
+	}
 
 
    return(
@@ -44,7 +58,7 @@ export default function PedidosLista(props) {
                 { Array.isArray(lista) && lista.length > 0 &&lista.map((items,index) => (
                     items.status !== "KART" && 
                     // <VerPedidos pedidos={items} printer={searchPrinter(items.printer_id)} fabricante={searchFabricante(items.printer_id)} />
-                    <VerPedidos pedidos={items} printer={searchPrinter(items.printer_id)}/>
+                    <VerPedidos pedidos={items} printer={searchPrinter(items.printer_id)} reseña={searchReseña(items.id)}/>
                 ))}
         </div>);
 }
