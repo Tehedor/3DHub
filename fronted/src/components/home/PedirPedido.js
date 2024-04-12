@@ -17,6 +17,7 @@ function PedirPedido  (props) {
   // Impresora del pedido
   const numberPrinter=Number(props.printerId);
   const printer = props.printers[numberPrinter]; 
+
   //////////////////////////////////////////////////////7//////////////////////////////////////////////////////7
   const roll = props.roll;
   const query = props.query;
@@ -24,6 +25,8 @@ function PedirPedido  (props) {
   const currentUser = props.currentUser;
 
   const PrinterMaxUnities = printer.MaxUnidades;
+  console.log(PrinterMaxUnities);
+  
 
   if (roll == "ROLE_USER") {
     roll = "diseñador";
@@ -114,8 +117,10 @@ function PedirPedido  (props) {
     }
   };
 
-  //////////////////////////////////////////////////////7//////////////////////////////////////////////////////7
-  //////////////////////////////////////////////////////7//////////////////////////////////////////////////////7
+  
+  // ####### ####### ####### ####### ####### ####### ####### ####### #######
+  // ####### ####### Variables input    ####### ####### ####### ####### #######
+  // ####### ####### ####### ####### ####### ####### ####### ####### #######
   
   const [file, setFile] = useState(null);
   const [cantidad, setCantidad] = useState(0);
@@ -128,13 +133,22 @@ function PedirPedido  (props) {
   const fechaFabricacion = useRef();
   const [fechaEntrega, setFechaEntrega] = useState(now);  
 
+
+  // ####### ####### ####### ####### ####### ####### ####### ####### #######
+  // ####### ####### Variables control    ####### ####### ####### ####### #######
+  // ####### ####### ####### ####### ####### ####### ####### ####### #######
+  
+
   const [successful, setSuccessful] = useState(false);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
   
   
-  
+  // ####### ####### ####### ####### ####### ####### ####### ####### #######
+  // ####### ####### Handel    ####### ####### ####### ####### #######
+  // ####### ####### ####### ####### ####### ####### ####### ####### #######
+
   const handlePedido = (e) => {
     e.preventDefault();
 
@@ -187,7 +201,9 @@ function PedirPedido  (props) {
          </Col>
          <Col sm={6} class="central">
            <Row class="subir">          
+           {/* ########## */}
            {/*  SUBIR FIL */}
+           {/* ########## */}
            <MyValidationInput
                type="file" 
                formlabel="Subir file" 
@@ -197,7 +213,9 @@ function PedirPedido  (props) {
              />
            </Row>
            <Row>
+             {/* ########## */}
              {/* ESPECIFICACIONES */}
+             {/* ########## */}
              <MyValidationInput
                as="textarea"
                formlabel="Especificaciones del pedido"
@@ -217,7 +235,9 @@ function PedirPedido  (props) {
                  <tr>
                    <td>Cantidad</td>
                    <td>
+                     {/* ########## */}
                      {/* CANTIDAD */}
+                     {/* ########## */}
                      <MyValidationInput
                       type="number" 
                        max={PrinterMaxUnities} 
@@ -231,7 +251,9 @@ function PedirPedido  (props) {
                  <tr>
                    <td>Límite de fabricación</td>
                    <td>
+                     {/* ################## */}
                      {/* LIMITE FABRICACION */}
+                     {/* ################## */}
                      <MyValidationInput
                       type="date" 
                       name="fechaFabricacion" 
@@ -246,7 +268,9 @@ function PedirPedido  (props) {
                  <tr>
                    <td>Límite de entrega</td>
                    <td>
-                       {/* LIMITE ENTREGA */}
+                      {/* ############## */}
+                      {/* LIMITE ENTREGA */}
+                      {/* ############## */}
                      <MyValidationInput
                          type="date" 
                          name="fechaEntrega" 
@@ -259,9 +283,15 @@ function PedirPedido  (props) {
             </Table>
            </Row>
            <Row className="Añadir" style={{display: 'flex', alignItems: 'flex-end'}}>
+                            {/* ############# */}
+                            {/* Añadir Carrito*/}
+                            {/* ############# */}
              <Button variant="success" onClick={handlePedido}>Añadir al Carrito</Button>
              <p>
              </p>
+                            {/* ############# */}
+                            {/*    Vovler     */}
+                            {/* ############# */}
                <Button href="/" variant="danger">Vover</Button>
            </Row>
         </Col>

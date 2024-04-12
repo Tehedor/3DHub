@@ -9,10 +9,10 @@ export default function NotificacionesLista(props) {
     let diseñadores = props.diseñadores;
     let printers = props.printers;
     
-    console.log("lista",lista);
-    console.log("printers",printers);
-    console.log("diseñador",diseñadores);
-
+    // console.log("lista",lista);
+    // console.log("printers",printers);
+    // console.log("diseñador",diseñadores);
+    
     const searchPrinter = (id) => {
         for (let i = 0; i < printers.length; i++) {
             console.log(printers[i].id);

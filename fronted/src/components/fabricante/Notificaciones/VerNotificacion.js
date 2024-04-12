@@ -1,7 +1,4 @@
-import {Container, Card,Row, Col, Button, Image} from "react-bootstrap";
-import {Link} from "react-router-dom";
-
-import PedirPedido from "../../home/PedirPedido";
+import { Card,Row, Col, Button, Image} from "react-bootstrap";
 
 import NotificacionService from "../../../services/fabricante/notificaciones.service.js";
 
@@ -11,8 +8,9 @@ export default function VerNotificaciones(props) {
     const printer = props.printer;
     const diseñador = props.diseñador;
 
-    const diseñadorUsername = diseñador.username;
-
+    // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+    // ##### ##### Cmabio de estados 
+    // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
 
     const confirmarPedido = () => {
         NotificacionService.aceptadoCreando(pedidos.id)
@@ -49,6 +47,11 @@ export default function VerNotificaciones(props) {
             window.location.reload();
         });
     }
+
+
+    // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+    // ##### ##### Componente Control de estadados 
+    // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
 
     const ControlEstados = () => {
         if (pedidos.status === "PAY"){
@@ -94,30 +97,23 @@ export default function VerNotificaciones(props) {
     
     return(
         <Card border="gray" style={{ backgroundColor: "white", marginTop: '0' }}> 
-        {/* <Card border="gray" style={{ backgroundColor: "white", marginTop: '0', height: '320px' }}>  */}
+            
             <Card.Header>
                 <Row>
-                    <Col>
-                        diseñador: {diseñadorUsername}
-                        {/* Fabricante: {diseñador.username} */}
-                    </Col>
-                    <Col>
-                        
-                        Printer: {printer.modelName}, ID_Impresora: {printer.id}
-                        
-                    </Col>
-                    <Col>
-                        <Button variant="danger" size="sm" onClick={deletePedido}>Eliminar</Button>
-                    </Col>
+
+                    <Col> diseñador: { diseñador.username}</Col>
+
+                    <Col>Printer: {printer.modelName}, ID_Impresora: {printer.id}</Col>
+
+                    <Col><Button variant="danger" size="sm" onClick={deletePedido}>Eliminar</Button></Col>
  
                 </Row>
             </Card.Header>
+
             <Card.Body>
-                
                 <Row>
                     <Col sm={6} class="datos_impresora">
                         
-
                         <Row>id: {pedidos.id}</Row>
                         <Row>Fecha de pedido: {pedidos.orderdate}</Row>
                         <Row>Fecha de fabricación: {pedidos.manufacturerdate}</Row>
@@ -125,14 +121,11 @@ export default function VerNotificaciones(props) {
                         <Row>Número de impresoras: {pedidos.number}</Row>
                         <Row>Estado: {pedidos.status}</Row>
                         <Row>Especificaciones: {pedidos.specs}</Row>
-
                     
-                        {/* <Card.Text>Stock: {pedidos.Nombre_modelo}</Card.Text> */}
                     </Col> 
                     <Col sm={3}>
 
                     </Col>
-                    {/* <Col sm={3} class="boton" className="d-flex justify-content-center align-items-center"> */}
                     <Col sm={3} class="controlEstados "  >
                         {ControlEstados()}
                     </Col>

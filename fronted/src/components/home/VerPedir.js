@@ -68,18 +68,3 @@ export default function Ver(props) {
     );
  
 }
-
-
-// Nombre_modelo": "Elegoo Saturn",
-//       "Ubicación_imp": "Taller",
-//       "Tipo_impresora": "SLA",
-//       "Foto_impresora": "https://www.prusa3d.com/content/images/product/default/224.jpg",
-//       "Precio_servicio": 0.26,
-//       "Unidades_max": 1,
-//       "Velo_fabricacion": 60,
-//       "Max_ancho": 219,
-//       "Max_alto": 120,
-//       "Precision": 50,
-//       "Colores_disponibles": ["Gris", "Negro"],
-//       "Acabados_disponibles": ["Mate"],
-//       "Fabricante": "Elegoo"

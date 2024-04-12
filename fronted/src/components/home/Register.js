@@ -12,6 +12,11 @@ import AuthService from "../../services/auth.service";
 
 import {Button, Col, Row} from 'react-bootstrap';
 
+
+// ####### ####### ####### ####### ####### ####### ####### ####### ####### ####### ####### ####### ####### ####### #######
+// ####### ####### Validaciones    ####### ####### ####### ####### #######
+// ####### ####### ####### ####### ####### ####### ####### ####### ####### ####### ####### ####### ####### ####### #######
+
 const required = (value) => {
   if (!value) {
     return (
@@ -100,6 +105,7 @@ const vpassword = (value) => {
 
 
 const RegisterDisenador = (props) => {
+  
   const form = useRef();
   const checkBtn = useRef();
   

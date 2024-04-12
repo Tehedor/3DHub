@@ -1,10 +1,11 @@
-import { Button , Row, Col, InputGroup, Form, Container} from "react-bootstrap";
+import { Button , Row, Col,  Container} from "react-bootstrap";
 import { useEffect, useState } from "react";
 
 import NotificacionesLista from './NotificacionesLista';
 
 // Pruebas de la impresora para las vistas
-import CONFIG from '../../../config/config.js';
+// import CONFIG from '../../../config/config.js';
+
 import {notificacionesPruebas} from '../../../constants/notificacionesPruebas.js';
 
 
@@ -16,18 +17,12 @@ import TablaEstados from '../../../common/Tabla_estados.js';
 
 
 export default function Notificaciones(props) {
-
+    
     //  // Estado en el que muestra el spinner si esta cargando
-    //  const [loading, setLoading] = useState(true);
- 
-    //  // Estado en el que se alamcenan las impresoras
-    // const [thePedidos, setThePedidos] = useState();
-
     const [loading, setLoading] = useState(true);
  
     // Estado en el que se alamcenan las impresoras
-   const [thePedidos, setThePedidos] = useState();
-   
+   const [thePedidos, setThePedidos] = useState();   
    const [thePrinters, setThePrinters] = useState();
    const [theDiseñadores, setTheDiseñadores] = useState();
 
@@ -39,43 +34,69 @@ export default function Notificaciones(props) {
         let downloadprinters;
         let downloadDiseñadores;
 
-            if(CONFIG.use_server){
-                try {
-                const response = await NotificacionesService.getPedidosFabricante();
-                console.log(response.data);
-                downloadPedidos=response.data.orders;
-                console.log(downloadPedidos);
-                downloadprinters=response.data.printers;
-                console.log(downloadprinters);
-                downloadDiseñadores=response.data.users;
-                console.log(downloadDiseñadores);
+        try {
+        const response = await NotificacionesService.getPedidosFabricante();
+        console.log(response.data);
+        downloadPedidos=response.data.orders;
+        console.log(downloadPedidos);
+        downloadprinters=response.data.printers;
+        console.log(downloadprinters);
+        downloadDiseñadores=response.data.users;
+        console.log(downloadDiseñadores);
 
-                
-                } catch (error) {
-                    // setResultados(
-                    // { "cod": error.cod, "message": cod.message}
-                    // );
-                }
-            }else{
-                // downloadprinters=printersexample;
-                // downloadPedidos=carritoPruebas;
-                // console.log(printersexample);
-            }
+        
+        } catch (error) {
+            // setResultados(
+            // { "cod": error.cod, "message": cod.message}
+            // );
+        }
         setThePedidos(downloadPedidos);
         setThePrinters(downloadprinters);
         setTheDiseñadores(downloadDiseñadores);
-        console.log(thePedidos);
     }
+    // const download = async () => {
+    //     let downloadPedidos;
+    //     let downloadprinters;
+    //     let downloadDiseñadores;
+
+    //         if(CONFIG.use_server){
+    //             try {
+    //             const response = await NotificacionesService.getPedidosFabricante();
+    //             console.log(response.data);
+    //             downloadPedidos=response.data.orders;
+    //             console.log(downloadPedidos);
+    //             downloadprinters=response.data.printers;
+    //             console.log(downloadprinters);
+    //             downloadDiseñadores=response.data.users;
+    //             console.log(downloadDiseñadores);
+
+                
+    //             } catch (error) {
+    //                 // setResultados(
+    //                 // { "cod": error.cod, "message": cod.message}
+    //                 // );
+    //             }
+    //         }else{
+    //             // downloadprinters=printersexample;
+    //             // downloadPedidos=carritoPruebas;
+    //             // console.log(printersexample);
+    //         }
+    //     setThePedidos(downloadPedidos);
+    //     setThePrinters(downloadprinters);
+    //     setTheDiseñadores(downloadDiseñadores);
+    //     console.log(thePedidos);
+    // }
 
 
     // Efecto que se ejecuta al cargar la página
     useEffect(() => {
         setLoading(true);
-            async function fetchData() {
+        async function fetchData() {
             await download();
-            setTimeout(()=>{
-                setLoading(false);
-            },50);		
+            setLoading(false);
+            // setTimeout(()=>{
+            //     setLoading(false);
+            // },50);		
         }
         fetchData();
     }, []);
@@ -90,7 +111,7 @@ export default function Notificaciones(props) {
             <Container>
                 <Row>
                     <Col sm={2}>
-                    {/* // Carrito, Pagado, Rechazado, Bajo_revision,Creando, Enviado, Terminado */}             
+                    {/* // Carrito, Pagado, Rechazado, Bajo_revision,Creando, Enviado, Terminado */}              
                         <TablaEstados />
                         <Button id="volver" variant="primary"  href="/">Volver</Button>
                     </Col>

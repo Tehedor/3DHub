@@ -1,24 +1,19 @@
 import React, { useState, useEffect } from "react";
 import useLocalStorage from "./common/useLocalStorage";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
 // Apis
 import AuthService from "./services/auth.service";
 
-
 // Componentes 
 import Login from "./components/home/Login";
 import Register from "./components/home/Register";
 import Profile from "./components/home/Profile";
 
-// import Pedidos from "./components/disenador/Pedidos";
-// import Carrito from "./components/disenador/Carrito";
-// import ControlPedidos from "./components/disenador/Pedidos/ControPedidos";
 import ControlPedidos from "./components/disenador/Pedidos/ControlPedidos";
 import Carrito from "./components/disenador/Carrito/Carrito";
-// import LocationReseña from "./components/disenador/Pedidos/LocationReseña";
 
 import Notificaciones from "./components/fabricante/Notificaciones/Notificaciones";
 import ImpresorasFabri from "./components/fabricante/Impresoras/TodasImpresoras";
@@ -30,16 +25,9 @@ import FooterSection from "./components/home/FooterSection";
 import Location from "./components/home/Location";  
 import AtencionCliente from "./components/home/AtencionCliente";
 
-// import Home from "./components/Home";
-// import BoardUser from "./components/BoardUser";
-// import BoardModerator from "./components/BoardModerator";
-// import BoardAdmin from "./components/BoardAdmin";
-
 import Home from "./components/home/Home";
 
-// import AuthVerify from "./common/AuthVerify";
 import EventBus from "./common/EventBus";
-
 
 const App = () => {
 
@@ -54,8 +42,6 @@ const App = () => {
 
 
   // Loggin Variables /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // const [showModeratorBoard, setShowModeratorBoard] = useState(false);
-  // const [showAdminBoard, setShowAdminBoard] = useState(false);
   const [currentUser, setCurrentUser] = useState(undefined);
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
@@ -66,8 +52,6 @@ const App = () => {
     if (user) {
       setCurrentUser(user);
       setRoll(user.roles);
-      // setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
-      // setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
     }
     
     EventBus.on("logout", () => {
@@ -81,8 +65,6 @@ const App = () => {
   
   const logOut = () => {
     AuthService.logout();
-    // setShowModeratorBoard(false);
-    // setShowAdminBoard(false);
     setCurrentUser(undefined);
   };
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

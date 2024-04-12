@@ -13,12 +13,12 @@ import ImpresorasService from "../../services/impresoras.service.js";
 
 const SERVER_URL = CONFIG.server_url;
 export default function Home(props) {
+
     // Controlador de impresoras para que funcione el Location
     const setControlPrinters = props.setControlPrinters;
 
+    
     const [query, setQuery] = useState("");
-    // const [printers, setprinters] = useState("");
-    // const [printers, setprinters] = useState(props.theprinters);
 
     // Contenido de la barra de ubicación
     const [queryUbica, setQueryUbica] = useState("");
@@ -28,8 +28,11 @@ export default function Home(props) {
  
      // Estado en el que se alamcenan las impresoras
     const [theprinters, setThePrinters] = useState();
-
-
+    
+    // ###### ###### ###### ###### ###### ###### ###### ###### ######
+    // ###### ###### ###### Geolocalización
+    // ###### ###### ###### ###### ###### ###### ###### ###### ######
+    
     // Localizacion usuario
     // https://www.npmjs.com/package/react-geolocated?activeTab=readme
     const { coords, isGeolocationAvailable, isGeolocationEnabled } =
@@ -40,7 +43,12 @@ export default function Home(props) {
         userDecisionTimeout: 5000,
     });
 
-  
+
+    
+    // ###### ###### ###### ###### ###### ###### ###### ###### ######
+    // ###### ###### ###### dowload versioón 2
+    // ###### ###### ###### ###### ###### ###### ###### ###### ######
+    
     // Función que = () => {
     // const downloadprinters;
     // // Coordenadas de Madrid para que sean por defecto 
@@ -81,6 +89,12 @@ export default function Home(props) {
     // // setControlPrinters(downloadprinters);
     // // console.log(props.controlPrinters);
     // }
+
+
+    // ###### ###### ###### ###### ###### ###### ###### ###### ######
+    // ###### ###### ###### dowload versioón 1
+    // ###### ###### ###### ###### ###### ###### ###### ###### ######
+    
     const download = async () => {
         let downloadprinters;
         if(CONFIG.use_server){
@@ -108,11 +122,12 @@ export default function Home(props) {
     useEffect(() => {
         setLoading(true);
             async function fetchData() {
-            await download();
-            setTimeout(()=>{
+                await download();
                 setLoading(false);
-            },800);		
-        }
+                // setTimeout(()=>{
+                //     setLoading(false);
+                // },800);		
+            }
         fetchData();
     }, []);
 

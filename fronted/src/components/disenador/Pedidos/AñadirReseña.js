@@ -1,30 +1,25 @@
 import { useState, useRef } from 'react';
-import { Container, Row, Col, Table,Button} from 'react-bootstrap';
+import { Container, Row, Col,Button} from 'react-bootstrap';
 
-// import StarRatings from './react-star-ratings';
 import StarRatings from 'react-star-ratings';
 
 import Form from 'react-validation/build/form';
 import CheckButton from 'react-validation/build/button';
 
-import {MyValidationInput,  MyValidationButton, MyValidationForm} from '../../../common/ValidationComponents.js';
+import {MyValidationInput} from '../../../common/ValidationComponents.js';
 
-// import VerPedir from './VerPedir.js';
-
+// Apis
 import PedidosService from "../../../services/diseñador/pedidos.service.js";
 
 function AñadirReseña  (props) {
 
-    
-    const numberPedidos=Number(props.pedidosId);
-    console.log(numberPedidos);
-    // console.log(pedidos);
+    const numberPedidos = Number(props.pedidosId);
     const pedidos = props.pedidos[numberPedidos]; 
-
     const printerId = pedidos.printer_id;
 
-  // validación de los inputs //////////////////////////////////////////////////////7
-  //////////////////////////////////////////////////////7//////////////////////////////////////////////////////7
+  // ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+  // ##### ##### Requisitos
+  // ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
   const required = (value) => {
     if (!value) {
       return (
@@ -34,23 +29,10 @@ function AñadirReseña  (props) {
       );
     }
   };
-
+  
   const validFile = (value) => {
     // console.console.log("validFile");
     // meter la api
-  };
-
-
-  const validFechaFabricacion = (value) => {
-    const fecha = new Date(value);
-    const fechaSinHora = new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate());
-    if (fechaSinHora <  today) {
-      return (
-        <div className="invalid-feedback d-block">
-          Imposible to fabricate in the past!
-        </div>
-      );
-    }
   };
 
   const validEspecificaciones = (value) => {
@@ -58,29 +40,33 @@ function AñadirReseña  (props) {
       return "Las especificaciones deben tener al menos 10 caracteres.";
     }
   };
-
-  //////////////////////////////////////////////////////7//////////////////////////////////////////////////////7
-  //////////////////////////////////////////////////////7//////////////////////////////////////////////////////7
-
+  
+  
+  // ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+  // ##### ##### Variables de control
+  // ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
   const form = useRef();
   const checkBtn = useRef();
+  
+  const [successful, setSuccessful] = useState(false);
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  
+  // ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+  // ##### ##### Variables de la reseña
+  // ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
   const now = new Date();
-
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   
   const [fechaReseña, setFechaReseña] = useState(today);
-
   const [valorProducto, setValorProducto] = useState(0);
   const [valorFabricante, setValorFabricante] = useState(0);
   const [reseñaTexto, setReseñaTexto] = useState(null);
   const [foto, setFoto] = useState(null);   
   
-  const [successful, setSuccessful] = useState(false);
-  const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  
-
+  // ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+  // ##### ##### Handle
+  // ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
   const handleReseña = (e) => {
     e.preventDefault();
 
@@ -116,21 +102,29 @@ function AñadirReseña  (props) {
     
   <Container>
     <Form onSubmit={handleReseña} ref={form}>
-       {!successful && (
-       <Row>
-         <Col class="central">
+       
+      {!successful && (
+        <Row>
+          <Col class="central">
+            
             <Row>
                 <label>Valoración del producto</label>
+                {/* ################ */}
+                {/* Ratings Producto */}
+                {/* ################ */}
                 <StarRatings
                     rating={valorProducto}
                     starRatedColor="orange"
                     changeRating={setValorProducto}
                     numberOfStars={5}
                     name='ratingProducto'
-                />
+                    />
             </Row>
             <Row>
                 <label>Valoración del fabricante</label>
+                    {/* ################## */}
+                    {/* Ratings Fabricante */}
+                    {/* ################## */}
                 <StarRatings
                     rating={valorFabricante}
                     starRatedColor="yellow"
@@ -140,52 +134,61 @@ function AñadirReseña  (props) {
                 />
             </Row>
 
-           <Row class="subir">          
-           {/*  SUBIR FIL */}
-           <MyValidationInput
-               type="file" 
-               formlabel="Subir foto" 
-               onChange={(e) => setFoto(e.target.files[0])}
-               // validations={[required]} 
-               // validations={} 
-             />
-           </Row>
-
-           <Row>
-             {/* RESEÑA TEXTO */}
-             <MyValidationInput
-               as="textarea"
-               formlabel="Reseña"
-               rows={7}
-               maxLength={400}
-               value={reseñaTexto}
-               onChange={e => setReseñaTexto(e.target.value)}
-               validations={[required,validEspecificaciones]} // Agrega tus validaciones aquí
-             />
-           </Row>
-            <Row>
-                 <p></p><p></p>
-                <Button variant="success" onClick={handleReseña}>Añadir reseña</Button>
-                 <p></p>
-                <Button href="/pedidos" variant="danger ">Vover</Button>
-                 <p></p><p></p>
+            <Row class="subir">          
+                {/*  ######### */}
+                {/*  SUBIR FIL */}
+                {/*  ######### */}
+                <MyValidationInput
+                    type="file" 
+                    formlabel="Subir foto" 
+                    onChange={(e) => setFoto(e.target.files[0])}
+                    // validations={[validFile]} 
+                  />
             </Row>
-        </Col>
-      </Row>
+
+            <Row>
+              {/* ############ */}
+              {/* RESEÑA TEXTO */}
+              {/* ############ */}
+              <MyValidationInput
+                as="textarea"
+                formlabel="Reseña"
+                rows={7}
+                maxLength={400}
+                value={reseñaTexto}
+                onChange={e => setReseñaTexto(e.target.value)}
+                validations={[required,validEspecificaciones]} // Agrega tus validaciones aquí
+              />
+            </Row>
+
+            <Row>
+                <p></p><p></p>
+                {/* Button Añadir Reseña */}
+                <Button variant="success" onClick={handleReseña}>Añadir reseña</Button>
+                <p></p>
+                {/* Button Añadir Vovler */}
+                <Button href="/pedidos" variant="danger ">Vover</Button>
+                <p></p><p></p>
+            </Row>
+
+          </Col>
+        </Row>
       )}
-    {message && (
-            <div className="form-group">
-              <div
-                className={
-                  successful ? "alert alert-success" : "alert alert-danger"
-                }
-                role="alert"
-              >
-                {message}
+
+      {message && (
+              <div className="form-group">
+                <div
+                  className={
+                    successful ? "alert alert-success" : "alert alert-danger"
+                  }
+                  role="alert"
+                >
+                  {message}
+                </div>
               </div>
-            </div>
-    )}
-    <CheckButton style={{ display: "none" }} ref={checkBtn} />
+      )}
+      <CheckButton style={{ display: "none" }} ref={checkBtn} />
+    
     </Form>
   </Container>
   );
