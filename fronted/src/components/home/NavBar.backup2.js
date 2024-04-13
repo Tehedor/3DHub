@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './NavBar.css';
-import { Navbar, Nav, Form, FormControl, Button, Card, Container, Row, Col, InputGroup, Image, ButtonGroup, ToggleButton } from 'react-bootstrap';
+import { Navbar, Nav, Form, FormControl, Button, Container, Row, Col, InputGroup, Image, ButtonGroup, ToggleButton } from 'react-bootstrap';
 
 
 
@@ -60,10 +60,10 @@ function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser
           {/* <Nav className="mr-auto"> */}
           <Container ClassName="contenido1">
             <Nav className="me-auto">
-                    
               <Navbar.Brand href="/">
                 <Image className="logo" src={"http://localhost:3000/logo_pato.png"} style={{width: '120px', height: '120px'}}/>
               </Navbar.Brand>
+                    
 
                 <Col className="d-flex align-items-center">
                   <div className="col-1 aling-item-lefth justify-content-between">
