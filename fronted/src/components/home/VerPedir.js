@@ -1,4 +1,4 @@
-import {Container, Card,Row, Col, Button, Image} from "react-bootstrap";
+import {Container, Card,Row, Col, Image} from "react-bootstrap";
 
 import StarRatings from 'react-star-ratings';
 

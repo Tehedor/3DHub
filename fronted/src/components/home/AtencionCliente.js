@@ -1,14 +1,12 @@
 import { useState, useRef } from 'react';
-import { Container, Row, Col, Table,Button} from 'react-bootstrap';
+import { Container, Row,Button} from 'react-bootstrap';
 
 import Form from 'react-validation/build/form';
 import CheckButton from 'react-validation/build/button';
 import { isEmail } from "validator";
 
 
-import {MyValidationInput,  MyValidationButton, MyValidationForm} from '../../common/ValidationComponents.js';
-
-import Ver from './VerPedir.js';
+import {MyValidationInput,  } from '../../common/ValidationComponents.js';
 
 import ImpresorasService from '../../services/impresoras.service.js';
 

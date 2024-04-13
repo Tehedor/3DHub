@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './NavBar.css';
-import { Navbar, Nav, Form, FormControl, Button, Card, Container, Row, Col, InputGroup, Image, ButtonGroup, ToggleButton } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Navbar, Nav, Form, FormControl, Button, Container, Row, Col, InputGroup, Image, ButtonGroup, ToggleButton } from 'react-bootstrap';
 
 
 
@@ -12,20 +11,22 @@ import useLocalStorage from "../../common/useLocalStorage";
 function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser, logOut, theRollActual,setTheRollControl,setCambioRoll,cambioRoll }) {
   
 
+  // ##### ##### ##### ##### ##### ##### ##### #####
+  // ##### ##### Contorl de roles
+  // ##### ##### ##### ##### ##### ##### ##### #####
   const cambiarRoll = (roll) => {
     setCambioRoll(roll);
     setTheRollControl(roll);
   }
-
-
-  
-  const [checked, setChecked] = useState(false);
     
   const roll = [
     { name: 'Diseñador', value: 'diseñador' },
     { name: 'Fabricante', value: 'fabricante' },
   ];
  
+  // ##### ##### ##### ##### ##### ##### ##### #####
+  // ##### ##### Control de busqueda
+  // ##### ##### ##### ##### ##### ##### ##### #####
   const [localQuery, setLocalQuery] = useState(query);
   const [localQueryUbica, setLocalQueryUbica] = useState(queryUbica);
 
@@ -42,6 +43,10 @@ function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser
     setQueryUbica(localQueryUbica);
   };
 
+
+  // ##### ##### ##### ##### ##### ##### ##### #####
+  // ##### ##### Return
+  // ##### ##### ##### ##### ##### ##### ##### #####
   return (
 
     

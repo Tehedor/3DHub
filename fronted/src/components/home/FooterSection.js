@@ -1,4 +1,3 @@
-import { useState} from "react";    
 import "./FooterSection.css";
 
 export default function FooterSection(props) {  
