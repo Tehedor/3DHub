@@ -3,7 +3,10 @@ import { Card,Row, Col, Button, Image} from "react-bootstrap";
 import NotificacionService from "../../../services/fabricante/notificaciones.service.js";
 
 export default function VerNotificaciones(props) {
-
+    
+    // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+    // ##### ##### Variables descarga
+    // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     const pedidos = props.pedidos;
     const printer = props.printer;
     const diseñador = props.diseñador;
@@ -11,7 +14,6 @@ export default function VerNotificaciones(props) {
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     // ##### ##### Cmabio de estados 
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
-
     const confirmarPedido = () => {
         NotificacionService.aceptadoCreando(pedidos.id)
         .then(() => {
@@ -48,11 +50,9 @@ export default function VerNotificaciones(props) {
         });
     }
 
-
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     // ##### ##### Componente Control de estadados 
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
-
     const ControlEstados = () => {
         if (pedidos.status === "PAY"){
             return (
@@ -94,7 +94,9 @@ export default function VerNotificaciones(props) {
     
        
 
-    
+    // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+    // ##### ##### Return
+    // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     return(
         <Card border="gray" style={{ backgroundColor: "white", marginTop: '0' }}> 
             

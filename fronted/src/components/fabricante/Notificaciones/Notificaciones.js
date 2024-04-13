@@ -3,11 +3,7 @@ import { useEffect, useState } from "react";
 
 import NotificacionesLista from './NotificacionesLista';
 
-// Pruebas de la impresora para las vistas
-// import CONFIG from '../../../config/config.js';
-
 import {notificacionesPruebas} from '../../../constants/notificacionesPruebas.js';
-
 
 // Apis
 import NotificacionesService from "../../../services/fabricante/notificaciones.service";
@@ -18,17 +14,24 @@ import TablaEstados from '../../../common/Tabla_estados.js';
 
 export default function Notificaciones(props) {
     
-    //  // Estado en el que muestra el spinner si esta cargando
+    
+    // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+    // ##### ##### Estados de control
+    // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     const [loading, setLoading] = useState(true);
  
-    // Estado en el que se alamcenan las impresoras
-   const [thePedidos, setThePedidos] = useState();   
-   const [thePrinters, setThePrinters] = useState();
-   const [theDiseñadores, setTheDiseñadores] = useState();
+
+    // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+    // ##### ##### Estados de descarga
+    // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####   const [thePedidos, setThePedidos] = useState();   
+    const [thePrinters, setThePrinters] = useState();
+    const [theDiseñadores, setTheDiseñadores] = useState();
 
 
 
-   // Función que descarga todos los pedidos para comprar
+   // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+   // ##### ##### Descarga de datos
+   // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     const download = async () => {
         let downloadPedidos;
         let downloadprinters;
@@ -54,41 +57,11 @@ export default function Notificaciones(props) {
         setThePrinters(downloadprinters);
         setTheDiseñadores(downloadDiseñadores);
     }
-    // const download = async () => {
-    //     let downloadPedidos;
-    //     let downloadprinters;
-    //     let downloadDiseñadores;
 
-    //         if(CONFIG.use_server){
-    //             try {
-    //             const response = await NotificacionesService.getPedidosFabricante();
-    //             console.log(response.data);
-    //             downloadPedidos=response.data.orders;
-    //             console.log(downloadPedidos);
-    //             downloadprinters=response.data.printers;
-    //             console.log(downloadprinters);
-    //             downloadDiseñadores=response.data.users;
-    //             console.log(downloadDiseñadores);
-
-                
-    //             } catch (error) {
-    //                 // setResultados(
-    //                 // { "cod": error.cod, "message": cod.message}
-    //                 // );
-    //             }
-    //         }else{
-    //             // downloadprinters=printersexample;
-    //             // downloadPedidos=carritoPruebas;
-    //             // console.log(printersexample);
-    //         }
-    //     setThePedidos(downloadPedidos);
-    //     setThePrinters(downloadprinters);
-    //     setTheDiseñadores(downloadDiseñadores);
-    //     console.log(thePedidos);
-    // }
-
-
-    // Efecto que se ejecuta al cargar la página
+    
+    // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+    // ##### ##### Duncion de carga
+    // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     useEffect(() => {
         setLoading(true);
         async function fetchData() {
@@ -102,6 +75,9 @@ export default function Notificaciones(props) {
     }, []);
 
 
+    // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+    // ##### ##### Return 
+    // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     return (
         <div>
             <h2 id="catálogo">Notificaciones</h2> 

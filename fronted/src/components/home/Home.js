@@ -2,7 +2,6 @@ import { Button , Row, Col, InputGroup, Form} from "react-bootstrap";
 import { useEffect, useState } from "react";
 import {useGeolocated} from "react-geolocated";
 import ImpresorasLista from './ImpresorasLista';
-import CONFIG from '../../config/config.js';
 
 // Pruebas de la impresora para las vistas
 import {printersexample} from '../../constants/printersPruebas.js';
@@ -11,7 +10,6 @@ import {printersPruebas} from '../../constants/printersPruebas.js';
 import ImpresorasService from "../../services/impresoras.service.js";
 
 
-const SERVER_URL = CONFIG.server_url;
 export default function Home(props) {
 
     // Controlador de impresoras para que funcione el Location
@@ -97,21 +95,16 @@ export default function Home(props) {
     
     const download = async () => {
         let downloadprinters;
-        if(CONFIG.use_server){
-            try {
+        
+        try {
             const data = await ImpresorasService.descargarPrinters();
             console.log(data);
             downloadprinters=data;
-            
-            } catch (error) {
-                // setResultados(
-                // { "cod": error.cod, "message": cod.message}
-                // );
-            }
-        }else{
-            // downloadprinters=printersexample;
-            downloadprinters=printersPruebas;
-            // console.log(printersexample);
+        
+        } catch (error) {
+            // setResultados(
+            // { "cod": error.cod, "message": cod.message}
+            // );
         }
         setThePrinters(downloadprinters.data);
         console.log(theprinters);
