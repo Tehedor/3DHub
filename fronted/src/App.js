@@ -88,7 +88,7 @@ const App = () => {
   // ##### ##### Return
   // ##### ##### ##### ##### ##### ##### ##### ##### #####
   return (
-    <div className="App">
+    <div className="App" style={{ backgroundColor: cambioRoll === "diseñador" ? "white" : cambioRoll === "fabricante" ? "#fcebdc" : "default" }}>
       <div className="containerr">
 
         <NavBar query={query} setQuery={setQuery} queryUbica={queryUbica} setQueryUbica={setQueryUbica} currentUser={currentUser} cambioRoll={cambioRoll} setCambioRoll={setCambioRoll} setTheRollControl={setTheRollControl}  logOut={logOut}/>
