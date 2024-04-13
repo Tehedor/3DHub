@@ -1,48 +1,53 @@
-import {Container, Card,Row, Col, Button, Image} from "react-bootstrap";
-import {Link} from "react-router-dom";
+import {Card,Row, Col, Button} from "react-bootstrap";
 
+// Apis
 import CarritoService from "../../../services/diseñador/carrito.service";
 
 export default function VerPedidoCarrito(props) {
 
+    // ##### ##### ##### ##### ##### ##### ##### ##### #####
+    // ##### ##### Variables de descarga
+    // ##### ##### ##### ##### ##### ##### ##### ##### #####
     const carrito = props.carrito;
     const printer = props.printer;
     const fabricante = props.fabricante;
-
+    
+    // ##### ##### ##### ##### ##### ##### ##### ##### #####
+    // ##### ##### Función eliminar pedido
+    // ##### ##### ##### ##### ##### ##### ##### ##### #####
     const eliminarPedido = () => { 
         console.log("Eliminando pedido");
         console.log(carrito.id);
         CarritoService.deletePedido(carrito.id);
     }
     
+    // ##### ##### ##### ##### ##### ##### ##### ##### #####
+    // ##### ##### Return
+    // ##### ##### ##### ##### ##### ##### ##### ##### #####
     return(
         <Card border="gray" > 
-        {/* <Card border="gray: ender 3" style={{ backgroundColor: "white", marginTop: '0', height: '320px' }}>  */}
+
             <Card.Header   style={{ backgroundColor: 'orange', color: 'white', fontWeight: 'bold' }}>
                 <Row>
+
                     <Col lm={5}>
-                        {/* Fabricante: Juan */}
                         Fabricante: {fabricante ? fabricante.username : printer.userIdFabricante}
                     </Col>
+
                     <Col lm={5}>
-                        
-                        Printer: {printer.modelName}, ID_Impresora: {carrito.id}
-                        
+                        Printer: {printer.modelName}, ID_Impresora: {printer.id}
                     </Col>
 
                     <Col lm={2}>
                         <Button variant="danger" size="sm" onClick={eliminarPedido}>Eliminar</Button>
-                        
                     </Col>
  
                 </Row>
             </Card.Header>
-            <Card.Body>
-                
-                <Row>
-                    <Col >
-                        
 
+            <Card.Body>                
+                <Row>
+                    <Col >            
                         <Row>id: {carrito.id}</Row>
                         <Row>Fecha de pedido: {carrito.orderdate}</Row>
                         <Row>Fecha de fabricación: {carrito.manufacturerdate}</Row>
@@ -50,15 +55,12 @@ export default function VerPedidoCarrito(props) {
                         <Row>Número de impresoras: {carrito.number}</Row>
                         <Row>Estado: {carrito.status}</Row>
                         <Row>Especificaciones: {carrito.specs}</Row>
-
-                    
-                        {/* <Card.Text>Stock: {carrito.Nombre_modelo}</Card.Text> */}
                     </Col> 
                 </Row>
            
             </Card.Body>
-        </Card>  
 
+        </Card>  
     );
  
 }

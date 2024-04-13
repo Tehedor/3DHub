@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './NavBar.css';
-import { Navbar, Nav, Form, FormControl, Button, Card, Container, Row, Col, InputGroup, Image, ButtonGroup, ToggleButton } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Navbar, Nav, Form, FormControl, Button, Container, Row, Col, InputGroup, Image, ButtonGroup, ToggleButton } from 'react-bootstrap';
 
 
 
@@ -9,57 +8,25 @@ import useLocalStorage from "../../common/useLocalStorage";
 
 // function NavigationBar( props) {
 // function NavigationBar({ roll, query, setQuery, queryUbica, setQueryUbica, currentUser, logOut }) {
-function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser, logOut }) {
+function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser, logOut, theRollActual,setTheRollControl,setCambioRoll,cambioRoll }) {
   
-  const [actualizador, setActualizador] = useState("sasdf");
-  
-  const setRollAcutal = (value) => {
-    setActualizador(value)
-    localStorage.setItem("RolActual", value); 
-  }
-  const setRollAcutalIni = (value) => {
-    // setActualizador(value)
-    localStorage.setItem("RolActual", value); 
-  }
 
-  const getCurrentRol = () => {
-    return localStorage.getItem("RolActual");
+  // ##### ##### ##### ##### ##### ##### ##### #####
+  // ##### ##### Contorl de roles
+  // ##### ##### ##### ##### ##### ##### ##### #####
+  const cambiarRoll = (roll) => {
+    setCambioRoll(roll);
+    setTheRollControl(roll);
   }
-  
-  // currentUser = "arrancar";
-  if (localStorage.getItem("user") != null) {
-    currentUser = localStorage.getItem("user");
-  }else {
-    setRollAcutalIni("diseñador");
-    // setRollAcutal("ninguno");
-    setRollAcutalIni("diseñador");
-  }
-  
-  
-  const [checked, setChecked] = useState(false);
-  const [rollValue, setRollValue] = useState('diseñador');
-
-  
     
-  const rollActual = getCurrentRol(); 
-  
-
-
-
   const roll = [
     { name: 'Diseñador', value: 'diseñador' },
     { name: 'Fabricante', value: 'fabricante' },
   ];
-  // if (roll == "ROLE_USER") {
-  //   roll = "diseñador";
-  // } 
-  // if (roll == "ROLE_ADMIN") {
-  //   roll = "fabricante";
-  // }
-  // roll = "diseñador";
-  // roll = "fabricante";
-
-  
+ 
+  // ##### ##### ##### ##### ##### ##### ##### #####
+  // ##### ##### Control de busqueda
+  // ##### ##### ##### ##### ##### ##### ##### #####
   const [localQuery, setLocalQuery] = useState(query);
   const [localQueryUbica, setLocalQueryUbica] = useState(queryUbica);
 
@@ -76,139 +43,124 @@ function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser
     setQueryUbica(localQueryUbica);
   };
 
+
+  // ##### ##### ##### ##### ##### ##### ##### #####
+  // ##### ##### Return
+  // ##### ##### ##### ##### ##### ##### ##### #####
   return (
 
     
-    <Navbar sticky="top"  bg={rollActual !== "fabricante" ? "primary" : "secondary"} expand="sm">
-    {/* <Navbar sticky="top"  bg={rollValue !== "fabricante" ? "primary" : "secondary"} expand="sm"> */}
-      <Container fluid>
-
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        
-        <Navbar.Collapse id="basic-navbar-nav">
-          
-          {/* <Nav className="mr-auto"> */}
-          <Container ClassName="contenido1">
-            <Nav className="me-auto">
-                    
-              <Navbar.Brand href="/">
-                <Image className="logo" src={"http://localhost:3000/logo_pato.png"} style={{width: '120px', height: '120px'}}/>
-              </Navbar.Brand>
-
-                <Col className="d-flex align-items-center">
-                  <div className="col-1 aling-item-lefth justify-content-between">
-                  <Button href="/atencionCliente" style={{backgroundColor: 'gray'}}>
-                    <img src={"http://localhost:3000/iconos/support_icon.svg"} alt="Pedidos" />
-                    AtCliente
-                  </Button>
-                </div>
-              </Col>
-              <Col className="d-flex align-items-center">
-                <div className="col-1 aling-item-lefth justify-content-between">
-                {/* {currentUser && rollValue === "diseñador" ? */}
-                {currentUser && rollActual === "diseñador" ?
-                  <Button href="/pedidos" style={{backgroundColor: 'gray'}}>
-                    <img src={"http://localhost:3000/iconos/inventory_2_icon.svg"} alt="Pedidos" />
-                    pedidos
-                  </Button>
-                : null
-                }     
-                {/* {currentUser && rollValue === "fabricante" ? */}
-                {currentUser && rollActual === "fabricante" ?
-                  <Button href="/notificaciones" style={{backgroundColor: 'gray'}}>
-                    <img src={"http://localhost:3000/iconos/bookmark_icon.svg"} alt="Notificaciones" />
-                    Notificaciones
-                  </Button>
-                : null
-                }     
-                </div>
-              </Col>
-            </Nav>
-          </Container>
-
-          {/* <Form inline className="mx-auto  "> */}
-          <Container ClassName="contenido2">
-            <Form inline className="justify-content-center flex-grow-1">
-              <Row className="w-100">
-                <InputGroup className="mb-3" size="sm">
-                  <FormControl placeholder="Search" aria-label="Search" aria-describedby="basic-addon2" value={localQuery} onChange={handleQueryChange} onClick={() => setLocalQuery('')}/>
-                  <Button variant="secondary" id="button-addon2" onClick={handleSearchClick}> Search </Button>
-                </InputGroup>
-              </Row>
-              <Row className="w-100">
-                <InputGroup className="mb-3" size="sm">
-                  <FormControl placeholder="Location" aria-label="Search" aria-describedby="basic-addon2" value={localQueryUbica} onChange={handleQueryUbicaChange} onClick={() => setLocalQueryUbica('')}/>
-                  <Button variant="secondary" id="button-addon2" onClick={handleSearchClick}>Search</Button>
-                </InputGroup>
-              </Row>
-            </Form>
-          </Container>
-
-
-          <Container className="contenido3 d-flex justify-content-between">
-          {/* <Container ClassName="contenido3"> */}
-            <div className="col-1 aling-item-lefth">
-            {/* <Container ClassName="contenido3_1 col-1"> */}
-              {/* {currentUser && rollValue === "diseñador"   ? */}
-              {currentUser && rollActual === "diseñador"   ?
-                <Button href="/carritocompra" style={{backgroundColor: 'gray'}}>
-                  <img src={"http://localhost:3000/iconos/cart_icon.svg"} alt="Carrito" />
-                    Carrito 
-                </Button>
-                : null
-              }
-              {/* {currentUser && rollValue === "fabricante"   ? */}
-              {currentUser && rollActual === "fabricante"   ?
-                  <Button href="/impresorasfabri" style={{backgroundColor: 'gray'}}>
-                    <img src={"http://localhost:3000/iconos/print_FILL0_icon.svg"} alt="Impresoras" />
-                      Impresoras
-                  </Button>
-                : null
-              }
-            {/* </Container> */}
+   <Navbar sticky="top" style={{ backgroundColor: cambioRoll === "diseñador" ? "#7D70BA" : cambioRoll === "fabricante" ? "#332a21" : cambioRoll === "user" ? "#006400" : "primary" }} expand="sm">
+  <Container fluid>
+    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+    <Navbar.Collapse id="basic-navbar-nav">
+      <Container ClassName="contenido1">
+        <Nav className="me-auto">
+          <Navbar.Brand href="/">
+            <Image className="logo" src={"http://localhost:3000/logo_pato.png"} style={{width: '120px', height: '120px'}}/>
+          </Navbar.Brand>
+          <Col className="d-flex align-items-center">
+            <div className="col-1 aling-item-lefth justify-content-between">
+              <Button href="/atencionCliente" variant="light">
+                <img src={"http://localhost:3000/iconos/support_icon.svg"} alt="Pedidos" />
+                <strong>AtCliente</strong>
+              </Button>
             </div>
-              
-            <div className="col-9">
-
-              {!currentUser ? (
-                <Button variant="dark" className="btn-outline-diseñador" href="/login ">
-                  <img src={"http://localhost:3000/iconos/login_icon.svg"} alt="User Icon" />
-                  Login
+          </Col>
+          <Col className="d-flex align-items-center">
+            <div className="col-1 aling-item-lefth justify-content-between">
+              {currentUser && cambioRoll === "diseñador" ?
+                <Button href="/pedidos" variant="light" >
+                  <img src={"http://localhost:3000/iconos/inventory_2_icon.svg"} alt="Pedidos" />
+                  <strong>pedidos</strong>  
                 </Button>
-              ) : (
-                <Container>
-                  <ButtonGroup>
-                    {roll.map((roll, idx) => (
-                      <ToggleButton
-                        key={idx}
-                        id={`roll-${idx}`}
-                        type="radio"
-                        variant={idx % 2 ? 'outline-warning' : 'outline-dark'}
-                        name="roll"
-                        value={roll.value}
-                        // checked={rollValue === roll.value}
-                        checked={rollActual === roll.value}
-                        // onChange={(e) => setRollValue(e.currentTarget.value)}
-                        onChange={(e) => setRollAcutal(e.currentTarget.value)}
-                      >
-                        {roll.name}
-                      </ToggleButton>
-                    ))}
-                  </ButtonGroup>
-
-                  <Button variant="dark" className="btn-outline-fabricante" href="/" onClick={logOut}> 
-                    <img src={"http://localhost:3000/iconos/logout_icon.svg"} alt="User Icon" />
-                  </Button>
-                </Container>
-              )}
+              : null
+              }
+              {currentUser && cambioRoll === "fabricante" ?
+                <Button href="/notificaciones" variant="light">
+                  <img src={"http://localhost:3000/iconos/bookmark_icon.svg"} alt="Notificaciones" />
+                  <strong>Notificaciones</strong>
+                </Button>
+              : null
+              }
             </div>
-
-          </Container>
-        </Navbar.Collapse>
-        
+          </Col>
+        </Nav>
       </Container>
+      <Container ClassName="contenido2">
+        <Form inline className="justify-content-center flex-grow-1">
+          <Row className="w-100">
+            <InputGroup className="mb-3" size="sm">
+              <FormControl placeholder="Search" aria-label="Search" aria-describedby="basic-addon2" value={localQuery} onChange={handleQueryChange} onClick={() => setLocalQuery('')}/>
+              <Button variant="light" id="button-addon2" onClick={handleSearchClick}> Search </Button>
+            </InputGroup>
+          </Row>
+          <Row className="w-100">
+            <InputGroup className="mb-3" size="sm">
+              <FormControl placeholder="Location" aria-label="Search" aria-describedby="basic-addon2" value={localQueryUbica} onChange={handleQueryUbicaChange} onClick={() => setLocalQueryUbica('')}/>
+              <Button variant="light" id="button-addon2" onClick={handleSearchClick}>Search</Button>
+            </InputGroup>
+          </Row>
+        </Form>
+      </Container>
+      <Container className="contenido3 d-flex justify-content-between">
+        <div className="col-2 aling-item-lefth">
+          {currentUser && cambioRoll === "diseñador" ?
+            <Button href="/carritocompra" variant="light">
+              <img src={"http://localhost:3000/iconos/cart_icon.svg"} alt="Carrito" />
+              <strong>Carrito </strong>
+            </Button>
+          : null
+          }
+          {currentUser && cambioRoll === "fabricante" ?
+            <Button href="/impresorasfabri" variant="light">
+              <img src={"http://localhost:3000/iconos/print_FILL0_icon.svg"} alt="Impresoras" />
+              <strong>Impresoras</strong>
+            </Button>
+          : null
+          }
+        </div>
+        <div className="col-8">
+          {currentUser ? 
+            <ButtonGroup>
+              {roll.map((roll, idx) => (
+                <ToggleButton
+                  key={idx}
+                  id={`roll-${idx}`}
+                  type="radio"
+                  variant={idx % 2 ? 'outline-warning' : 'outline-light'}
+                  name="roll"
+                  value={roll.value}
+                  checked={cambioRoll === roll.value}
+                  onChange={(e) => cambiarRoll(e.currentTarget.value)}
+                >
+                  {roll.name}
+                </ToggleButton>
+              ))}
+            </ButtonGroup>      
+          : null
+          }
+        </div>
+        <div className="col-2">
+          {!currentUser ? (
+            <Button variant="light" className="btn-outline-diseñador" href="/login ">
+              <img src={"http://localhost:3000/iconos/login_icon.svg"} alt="User Icon" />
+              <strong>Login</strong>
+            </Button>
+          ) : (
+            <Container>
+              <Button variant="light" className="btn-outline-fabricante" href="/" onClick={logOut}> 
+                <img src={"http://localhost:3000/iconos/logout_icon.svg"} alt="User Icon" />
+                <strong>LogOut</strong>
+              </Button>
+            </Container>
+          )}
+        </div>
 
-    </Navbar>
+      </Container>
+    </Navbar.Collapse>
+  </Container>
+</Navbar>
   );
 }
 

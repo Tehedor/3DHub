@@ -5,14 +5,23 @@ import VerNotificacion from "./VerNotificacion";
 
 export default function NotificacionesLista(props) {
     
+
+    
+    // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+    // ##### ##### Variables descarga
+    // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     let lista = props.pedidos;    
     let diseñadores = props.diseñadores;
     let printers = props.printers;
     
-    console.log("lista",lista);
-    console.log("printers",printers);
-    console.log("diseñador",diseñadores);
-
+    // console.log("lista",lista);
+    // console.log("printers",printers);
+    // console.log("diseñador",diseñadores);
+    
+    
+    // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+    // ##### ##### funcioens de busqueda
+    // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     const searchPrinter = (id) => {
         for (let i = 0; i < printers.length; i++) {
             console.log(printers[i].id);
@@ -33,13 +42,17 @@ export default function NotificacionesLista(props) {
 
     }
     
-
-   return(
+    
+    // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+    // ##### ##### Return
+    // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####  
+    return(
         <div id="productosresultados" >
                 { Array.isArray(lista) && lista.length > 0 &&lista.map((items,index) => (
                              items.status !== "KART" && 
                         <VerNotificacion pedidos={items} printer={searchPrinter(items.printer_id)} diseñador={searchDiseñador(items.user_id)}/>
                   
                 ))}
-        </div>);
+        </div>
+    );
 }

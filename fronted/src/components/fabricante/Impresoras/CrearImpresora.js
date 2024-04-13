@@ -1,17 +1,21 @@
 import React, { useState, useRef } from "react";
-import {Container, Card,Row, Col, Button, Image} from "react-bootstrap";
+
+import {Row, Col} from "react-bootstrap";
 
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 
 import {MyValidationInput} from '../../../common/ValidationComponents.js';
-// import {MyValidationInput} from '../../ValidationComponents.js';
-
 
 import ImpresorasService from "../../../services/fabricante/impresoras.fabri.service.js";
 
 export default function CrearImpresora(props) {
+    
+  
+  // ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### 
+  // ##### ##### ##### Variables de control 
+  // ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### 
     const form = useRef();
     const checkBtn = useRef();
     
@@ -19,7 +23,9 @@ export default function CrearImpresora(props) {
     const [message, setMessage] = useState("");
   
     
-
+    // ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### 
+    // ##### ##### ##### Variables Impresora 
+    // ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### 
     const [modelName, setModelName] = useState("");
     const [printerLocation, setPrinterLocation] = useState("");
     const [printerType, setPrinterType] = useState("");
@@ -32,10 +38,12 @@ export default function CrearImpresora(props) {
     const [maxHeight, setMaxHeight] = useState("");
     const [printerPrecision, setPrinterPrecision] = useState("");
     const [color, setColor] = useState("");
-
-
-  
     
+    
+    
+    // ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### 
+    // ##### ##### ##### Requisitos
+    // ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### 
     const required = (value) => {
       if (!value) {
         return (
@@ -54,7 +62,10 @@ export default function CrearImpresora(props) {
         );
       }
     };
-
+    
+    // ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### 
+    // ##### ##### Handle
+    // ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### 
     const handleRegisterPrinter = (e) => {
       e.preventDefault();
   
@@ -90,7 +101,9 @@ export default function CrearImpresora(props) {
           <Col>
           <Row> Añdir Impresora</Row>
           <Row class="subir">          
+            {/*  ########### */}
             {/*  SUBIR photo */}
+            {/*  ########### */}
             <MyValidationInput
               type="file" 
               formlabel="Subir foto" 
@@ -99,7 +112,9 @@ export default function CrearImpresora(props) {
             />
           </Row>
           <Row class="modelname">
+            {/* ############# */}
             {/* NOMBRE MODELO */}
+            {/* ############# */}
             <div className="form-group">
               <label htmlFor="modelName">Nombre del modelo</label>
               <Input
@@ -113,7 +128,9 @@ export default function CrearImpresora(props) {
             </div>
           </Row>
           <Row class="printerlocation">
+            {/* ############################ */}
             {/* LOCALIZACIÓN DE LA IMPRESORA */}
+            {/* ############################ */}
             <div className="form-group">
                 <label htmlFor="printerLocation">Direeción de la impresora</label>
                 <Input
@@ -127,7 +144,9 @@ export default function CrearImpresora(props) {
               </div>  
           </Row>
           <Row class="printertype">
+            {/* #################### */}
             {/* TIPO DE LA IMRPESORA */}
+            {/* #################### */}
           <div className="form-group">
                 <label htmlFor="printerType">Tipo de impresora</label>
                 <Input
@@ -141,7 +160,9 @@ export default function CrearImpresora(props) {
               </div>
           </Row>
           <Row class="maxunities">
+             {/* ######## */}
              {/* CANTIDAD */}
+             {/* ######## */}
              <label htmlFor="maxUnities">Máximas unidades</label>
              <MyValidationInput
                 type="number" 
@@ -153,8 +174,9 @@ export default function CrearImpresora(props) {
               />
           </Row>
           <Row class="manufacturationspeed">
+            {/* ###################### */}
             {/* VELOCIDAD DE IMRPESIÓN */}
-
+            {/* ###################### */}
               <label htmlFor="maxUnities">Velocidad De Impresión</label>
               <Input
                 type="number"
@@ -168,7 +190,9 @@ export default function CrearImpresora(props) {
 
           </Row>
           <Row class="material">
+            {/* ########## */}
             {/* MATERIALES */}
+            {/* ########## */}
             <div className="form-group">
               <label htmlFor="addres">Materiales</label>
               <Input
@@ -181,9 +205,10 @@ export default function CrearImpresora(props) {
               />
             </div>
           </Row>
-          {/* maxWidth,maxHeight, printerPrecision,color */}
           <Row class="maxwidth">
+            {/* ############ */}
             {/* ANCHO MÁXIMO */}
+            {/* ############ */}
             <label htmlFor="maxWidth">Ancho máximo</label>
             <MyValidationInput
                 type="number" 
@@ -195,7 +220,9 @@ export default function CrearImpresora(props) {
               />
           </Row>
           <Row class="maxheight">
+            {/* ########### */}
             {/* ALTO MÁXIMO */}
+            {/* ########### */}
             <label htmlFor="maxHeight">Alto máximo</label>
             <MyValidationInput
                 type="number" 
@@ -207,7 +234,9 @@ export default function CrearImpresora(props) {
               />
           </Row>
           <Row class="printerprecision">
+            {/* ######################### */}
             {/* PRECISIÓN DE LA IMPRESORA */}
+            {/* ######################### */}
             <label htmlFor="printerPrecision">Precisión de la impresora</label>
             <MyValidationInput
                 type="number" 
@@ -219,7 +248,9 @@ export default function CrearImpresora(props) {
               />
           </Row>
           <Row class="color">
+            {/* ##### */}
             {/* COLOR */}
+            {/* ##### */}
             <div className="form-group">
               <label htmlFor="color">Color</label>
               <Input

@@ -1,8 +1,7 @@
-import { Button , Row, Col, InputGroup, Form} from "react-bootstrap";
+import { Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import {useGeolocated} from "react-geolocated";
 import ImpresorasLista from './ImpresorasLista';
-import CONFIG from '../../config/config.js';
 
 // Pruebas de la impresora para las vistas
 import {printersexample} from '../../constants/printersPruebas.js';
@@ -11,14 +10,13 @@ import {printersPruebas} from '../../constants/printersPruebas.js';
 import ImpresorasService from "../../services/impresoras.service.js";
 
 
-const SERVER_URL = CONFIG.server_url;
 export default function Home(props) {
+
     // Controlador de impresoras para que funcione el Location
     const setControlPrinters = props.setControlPrinters;
 
+    
     const [query, setQuery] = useState("");
-    // const [printers, setprinters] = useState("");
-    // const [printers, setprinters] = useState(props.theprinters);
 
     // Contenido de la barra de ubicación
     const [queryUbica, setQueryUbica] = useState("");
@@ -28,8 +26,11 @@ export default function Home(props) {
  
      // Estado en el que se alamcenan las impresoras
     const [theprinters, setThePrinters] = useState();
-
-
+    
+    // ###### ###### ###### ###### ###### ###### ###### ###### ######
+    // ###### ###### ###### Geolocalización
+    // ###### ###### ###### ###### ###### ###### ###### ###### ######
+    
     // Localizacion usuario
     // https://www.npmjs.com/package/react-geolocated?activeTab=readme
     const { coords, isGeolocationAvailable, isGeolocationEnabled } =
@@ -40,7 +41,12 @@ export default function Home(props) {
         userDecisionTimeout: 5000,
     });
 
-  
+
+    
+    // ###### ###### ###### ###### ###### ###### ###### ###### ######
+    // ###### ###### ###### dowload versioón 2
+    // ###### ###### ###### ###### ###### ###### ###### ###### ######
+    
     // Función que = () => {
     // const downloadprinters;
     // // Coordenadas de Madrid para que sean por defecto 
@@ -81,25 +87,26 @@ export default function Home(props) {
     // // setControlPrinters(downloadprinters);
     // // console.log(props.controlPrinters);
     // }
+
+
+    // ###### ###### ###### ###### ###### ###### ###### ###### ######
+    // ###### ###### ###### dowload versioón 1
+    // ###### ###### ###### ###### ###### ###### ###### ###### ######
+    
     const download = async () => {
         let downloadprinters;
-        if(CONFIG.use_server){
-            try {
-            const data = await ImpresorasService.descargarPrinters();
-            console.log(data);
-            downloadprinters=data;
-            
-            } catch (error) {
-                // setResultados(
-                // { "cod": error.cod, "message": cod.message}
-                // );
-            }
-        }else{
-            // downloadprinters=printersexample;
-            downloadprinters=printersPruebas;
-            // console.log(printersexample);
+        
+        try {
+            const response = await ImpresorasService.descargarPrinters();
+            console.log(response);
+            downloadprinters=response.data;
+        
+        } catch (error) {
+            // setResultados(
+            // { "cod": error.cod, "message": cod.message}
+            // );
         }
-        setThePrinters(downloadprinters.data);
+        setThePrinters(downloadprinters);
         console.log(theprinters);
     }
 
@@ -108,11 +115,12 @@ export default function Home(props) {
     useEffect(() => {
         setLoading(true);
             async function fetchData() {
-            await download();
-            setTimeout(()=>{
+                await download();
                 setLoading(false);
-            },800);		
-        }
+                // setTimeout(()=>{
+                //     setLoading(false);
+                // },800);		
+            }
         fetchData();
     }, []);
 

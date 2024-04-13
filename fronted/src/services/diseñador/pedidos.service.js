@@ -1,9 +1,6 @@
 import axios from "axios";
 
-// const API_URL = "http://localhost:8080/";
-
 const user = JSON.parse(localStorage.getItem("user"));
-
 const token = user ? user.token : "";
 
 const app = axios.create({
@@ -14,71 +11,71 @@ const app = axios.create({
   },
 });
 
+// ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+// ##### ##### Post cambiar estado a PAY
+// ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
 const revisado = (id) => {
   return app
-    .post(`api/orders/${id}/status`, {
-      "name": "PAY"
-    })
+  .post(`api/orders/${id}/status`, {
+    "name": "PAY"
+  })
 }
 
+// ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+// ##### ##### Post cambiar estado a DELIVERED
+// ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
 const confirmarEntrga = (id) => {
   return app
-    .post(`api/orders/${id}/status`, {
-      "name": "DELIVERED"
-    })
+  .post(`api/orders/${id}/status`, {
+    "name": "DELIVERED"
+  })
 }
-// return app
-// .post(`api/orders/${id}/status`, {
-//   "name": "PAY"
-// })
 
+// ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+// ##### ##### Get ordenes
+// ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
 const getPedidos = () => {
   return app
-    .get(`api/orders`)
+  .get(`api/orders`)
 }
 
 
+// ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+// ##### ##### Post añadir pedido
+// ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
 const añadirPedido = (file, cantidad, fechaFabricacion, fechaEntrega, especificaciones, printer) => {
-  // const fechaFabricacionFormated = new Date(fechaFabricacion);
   const fechaFabricacionFormated = new Date(fechaFabricacion).toISOString().split('T')[0];
-  // console.log(fechaFabricacionFormated);
   const fechaEntregaFormated = new Date(fechaEntrega).toISOString().split('T')[0];
   const stringsprinter = String(printer);
-  console.log(file, cantidad, fechaFabricacionFormated, fechaEntregaFormated, especificaciones, printer);
-  // console.log(fechaEntregaFormated);
   return app
-    .post(`api/orders/create/${printer}`, {
-      manufacturerdate: fechaFabricacionFormated,
-      pickupdate: fechaEntregaFormated,
-      number : cantidad,
-      specs : especificaciones,
+  .post(`api/orders/create/${printer}`, {
+    manufacturerdate: fechaFabricacionFormated,
+    pickupdate: fechaEntregaFormated,
+    number : cantidad,
+    specs : especificaciones,
   })
-
 }
-  
 
 
+// ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+// ##### ##### Get Recivir pedidos carrito
+// ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
 const getPedidosCarrito = () => {
   return app
-    .get("api/orders/designer", {
-      // username,
-      // password,
-    })
-    .then((response) => {
-      if (response) {
-        localStorage.setItem("orderDesigner", JSON.stringify(response)); 
-        console.log(JSON.parse(localStorage.getItem("orderDesigner"))); 
-      }
-      console.log(response.data);
+  .get("api/orders/designer", {
+  })
+  .then((response) => {
+    // if (response) {
+      //   localStorage.setItem("orderDesigner", JSON.stringify(response)); 
+      //   console.log(JSON.parse(localStorage.getItem("orderDesigner"))); 
+      // }
       return response;
     });
-};
-
-  // "manufacturerdate": "2022-11-15",
-  // "pickupdate":"2023-10-14",
-  // "number": 3,
-  // "specs": "Debe de tener cosas"
-
+  };
+  
+// ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+// ##### ##### Resuemn
+// ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
 const PedidosService = {
   revisado,
   confirmarEntrga,

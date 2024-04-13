@@ -1,21 +1,18 @@
 import React, { useState, useEffect } from "react";
 import useLocalStorage from "./common/useLocalStorage";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
 // Apis
 import AuthService from "./services/auth.service";
 
-
 // Componentes 
 import Login from "./components/home/Login";
 import Register from "./components/home/Register";
 import Profile from "./components/home/Profile";
 
-// import Pedidos from "./components/disenador/Pedidos";
-// import Carrito from "./components/disenador/Carrito";
-import PedidosHistorico from "./components/disenador/Pedidos/PedidosHistorico";
+import ControlPedidos from "./components/disenador/Pedidos/ControlPedidos";
 import Carrito from "./components/disenador/Carrito/Carrito";
 
 import Notificaciones from "./components/fabricante/Notificaciones/Notificaciones";
@@ -28,44 +25,47 @@ import FooterSection from "./components/home/FooterSection";
 import Location from "./components/home/Location";  
 import AtencionCliente from "./components/home/AtencionCliente";
 
-// import Home from "./components/Home";
-// import BoardUser from "./components/BoardUser";
-// import BoardModerator from "./components/BoardModerator";
-// import BoardAdmin from "./components/BoardAdmin";
-
 import Home from "./components/home/Home";
 
-// import AuthVerify from "./common/AuthVerify";
 import EventBus from "./common/EventBus";
-
 
 const App = () => {
 
-  // Vairable busqueda /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+  // ##### ##### Variables de busqueda
+  // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
   const [query, setQuery] = useState("");
   const [queryUbica, setQueryUbica] = useState("");
   const [roll, setRoll] = useState();
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
- 
-  // const [controlPrinters, setControlPrinters] = useState(""); 
+  
+  // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+  // ##### ##### Control de impresoras
+  // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
   const [controlPrinters, setControlPrinters] = useLocalStorage('printers',[]); 
 
-
-  // Loggin Variables /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // const [showModeratorBoard, setShowModeratorBoard] = useState(false);
-  // const [showAdminBoard, setShowAdminBoard] = useState(false);
-  const [currentUser, setCurrentUser] = useState(undefined);
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+  // ##### ##### Control de roles
+  // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+  const getInitialRole = () => {
+    const storedRole = localStorage.getItem("RolActual");
+    const validRoles = ["diseñador", "fabricante"];
+    return validRoles.includes(storedRole) ? storedRole : "diseñador";
+  }
   
-  // Loggin componenetes /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  const [theRollActual, setTheRollControl] = useLocalStorage('theRollActual', getInitialRole());
+  const [cambioRoll, setCambioRoll] = useState(theRollActual);
+  
+  // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+  // ##### ##### Control de Login
+  // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+  const [currentUser, setCurrentUser] = useState(undefined);
+  
   useEffect(() => {
     const user = AuthService.getCurrentUser();
     
     if (user) {
       setCurrentUser(user);
       setRoll(user.roles);
-      // setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
-      // setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
     }
     
     EventBus.on("logout", () => {
@@ -78,20 +78,20 @@ const App = () => {
   }, []);
   
   const logOut = () => {
+    setCambioRoll("diseñador");
+    setTheRollControl("diseñador");
     AuthService.logout();
-    // setShowModeratorBoard(false);
-    // setShowAdminBoard(false);
     setCurrentUser(undefined);
   };
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  
+
+  // ##### ##### ##### ##### ##### ##### ##### ##### #####
+  // ##### ##### Return
+  // ##### ##### ##### ##### ##### ##### ##### ##### #####
   return (
-    <div className="App">
+    <div className="App" style={{ backgroundColor: cambioRoll === "diseñador" ? "white" : cambioRoll === "fabricante" ? "#fcebdc" : "default" }}>
       <div className="containerr">
 
-
-      {/* <NavBar roll={roll} query={query} setQuery={setQuery} queryUbica={queryUbica} setQueryUbica={setQueryUbica} currentUser={currentUser} logOut={logOut}/> */}
-        <NavBar query={query} setQuery={setQuery} queryUbica={queryUbica} setQueryUbica={setQueryUbica} currentUser={currentUser} logOut={logOut}/>
+        <NavBar query={query} setQuery={setQuery} queryUbica={queryUbica} setQueryUbica={setQueryUbica} currentUser={currentUser} cambioRoll={cambioRoll} setCambioRoll={setCambioRoll} setTheRollControl={setTheRollControl}  logOut={logOut}/>
           
         <div className="container mt-3">
           <Routes>
@@ -102,14 +102,14 @@ const App = () => {
             <Route exact path="/register" element={<Register />} />
             <Route exact path="/profile" element={<Profile />} />
 
-            <Route exact path="/pedidos" element={<PedidosHistorico />} />
+            <Route exact path="/pedidos/*" element={<ControlPedidos />} />
+            
             <Route exact path="/carritocompra" element={<Carrito />} />
           
             <Route exact path="/notificaciones" element={<Notificaciones />} />
             <Route exact path="/impresorasfabri" element={<ImpresorasFabri />} />
             <Route exact path="/crearimpresora" element={<CrearImpresora />} />
 
-            {/* <Route path="/pedirpedido/:printerId" element={<Location roll={roll} query={query} setQuery={setQuery} queryUbica={queryUbica} setQueryUbica={setQueryUbica} currentUser={currentUser} logOut={logOut}/>}/> */}
             <Route path="/pedirpedido/:printerId" element={<Location controlPrinters={controlPrinters} roll={roll} query={query} queryUbica={queryUbica} currentUser={currentUser} />}/>
 
             <Route exact path="/atencionCliente" element={<AtencionCliente />} />
@@ -124,7 +124,7 @@ const App = () => {
 
         {/* <AuthVerify logOut={logOut}/> */}
         </div>  
-          <FooterSection/>
+          <FooterSection cambioRoll={cambioRoll}/>
     </div>
   );
 };

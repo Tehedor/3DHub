@@ -1,9 +1,6 @@
 import axios from "axios";
 
-// const API_URL = "http://localhost:8080/";
-
 const user = JSON.parse(localStorage.getItem("user"));
-
 const token = user ? user.token : "";
 
 const app = axios.create({
@@ -14,54 +11,60 @@ const app = axios.create({
   },
 });
 
+// ##### ##### ##### ##### ##### ##### ##### ##### #####
+// ##### ##### Post create printer
+// ##### ##### ##### ##### ##### ##### ##### ##### #####
 const createPrinter = (modelName, printerLocation, printerType, printerPhoto, servicePrice, maxUnities, manufacturationSpeed, material, maxWidth,maxHeight, printerPrecision,color) => {
-  // console.log(JSON.parse(localStorage.getItem("user")))
   return app.
-    post("api/printers/createPrinter", {
+  post("api/printers/createPrinter", {
     modelName, 
     printerLocation, 
-    printerType, 
-    printerPhoto, 
-    servicePrice, 
-    maxUnities, 
-    manufacturationSpeed, 
-    material,
-    maxWidth,
-    maxHeight,
-    printerPrecision,
-    color
-  });
+      printerType, 
+      printerPhoto, 
+      servicePrice, 
+      maxUnities, 
+      manufacturationSpeed, 
+      material,
+      maxWidth,
+      maxHeight,
+      printerPrecision,
+      color
+    });
 };
-
+  
+// ##### ##### ##### ##### ##### ##### ##### ##### #####
+// ##### ##### Get Impresoras fabricante
+// ##### ##### ##### ##### ##### ##### ##### ##### #####
 const getImpresorasFabricante = () => {
-  // console.log("user",user);
-  // console.log("token",token);
   return app.
-    get("api/printers/printers")
-    .then((response) => {
-
-      if (response.data) {
-        localStorage.setItem("printersFabri", JSON.stringify(response.data)); // localStorage.setItem("user", JSON.stringify(response.data));: Si la propiedad username existe, entonces se almacena el objeto data de la respuesta en el almacenamiento local del navegador bajo la clave "user". Antes de almacenarlo, el objeto data se convierte en una cadena JSON.
-        console.log(JSON.parse(localStorage.getItem("printersFabri")));
-      }
+  get("api/printers/printers")
+  .then((response) => {
+    
+    // if (response.data) {
+      //   localStorage.setItem("printersFabri", JSON.stringify(response.data)); // localStorage.setItem("user", JSON.stringify(response.data));: Si la propiedad username existe, entonces se almacena el objeto data de la respuesta en el almacenamiento local del navegador bajo la clave "user". Antes de almacenarlo, el objeto data se convierte en una cadena JSON.
+      //   console.log(JSON.parse(localStorage.getItem("printersFabri")));
+      // }
       return response;
     }); 
-
+    
 }
-
-// const deletePrinter = (id) => {
-//   // console.log("id",id);
-//   return app.
-//     delete(`deletePrinter/${id}`);
-// }
+  
+// ##### ##### ##### ##### ##### ##### ##### ##### #####
+// ##### ##### Get Impresoras fabricante
+// ##### ##### ##### ##### ##### ##### ##### ##### #####
 const deletePrinter = (id) => {
   // console.log("id",id);
   return app.
-    delete(`deletePrinter`, 
-    {id}
-  );
+  delete(`deletePrinter`, 
+  {
+    id
+  }
+);
 }
 
+// ##### ##### ##### ##### ##### ##### ##### ##### #####
+// ##### ##### Resumen
+// ##### ##### ##### ##### ##### ##### ##### ##### #####
 const ImpresorasServiceFabri = {
   createPrinter,
   getImpresorasFabricante,

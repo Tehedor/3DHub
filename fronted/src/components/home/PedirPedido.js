@@ -4,7 +4,7 @@ import { Container, Row, Col, Table,Button} from 'react-bootstrap';
 import Form from 'react-validation/build/form';
 import CheckButton from 'react-validation/build/button';
 
-import {MyValidationInput,  MyValidationButton, MyValidationForm} from '../../common/ValidationComponents.js';
+import {MyValidationInput} from '../../common/ValidationComponents.js';
 
 import VerPedir from './VerPedir.js';
 
@@ -15,27 +15,20 @@ function PedirPedido  (props) {
   const checkBtn = useRef();
       
   // Impresora del pedido
-  const numberPrinter=Number(props.printerId)
+  const numberPrinter=Number(props.printerId);
   const printer = props.printers[numberPrinter]; 
+
   //////////////////////////////////////////////////////7//////////////////////////////////////////////////////7
   const roll = props.roll;
   const query = props.query;
   const queryUbica = props.queryUbica;
   const currentUser = props.currentUser;
 
-  const PrinterMaxUnities = printer.MaxUnidades;
-
-  if (roll == "ROLE_USER") {
-    roll = "diseñador";
-  } 
-  if (roll == "ROLE_ADMIN") {
-    roll = "fabricante";
-  }
-  // roll = "fabricante";
-
-
-  // validación de los inputs //////////////////////////////////////////////////////7
-  //////////////////////////////////////////////////////7//////////////////////////////////////////////////////7
+  const PrinterMaxUnities = printer.maxUnities;
+  
+  // ##### ##### ##### ##### ##### ##### ##### ##### #####
+  // ##### ##### Validación de los inputs
+  // ##### ##### ##### ##### ##### ##### ##### ##### #####
   const required = (value) => {
     if (!value) {
       return (
@@ -53,18 +46,11 @@ function PedirPedido  (props) {
 
   const validCantidad = (value) => {
     // verificame que es un numero y que este es menor que el maximo que tolera una imprsoras
-    if (value < 1) {
-      return (
-        <div className="invalid-feedback d-block">
-          This field is required!
-        </div>
-      );
-    }
-    
+
     if (value > PrinterMaxUnities) {
       return (
         <div className="invalid-feedback d-block">
-          Value must be less than {PrinterMaxUnities}
+          Value must be less or equal than {PrinterMaxUnities}
         </div>
       );
     }
@@ -110,16 +96,24 @@ function PedirPedido  (props) {
 
   const validEspecificaciones = (value) => {
     if (value.trim().length < 10) {
-      return "Las especificaciones deben tener al menos 10 caracteres.";
+      return (
+        <div className="invalid-feedback d-block">
+          "Las especificaciones deben tener al menos 10 caracteres."
+        </div>
+      );
     }
   };
 
-  //////////////////////////////////////////////////////7//////////////////////////////////////////////////////7
-  //////////////////////////////////////////////////////7//////////////////////////////////////////////////////7
   
+// File content
+ const content = `Tamaño: original \nColor: ${printer.color.split(",")[0]} \nMaterial: ${printer.material.split(",")[0]}`
+
+  // ####### ####### ####### ####### ####### ####### ####### ####### #######
+  // ####### ####### Variables input    ####### ####### ####### ####### #######
+  // ####### ####### ####### ####### ####### ####### ####### ####### #######
   const [file, setFile] = useState(null);
   const [cantidad, setCantidad] = useState(0);
-  const [especificaciones, setEspecificaciones] = useState(null);
+  const [especificaciones, setEspecificaciones] = useState(content);
 
   // const fechaActual = new Date().toISOString().split('T')[0];
   const now = new Date();
@@ -128,13 +122,21 @@ function PedirPedido  (props) {
   const fechaFabricacion = useRef();
   const [fechaEntrega, setFechaEntrega] = useState(now);  
 
+
+  // ####### ####### ####### ####### ####### ####### ####### ####### #######
+  // ####### ####### Variables control    ####### ####### ####### ####### #######
+  // ####### ####### ####### ####### ####### ####### ####### ####### #######
+
   const [successful, setSuccessful] = useState(false);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
   
   
-  
+  // ####### ####### ####### ####### ####### ####### ####### ####### #######
+  // ####### ####### Handel    ####### ####### ####### ####### #######
+  // ####### ####### ####### ####### ####### ####### ####### ####### #######
+
   const handlePedido = (e) => {
     e.preventDefault();
 
@@ -171,115 +173,121 @@ function PedirPedido  (props) {
   <Container>
     <Row class="impresora-caracteristicas">
       <VerPedir printer={printer}/>
-      {/* <Col sm={3} class="imagen">
-        <Image src={printer.Imagen} thumbnail />
-      </Col>
-      <Col sm={9}>
-        <Card.Text>Stock: {printer.Nombre_modelo}</Card.Text>
-      </Col> */}
     </Row>
     
-     <Form onSubmit={handlePedido} ref={form}>
-       {!successful && (
-       <Row>
-         <Col sm={3} class="reseñas">
-           reseñas
-         </Col>
-         <Col sm={6} class="central">
-           <Row class="subir">          
-           {/*  SUBIR FIL */}
-           <MyValidationInput
-               type="file" 
-               formlabel="Subir file" 
-               onChange={(e) => setFile(e.target.files[0])}
-               // validations={[required]} 
-               // validations={} 
-             />
-           </Row>
-           <Row>
-             {/* ESPECIFICACIONES */}
-             <MyValidationInput
-               as="textarea"
-               formlabel="Especificaciones del pedido"
-               rows={7}
-               maxLength={400}
-               value={especificaciones}
-               onChange={e => setEspecificaciones(e.target.value)}
-               validations={[required,validEspecificaciones]} // Agrega tus validaciones aquí
-             />
-           </Row>
-        </Col>
-        <Col sm={3} class="derecha">
-
-          <Row class="Tabla">
-             <Table striped bordered hover variant="gray">
-               <tbody>
-                 <tr>
-                   <td>Cantidad</td>
-                   <td>
-                     {/* CANTIDAD */}
-                     <MyValidationInput
-                      type="number" 
-                       max={PrinterMaxUnities} 
-                       min="0" 
-                       value={cantidad} 
-                       onChange={e => setCantidad(e.target.value)}
-                       validations={[required, validCantidad]} 
-                     />
-                   </td>
-                 </tr>
-                 <tr>
-                   <td>Límite de fabricación</td>
-                   <td>
-                     {/* LIMITE FABRICACION */}
-                     <MyValidationInput
-                      type="date" 
-                      name="fechaFabricacion" 
-                      // value={fechaFabricacion} 
-                      onChange={e => {fechaFabricacion.current = e.target.value}}
-                      // onChange={e => setFechaFabricacion(e.target.value)}
-                      validations={[required, validFechaFabricacion]} 
+    <Form onSubmit={handlePedido} ref={form}>
+      {!successful && (
+        <Row>   
+          <Col lg={3} className="reseñas order-3 order-lg-1">
+          reseñas
+          </Col>
+          <Col lg={6} className="central order-1 order-lg-2">
+            <Row class="subir">          
+            {/* ########## */}
+            {/*  SUBIR FIL */}
+            {/* ########## */}
+              <MyValidationInput
+                type="file" 
+                formlabel="Subir file" 
+                onChange={(e) => setFile(e.target.files[0])}
+                // validations={[required]} 
+              />
+            </Row>
+            <Row>
+              {/* ################ */}
+              {/* ESPECIFICACIONES */}
+              {/* ################ */}
+              <MyValidationInput
+                as="textarea"
+                formlabel="Especificaciones del pedido"
+                rows={7}
+                maxLength={400}
+                value={especificaciones}
+                onChange={e => setEspecificaciones(e.target.value)}
+                validations={[required,validEspecificaciones]} // Agrega tus validaciones aquí
+              />
+            </Row>
+          </Col>
+          <Col lg={3} className="derecha order-2 order-lg-3">
+            <Row class="Tabla">
+              <Table striped bordered hover variant="gray">
+                <tbody>
+                  <tr>
+                    <td>Cantidad</td>
+                    <td>
+                      {/* ########## */}
+                      {/* CANTIDAD */}
+                      {/* ########## */}
+                      <MyValidationInput
+                        type="number" 
+                        max={PrinterMaxUnities} 
+                        min="0" 
+                        value={cantidad} 
+                        onChange={e => setCantidad(e.target.value)}
+                        validations={[required,validCantidad]} 
                       />
-
-                   </td>
-                 </tr>
-                 <tr>
-                   <td>Límite de entrega</td>
-                   <td>
-                       {/* LIMITE ENTREGA */}
-                     <MyValidationInput
-                         type="date" 
-                         name="fechaEntrega" 
-                         onChange={e => setFechaEntrega(e.target.value)}
-                         validations={[required, validFechaEntrega]}
-                     />
-                   </td>
-                 </tr>
-               </tbody>
-            </Table>
-           </Row>
-           <Row className="Añadir" style={{display: 'flex', alignItems: 'flex-end'}}>
-             <Button variant="success" onClick={handlePedido}>Añadir al Carrito</Button>
-             <p>
-             </p>
-               <Button href="/" variant="danger">Vover</Button>
-           </Row>
-        </Col>
-      </Row>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Límite de fabricación</td>
+                    <td>
+                      {/* ################## */}
+                      {/* LIMITE FABRICACION */}
+                      {/* ################## */}
+                      <MyValidationInput
+                        type="date" 
+                        name="fechaFabricacion" 
+                        // value={fechaFabricacion} 
+                        onChange={e => {fechaFabricacion.current = e.target.value}}
+                        // onChange={e => setFechaFabricacion(e.target.value)}
+                        validations={[required, validFechaFabricacion]} 
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Límite de entrega</td>
+                    <td>
+                      {/* ############## */}
+                      {/* LIMITE ENTREGA */}
+                      {/* ############## */}
+                      <MyValidationInput
+                        type="date" 
+                        name="fechaEntrega" 
+                        onChange={e => setFechaEntrega(e.target.value)}
+                        validations={[required, validFechaEntrega]}
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </Table>
+            </Row>
+            <Row className="Añadir" style={{display: 'flex', alignItems: 'flex-end'}}>
+                    {/* ############# */}
+                    {/* Añadir Carrito*/}
+                    {/* ############# */}
+              <Button variant="success" onClick={handlePedido}>Añadir al Carrito</Button>
+              <p></p>
+                    {/* ############# */}
+                    {/*    Vovler     */}
+                    {/* ############# */}
+              <Button href="/" variant="danger">Vover</Button>
+            </Row>
+          </Col>
+        </Row>
       )}
-    {message && (
-            <div className="form-group">
-              <div
-                className={
-                  successful ? "alert alert-success" : "alert alert-danger"
-                }
-                role="alert"
-              >
-                {message}
-              </div>
-            </div>
-    )}
-    <CheckButton style={{ display: "none" }} ref={checkBtn} />
+      {message && (
+        <div className="form-group">
+          <div
+            className={
+              successful ? "alert alert-success" : "alert alert-danger"
+            }
+            role="alert"
+          >
+            {message}
+          </div>
+        </div>
+      )}
+      <CheckButton style={{ display: "none" }} ref={checkBtn} />
     </Form>
   </Container>
   );
