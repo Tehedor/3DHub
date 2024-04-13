@@ -97,16 +97,16 @@ export default function Home(props) {
         let downloadprinters;
         
         try {
-            const data = await ImpresorasService.descargarPrinters();
-            console.log(data);
-            downloadprinters=data;
+            const response = await ImpresorasService.descargarPrinters();
+            console.log(response);
+            downloadprinters=response.data;
         
         } catch (error) {
             // setResultados(
             // { "cod": error.cod, "message": cod.message}
             // );
         }
-        setThePrinters(downloadprinters.data);
+        setThePrinters(downloadprinters);
         console.log(theprinters);
     }
 

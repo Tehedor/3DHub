@@ -31,21 +31,35 @@ import EventBus from "./common/EventBus";
 
 const App = () => {
 
-  // Vairable busqueda /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+  // ##### ##### Variables de busqueda
+  // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
   const [query, setQuery] = useState("");
   const [queryUbica, setQueryUbica] = useState("");
   const [roll, setRoll] = useState();
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
- 
-  // const [controlPrinters, setControlPrinters] = useState(""); 
+  
+  // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+  // ##### ##### Control de impresoras
+  // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
   const [controlPrinters, setControlPrinters] = useLocalStorage('printers',[]); 
 
-
-  // Loggin Variables /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  const [currentUser, setCurrentUser] = useState(undefined);
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+  // ##### ##### Control de roles
+  // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+  const getInitialRole = () => {
+    const storedRole = localStorage.getItem("RolActual");
+    const validRoles = ["diseñador", "fabricante", "user"];
+    return validRoles.includes(storedRole) ? storedRole : "user";
+  }
   
-  // Loggin componenetes /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  const [theRollActual, setTheRollControl] = useLocalStorage('theRollActual', getInitialRole());
+  const [cambioRoll, setCambioRoll] = useState(theRollActual);
+  
+  // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+  // ##### ##### Control de Login
+  // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+  const [currentUser, setCurrentUser] = useState(undefined);
+  
   useEffect(() => {
     const user = AuthService.getCurrentUser();
     
@@ -64,18 +78,20 @@ const App = () => {
   }, []);
   
   const logOut = () => {
+    setCambioRoll("diseñador");
+    setTheRollControl("diseñador");
     AuthService.logout();
     setCurrentUser(undefined);
   };
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  
+
+  // ##### ##### ##### ##### ##### ##### ##### ##### #####
+  // ##### ##### Return
+  // ##### ##### ##### ##### ##### ##### ##### ##### #####
   return (
     <div className="App">
       <div className="containerr">
 
-
-      {/* <NavBar roll={roll} query={query} setQuery={setQuery} queryUbica={queryUbica} setQueryUbica={setQueryUbica} currentUser={currentUser} logOut={logOut}/> */}
-        <NavBar query={query} setQuery={setQuery} queryUbica={queryUbica} setQueryUbica={setQueryUbica} currentUser={currentUser} logOut={logOut}/>
+        <NavBar query={query} setQuery={setQuery} queryUbica={queryUbica} setQueryUbica={setQueryUbica} currentUser={currentUser} cambioRoll={cambioRoll} setCambioRoll={setCambioRoll} setTheRollControl={setTheRollControl}  logOut={logOut}/>
           
         <div className="container mt-3">
           <Routes>
@@ -86,9 +102,7 @@ const App = () => {
             <Route exact path="/register" element={<Register />} />
             <Route exact path="/profile" element={<Profile />} />
 
-            {/* <Route exact path="/pedidos/*" element={<ControlPedidos />} /> */}
             <Route exact path="/pedidos/*" element={<ControlPedidos />} />
-            {/* <Route path="/reseña/:pedidoId" element={<LocationReseña controlPrinters={controlPrinters} roll={roll} query={query} queryUbica={queryUbica} currentUser={currentUser} />}/> */}
             
             <Route exact path="/carritocompra" element={<Carrito />} />
           
@@ -96,7 +110,6 @@ const App = () => {
             <Route exact path="/impresorasfabri" element={<ImpresorasFabri />} />
             <Route exact path="/crearimpresora" element={<CrearImpresora />} />
 
-            {/* <Route path="/pedirpedido/:printerId" element={<Location roll={roll} query={query} setQuery={setQuery} queryUbica={queryUbica} setQueryUbica={setQueryUbica} currentUser={currentUser} logOut={logOut}/>}/> */}
             <Route path="/pedirpedido/:printerId" element={<Location controlPrinters={controlPrinters} roll={roll} query={query} queryUbica={queryUbica} currentUser={currentUser} />}/>
 
             <Route exact path="/atencionCliente" element={<AtencionCliente />} />
@@ -111,7 +124,7 @@ const App = () => {
 
         {/* <AuthVerify logOut={logOut}/> */}
         </div>  
-          <FooterSection/>
+          <FooterSection cambioRoll={cambioRoll}/>
     </div>
   );
 };

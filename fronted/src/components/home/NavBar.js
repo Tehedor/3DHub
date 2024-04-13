@@ -9,57 +9,25 @@ import useLocalStorage from "../../common/useLocalStorage";
 
 // function NavigationBar( props) {
 // function NavigationBar({ roll, query, setQuery, queryUbica, setQueryUbica, currentUser, logOut }) {
-function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser, logOut }) {
+function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser, logOut, theRollActual,setTheRollControl,setCambioRoll,cambioRoll }) {
   
   const [actualizador, setActualizador] = useState("sasdf");
-  
-  const setRollAcutal = (value) => {
-    setActualizador(value)
-    localStorage.setItem("RolActual", value); 
-  }
-  const setRollAcutalIni = (value) => {
-    // setActualizador(value)
-    localStorage.setItem("RolActual", value); 
+
+
+  const cambiarRoll = (roll) => {
+    setCambioRoll(roll);
+    setTheRollControl(roll);
   }
 
-  const getCurrentRol = () => {
-    return localStorage.getItem("RolActual");
-  }
-  
-  // currentUser = "arrancar";
-  if (localStorage.getItem("user") != null) {
-    currentUser = localStorage.getItem("user");
-  }else {
-    setRollAcutalIni("diseñador");
-    // setRollAcutal("ninguno");
-    setRollAcutalIni("diseñador");
-  }
-  
+
   
   const [checked, setChecked] = useState(false);
-  const [rollValue, setRollValue] = useState('diseñador');
-
-  
     
-  const rollActual = getCurrentRol(); 
-  
-
-
-
   const roll = [
     { name: 'Diseñador', value: 'diseñador' },
     { name: 'Fabricante', value: 'fabricante' },
   ];
-  // if (roll == "ROLE_USER") {
-  //   roll = "diseñador";
-  // } 
-  // if (roll == "ROLE_ADMIN") {
-  //   roll = "fabricante";
-  // }
-  // roll = "diseñador";
-  // roll = "fabricante";
-
-  
+ 
   const [localQuery, setLocalQuery] = useState(query);
   const [localQueryUbica, setLocalQueryUbica] = useState(queryUbica);
 
@@ -79,8 +47,7 @@ function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser
   return (
 
     
-    <Navbar sticky="top"  bg={rollActual !== "fabricante" ? "primary" : "secondary"} expand="sm">
-    {/* <Navbar sticky="top"  bg={rollValue !== "fabricante" ? "primary" : "secondary"} expand="sm"> */}
+   <Navbar sticky="top" style={{ backgroundColor: cambioRoll === "diseñador" ? "#7D70BA" : cambioRoll === "fabricante" ? "#332a21" : cambioRoll === "user" ? "#006400" : "primary" }} expand="sm"> {/* <Navbar sticky="top"  bg={rollValue !== "fabricante" ? "primary" : "secondary"} expand="sm"> */}
       <Container fluid>
 
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -106,7 +73,7 @@ function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser
               <Col className="d-flex align-items-center">
                 <div className="col-1 aling-item-lefth justify-content-between">
                 {/* {currentUser && rollValue === "diseñador" ? */}
-                {currentUser && rollActual === "diseñador" ?
+                {currentUser && cambioRoll === "diseñador" ?
                   <Button href="/pedidos" style={{backgroundColor: 'gray'}}>
                     <img src={"http://localhost:3000/iconos/inventory_2_icon.svg"} alt="Pedidos" />
                     pedidos
@@ -114,7 +81,7 @@ function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser
                 : null
                 }     
                 {/* {currentUser && rollValue === "fabricante" ? */}
-                {currentUser && rollActual === "fabricante" ?
+                {currentUser && cambioRoll === "fabricante" ?
                   <Button href="/notificaciones" style={{backgroundColor: 'gray'}}>
                     <img src={"http://localhost:3000/iconos/bookmark_icon.svg"} alt="Notificaciones" />
                     Notificaciones
@@ -150,7 +117,7 @@ function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser
             <div className="col-1 aling-item-lefth">
             {/* <Container ClassName="contenido3_1 col-1"> */}
               {/* {currentUser && rollValue === "diseñador"   ? */}
-              {currentUser && rollActual === "diseñador"   ?
+              {currentUser && cambioRoll === "diseñador"   ?
                 <Button href="/carritocompra" style={{backgroundColor: 'gray'}}>
                   <img src={"http://localhost:3000/iconos/cart_icon.svg"} alt="Carrito" />
                     Carrito 
@@ -158,7 +125,7 @@ function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser
                 : null
               }
               {/* {currentUser && rollValue === "fabricante"   ? */}
-              {currentUser && rollActual === "fabricante"   ?
+              {currentUser && cambioRoll === "fabricante"   ?
                   <Button href="/impresorasfabri" style={{backgroundColor: 'gray'}}>
                     <img src={"http://localhost:3000/iconos/print_FILL0_icon.svg"} alt="Impresoras" />
                       Impresoras
@@ -187,9 +154,9 @@ function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser
                         name="roll"
                         value={roll.value}
                         // checked={rollValue === roll.value}
-                        checked={rollActual === roll.value}
+                        checked={cambioRoll === roll.value}
                         // onChange={(e) => setRollValue(e.currentTarget.value)}
-                        onChange={(e) => setRollAcutal(e.currentTarget.value)}
+                        onChange={(e) => cambiarRoll(e.currentTarget.value)}
                       >
                         {roll.name}
                       </ToggleButton>
