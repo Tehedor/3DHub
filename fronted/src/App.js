@@ -48,8 +48,8 @@ const App = () => {
   // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
   const getInitialRole = () => {
     const storedRole = localStorage.getItem("RolActual");
-    const validRoles = ["diseñador", "fabricante", "user"];
-    return validRoles.includes(storedRole) ? storedRole : "user";
+    const validRoles = ["diseñador", "fabricante"];
+    return validRoles.includes(storedRole) ? storedRole : "diseñador";
   }
   
   const [theRollActual, setTheRollControl] = useLocalStorage('theRollActual', getInitialRole());
