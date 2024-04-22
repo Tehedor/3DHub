@@ -1,14 +1,11 @@
 package com.dhub.backend.controllers.request;
 
 import java.sql.Date;
-import java.util.Set;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.dhub.backend.models.EStatus;
-import com.dhub.backend.models.UserEntity;
 
-import jakarta.persistence.Lob;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;

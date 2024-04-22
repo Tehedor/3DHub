@@ -3,19 +3,14 @@ package com.dhub.backend.controllers;
 import com.dhub.backend.controllers.request.PrinterDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.validation.Valid;
 import lombok.Data;
 
-import com.dhub.backend.models.Printer;
 import com.dhub.backend.services.PrinterServiceImpl;
 import com.dhub.backend.models.UserEntity;
 import com.dhub.backend.repository.UserRepository;

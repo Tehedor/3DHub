@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -87,11 +85,11 @@ public class UserEntity {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userEntity")
     private List<Order> orders;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "designer")
-    private List<Ratings> ratingsDesigner;
+    // @OneToMany(cascade = CascadeType.ALL, mappedBy = "designer")
+    // private List<Ratings> ratingsDesigner;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "manufacturer")
-    private List<Ratings> ratingsManufacturer;
+    // @OneToMany(cascade = CascadeType.ALL, mappedBy = "manufacturer")
+    // private List<Ratings> ratingsManufacturer;
 
     public UserDTO getUsersWithoutEntity() {
         UserDTO userDTO = new UserDTO();

@@ -2,7 +2,6 @@ package com.dhub.backend.services;
 
 import com.dhub.backend.models.Ratings;
 import com.dhub.backend.repository.RatingsRepository;
-import com.dhub.backend.services.RatingsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
