@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.dhub.backend.controllers.request.RatingsDTO;
 import com.dhub.backend.models.Order;
 import com.dhub.backend.models.Ratings;
 import com.dhub.backend.models.UserEntity;
@@ -40,7 +42,7 @@ public class RatingsController {
 
 // Metodo POST: Crear reseña basada en un pedido existente
 @PostMapping("/{id}/createReview")
-public ResponseEntity<Ratings> createReview(@RequestBody Ratings ratings, @PathVariable Long id) {
+public ResponseEntity<RatingsDTO> createReview(@RequestBody Ratings ratings, @PathVariable Long id) {
 
     Order order = orderService.getOrderById(id);
 
@@ -55,10 +57,33 @@ public ResponseEntity<Ratings> createReview(@RequestBody Ratings ratings, @PathV
     if (user == null) {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+
+    
     ratings.setOrder(order);
     Ratings newRating = ratingsService.addRatings(ratings);
-    return new ResponseEntity<>(newRating, HttpStatus.CREATED);
+    RatingsDTO ratingsDTO = convertToDto(ratings);
+    return new ResponseEntity<>(ratingsDTO, HttpStatus.CREATED);
+
+
+   
 }
+
+
+private RatingsDTO convertToDto(Ratings ratings) {
+    RatingsDTO ratingsDTO = new RatingsDTO();
+    
+    ratingsDTO.setId(ratings.getId());
+    ratingsDTO.setDate(ratings.getDate());
+    ratingsDTO.setManufacturerRating(ratings.getManufacturerRating());
+    ratingsDTO.setProductRating(ratings.getProductRating());
+    ratingsDTO.setFile(ratings.getFile());
+    ratingsDTO.setTextRating(ratings.getTextRating());
+    ratingsDTO.setOrder_id(ratings.getOrder().getId());
+
+    return ratingsDTO;
+}
+
 }
 
 
