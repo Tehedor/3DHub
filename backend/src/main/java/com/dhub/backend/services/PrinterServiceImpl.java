@@ -1,5 +1,6 @@
 package com.dhub.backend.services;
 
+import com.dhub.backend.controllers.request.PrinterDTO;
 import com.dhub.backend.models.Printer;
 import com.dhub.backend.repository.PrinterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,5 +26,40 @@ public class PrinterServiceImpl implements PrinterService{
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<PrinterDTO> getAllPrintersWithoutUser() {
+        return StreamSupport.stream(printerRepository.findAll().spliterator(), false)
+                .map(printer -> new PrinterDTO(printer.getId(), printer.getModelName(), printer.getPrinterLocation(), printer.getPrinterType(), printer.getPrinterPhoto(), printer.getServicePrice(), 
+                printer.getMaxUnities(), printer.getManufacturationSpeed(), printer.getMaxWidth(), printer.getMaxHeight(), printer.getPrinterPrecision(), printer.getColor(), printer.getMaterial(), printer.getUserEntity().getUsername()))
+                .collect(Collectors.toList());
+    }
 
+    @Override
+    public PrinterDTO getPrinterById(Long id) {
+        Printer printer = printerRepository.findById(id).orElse(null);
+        PrinterDTO printerDTO = new PrinterDTO();
+        // Copiar todos los atributos de printer a printerDTO
+        printerDTO.setId(printer.getId());
+        printerDTO.setModelName(printer.getModelName());
+        printerDTO.setPrinterLocation(printer.getPrinterLocation());
+        printerDTO.setPrinterType(printer.getPrinterType());
+        printerDTO.setPrinterPhoto(printer.getPrinterPhoto());
+        printerDTO.setServicePrice(printer.getServicePrice());
+        printerDTO.setMaxUnities(printer.getMaxUnities());
+        printerDTO.setManufacturationSpeed(printer.getManufacturationSpeed());
+        printerDTO.setMaxWidth(printer.getMaxWidth());
+        printerDTO.setMaxHeight(printer.getMaxHeight());
+        printerDTO.setPrinterPrecision(printer.getPrinterPrecision());
+        printerDTO.setColor(printer.getColor());
+        printerDTO.setMaterial(printer.getMaterial());
+        printerDTO.setUserIdFabricante((printer.getUserEntity().getUsername()));
+        return printerDTO;
+    }
+    
+    @Override
+    public void deletePrinterById(Long id) {
+        printerRepository.deleteById(id);
+    }
+
+    
 }

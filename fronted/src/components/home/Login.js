@@ -48,6 +48,8 @@ const Login = () => {
     form.current.validateAll();
 
     if (checkBtn.current.context._errors.length === 0) {
+      console.log(username, password);
+      // AuthService.login(username, password).then(
       AuthService.login(username, password).then(
         () => {
           navigate("/");
@@ -106,7 +108,7 @@ const Login = () => {
               validations={[required]}
             />
           </div>
-
+          <p></p>
           <div className="form-group">
             <button className="btn btn-primary btn-block" disabled={loading}>
               {loading && (
@@ -115,6 +117,7 @@ const Login = () => {
               <span>Login</span>
             </button>
           </div>
+          <p></p>
 
           <div className="form-group">
             <Link to="/register">

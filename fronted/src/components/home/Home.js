@@ -1,24 +1,22 @@
-import { Button , Row, Col, InputGroup, Form} from "react-bootstrap";
+import { Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import {useGeolocated} from "react-geolocated";
 import ImpresorasLista from './ImpresorasLista';
-import CONFIG from '../../config/config.js';
 
 // Pruebas de la impresora para las vistas
 import {printersexample} from '../../constants/printersPruebas.js';
 import {printersPruebas} from '../../constants/printersPruebas.js';
 
-import ImpresorasService from "../../services/imprsoras.service";
+import ImpresorasService from "../../services/impresoras.service.js";
 
 
-const SERVER_URL = CONFIG.server_url;
 export default function Home(props) {
+
     // Controlador de impresoras para que funcione el Location
     const setControlPrinters = props.setControlPrinters;
 
+    
     const [query, setQuery] = useState("");
-    // const [printers, setprinters] = useState("");
-    // const [printers, setprinters] = useState(props.theprinters);
 
     // Contenido de la barra de ubicación
     const [queryUbica, setQueryUbica] = useState("");
@@ -28,8 +26,11 @@ export default function Home(props) {
  
      // Estado en el que se alamcenan las impresoras
     const [theprinters, setThePrinters] = useState();
-
-
+    
+    // ###### ###### ###### ###### ###### ###### ###### ###### ######
+    // ###### ###### ###### Geolocalización
+    // ###### ###### ###### ###### ###### ###### ###### ###### ######
+    
     // Localizacion usuario
     // https://www.npmjs.com/package/react-geolocated?activeTab=readme
     const { coords, isGeolocationAvailable, isGeolocationEnabled } =
@@ -40,57 +41,87 @@ export default function Home(props) {
         userDecisionTimeout: 5000,
     });
 
-  
-    // Función que descarga las impresoras, en función de la localización en la que se encuentra
-    const download = async () => {
-    let downloadprinters;
-    // Coordenadas de Madrid para que sean por defecto 
-    const latitude=40.4167;
-    const longitude=-3.70325;  
+
+    
+    // ###### ###### ###### ###### ###### ###### ###### ###### ######
+    // ###### ###### ###### dowload versioón 2
+    // ###### ###### ###### ###### ###### ###### ###### ###### ######
+    
+    // Función que = () => {
+    // const downloadprinters;
+    // // Coordenadas de Madrid para que sean por defecto 
+    // const latitude=40.4167;
+    // const longitude=-3.70325;  
 
     // Poner la manerad para solicitar las impresoras en función de la localizaciónSs
-    if(CONFIG.use_server){
+    // if(CONFIG.use_server){
+    //     try {
+    //     // if(isGeolocationEnabled || !queryUbica===""){
+    //     //     if (!queryUbica===""){
+    //     //     // api que me permita sacar latitud y longitud de la ubicación a partir de la query 
+    //     //     }else{
+    //     //     latitude=coords.latitude;
+    //     //     longitude=coords.longitude;
+    //     //     }
+    //     // }
+    //     // let queryparams =  "?lat=" + latitude + "&lon=" + longitude;
+    //     let queryparams =  "";
+    //     // const data = await ImpresorasService.(queryparams);
+    //     // console.log(JSON.parse(localStorage.getItem("printers")));
+    //     const data = ImpresorasService.descargarPrinters();
+        
+    //     console.log(data);
+    //     } catch (error) {
+    //     // setResultados(
+    //     //   { "cod": error.cod, "message": cod.message}
+    //     // );
+    //     }
+    // }else{
+    //     // downloadprinters=printersexample;
+    //     downloadprinters=printersPruebas;
+    //     // console.log(printersexample);
+    // }descarga las impresoras, en función de la localización en la que se encuentra
+    // const download 
+    // setThePrinters(downloadprinters);
+    // console.log(theprinters);
+    // // setControlPrinters(downloadprinters);
+    // // console.log(props.controlPrinters);
+    // }
+
+
+    // ###### ###### ###### ###### ###### ###### ###### ###### ######
+    // ###### ###### ###### dowload versioón 1
+    // ###### ###### ###### ###### ###### ###### ###### ###### ######
+    
+    const download = async () => {
+        let downloadprinters;
+        
         try {
-        // if(isGeolocationEnabled || !queryUbica===""){
-        //     if (!queryUbica===""){
-        //     // api que me permita sacar latitud y longitud de la ubicación a partir de la query 
-        //     }else{
-        //     latitude=coords.latitude;
-        //     longitude=coords.longitude;
-        //     }
-        // }
-        // let queryparams =  "?lat=" + latitude + "&lon=" + longitude;
-        let queryparams =  "";
-        const data = await ImpresorasService.descargar(queryparams);
-        console.log(data);
-
-        downloadprinters=printersPruebas;
+            const response = await ImpresorasService.descargarPrinters();
+            console.log(response);
+            downloadprinters=response.data;
+        
         } catch (error) {
-        // setResultados(
-        //   { "cod": error.cod, "message": cod.message}
-        // );
+            // setResultados(
+            // { "cod": error.cod, "message": cod.message}
+            // );
         }
-    }else{
-        // downloadprinters=printersexample;
-        downloadprinters=printersPruebas;
-        // console.log(printersexample);
+        setThePrinters(downloadprinters);
+        console.log(theprinters);
     }
-    setThePrinters(downloadprinters);
-    console.log(theprinters);
 
-    setControlPrinters(printersPruebas);
-    }
 
     // Efecto que se ejecuta al cargar la página
     useEffect(() => {
-    setLoading(true);
-        async function fetchData() {
-        await download();
-        setTimeout(()=>{
-            setLoading(false);
-        },800);		
-    }
-    fetchData();
+        setLoading(true);
+            async function fetchData() {
+                await download();
+                setLoading(false);
+                // setTimeout(()=>{
+                //     setLoading(false);
+                // },800);		
+            }
+        fetchData();
     }, []);
 
 
@@ -100,7 +131,7 @@ export default function Home(props) {
             {loading ? <img id="loading" src={process.env.PUBLIC_URL + "/spinners/cxyduck.gif"} className="spinner" alt="spinner" />:
         
             <Row>
-                <ImpresorasLista printers={props.controlPrinters.printers} />
+                <ImpresorasLista printers={theprinters} />
             </Row>  
             }
         </div>

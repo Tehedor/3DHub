@@ -1,60 +1,86 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/";
+const user = JSON.parse(localStorage.getItem("user"));
+const token = user ? user.token : "";
 
-const register = (username, email, password) => {
-  return axios.post(API_URL + "createUser", {
-    username,
-    email,
-    password,
-    roles: ["ROLE_DESIGNER"],
-  });
-};
+const app = axios.create({
+  baseURL: "http://localhost:8080/",
+  headers: {
+    "Content-type": "application/json",
+    "Authorization": `Bearer ${token}`,
+  },
+});
 
-const login = (username, password) => {
-  return axios
-    .post(API_URL + "loginDesigner", {
-      username,
-      password,
-    })
-    .then((response) => {
-      if (response.data.username) {
-        localStorage.setItem("user", JSON.stringify(response.data)); // localStorage.setItem("user", JSON.stringify(response.data));: Si la propiedad username existe, entonces se almacena el objeto data de la respuesta en el almacenamiento local del navegador bajo la clave "user". Antes de almacenarlo, el objeto data se convierte en una cadena JSON.
-      }
-
-      return response.data;
-    });
-};
-
-const logout = () => {
-  localStorage.removeItem("user");
-  return axios.post(API_URL + "signout").then((response) => {
-    return response.data;
-  });
-};
-
-const getCurrentUser = () => {
-  return JSON.parse(localStorage.getItem("user"));
-};
-
-const order = () => {
-  return axios
-    .post(API_URL + "order", {
-      headers: {
-        Authorization: `Bearer ${getCurrentUser().token}`,
-      },
-    })
-    .then((response) => {
-      return response.data;
-    });
+// ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+// ##### ##### Post cambiar estado a PAY
+// ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+const revisado = (id) => {
+  return app
+  .post(`api/orders/${id}/status`, {
+    "name": "PAY"
+  })
 }
 
-const AuthService = {
-  register,
-  login,
-  logout,
-  getCurrentUser,
-  order,
+// ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+// ##### ##### Post cambiar estado a DELIVERED
+// ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+const confirmarEntrga = (id) => {
+  return app
+  .post(`api/orders/${id}/status`, {
+    "name": "DELIVERED"
+  })
 }
 
-export default AuthService;
+// ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+// ##### ##### Get ordenes
+// ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+const getPedidos = () => {
+  return app
+  .get(`api/orders`)
+}
+
+
+// ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+// ##### ##### Post añadir pedido
+// ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+const añadirPedido = (file, cantidad, fechaFabricacion, fechaEntrega, especificaciones, printer) => {
+  const fechaFabricacionFormated = new Date(fechaFabricacion).toISOString().split('T')[0];
+  const fechaEntregaFormated = new Date(fechaEntrega).toISOString().split('T')[0];
+  const stringsprinter = String(printer);
+  return app
+  .post(`api/orders/create/${printer}`, {
+    manufacturerdate: fechaFabricacionFormated,
+    pickupdate: fechaEntregaFormated,
+    number : cantidad,
+    specs : especificaciones,
+  })
+}
+
+
+// ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+// ##### ##### Get Recivir pedidos carrito
+// ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+const getPedidosCarrito = () => {
+  return app
+  .get("api/orders/designer", {
+  })
+  .then((response) => {
+    // if (response) {
+      //   localStorage.setItem("orderDesigner", JSON.stringify(response)); 
+      //   console.log(JSON.parse(localStorage.getItem("orderDesigner"))); 
+      // }
+      return response;
+    });
+  };
+  
+// ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+// ##### ##### Resuemn
+// ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+const PedidosService = {
+  revisado,
+  confirmarEntrga,
+  añadirPedido,
+  getPedidosCarrito,
+}
+
+export default PedidosService;

@@ -1,10 +1,13 @@
 package com.dhub.backend.services;
 
 
+import com.dhub.backend.controllers.request.OrderDTO;
+import com.dhub.backend.models.EStatus;
 import com.dhub.backend.models.Order;
 import com.dhub.backend.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -40,4 +43,62 @@ public class OrderServiceImpl implements OrderService {
     public void deleteOrder(Long id) {
         orderRepository.deleteById(id);
     }
+
+    @Override
+    public List<OrderDTO> getOrdersByStatus(EStatus status, List<OrderDTO> orders) {
+        List<OrderDTO> ordersByStatus = new ArrayList<>();
+        for (OrderDTO order : orders) {
+            if (order.getStatus().equals(status)) {
+                ordersByStatus.add(order);
+            }
+        }
+        return ordersByStatus;
+    }
+
+    @Override
+    public List<OrderDTO> getOrdersExcludingStatus(EStatus status, List<OrderDTO> orders) {
+        List<OrderDTO> ordersExcludingStatus = new ArrayList<>();
+        for (OrderDTO order : orders) {
+            if (!order.getStatus().equals(status)) {
+                ordersExcludingStatus.add(order);
+            }
+        }
+        return ordersExcludingStatus;
+    }
+
+
+    @Override
+    public List<OrderDTO> getOrdersByUserId(Long userId, List<OrderDTO> orders) {
+        List<OrderDTO> ordersByUserId = new ArrayList<>();
+        for (OrderDTO order : orders) {
+            if (order.getUser_id()==userId) {
+                ordersByUserId.add(order);
+            }
+        }
+        return ordersByUserId;
+    }
+
+    @Override
+    public List<OrderDTO> getOrdersByPrinterId(Long printerId , List<OrderDTO> orders){
+        List<OrderDTO> ordersByPrinterId = new ArrayList<>();
+        for (OrderDTO order : orders) {
+            if (order.getPrinter_id()==printerId) {
+                ordersByPrinterId.add(order);
+            }
+        }
+        return ordersByPrinterId;
+    }
+
+    @Override
+    public List<Order> getOrdersByPrinterId2(List<Long> ids, List<Order> allOrders){
+        List<Order> ordersByPrinterId = new ArrayList<>();
+        for (Order order : allOrders) {
+            if (ids.contains(order.getPrinter().getId())) {
+                ordersByPrinterId.add(order);
+            }
+        }
+        return ordersByPrinterId;
+    }
+
+
 }

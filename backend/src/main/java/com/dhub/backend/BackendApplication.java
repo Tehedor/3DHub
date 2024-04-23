@@ -1,12 +1,8 @@
 package com.dhub.backend;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.Set;
 
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -26,12 +22,6 @@ import com.dhub.backend.repository.RatingsRepository;
 import com.dhub.backend.repository.UserRepository;
 import com.dhub.backend.repository.PrinterRepository;
 
-
-import ch.qos.logback.core.status.Status;
-
-import ch.qos.logback.core.status.Status;
-
-//import jakarta.validation.constraints.Null;
 
 @SpringBootApplication
 public class BackendApplication {
@@ -92,43 +82,6 @@ public class BackendApplication {
 				.factAddress("Calle de la Princesa, 1, 28008 Madrid, España")
 				.build();
 
-			// 	String filePath = "C:\\Users\\admin\\Desktop\\ISST PROYECTO\\3DHub\\backend\\descarga.zip";
-
-
-			// byte[] fileContent = Files.readAllBytes(Paths.get(filePath));
-			
-			Order order = Order.builder()
-				.orderdate(new Date(System.currentTimeMillis()))
-				.number(2)
-				.specs("specs1")
-				.manufacturerdate(new Date(System.currentTimeMillis()))
-				.file(null)
-				.status(EStatus.SEND)
-				.pickupdate(new Date(System.currentTimeMillis()))
-				.userEntity(userEntity)
-				.build();
-
-			Order order2 = Order.builder()
-				.orderdate(new Date(System.currentTimeMillis()))
-				.number(2)
-				.specs("specs1")
-				.manufacturerdate(new Date(System.currentTimeMillis()))
-				.file(null)
-				.status(EStatus.SEND)
-				.pickupdate(new Date(System.currentTimeMillis()))
-				.userEntity(userEntity)
-				.build();
-
-			Ratings rating = Ratings.builder()
-				.date(new Date(System.currentTimeMillis()))
-				.productRating(4)
-				.manufacturerRating(3)
-				.textRating("good")
-				.file(null)
-				.designer(userEntity2)
-				.manufacturer(userEntity3)
-				.build();
-
 			Printer printer = Printer.builder()
 				.modelName("ender 3")
 				.printerLocation("creality")
@@ -160,14 +113,45 @@ public class BackendApplication {
 				.userEntity(userEntity)
 				.build();
 
+			Order order = Order.builder()
+				.orderdate(new Date(System.currentTimeMillis()))
+				.number(2)
+				.specs("specs1")
+				.manufacturerdate(new Date(System.currentTimeMillis()))
+				.file(null)
+				.status(EStatus.SEND)
+				.pickupdate(new Date(System.currentTimeMillis()))
+				.userEntity(userEntity)
+				.printer(printer)
+				.build();
+			Order order2 = Order.builder()
+				.orderdate(new Date(System.currentTimeMillis()))
+				.number(2)
+				.specs("specs1")
+				.manufacturerdate(new Date(System.currentTimeMillis()))
+				.file(null)
+				.status(EStatus.SEND)
+				.pickupdate(new Date(System.currentTimeMillis()))
+				.userEntity(userEntity)
+				.printer(printer2)
+				.build();
+
+			Ratings rating = Ratings.builder()
+				.date(new Date(System.currentTimeMillis()))
+				.productRating(4)
+				.manufacturerRating(3)
+				.textRating("good")
+				.file(null)
+				.order(order2)
+				.build();
 			
 			userRepository.save(userEntity);
 			userRepository.save(userEntity2);
 			userRepository.save(userEntity3);
-			orderRepository.save(order);
-			orderRepository.save(order2);
 			printerRepository.save(printer);
 			printerRepository.save(printer2);
+			orderRepository.save(order);
+			orderRepository.save(order2);
 			ratingsRepository.save(rating);	
 		};
 	}

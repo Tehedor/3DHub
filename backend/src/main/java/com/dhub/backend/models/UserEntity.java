@@ -1,12 +1,12 @@
 package com.dhub.backend.models;
 
+import com.dhub.backend.controllers.request.OrderDTO;
 import com.dhub.backend.controllers.request.PrinterDTO;
+import com.dhub.backend.controllers.request.UserDTO;
 
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -85,11 +85,26 @@ public class UserEntity {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userEntity")
     private List<Order> orders;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "designer")
-    private List<Ratings> ratingsDesigner;
+    // @OneToMany(cascade = CascadeType.ALL, mappedBy = "designer")
+    // private List<Ratings> ratingsDesigner;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "manufacturer")
-    private List<Ratings> ratingsManufacturer;
+    // @OneToMany(cascade = CascadeType.ALL, mappedBy = "manufacturer")
+    // private List<Ratings> ratingsManufacturer;
+
+    public UserDTO getUsersWithoutEntity() {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(this.Id);
+        userDTO.setDni(this.dni);
+        userDTO.setEmail(this.email);
+        userDTO.setUsername(this.username);
+        userDTO.setPassword(this.password);
+        userDTO.setRoles(this.roles.stream().map(role -> role.getName().name()).collect(Collectors.toSet()));
+        userDTO.setLat(this.lat);
+        userDTO.setLon(this.lon);
+        userDTO.setAddress(this.address);
+        userDTO.setFactAddress(this.factAddress);
+        return userDTO;
+    }
 
     public List<PrinterDTO> getPrintersWithoutUserEntity() {
         return printers.stream()
@@ -109,8 +124,50 @@ public class UserEntity {
                 printerDTO.setPrinterPrecision(printer.getPrinterPrecision());
                 printerDTO.setColor(printer.getColor());
                 printerDTO.setMaterial(printer.getMaterial());
+                printerDTO.setUserIdFabricante((printer.getUserEntity().getUsername()));
+                
                 
                 return printerDTO;
+            })
+            .collect(Collectors.toList());
+    }
+
+    public List<OrderDTO> getOrdersWithoutUserEntity() {
+        return orders.stream()
+            .map(order -> {
+                OrderDTO orderDTO = new OrderDTO();
+                // Copiar todos los atributos de order a orderDTO
+                orderDTO.setId(order.getId());
+                orderDTO.setOrderdate(order.getOrderdate());
+                orderDTO.setSpecs(order.getSpecs());
+                orderDTO.setManufacturerdate(order.getManufacturerdate());
+                orderDTO.setPickupdate(order.getPickupdate());
+                orderDTO.setNumber(order.getNumber());
+                orderDTO.setStatus(order.getStatus());
+                orderDTO.setUser_id(order.getUserEntity().getId());
+                orderDTO.setPrinter_id(order.getPrinter().getId());
+                
+                return orderDTO;
+            })
+            .collect(Collectors.toList());
+    }
+
+    public List<OrderDTO> getOrdersAndPrintersWithoutUserEntity() {
+        return orders.stream()
+            .map(order -> {
+                OrderDTO orderDTO = new OrderDTO();
+                // Copiar todos los atributos de order a orderDTO
+                orderDTO.setId(order.getId());
+                orderDTO.setOrderdate(order.getOrderdate());
+                orderDTO.setSpecs(order.getSpecs());
+                orderDTO.setManufacturerdate(order.getManufacturerdate());
+                orderDTO.setPickupdate(order.getPickupdate());
+                orderDTO.setNumber(order.getNumber());
+                orderDTO.setStatus(order.getStatus());
+                orderDTO.setUser_id(order.getUserEntity().getId());
+                orderDTO.setPrinter_id(order.getUserEntity().getId());
+                
+                return orderDTO;
             })
             .collect(Collectors.toList());
     }

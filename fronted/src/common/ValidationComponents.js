@@ -35,12 +35,25 @@ const Button = ({ hasErrors, ...props }) => {
     // <button {...props} disabled={hasErrors} />
   );
 };
- 
+
+
+const Check = ({ error, isChanged, isUsed, ...props }) => (
+  <>
+  <BootstrapForm.Check
+    {...props}
+  />
+  {isChanged && isUsed && error}
+  </>
+);
+  
+
+
 // Now call HOCs on components
 export const MyValidationForm = form(Form);
 export const MyValidationInput = control(Input);
 export const MyValidationButton = button(Button);
 
+export const MyValidationCheck = control(Check);
 
 //////////////////////////////////// Base ////////////////////////////////////
 // import { form, control, button } from 'react-validation';

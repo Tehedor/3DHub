@@ -1,23 +1,18 @@
 package com.dhub.backend.security.jwt;
 
-import java.util.Collection;
 import java.util.Date;
-import java.util.Set;
+import java.util.function.Function;
 
 import javax.crypto.SecretKey;
-import javax.management.relation.Role;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import jakarta.validation.Payload;
 import lombok.extern.slf4j.Slf4j;
-import java.util.function.Function;
 
 @Slf4j
 @Component
@@ -30,13 +25,11 @@ public class JwtUtils {
     private String timeExpiration;
 
     //Generar token de acceso
-    public String generateAccessToken(String username, Collection<GrantedAuthority> collection) {
+    public String generateAccessToken(String username) {
 
 
         return Jwts.builder()
-            .claim("Username", username)
-            .claim("Roles", collection.toString())
-            // .subject(collection.toString())
+            .subject(username)
             .issuedAt(new Date(System.currentTimeMillis()))
             .expiration(new Date(System.currentTimeMillis() + Long.parseLong(timeExpiration)))
             .signWith(getSignatureKey()) 
