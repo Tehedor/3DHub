@@ -71,7 +71,13 @@ public class Printer {
     @JoinColumn(name = "users_id")
     private UserEntity userEntity;
 
+    // @OneToMany(cascade = CascadeType.ALL, mappedBy = "printer")
+    // private List<Ratings> ratings;
+
+    // @ManyToOne
+    // @JoinColumn(name = "order_id")
+    // private Order order;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "printer")
-    private List<Ratings> ratings;
+    private List<Order> orders;
 
 }

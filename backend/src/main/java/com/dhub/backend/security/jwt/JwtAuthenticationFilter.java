@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.dhub.backend.models.UserEntity;
+
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -61,7 +62,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                             Authentication authResult) throws IOException, ServletException{
 
         User user = (User)authResult.getPrincipal();
-        String token = jwtUtils.generateAccessToken(user.getUsername(), user.getAuthorities());
+        String token = jwtUtils.generateAccessToken(user.getUsername());
 
         response.addHeader("Authorization", token);
 

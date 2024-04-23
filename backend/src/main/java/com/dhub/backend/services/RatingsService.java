@@ -6,21 +6,21 @@ import com.dhub.backend.models.Ratings;
 
 public interface RatingsService {
     
-    List<Ratings> getPrinterRatings(Long printerId);
     
-    // Ratings getRatingsById(long id);
+    Ratings getRatingsById(long id);
     
-    // Ratings addRatings(Ratings ratings);
+    Ratings addRatings(Ratings ratings);
     
-    // Ratings updateRatings(long id, Ratings newRatings);
+    Ratings updateRatings(long id, Ratings newRatings);
     
-    // void deleteRatings(long id);
+    void deleteRatings(long id);
+    Ratings updateManufacturerRatings(long ratingsId, Ratings newRating);
     
-    // List<Ratings> getManufacturerRatings(String manufacturerId);
+    void deleteManufacturerRatings(long ratingsId);
+    List<Ratings> getRatingsByPrinter(Long printerId);
     
-    // Ratings addManufacturerRatings(String manufacturerId, Ratings ratings);
+    Double getAverageRatingByDesigners(Long printerId);
     
-    // Ratings updateManufacturerRatings(long ratingsId, Ratings newRating);
-    
-    // void deleteManufacturerRatings(long ratingsId);
+    Double getAverageRatingByManufacturer(Long printerId);
+
 }

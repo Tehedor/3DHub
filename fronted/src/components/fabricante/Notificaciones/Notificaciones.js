@@ -1,12 +1,9 @@
-import { Button , Row, Col, InputGroup, Form, Container} from "react-bootstrap";
+import { Button , Row, Col,  Container} from "react-bootstrap";
 import { useEffect, useState } from "react";
 
 import NotificacionesLista from './NotificacionesLista';
 
-// Pruebas de la impresora para las vistas
-import CONFIG from '../../../config/config.js';
 import {notificacionesPruebas} from '../../../constants/notificacionesPruebas.js';
-
 
 // Apis
 import NotificacionesService from "../../../services/fabricante/notificaciones.service";
@@ -16,56 +13,71 @@ import TablaEstados from '../../../common/Tabla_estados.js';
 
 
 export default function Notificaciones(props) {
-
-    // Estado en el que muestra el spinner si esta cargando
+    
+    
+    // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+    // ##### ##### Estados de control
+    // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     const [loading, setLoading] = useState(true);
  
-     // Estado en el que se alamcenan las impresoras
-    const [thePedidos, setThePedidos] = useState();
+
+    // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+    // ##### ##### Estados de descarga
+    // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####   const [thePedidos, setThePedidos] = useState();   
+    const [thePrinters, setThePrinters] = useState();
+    const [theDiseñadores, setTheDiseñadores] = useState();
 
 
 
-    // Función que descarga las impresoras, en función de la localización en la que se encuentra
+   // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+   // ##### ##### Descarga de datos
+   // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     const download = async () => {
-        let downloadpedidos;
-    
-        // Poner la manerad para solicitar las impresoras en función de la localizaciónSs
-        if(CONFIG.use_server){
-            //////////////////////////////////////////////////////////////////////////////////////
-            //////////////////////////////////////////////////////////////////////////////////////
-            try {
-                
-                // const data = await NotificacionesService.descargar(queryparams);
-                // console.log(data);
-                
-                // downloadpedidos=data;
-            } catch (error) {
-                // setResultados(
-                    //   { "cod": error.cod, "message": cod.message}
-                    // );
-                }
-            }else{
-            downloadpedidos=notificacionesPruebas;
-            //////////////////////////////////////////////////////////////////////////////////////
-            //////////////////////////////////////////////////////////////////////////////////////
+        let downloadPedidos;
+        let downloadprinters;
+        let downloadDiseñadores;
+
+        try {
+        const response = await NotificacionesService.getPedidosFabricante();
+        console.log(response.data);
+        downloadPedidos=response.data.orders;
+        console.log(downloadPedidos);
+        downloadprinters=response.data.printers;
+        console.log(downloadprinters);
+        downloadDiseñadores=response.data.users;
+        console.log(downloadDiseñadores);
+
+        
+        } catch (error) {
+            // setResultados(
+            // { "cod": error.cod, "message": cod.message}
+            // );
         }
-        setThePedidos(downloadpedidos);
-        console.log(thePedidos);
+        setThePedidos(downloadPedidos);
+        setThePrinters(downloadprinters);
+        setTheDiseñadores(downloadDiseñadores);
     }
 
-    // Efecto que se ejecuta al cargar la página
+    
+    // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+    // ##### ##### Duncion de carga
+    // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     useEffect(() => {
-    setLoading(true);
+        setLoading(true);
         async function fetchData() {
-        await download();
-        setTimeout(()=>{
+            await download();
             setLoading(false);
-        },800);		
-    }
-    fetchData();
+            // setTimeout(()=>{
+            //     setLoading(false);
+            // },50);		
+        }
+        fetchData();
     }, []);
 
 
+    // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+    // ##### ##### Return 
+    // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     return (
         <div>
             <h2 id="catálogo">Notificaciones</h2> 
@@ -73,16 +85,19 @@ export default function Notificaciones(props) {
         
 
             <Container>
-                <Col sm={2}>
-                {/* // Carrito, Pagado, Rechazado, Bajo_revision,Creando, Enviado, Terminado */}             
-                    <TablaEstados />
-                </Col>
-                <Col sm={10}>
-                    {/* <Row>
-                        <NotificacionesLista printers={props.controlPrinters.printers} />
-                    </Row>   */}
-                    <Button id="volver" variant="primary"  href="/">Volver</Button>
-                </Col>
+                <Row>
+                    <Col sm={2}>
+                    {/* // Carrito, Pagado, Rechazado, Bajo_revision,Creando, Enviado, Terminado */}              
+                        <TablaEstados />
+                        <Button id="volver" variant="primary"  href="/">Volver</Button>
+                    </Col>
+                    <Col sm={10}>
+                        <Row>
+                            <NotificacionesLista  pedidos={thePedidos} printers={thePrinters} diseñadores={theDiseñadores} />
+                        </Row>   
+                        <Button id="volver" variant="primary"  href="/">Volver</Button>
+                    </Col>
+                </Row>
             </Container>
 
                 }

@@ -56,15 +56,7 @@ public class Ratings {
 	private byte[] file;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "designer_id")
-	private UserEntity designer;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "manufacturer_id")
-	private UserEntity manufacturer;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "printer_id")
-    private Printer printer;
+	@JoinColumn(name = "order_id")
+	private Order order;
 
 }

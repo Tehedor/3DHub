@@ -5,11 +5,17 @@
     padding: 15px; 
     align-items: center;
 }
-
+/* 
 .logo {
     grid-column: 1;
     width: 50px;
     height: 50px;
+} */
+
+.logo {
+    width: 120px;
+    height: 120px;
+    margin-left: 20px; /* Añadido */
 }
 
 .mensaje {

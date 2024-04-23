@@ -1,65 +1,66 @@
-import {Container, Card,Row, Col, Button, Image} from "react-bootstrap";
-import {Link} from "react-router-dom";
+import {Card,Row, Col, Button} from "react-bootstrap";
+
+// Apis
+import CarritoService from "../../../services/diseñador/carrito.service";
 
 export default function VerPedidoCarrito(props) {
 
+    // ##### ##### ##### ##### ##### ##### ##### ##### #####
+    // ##### ##### Variables de descarga
+    // ##### ##### ##### ##### ##### ##### ##### ##### #####
+    const carrito = props.carrito;
     const printer = props.printer;
+    const fabricante = props.fabricante;
     
+    // ##### ##### ##### ##### ##### ##### ##### ##### #####
+    // ##### ##### Función eliminar pedido
+    // ##### ##### ##### ##### ##### ##### ##### ##### #####
+    const eliminarPedido = () => { 
+        console.log("Eliminando pedido");
+        console.log(carrito.id);
+        CarritoService.deletePedido(carrito.id);
+    }
+    
+    // ##### ##### ##### ##### ##### ##### ##### ##### #####
+    // ##### ##### Return
+    // ##### ##### ##### ##### ##### ##### ##### ##### #####
     return(
-        <Card border="gray" style={{ backgroundColor: "white", marginTop: '0' }}> 
-        {/* <Card border="gray" style={{ backgroundColor: "white", marginTop: '0', height: '320px' }}>  */}
-            <Card.Body>
+        <Card border="gray" > 
 
-            <Row>
-                <Col sm={3} class="imagen" className="d-flex justify-content-center align-items-center">
-                    {/* <Image src={printer.Foto_impresora} thumbnail  style={{ maxWidth: "100%" }}/> */}
-                    <Card.Img src={printer.Foto_impresora} thumbnail  style={{ maxWidth: "100%" }}/>
-                </Col>
-                <Col sm={9} class="datos_impresora">
-                    <Row >
-                        <Col sm={4}>
-                            <Card.Text style={{color: 'black'}}>Nombre: {printer.Nombre_modelo}</Card.Text>
-                        </Col>
-                        <Col sm={4}>
-                            <Row noGutters>
-                                <Container>
-                                 <Image src="http://localhost:3000/iconos/star_fill_icon.svg" height="20px" width="20px"/>
-                                 <Image src="http://localhost:3000/iconos/star_fill_icon.svg" height="20px" width="20px"/>
-                                 <Image src="http://localhost:3000/iconos/star_fill_icon.svg" height="20px" width="20px"/>
-                                 <Image src="http://localhost:3000/iconos/star_fill_icon.svg" height="20px" width="20px"/>
-                                 <Image src="http://localhost:3000/iconos/star_fill_icon.svg" height="20px" width="20px"/>
-                                </Container>
-                            </Row>
-                            
-                        </Col>
-                        <Col sm={4}>
-                            <Card.Text>Fabricante: {printer.Fabricante}</Card.Text>
-                        </Col>
-                        
+            <Card.Header   style={{ backgroundColor: 'orange', color: 'white', fontWeight: 'bold' }}>
+                <Row>
 
-                    </Row>
-                    <Row>
-                        <Col sm={6}>
-                            <Card.Text>Tipo: {printer.Tipo_impresora}</Card.Text>
-                            <Card.Text>Max_unid: {printer.Unidades_max}</Card.Text>
-                            <Card.Text>Velocidad: {printer.Velo_fabricacion}</Card.Text>
-                            <Card.Text>Max_ancho: {printer.Max_ancho}</Card.Text>
-                            <Card.Text>Max_alto: {printer.Max_alto}</Card.Text>
-                        
-                        </Col>
-                        <Col sm={6}>
-                            <Card.Text>Precisión: {printer.Precision}</Card.Text>
-                            <Card.Text>Colores: {printer.Colores_disponibles}</Card.Text>
-                            <Card.Text>Acabados: {printer.Acabados_disponibles}</Card.Text>
-                            <Card.Text>Precio: {printer.Precio_servicio} €/mm³/</Card.Text>
-                        </Col>
-                    </Row>
-                    {/* <Card.Text>Stock: {printer.Nombre_modelo}</Card.Text> */}
-                </Col> 
-            </Row>
+                    <Col lm={5}>
+                        Fabricante: {fabricante ? fabricante.username : printer.userIdFabricante}
+                    </Col>
+
+                    <Col lm={5}>
+                        Printer: {printer.modelName}, ID_Impresora: {printer.id}
+                    </Col>
+
+                    <Col lm={2}>
+                        <Button variant="danger" size="sm" onClick={eliminarPedido}>Eliminar</Button>
+                    </Col>
+ 
+                </Row>
+            </Card.Header>
+
+            <Card.Body>                
+                <Row>
+                    <Col >            
+                        <Row>id: {carrito.id}</Row>
+                        <Row>Fecha de pedido: {carrito.orderdate}</Row>
+                        <Row>Fecha de fabricación: {carrito.manufacturerdate}</Row>
+                        <Row>Fecha de recogida: {carrito.pickupdate}</Row>
+                        <Row>Número de impresoras: {carrito.number}</Row>
+                        <Row>Estado: {carrito.status}</Row>
+                        <Row>Especificaciones: {carrito.specs}</Row>
+                    </Col> 
+                </Row>
+           
             </Card.Body>
-        </Card>  
 
+        </Card>  
     );
  
 }

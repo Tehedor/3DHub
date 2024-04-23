@@ -1,16 +1,16 @@
 package com.dhub.backend.models;
 
 import java.sql.Date;
-import java.util.HashSet;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
@@ -46,15 +46,13 @@ public class Order {
 	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	private Long Id;
 	
-	 
- 	@JsonFormat(pattern = "dd/MM/yyyy")
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date orderdate;
 
     @Min(value = 1, message = "Valoracion debe ser mayor o igual que 1")
 	private Integer number;
 
-	// TODO: Turn into NotBlank
-	//@NotBlank
+	@NotBlank
 	@Size(max = 50)
 	private String specs;
 
@@ -67,8 +65,6 @@ public class Order {
 	@Lob
 	private byte[] file;
 
-	 
-	
 	@Column(name = "status")
 	@Enumerated(EnumType.STRING)
 	private EStatus status;
@@ -76,6 +72,15 @@ public class Order {
 	@ManyToOne
     @JoinColumn(name = "users_id")
     private UserEntity userEntity;
+
+	// @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
+	// private List<Printer> printers;
+	@ManyToOne(fetch =  FetchType.LAZY)
+	@JoinColumn(name = "printer_id")
+	private Printer printer;
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
+    private List<Ratings> ratings;
 
 // @JsonManagedReference
 //  @ManyToOne(cascade = CascadeType.ALL)
@@ -87,5 +92,6 @@ public class Order {
 // @JsonManagedReference
 // 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido")
 // 	private Pagamento pagamento;
+
 
 }

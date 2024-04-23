@@ -1,26 +1,20 @@
 package com.dhub.backend.controllers;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dhub.backend.controllers.request.CreateUserDTO;
-import com.dhub.backend.controllers.request.LoginUserDTO;
 import com.dhub.backend.controllers.response.MessageResponse;
-import com.dhub.backend.controllers.response.UserInfoResponse;
 import com.dhub.backend.models.*;
 import com.dhub.backend.repository.UserRepository;
 import com.dhub.backend.security.jwt.JwtUtils;
-import com.dhub.backend.services.UserDetailsImpl;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
