@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import com.dhub.backend.models.UserEntity;
+import java.util.ArrayList;
 
 @Service
 public class PrinterServiceImpl implements PrinterService{
@@ -61,5 +63,17 @@ public class PrinterServiceImpl implements PrinterService{
         printerRepository.deleteById(id);
     }
 
+    /*@Override
+    public List<PrinterDTO> getPrintersByManufacturer(UserEntity manufacturer) {
+        return printerRepository.findByUserEntity(manufacturer).stream()
+                .map(printer -> new PrinterDTO(printer.getId(), printer.getModelName(), printer.getPrinterLocation(), printer.getPrinterType(), printer.getPrinterPhoto(), printer.getServicePrice(), 
+                printer.getMaxUnities(), printer.getManufacturationSpeed(), printer.getMaxWidth(), printer.getMaxHeight(), printer.getPrinterPrecision(), printer.getColor(), printer.getMaterial(), printer.getUserEntity().getId().toString()))
+                .collect(Collectors.toList());
+    }*/
+
+    /*@Override
+    public List<Printer> getPrintersByManufacturerId(Long manufacturerId) {
+        return printerRepository.findByManufacturerId(manufacturerId);
+    }*/
     
 }

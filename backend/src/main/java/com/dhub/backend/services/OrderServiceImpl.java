@@ -4,11 +4,13 @@ package com.dhub.backend.services;
 import com.dhub.backend.controllers.request.OrderDTO;
 import com.dhub.backend.models.EStatus;
 import com.dhub.backend.models.Order;
+import com.dhub.backend.models.Ratings;
 import com.dhub.backend.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -98,6 +100,21 @@ public class OrderServiceImpl implements OrderService {
             }
         }
         return ordersByPrinterId;
+    }
+
+    @Override
+    public List<Integer> getRatingsByPrinterId(Long printerId, List<Order> allOrders) {
+
+        List<Integer> productRatingsByPrinterId = new ArrayList<>();
+        for (Order order : allOrders) {
+            if (order.getPrinter().getId().equals(printerId)) {
+                List<Ratings> ratings = order.getRatings();
+                for (Ratings rating : ratings) {
+                    productRatingsByPrinterId.add(rating.getProductRating());
+                }
+            }
+        }
+        return productRatingsByPrinterId;
     }
 
 

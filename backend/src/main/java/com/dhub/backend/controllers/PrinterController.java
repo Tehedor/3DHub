@@ -33,6 +33,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import com.dhub.backend.repository.PrinterRepository;
 import com.dhub.backend.repository.UserRepository;
 
+import java.util.Map;
+import java.util.HashMap;
+import java.util.stream.Collectors;
+import java.util.ArrayList;
+import com.dhub.backend.controllers.request.UserDTO;
+import com.dhub.backend.controllers.request.OrderDTO;
+import com.dhub.backend.models.Order;
+
 @Data
 @RestController
 @RequestMapping("/api/printers")
@@ -101,8 +109,28 @@ public class PrinterController {
                     return new ResponseEntity<>(printers, HttpStatus.OK);
                 }*/
 
-
-                
+    // En PrinterController.java
+    /*@GetMapping("/manufacturer/{manufacturerId}")
+    public ResponseEntity<Map<String, Object>> getManufacturerPrinters(@PathVariable Long manufacturerId) {
+        List<Printer> printers = printerService.getPrintersByManufacturerId(manufacturerId);
     
-    }
+        List<Long> printerIds = printers.stream()
+            .map(Printer::getId)
+            .distinct()
+            .collect(Collectors.toList());
     
+        List<PrinterDTO> printerDTOs = new ArrayList<>();
+        for (Long printerId : printerIds) {
+            PrinterDTO printer = printerService.getPrinterById(printerId);
+            printerDTOs.add(printer);
+        }
+    
+        Map<String, Object> response = new HashMap<>();
+        response.put("printers", printerDTOs);
+    
+        if(response.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }*/
+}

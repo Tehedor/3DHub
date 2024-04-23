@@ -8,6 +8,7 @@ import com.dhub.backend.controllers.response.MessageResponse;
 import com.dhub.backend.models.EStatus;
 import com.dhub.backend.models.Order;
 import com.dhub.backend.models.Printer;
+import com.dhub.backend.models.Ratings;
 import com.dhub.backend.models.Status;
 import com.dhub.backend.models.UserEntity;
 import com.dhub.backend.repository.OrderRepository;
@@ -30,7 +31,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-
+import com.dhub.backend.repository.RatingsRepository;
 
 @RestController
 // @PreAuthorize("hasRole('ROLE_MANUFACTURER' or 'ROLE_DESIGNER' or 'ROLE_ADMIN')")
@@ -309,5 +310,28 @@ public class OrderController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/orders")
+    public ResponseEntity<List<PrinterDTO>> getManufacturerPrinters() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = (authentication != null) ? authentication.getName() : null;
+        UserEntity user = userRepository.findByUsername(username)
+        .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
+
+        List<PrinterDTO> ratings = user.getPrintersWithoutUserEntity();
+        if(ratings.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(ratings, HttpStatus.OK);
+    }
+
+    @GetMapping("/{printerId}/ratings")
+    public ResponseEntity<List<Integer>> getPrinterOrderRatings(@PathVariable Long printerId) {
+        List<Integer> ratings = orderService.getRatingsByPrinterId(printerId, new ArrayList<>());
+        if (ratings.isEmpty()) {
+            return new ResponseEntity<List<Integer>>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<List<Integer>>(ratings, HttpStatus.OK);
     }
 }

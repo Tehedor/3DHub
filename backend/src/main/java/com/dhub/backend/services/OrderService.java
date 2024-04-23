@@ -4,7 +4,6 @@ import com.dhub.backend.controllers.request.OrderDTO;
 import com.dhub.backend.models.EStatus;
 import com.dhub.backend.models.Order;
 import java.util.List;
-
 public interface OrderService {
     List<Order> getAllOrders();
     List<OrderDTO> getOrdersByStatus(EStatus status, List<OrderDTO> orders);
@@ -16,4 +15,5 @@ public interface OrderService {
     Order createOrder(Order order);
     Order updateOrder(Order order);
     void deleteOrder(Long id);
+    List<Integer> getRatingsByPrinterId(Long printerId, List<Order> orders);
 }
