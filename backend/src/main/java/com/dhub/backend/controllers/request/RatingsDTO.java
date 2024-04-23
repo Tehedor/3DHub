@@ -26,5 +26,6 @@ public class RatingsDTO {
     @NotBlank
     private String textRating;
 
+    private long order_id;
 
 }
