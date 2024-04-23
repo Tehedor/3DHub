@@ -59,4 +59,6 @@ public class Ratings {
 	@JoinColumn(name = "order_id")
 	private Order order;
 
+	
+
 }

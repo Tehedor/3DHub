@@ -82,6 +82,8 @@ public class Order {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
     private List<Ratings> ratings;
 
+
+	
 // @JsonManagedReference
 //  @ManyToOne(cascade = CascadeType.ALL)
 //  @JoinColumn(name = "printer_id")
