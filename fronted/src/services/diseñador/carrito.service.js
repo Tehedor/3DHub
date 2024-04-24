@@ -44,6 +44,8 @@ const order = (id) => {
 const deletePedido = (id) => {
   return app
   .delete(`api/orders/${id}`)
+
+  console.log(id);
 }
 
 
