@@ -26,4 +26,8 @@ public interface RatingsService {
 
     RatingsDTO convertToDto(Ratings ratings);
 
+    List<RatingsDTO> getRatingsByPrinterIds(List<Long> printerIds);
+
+    
+
 }

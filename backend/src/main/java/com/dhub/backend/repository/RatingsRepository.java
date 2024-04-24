@@ -9,5 +9,6 @@ import com.dhub.backend.models.Ratings;
 public interface RatingsRepository extends JpaRepository<Ratings, Long> {
     // Set<Ratings> findAll();
   
+    Ratings findByOrderId(Long orderId);
     
 }

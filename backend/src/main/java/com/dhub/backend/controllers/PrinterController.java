@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.Data;
 
 import com.dhub.backend.controllers.request.PrinterDTO;
+import com.dhub.backend.controllers.request.RatingsDTO;
 import com.dhub.backend.models.Printer;
 import com.dhub.backend.services.PrinterServiceImpl;
+import com.dhub.backend.services.RatingsService;
 
 import jakarta.validation.Valid;
 
@@ -57,6 +59,9 @@ public class PrinterController {
     @Autowired
     private PrinterRepository printerRepository;
 
+    @Autowired
+    private RatingsService ratingsService;
+
     @GetMapping
     public ResponseEntity<List<PrinterDTO>> getAllPrinters() {
         List<PrinterDTO> printers = printerService.getAllPrintersWithoutUser();
@@ -78,6 +83,30 @@ public class PrinterController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(printers, HttpStatus.OK);
+    }
+
+    @GetMapping("/ratings")
+    public ResponseEntity<Map<String, Object>> getManufacturerRatingsPrinters() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = (authentication != null) ? authentication.getName() : null;
+        UserEntity user = userRepository.findByUsername(username)
+        .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
+
+        List<PrinterDTO> printers = user.getPrintersWithoutUserEntity();
+        List<Long> printerIds = printers.stream()
+        .map(PrinterDTO::getId)
+        .collect(Collectors.toList());
+
+        List<RatingsDTO> ratings = ratingsService.getRatingsByPrinterIds(printerIds);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("printers", printers);
+        response.put("ratings", ratings);
+
+        if(response.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/createPrinter")

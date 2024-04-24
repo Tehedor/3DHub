@@ -19,4 +19,6 @@ public interface OrderService {
     Order updateOrder(Order order);
     void deleteOrder(Long id);
     List<RatingsDTO> getRatingsByPrinterId(Long printerId, List<Order> allOrders);
+    List<Long> findOrderIdsByPrinterId(Long printerId);
+
 }

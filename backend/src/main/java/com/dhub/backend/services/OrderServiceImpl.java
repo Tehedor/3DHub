@@ -106,6 +106,18 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<Long> findOrderIdsByPrinterId(Long printerId) {
+        List<Long> ordersIds = new ArrayList<>();
+        List<Order> allOrders = getAllOrders();
+        for (Order order : allOrders) {
+            if (order.getPrinter().getId().equals(printerId)) {
+                ordersIds.add(order.getId());
+            }
+        }
+        return ordersIds;
+    }
+
+    @Override
     public List<RatingsDTO> getRatingsByPrinterId(Long printerId, List<Order> allOrders) {
 
         List<RatingsDTO> productRatingsByPrinterId = new ArrayList<>();
