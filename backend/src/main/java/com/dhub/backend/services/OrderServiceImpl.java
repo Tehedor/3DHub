@@ -2,6 +2,7 @@ package com.dhub.backend.services;
 
 
 import com.dhub.backend.controllers.request.OrderDTO;
+import com.dhub.backend.controllers.request.RatingsDTO;
 import com.dhub.backend.models.EStatus;
 import com.dhub.backend.models.Order;
 import com.dhub.backend.models.Ratings;
@@ -16,6 +17,8 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
+
+    private RatingsService ratingsService;
 
     public OrderServiceImpl(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
@@ -103,14 +106,23 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Integer> getRatingsByPrinterId(Long printerId, List<Order> allOrders) {
+    public List<RatingsDTO> getRatingsByPrinterId(Long printerId, List<Order> allOrders) {
 
-        List<Integer> productRatingsByPrinterId = new ArrayList<>();
+        List<RatingsDTO> productRatingsByPrinterId = new ArrayList<>();
         for (Order order : allOrders) {
             if (order.getPrinter().getId().equals(printerId)) {
                 List<Ratings> ratings = order.getRatings();
                 for (Ratings rating : ratings) {
-                    productRatingsByPrinterId.add(rating.getProductRating());
+                    RatingsDTO ratingsDTO = new RatingsDTO();
+                    ratingsDTO.setId(rating.getId());
+                    ratingsDTO.setDate(rating.getDate());
+                    ratingsDTO.setManufacturerRating(rating.getManufacturerRating());
+                    ratingsDTO.setProductRating(rating.getProductRating());
+                    ratingsDTO.setFile(rating.getFile());
+                    ratingsDTO.setTextRating(rating.getTextRating());
+                    ratingsDTO.setOrder_id(rating.getOrder().getId());
+                    ratingsDTO.setPrinter_id(rating.getOrder().getPrinter().getId());
+                    productRatingsByPrinterId.add(ratingsDTO);
                 }
             }
         }

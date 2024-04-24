@@ -28,4 +28,6 @@ public class RatingsDTO {
 
     private long order_id;
 
+    private long printer_id;
+
 }

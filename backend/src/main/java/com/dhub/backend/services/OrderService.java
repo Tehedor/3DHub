@@ -1,6 +1,7 @@
 package com.dhub.backend.services;
 
 import com.dhub.backend.controllers.request.OrderDTO;
+import com.dhub.backend.controllers.request.RatingsDTO;
 import com.dhub.backend.models.EStatus;
 import com.dhub.backend.models.Order;
 import java.util.List;
@@ -17,5 +18,5 @@ public interface OrderService {
     Order createOrder(Order order);
     Order updateOrder(Order order);
     void deleteOrder(Long id);
-    List<Integer> getRatingsByPrinterId(Long printerId, List<Order> allOrders);
+    List<RatingsDTO> getRatingsByPrinterId(Long printerId, List<Order> allOrders);
 }
