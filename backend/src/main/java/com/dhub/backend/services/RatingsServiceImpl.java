@@ -115,4 +115,18 @@ public class RatingsServiceImpl implements RatingsService {
 
         return ratingsDTOs;
     }
+
+    @Override
+    public List<RatingsDTO> getRatingsByOrderIds(List<Long> orderIds) {
+        List<RatingsDTO> ratingsDTOs = new ArrayList<>();
+        for (Long orderId : orderIds) {
+            Ratings rating = ratingsRepository.findByOrderId(orderId);
+            if (rating != null) {
+                RatingsDTO ratingDTOs = convertToDto(rating);
+                ratingsDTOs.add(ratingDTOs);
+            }
+        }
+
+        return ratingsDTOs;
+    }
 }

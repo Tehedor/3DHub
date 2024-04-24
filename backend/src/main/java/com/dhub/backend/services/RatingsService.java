@@ -28,6 +28,6 @@ public interface RatingsService {
 
     List<RatingsDTO> getRatingsByPrinterIds(List<Long> printerIds);
 
-    
+    List<RatingsDTO> getRatingsByOrderIds(List<Long> orderIds);
 
 }
