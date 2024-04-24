@@ -17,5 +17,5 @@ public interface OrderService {
     Order createOrder(Order order);
     Order updateOrder(Order order);
     void deleteOrder(Long id);
-    List<Integer> getRatingsByPrinterId(Long printerId, List<Order> orders);
+    List<Integer> getRatingsByPrinterId(Long printerId, List<Order> allOrders);
 }

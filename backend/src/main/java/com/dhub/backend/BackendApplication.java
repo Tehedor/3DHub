@@ -152,7 +152,7 @@ public class BackendApplication {
 			printerRepository.save(printer2);
 			orderRepository.save(order);
 			orderRepository.save(order2);
-			ratingsRepository.save(rating);	
+			ratingsRepository.save(rating);
 		};
 	}
 

@@ -328,7 +328,8 @@ public class OrderController {
 
     @GetMapping("/{printerId}/ratings")
     public ResponseEntity<List<Integer>> getPrinterOrderRatings(@PathVariable Long printerId) {
-        List<Integer> ratings = orderService.getRatingsByPrinterId(printerId, new ArrayList<>());
+        List<Order> allOrders = orderService.getAllOrders();
+        List<Integer> ratings = orderService.getRatingsByPrinterId(printerId, allOrders);
         if (ratings.isEmpty()) {
             return new ResponseEntity<List<Integer>>(HttpStatus.NO_CONTENT);
         }
