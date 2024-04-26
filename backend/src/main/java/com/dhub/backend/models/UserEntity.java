@@ -60,8 +60,7 @@ public class UserEntity {
     @NotBlank
     private String password;
 
-    @Lob
-    private byte[] profileImage;
+    private String profileImage;
 
     private String address;
 

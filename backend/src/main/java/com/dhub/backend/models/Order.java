@@ -62,8 +62,7 @@ public class Order {
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date manufacturerdate;
 
-	@Lob
-	private byte[] file;
+	private String file;
 
 	@Column(name = "status")
 	@Enumerated(EnumType.STRING)

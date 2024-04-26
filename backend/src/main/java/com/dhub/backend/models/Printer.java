@@ -46,8 +46,7 @@ public class Printer {
     @NotBlank
     private String printerType;
     
-    @Lob
-    private byte[] printerPhoto;
+    private String printerPhoto;
 
     private Double servicePrice;
 

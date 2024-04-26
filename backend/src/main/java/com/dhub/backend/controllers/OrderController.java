@@ -18,12 +18,17 @@ import com.dhub.backend.repository.UserRepository;
 import com.dhub.backend.services.OrderService;
 import com.dhub.backend.services.PrinterService;
 import com.dhub.backend.services.RatingsService;
+import com.dhub.backend.util.FileUploadUtil;
+
+import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,6 +38,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.StringUtils;
+
 import com.dhub.backend.repository.RatingsRepository;
 
 @RestController
@@ -127,6 +134,24 @@ public class OrderController {
 
         orderRepository.save(order);
         return ResponseEntity.ok(new MessageResponse("Añadido al carrito"));
+    }
+
+    @PutMapping("/uploadfile/{id}")
+    public ResponseEntity<Printer> uploadFile(@Valid @RequestPart("file") MultipartFile file,@PathVariable Long id) throws IOException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = (authentication != null) ? authentication.getName() : null;
+        UserEntity user = userRepository.findByUsername(username)
+        .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
+        Order order = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Error: Pedido no encontrada."));
+
+        if (file != null) {
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        String uploadDir = "orderFiles\\";
+        FileUploadUtil.saveFile(uploadDir, fileName, file);
+        order.setFile(uploadDir + fileName);
+        orderRepository.save(order);
+    }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
     
     /*

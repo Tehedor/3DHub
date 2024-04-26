@@ -7,7 +7,9 @@ import org.springframework.http.ResponseEntity;
 //import org.springframework.web.bind.annotation.PostMapping;
 //import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 //import jakarta.validation.Valid;
 import lombok.Data;
@@ -17,6 +19,7 @@ import com.dhub.backend.controllers.request.RatingsDTO;
 import com.dhub.backend.models.Printer;
 import com.dhub.backend.services.PrinterServiceImpl;
 import com.dhub.backend.services.RatingsService;
+import com.dhub.backend.util.FileUploadUtil;
 
 import jakarta.validation.Valid;
 
@@ -24,6 +27,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
@@ -31,6 +35,7 @@ import java.util.List;
 import com.dhub.backend.models.UserEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.StringUtils;
 
 import com.dhub.backend.repository.PrinterRepository;
 import com.dhub.backend.repository.UserRepository;
@@ -38,6 +43,7 @@ import com.dhub.backend.repository.UserRepository;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.stream.Collectors;
+import java.io.IOException;
 import java.util.ArrayList;
 import com.dhub.backend.controllers.request.UserDTO;
 import com.dhub.backend.controllers.request.OrderDTO;
@@ -121,6 +127,24 @@ public class PrinterController {
         userRepository.save(user);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PutMapping("/uploadPhoto/{id}")
+    public ResponseEntity<Printer> uploadPhoto(@Valid @RequestPart("file") MultipartFile file,@PathVariable Long id) throws IOException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = (authentication != null) ? authentication.getName() : null;
+        UserEntity user = userRepository.findByUsername(username)
+        .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
+        Printer printer = printerRepository.findById(id).orElseThrow(() -> new RuntimeException("Error: Impresora no encontrada."));
+
+        if (file != null) {
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        String uploadDir = "printerPhotos\\";
+        FileUploadUtil.saveFile(uploadDir, fileName, file);
+        printer.setPrinterPhoto((uploadDir + fileName));
+        printerRepository.save(printer);
+    }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
