@@ -4,17 +4,6 @@ import java.io.IOException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.dhub.backend.controllers.request.CreateUserDTO;
 import com.dhub.backend.controllers.response.MessageResponse;
 import com.dhub.backend.models.*;
@@ -24,6 +13,15 @@ import com.dhub.backend.util.FileUploadUtil;
 
 import jakarta.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,7 +49,7 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
-
+    //Crear usuario
     @PostMapping("/createUser")
     public ResponseEntity<?> CreateUSer(@Valid @RequestBody CreateUserDTO createUserDTO) {
 
@@ -85,17 +83,14 @@ public class AuthController {
             .roles(roles)
             .build();
 
-
         userRepository.save(userEntity);
         return ResponseEntity.ok(new MessageResponse("Usuario creado exitosamente"));
 
     }
 
-
+    //Subir foto de perfil y actualizar usuario
     @PutMapping("/uploadPhoto/{id}")
     public ResponseEntity<Printer> uploadPhoto(@Valid @RequestPart("file") MultipartFile file,@PathVariable Long id) throws IOException {
-        // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        // String username = (authentication != null) ? authentication.getName() : null;
         UserEntity user = userRepository.findById(id)
         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
 
@@ -109,6 +104,8 @@ public class AuthController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    //Eliminar usuario
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/deleteUser")
     public String deleteUser(@RequestParam String id){
         userRepository.deleteById(Long.parseLong(id));

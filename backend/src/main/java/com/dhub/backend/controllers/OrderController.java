@@ -1,17 +1,15 @@
 package com.dhub.backend.controllers;
 
-
+import com.dhub.backend.models.EStatus;
+import com.dhub.backend.models.Order;
+import com.dhub.backend.models.Printer;
+import com.dhub.backend.models.Status;
+import com.dhub.backend.models.UserEntity;
 import com.dhub.backend.controllers.request.OrderDTO;
 import com.dhub.backend.controllers.request.PrinterDTO;
 import com.dhub.backend.controllers.request.RatingsDTO;
 import com.dhub.backend.controllers.request.UserDTO;
 import com.dhub.backend.controllers.response.MessageResponse;
-import com.dhub.backend.models.EStatus;
-import com.dhub.backend.models.Order;
-import com.dhub.backend.models.Printer;
-import com.dhub.backend.models.Ratings;
-import com.dhub.backend.models.Status;
-import com.dhub.backend.models.UserEntity;
 import com.dhub.backend.repository.OrderRepository;
 import com.dhub.backend.repository.PrinterRepository;
 import com.dhub.backend.repository.UserRepository;
@@ -27,31 +25,34 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 
-import com.dhub.backend.repository.RatingsRepository;
+import java.io.IOException;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 // @PreAuthorize("hasRole('ROLE_MANUFACTURER' or 'ROLE_DESIGNER' or 'ROLE_ADMIN')")
 @RequestMapping("/api/orders")
 public class OrderController {
 
-    private final OrderService orderService;
+    @Autowired
+    private OrderService orderService;
+
     @Autowired
     private OrderRepository orderRepository;
+
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private PrinterRepository printerRepository;
 
@@ -61,16 +62,13 @@ public class OrderController {
     @Autowired
     private RatingsService ratingsService;
 
-    // @Autowired
-    public OrderController(OrderService orderService) {
-        this.orderService = orderService;
-    }
-
+    //Obtener todos los pedidos ¿?¿?¿?
     @GetMapping
     public List<Order> getAllOrders() {
-        return orderService.getAllOrders();
+        return orderRepository.findAll();
     }
 
+    //Obtener pedido por id ¿?¿?¿?
     @GetMapping("/{id}")
     public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
         Order order = orderService.getOrderById(id);
@@ -81,45 +79,43 @@ public class OrderController {
         }
     }
 
-    // public List<OrderDTO> getOrdersByStatus(EStatus status) {
-    //     return orderService.getOrdersByStatus(status, getAllOrders());
-    // }
-
-    @PostMapping
-    public Order createOrder(@RequestBody Order order) {
-        return orderService.createOrder(order);
-    }
-
+    //Actualizar pedido ¿?¿?¿?
     @PutMapping("/{id}")
     public Order updateOrder(@PathVariable Long id, @RequestBody Order order) {
         // You might want to ensure the ID in the Order object and the ID in the path are the same.
         return orderService.updateOrder(order);
     }
 
+    /*
+     * Deletes the order if the user is the owner of the order or the printer assigned to the order
+     */
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_DESIGNER') or hasRole('ROLE_MANUFACTURER')")
     @DeleteMapping("/{id}")
-    public void deleteOrder(@PathVariable Long id) {
+    public ResponseEntity<?> deleteOrder(@PathVariable Long id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = (authentication != null) ? authentication.getName() : null;
         UserEntity user = userRepository.findByUsername(username)
         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
-        if (user.getId() == orderService.getOrderById(id).getUserEntity().getId() || user.getId() == orderService.getOrderById(id).getPrinter().getUserEntity().getId()) {
-            orderService.deleteOrder(id);
+        Order order = orderRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Error: Pedido no encontrado."));
+        if (user.getId() == order.getUserEntity().getId() || user.getId() == order.getPrinter().getUserEntity().getId()) {
+            orderRepository.deleteById(id);
+            return ResponseEntity.ok(new MessageResponse("Pedido "+ id + " eliminado"));
         }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageResponse("No tienes permisos para eliminar este pedido"));
     }
 
     /*
      * creates the order, saving the status as KART
-     * TODO: add the file to the order. When logging works, we should get the user id from the token
-    */
-    @PostMapping("/create/{id}")
-    public ResponseEntity<?> createOrder(@PathVariable Long id, @RequestBody OrderDTO orderDTO) {
+     */
+    @PostMapping("/create/{idPrinter}")
+    public ResponseEntity<?> createOrder(@PathVariable Long idPrinter, @RequestBody OrderDTO orderDTO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = (authentication != null) ? authentication.getName() : null;
         UserEntity user = userRepository.findByUsername(username)
         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
-        Printer printer = printerRepository.findById(id)
+        Printer printer = printerRepository.findById(idPrinter)
         .orElseThrow(() -> new RuntimeException("Error: Impresora no encontrada."));
-
         EStatus status = EStatus.KART;
         Order order = Order.builder()
             .orderdate(new Date(System.currentTimeMillis()))
@@ -136,6 +132,11 @@ public class OrderController {
         return ResponseEntity.ok(new MessageResponse("Añadido al carrito"));
     }
 
+
+    /*
+     * Uploads the 3D file to the order and saves the path in the database
+     * TODO: Add a check to see if the user is the owner of the order
+     */
     @PutMapping("/uploadfile/{id}")
     public ResponseEntity<Printer> uploadFile(@Valid @RequestPart("file") MultipartFile file,@PathVariable Long id) throws IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -143,6 +144,10 @@ public class OrderController {
         UserEntity user = userRepository.findByUsername(username)
         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
         Order order = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Error: Pedido no encontrada."));
+
+        // if (user.getId() != order.getUserEntity().getId()) {
+        //     return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        // }
 
         if (file != null) {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
@@ -156,25 +161,38 @@ public class OrderController {
     
     /*
      * Changes the status of the order
-     * Post syntax: "name": "CANCELLED"
      */
-    @PostMapping("/{id}/status")
-    public ResponseEntity<?> changeStatus(@PathVariable Long id, @RequestBody Status status) {
+    @PutMapping("/{id}/status")
+    public ResponseEntity<?> changeStatus(@PathVariable Long idOrder, @RequestBody Status status) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = (authentication != null) ? authentication.getName() : null;
         UserEntity user = userRepository.findByUsername(username)
-        .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
+                .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
         EStatus newStatus = status.getName();
-        Order order = getOrderById(id).getBody();
+        Order order = orderRepository.findById(idOrder)
+                .orElseThrow(() -> new RuntimeException("Error: Pedido no encontrado."));
         // If the order does not exist, return 404
         if (order == null) {
             return ResponseEntity.notFound().build();
         }
-        order.setStatus(newStatus);
-        orderRepository.save(order);
-        return ResponseEntity.ok(new MessageResponse("Petición de"+ user.getUsername() +" del pedido " + id.toString() + " guardada como " + newStatus.toString()));
+        // Check if newStatus is valid and exists
+        if (Arrays.stream(EStatus.values()).anyMatch(s -> s.name().equals(newStatus))) {
+            order.setStatus(newStatus);
+            orderRepository.save(order);
+        } else {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Estado inválido."));
+        }
+        return ResponseEntity.ok(new MessageResponse("Petición de"+ user.getUsername() +" del pedido " 
+        + idOrder.toString() + " guardada como " + newStatus.toString()));
     }
 
+    /*
+     * Changes the status of the order
+     * TODO: Clean up the code: 
+     * {getOrdersWithoutUserEntity - UserService}
+     * printerService -> printerRepository
+     * ....
+     */
     @GetMapping("/kart")
     public ResponseEntity<Map<String, Object>> getKart() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -212,7 +230,11 @@ public class OrderController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    //Todos los pedidos de un diseñador menos los que estén en el carrito
+    /*
+     * All designer orders
+     * TODO: Clean up the code:
+     * ...
+     */    
     @GetMapping("/designer")
     public ResponseEntity<Map<String, Object>> getDesignerOrders() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -249,6 +271,12 @@ public class OrderController {
         }
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    /*
+     * All designer orders excluding the ones in the KART status
+     * TODO: Clean up the code:
+     * ...
+     */
     @GetMapping("/designerExcludingKart")
     public ResponseEntity<List<OrderDTO>> getDesignerOrdersExcludingKart() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -266,6 +294,9 @@ public class OrderController {
     }
 
     //Excluye los pedidos en carrito
+    /*
+     * All designer orders and his ratings excluding the ones in the KART status
+     */
     @GetMapping("/designerRatings")
     public ResponseEntity<Map<String, Object>> getDesignerRatings() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -291,6 +322,9 @@ public class OrderController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /*
+     * All manufacturer orders with the printers and users
+     */
     @GetMapping("/manufacturerOrders")
     public ResponseEntity< Map<String, Object>>  getManufacturerOrders() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -348,6 +382,9 @@ public class OrderController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /*
+     * All manufacturer orders with ratings
+     */
     @GetMapping("/manufacturerRatings")
     public ResponseEntity< Map<String, Object>>  getManufacturerRatings() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -409,7 +446,7 @@ public class OrderController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-
+    //Obtener todas las impresoras ¿?¿?¿?
     @GetMapping("/orders")
     public ResponseEntity<List<PrinterDTO>> getManufacturerPrinters() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -424,6 +461,7 @@ public class OrderController {
         return new ResponseEntity<>(ratings, HttpStatus.OK);
     }
 
+    //Obtener todas las impresoras con sus respectivas valoraciones de un fabricante ¿?¿?¿?
     @GetMapping("/{printerId}/ratings")
     public ResponseEntity<List<RatingsDTO>> getPrinterOrderRatings(@PathVariable Long printerId) {
         List<Order> allOrders = orderService.getAllOrders();

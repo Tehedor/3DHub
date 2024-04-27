@@ -59,18 +59,4 @@ public class PrinterServiceImpl implements PrinterService{
     public void deletePrinterById(Long id) {
         printerRepository.deleteById(id);
     }
-
-    /*@Override
-    public List<PrinterDTO> getPrintersByManufacturer(UserEntity manufacturer) {
-        return printerRepository.findByUserEntity(manufacturer).stream()
-                .map(printer -> new PrinterDTO(printer.getId(), printer.getModelName(), printer.getPrinterLocation(), printer.getPrinterType(), printer.getPrinterPhoto(), printer.getServicePrice(), 
-                printer.getMaxUnities(), printer.getManufacturationSpeed(), printer.getMaxWidth(), printer.getMaxHeight(), printer.getPrinterPrecision(), printer.getColor(), printer.getMaterial(), printer.getUserEntity().getId().toString()))
-                .collect(Collectors.toList());
-    }*/
-
-    /*@Override
-    public List<Printer> getPrintersByManufacturerId(Long manufacturerId) {
-        return printerRepository.findByManufacturerId(manufacturerId);
-    }*/
-    
 }
