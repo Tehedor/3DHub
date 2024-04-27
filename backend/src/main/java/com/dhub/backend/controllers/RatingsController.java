@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dhub.backend.controllers.request.RatingsDTO;
+import com.dhub.backend.models.ERole;
 import com.dhub.backend.models.Order;
 import com.dhub.backend.models.Printer;
 import com.dhub.backend.models.Ratings;
@@ -58,32 +60,27 @@ public class RatingsController {
     @Autowired
     private RatingsRepository ratingsRepository;
 
-// Metodo POST: Crear reseña basada en un pedido existente
-@PostMapping("/{orderId}/createReview")
-public ResponseEntity<RatingsDTO> createReview(@RequestBody Ratings ratings, @PathVariable Long orderId) {
+    // Metodo POST: Crear reseña basada en un pedido existente
+    @PostMapping("/{orderId}/createReview")
+    public ResponseEntity<RatingsDTO> createReview(@RequestBody Ratings ratings, @PathVariable Long orderId) {
 
-    Order order = orderService.getOrderById(orderId);
+        Order order = orderService.getOrderById(orderId);
+        // Comprobar que existe el pedido
+        if (order == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        // Usuario asociado a un pedido
+        UserEntity user = order.getUserEntity();
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
-//Comprobar que existe el pedido 
-    if (order == null) {
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        ratings.setOrder(order);
+        Ratings newRating = ratingsService.addRatings(ratings);
+        RatingsDTO ratingsDTO = ratingsService.convertToDto(ratings);
+        return new ResponseEntity<>(ratingsDTO, HttpStatus.CREATED);
+
     }
-
-// Usuario asociado a un pedido
-    UserEntity user = order.getUserEntity();
-
-    if (user == null) {
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-
-    
-    ratings.setOrder(order);
-    Ratings newRating = ratingsService.addRatings(ratings);
-    RatingsDTO ratingsDTO = ratingsService.convertToDto(ratings);
-    return new ResponseEntity<>(ratingsDTO, HttpStatus.CREATED);
-  
-}
 
     @PutMapping("/uploadPhoto/{id}")
     public ResponseEntity<Printer> uploadPhoto(@Valid @RequestPart("file") MultipartFile file,@PathVariable Long id) throws IOException {
@@ -101,6 +98,20 @@ public ResponseEntity<RatingsDTO> createReview(@RequestBody Ratings ratings, @Pa
         ratingsRepository.save(rating);
     }
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<HttpStatus> deleteRating(@PathVariable Long id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = (authentication != null) ? authentication.getName() : null;
+        UserEntity user = userRepository.findByUsername(username)
+        .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
+        Ratings rating = ratingsRepository.findById(id).orElseThrow(() -> new RuntimeException("Error: Reseña no encontrada."));
+        if (user.getId() == rating.getOrder().getUserEntity().getId() || user.getRoles().contains(ERole.ROLE_ADMIN)) {
+            ratingsRepository.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
 
