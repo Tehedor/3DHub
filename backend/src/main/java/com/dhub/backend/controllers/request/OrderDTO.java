@@ -15,28 +15,29 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderDTO {
-    // @NotBlank
-    // @Lob
-    // private byte[] file;
-
     private Long Id;
 
-    private Date orderdate;
+    private Date orderDate;
 
-    @NotBlank
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
-    private Date manufacturerdate;
+    private String file;
 
-    @NotBlank
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
-    private Date pickupdate;
-
-    @NotBlank
-    private Integer number;
     private EStatus status;
 
     @NotBlank
+    private Integer quantity;
+
+    private String address;
+    
+    @NotBlank
     private String specs;
+
+    @NotBlank
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    private Date manufacturerDate;
+
+    @NotBlank
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    private Date deliveryDate;
 
     @NotBlank
     private Long user_id;

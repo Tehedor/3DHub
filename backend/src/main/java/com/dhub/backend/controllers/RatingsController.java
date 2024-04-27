@@ -70,7 +70,7 @@ public class RatingsController {
         }
         ratings.setOrder(order);
         ratingsRepository.save(ratings);
-        RatingsDTO ratingsDTO = ratingsService.convertToDto(ratings);
+        RatingsDTO ratingsDTO = ratingsService.convertToDTO(ratings);
         return new ResponseEntity<>(ratingsDTO, HttpStatus.CREATED);
 
     }

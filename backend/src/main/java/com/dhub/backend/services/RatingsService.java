@@ -7,7 +7,7 @@ import com.dhub.backend.models.Ratings;
 
 public interface RatingsService {
         
-    RatingsDTO convertToDto(Ratings ratings);
+    RatingsDTO convertToDTO(Ratings ratings);
 
     List<RatingsDTO> getRatingsByPrinterIds(List<Long> printerIds);
 

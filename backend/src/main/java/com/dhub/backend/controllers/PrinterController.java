@@ -1,6 +1,7 @@
 package com.dhub.backend.controllers;
 
 import java.util.Map;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -58,16 +59,6 @@ public class PrinterController {
     private RatingsService ratingsService;
 
     //Obtener todas las impresoras ¿?¿?¿?
-    @GetMapping
-    public ResponseEntity<List<PrinterDTO>> getAllPrinters() {
-        List<PrinterDTO> printers = printerService.getAllPrintersWithoutUser();
-        if (printers.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(printers, HttpStatus.OK);
-    }
-
-    //Obtener todas las impresoras ¿?¿?¿?
     @GetMapping("/printers")
     public ResponseEntity<List<PrinterDTO>> getManufacturerPrinters() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -75,11 +66,15 @@ public class PrinterController {
         UserEntity user = userRepository.findByUsername(username)
         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
 
-        List<PrinterDTO> printers = user.getPrintersWithoutUserEntity();
+        List<Printer> printers = printerRepository.findAll();
         if(printers.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(printers, HttpStatus.OK);
+        List<PrinterDTO> printersDTO = new ArrayList<>();
+        for (Printer printer : printers) {
+            printersDTO.add(printerService.convertToDTO(printer));
+        }
+        return new ResponseEntity<>(printersDTO, HttpStatus.OK);
     }
 
     //Obtener todas las impresoras con sus respectivas valoraciones de un fabricante
@@ -91,16 +86,21 @@ public class PrinterController {
         UserEntity user = userRepository.findByUsername(username)
         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
 
-        List<PrinterDTO> printers = user.getPrintersWithoutUserEntity();
+        List<Printer> printers = user.getPrinters();
+        List<PrinterDTO> printersDTO = new ArrayList<>();
+        for (Printer printer : printers) {
+            printersDTO.add(printerService.convertToDTO(printer));
+        }
+
         List<Long> printerIds = printers.stream()
-        .map(PrinterDTO::getId)
+        .map(Printer::getId)
         .collect(Collectors.toList());
 
-        List<RatingsDTO> ratings = ratingsService.getRatingsByPrinterIds(printerIds);
+        List<RatingsDTO> ratingsDTO = ratingsService.getRatingsByPrinterIds(printerIds);
 
         Map<String, Object> response = new HashMap<>();
-        response.put("printers", printers);
-        response.put("ratings", ratings);
+        response.put("printers", printersDTO);
+        response.put("ratings", ratingsDTO);
 
         if(response.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -116,7 +116,7 @@ public class PrinterController {
         String username = (authentication != null) ? authentication.getName() : null;
         UserEntity user = userRepository.findByUsername(username)
         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
-        Printer createdPrinter = printerService.createPrinter(printer);
+        Printer createdPrinter = printerRepository.save(printer);
         createdPrinter.setUserEntity(user);
         user.getPrinters().add(createdPrinter);
         userRepository.save(user);
@@ -155,6 +155,15 @@ public class PrinterController {
     @PreAuthorize("hasRole('MANUFACTURER')")
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable Long id){
-        printerService.deletePrinterById(id);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = (authentication != null) ? authentication.getName() : null;
+        UserEntity user = userRepository.findByUsername(username)
+        .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
+        Printer printer = printerRepository.findById(id).orElseThrow(() -> new RuntimeException("Error: Impresora no encontrada."));
+
+        if (user.getId() == printer.getUserEntity().getId()) {
+            printerRepository.deleteById(id);
+        }
+        
     }
 }

@@ -21,19 +21,19 @@ public class RatingsServiceImpl implements RatingsService {
     private RatingsRepository ratingsRepository;
 
     @Override
-    public RatingsDTO convertToDto(Ratings ratings) {
-    RatingsDTO ratingsDTO = new RatingsDTO();
-    
-    ratingsDTO.setId(ratings.getId());
-    ratingsDTO.setDate(ratings.getDate());
-    ratingsDTO.setManufacturerRating(ratings.getManufacturerRating());
-    ratingsDTO.setProductRating(ratings.getProductRating());
-    ratingsDTO.setFile(ratings.getFile());
-    ratingsDTO.setTextRating(ratings.getTextRating());
-    ratingsDTO.setOrder_id(ratings.getOrder().getId());
+    public RatingsDTO convertToDTO(Ratings ratings) {
+        RatingsDTO ratingsDTO = new RatingsDTO();
 
-    return ratingsDTO;
-}
+        ratingsDTO.setId(ratings.getId());
+        ratingsDTO.setDate(ratings.getDate());
+        ratingsDTO.setManufacturerRating(ratings.getManufacturerRating());
+        ratingsDTO.setProductRating(ratings.getProductRating());
+        ratingsDTO.setFile(ratings.getFile());
+        ratingsDTO.setTextRating(ratings.getTextRating());
+        ratingsDTO.setOrder_id(ratings.getOrder().getId());
+
+        return ratingsDTO;
+    }
 
     @Override
     public List<RatingsDTO> getRatingsByPrinterIds(List<Long> printerIds) {
@@ -47,7 +47,7 @@ public class RatingsServiceImpl implements RatingsService {
         for (Long orderId : orderIds) {
             Ratings rating = ratingsRepository.findByOrderId(orderId);
             if (rating != null) {
-                RatingsDTO ratingDTOs = convertToDto(rating);
+                RatingsDTO ratingDTOs = convertToDTO(rating);
                 ratingsDTOs.add(ratingDTOs);
             }
         }
@@ -61,7 +61,7 @@ public class RatingsServiceImpl implements RatingsService {
         for (Long orderId : orderIds) {
             Ratings rating = ratingsRepository.findByOrderId(orderId);
             if (rating != null) {
-                RatingsDTO ratingDTOs = convertToDto(rating);
+                RatingsDTO ratingDTOs = convertToDTO(rating);
                 ratingsDTOs.add(ratingDTOs);
             }
         }

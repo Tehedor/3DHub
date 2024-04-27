@@ -43,26 +43,28 @@ public class Order {
 	private Long Id;
 	
 	@JsonFormat(pattern = "dd/MM/yyyy")
-	private Date orderdate;
-
-    @Min(value = 1, message = "Valoracion debe ser mayor o igual que 1")
-	private Integer number;
-
-	@NotBlank
-	@Size(max = 50)
-	private String specs;
-
-	@JsonFormat(pattern = "dd/MM/yyyy")
-	private Date pickupdate;
-
-	@JsonFormat(pattern = "dd/MM/yyyy")
-	private Date manufacturerdate;
+	private Date orderDate;
 
 	private String file;
 
 	@Column(name = "status")
 	@Enumerated(EnumType.STRING)
 	private EStatus status;
+
+    @Min(value = 1, message = "cantidad debe ser mayor o igual que 1")
+	private Integer quantity;
+
+	private String address;
+
+	@NotBlank
+	@Size(max = 50)
+	private String specs;
+
+	@JsonFormat(pattern = "dd/MM/yyyy")
+	private Date manufacturerDate;
+
+	@JsonFormat(pattern = "dd/MM/yyyy")
+	private Date deliveryDate;
 
 	@ManyToOne
     @JoinColumn(name = "users_id")

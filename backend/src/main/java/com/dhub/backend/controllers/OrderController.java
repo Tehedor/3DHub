@@ -3,6 +3,7 @@ package com.dhub.backend.controllers;
 import com.dhub.backend.models.EStatus;
 import com.dhub.backend.models.Order;
 import com.dhub.backend.models.Printer;
+import com.dhub.backend.models.Ratings;
 import com.dhub.backend.models.Status;
 import com.dhub.backend.models.UserEntity;
 import com.dhub.backend.controllers.request.OrderDTO;
@@ -16,6 +17,7 @@ import com.dhub.backend.repository.UserRepository;
 import com.dhub.backend.services.OrderService;
 import com.dhub.backend.services.PrinterService;
 import com.dhub.backend.services.RatingsService;
+import com.dhub.backend.services.UserEntityService;
 import com.dhub.backend.util.FileUploadUtil;
 
 import jakarta.validation.Valid;
@@ -45,20 +47,23 @@ import java.util.stream.Collectors;
 public class OrderController {
 
     @Autowired
-    private OrderService orderService;
+    private UserRepository userRepository;
+    
+    @Autowired
+    private PrinterRepository printerRepository;
 
     @Autowired
     private OrderRepository orderRepository;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private PrinterRepository printerRepository;
-
+    private UserEntityService userEntityService;
+    
     @Autowired
     private PrinterService printerService;
 
+    @Autowired
+    private OrderService orderService;
+    
     @Autowired
     private RatingsService ratingsService;
 
@@ -70,10 +75,11 @@ public class OrderController {
 
     //Obtener pedido por id ¿?¿?¿?
     @GetMapping("/{id}")
-    public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
-        Order order = orderService.getOrderById(id);
+    public ResponseEntity<OrderDTO> getOrderById(@PathVariable Long id) {
+        Order order = orderRepository.findById(id).orElse(null);
+        OrderDTO orderDTO = orderService.convertToDTO(order);
         if (order != null) {
-            return ResponseEntity.ok(order);
+            return ResponseEntity.ok(orderDTO);
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -83,7 +89,7 @@ public class OrderController {
     @PutMapping("/{id}")
     public Order updateOrder(@PathVariable Long id, @RequestBody Order order) {
         // You might want to ensure the ID in the Order object and the ID in the path are the same.
-        return orderService.updateOrder(order);
+        return orderRepository.save(order);
     }
 
     /*
@@ -118,11 +124,11 @@ public class OrderController {
         .orElseThrow(() -> new RuntimeException("Error: Impresora no encontrada."));
         EStatus status = EStatus.KART;
         Order order = Order.builder()
-            .orderdate(new Date(System.currentTimeMillis()))
+            .orderDate(new Date(System.currentTimeMillis()))
             .specs(orderDTO.getSpecs())
-            .manufacturerdate(orderDTO.getManufacturerdate())
-            .pickupdate(orderDTO.getPickupdate())
-            .number(orderDTO.getNumber())
+            .manufacturerDate(orderDTO.getManufacturerDate())
+            .deliveryDate(orderDTO.getDeliveryDate())
+            .quantity(orderDTO.getQuantity())
             .status(status)
             .userEntity(user)
             .printer(printer)
@@ -162,7 +168,7 @@ public class OrderController {
     /*
      * Changes the status of the order
      */
-    @PutMapping("/{id}/status")
+    @PutMapping("/{idOrder}/status")
     public ResponseEntity<?> changeStatus(@PathVariable Long idOrder, @RequestBody Status status) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = (authentication != null) ? authentication.getName() : null;
@@ -176,7 +182,7 @@ public class OrderController {
             return ResponseEntity.notFound().build();
         }
         // Check if newStatus is valid and exists
-        if (Arrays.stream(EStatus.values()).anyMatch(s -> s.name().equals(newStatus))) {
+        if (Arrays.stream(EStatus.values()).anyMatch(s -> s.name().equals(newStatus.toString()))) {
             order.setStatus(newStatus);
             orderRepository.save(order);
         } else {
@@ -200,29 +206,36 @@ public class OrderController {
         UserEntity user = userRepository.findByUsername(username)
         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
 
-        List<OrderDTO> orders = user.getOrdersWithoutUserEntity();
-        List<OrderDTO> status = orderService.getOrdersByStatus(EStatus.KART, orders);
-        List<Long> printerIds = status.stream()
-            .map(order -> order.getPrinter_id())
-            .distinct()
-            .collect(Collectors.toList());
-        List<PrinterDTO> printers = new ArrayList<>();
-        for (Long printerId : printerIds) {
-            PrinterDTO printer = printerService.getPrinterById(printerId);
-            printers.add(printer);
+        List<Order> ordersKart = orderService.getOrdersByStatus(EStatus.KART, user);
+        List<OrderDTO> ordersKartDTO = new ArrayList<>();
+        for (Order order : ordersKart) {
+            OrderDTO orderDTO = orderService.convertToDTO(order);
+            ordersKartDTO.add(orderDTO);
         }
 
-        List<UserDTO> users = new ArrayList<>();
-        for (OrderDTO statu : status) {
+        List<Long> printerIds = ordersKart.stream()
+            .map(order -> order.getPrinter().getId())
+            .distinct()
+            .collect(Collectors.toList());
+        List<PrinterDTO> printersDTO = new ArrayList<>();
+        for (Long printerId : printerIds) {
+            Printer printer = printerRepository.findById(printerId)
+                .orElseThrow(() -> new RuntimeException("Error: Impresora no encontrada."));
+            PrinterDTO printerDTO = printerService.convertToDTO(printer);
+            printersDTO.add(printerDTO);
+        }
+
+        List<UserDTO> usersDTO = new ArrayList<>();
+        for (OrderDTO statu : ordersKartDTO) {
             UserEntity userEntity = userRepository.findById(statu.getUser_id())
                 .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
-            users.add(userEntity.getUsersWithoutEntity());
+            usersDTO.add(userEntityService.convertToDTO(userEntity));
         }
 
         Map<String, Object> response = new HashMap<>();
-        response.put("printers", printers);
-        response.put("orders", status);
-        response.put("users", users);
+        response.put("printers", printersDTO);
+        response.put("orders", ordersKartDTO);
+        response.put("users", usersDTO);
         
         if(response	.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -242,27 +255,34 @@ public class OrderController {
         UserEntity user = userRepository.findByUsername(username)
         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
 
-        List<OrderDTO> orders = user.getOrdersWithoutUserEntity();
+        List<Order> orders = user.getOrders();
+        List<OrderDTO> ordersDTO = new ArrayList<>();
+        for (Order order : orders) {
+            OrderDTO orderDTO = orderService.convertToDTO(order);
+            ordersDTO.add(orderDTO);
+        }
         List<Long> printerIds = orders.stream()
-            .map(order -> order.getPrinter_id())
+            .map(order -> order.getPrinter().getId())
             .distinct()
             .collect(Collectors.toList());
 
         List<PrinterDTO> printers = new ArrayList<>();
         for (Long printerId : printerIds) {
-            PrinterDTO printer = printerService.getPrinterById(printerId);
-            printers.add(printer);
+            Printer printer = printerRepository.findById(printerId)
+                .orElseThrow(() -> new RuntimeException("Error: Impresora no encontrada."));
+            PrinterDTO printerDTO = printerService.convertToDTO(printer);
+            printers.add(printerDTO);
         }
         List<UserDTO> users = new ArrayList<>();
-        for (OrderDTO order : orders) {
-            UserEntity userEntity = userRepository.findById(order.getUser_id())
+        for (Order order : orders) {
+            UserEntity userEntity = userRepository.findById(order.getUserEntity().getId())
                 .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
-            users.add(userEntity.getUsersWithoutEntity());
+            users.add(userEntityService.convertToDTO(userEntity));
         }
 
         Map<String, Object> response = new HashMap<>();
         response.put("printers", printers);
-        response.put("orders", orders);
+        response.put("orders", ordersDTO);
         response.put("users", users);
         
 
@@ -284,13 +304,17 @@ public class OrderController {
         UserEntity user = userRepository.findByUsername(username)
         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
 
-        List<OrderDTO> orders = user.getOrdersWithoutUserEntity();
-        List<OrderDTO> status = orderService.getOrdersExcludingStatus(EStatus.KART, orders);
-        List<OrderDTO> order1 = orderService.getOrdersByUserId(user.getId(), status);
-        if(order1.isEmpty()) {
+        List<Order> orders = orderService.getOrdersExcludingStatus(EStatus.KART, user);
+        List<OrderDTO> ordersDTO = new ArrayList<>();
+        for (Order order : orders) {
+            OrderDTO orderDTO = orderService.convertToDTO(order);
+            ordersDTO.add(orderDTO);
+        }
+
+        if(orders.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(order1, HttpStatus.OK);
+        return new ResponseEntity<>(ordersDTO, HttpStatus.OK);
     }
 
     //Excluye los pedidos en carrito
@@ -304,19 +328,23 @@ public class OrderController {
         UserEntity user = userRepository.findByUsername(username)
         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
 
-        List<OrderDTO> orders = user.getOrdersWithoutUserEntity();
-        List<OrderDTO> status = orderService.getOrdersByStatus(EStatus.DELIVERED, orders);
-        List<OrderDTO> order1 = orderService.getOrdersByUserId(user.getId(), status);
-        List<Long> orderIds = order1.stream()
-            .map(OrderDTO::getId)
+        List<Order> ordersDelivered = orderService.getOrdersByStatus(EStatus.DELIVERED, user);
+        List<OrderDTO> ordersDeliveredDTO = new ArrayList<>();
+        for (Order order : ordersDelivered) {
+            OrderDTO orderDTO = orderService.convertToDTO(order);
+            ordersDeliveredDTO.add(orderDTO);
+        }
+
+        List<Long> orderIds = ordersDelivered.stream()
+            .map(Order::getId)
             .collect(Collectors.toList());
 
-        List<RatingsDTO> ratings = ratingsService.getRatingsByOrderIds(orderIds);
+        List<RatingsDTO> ratingsDTO = ratingsService.getRatingsByOrderIds(orderIds);
         Map<String, Object> response = new HashMap<>();
-        response.put("orders", order1);
-        response.put("ratings", ratings);
+        response.put("orders", ordersDeliveredDTO);
+        response.put("ratings", ratingsDTO);
 
-        if(order1.isEmpty()) {
+        if(ordersDelivered.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -332,48 +360,40 @@ public class OrderController {
         UserEntity user = userRepository.findByUsername(username)
         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
 
-        List<PrinterDTO> printers = user.getPrintersWithoutUserEntity();
+        List<Printer> printers = printerRepository.findAll();
+        List<PrinterDTO> printersDTO = new ArrayList<>();
+        for (Printer printer : printers) {
+            PrinterDTO printerDTO = printerService.convertToDTO(printer);
+            printersDTO.add(printerDTO);
+        }
 
         List<Long> printerIds = printers.stream()
-            .map(PrinterDTO::getId)
+            .map(Printer::getId)
             .collect(Collectors.toList());
 
-        // Crear metodo de obtener pedidos asignados a printerId
-        List<Order> allOrders = orderService.getAllOrders();
+        // // Crear metodo de obtener pedidos asignados a printerId
+        // List<Order> allOrders = orderRepository.findAll();
 
         //Falta convertir a OrderDTO
 
-        List<Order> ordersDTOByPrinter = orderService.getOrdersByPrinterId2(printerIds, allOrders);
-        List<OrderDTO> getOrdersWithoutUserEntity =
-        ordersDTOByPrinter.stream()
-            .map(order -> {
-                OrderDTO orderDTO = new OrderDTO();
-                // Copiar todos los atributos de order a orderDTO
-                orderDTO.setId(order.getId());
-                orderDTO.setOrderdate(order.getOrderdate());
-                orderDTO.setSpecs(order.getSpecs());
-                orderDTO.setManufacturerdate(order.getManufacturerdate());
-                orderDTO.setPickupdate(order.getPickupdate());
-                orderDTO.setNumber(order.getNumber());
-                orderDTO.setStatus(order.getStatus());
-                orderDTO.setUser_id(order.getUserEntity().getId());
-                orderDTO.setPrinter_id(order.getPrinter().getId());
-                
-                return orderDTO;
-            })
-            .collect(Collectors.toList());
+        List<Order> ordersByPrinter = orderService.getOrdersByPrinterId(printerIds);
+        List<OrderDTO> ordersDTOByPrinter = new ArrayList<>();
+        for (Order order : ordersByPrinter) {
+            OrderDTO orderDTO = orderService.convertToDTO(order);
+            ordersDTOByPrinter.add(orderDTO);
+        }
 
-        List<UserDTO> users = new ArrayList<>();
-        for (OrderDTO order : getOrdersWithoutUserEntity) {
+        List<UserDTO> usersDTO = new ArrayList<>();
+        for (OrderDTO order : ordersDTOByPrinter) {
             UserEntity userEntity = userRepository.findById(order.getUser_id())
                 .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
-            users.add(userEntity.getUsersWithoutEntity());
+            usersDTO.add(userEntityService.convertToDTO(userEntity));
         }
                 
         Map<String, Object> response = new HashMap<>();
-        response.put("printers", printers);
-        response.put("orders", getOrdersWithoutUserEntity);
-        response.put("users", users);
+        response.put("printers", printersDTO);
+        response.put("orders", ordersDTOByPrinter);
+        response.put("users", usersDTO);
 
 
         if(response.isEmpty()) {
@@ -392,44 +412,28 @@ public class OrderController {
         UserEntity user = userRepository.findByUsername(username)
         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
 
-        List<PrinterDTO> printers = user.getPrintersWithoutUserEntity();
-
+        List<Printer> printers = user.getPrinters();
         List<Long> printerIds = printers.stream()
-            .map(PrinterDTO::getId)
+            .map(Printer::getId)
             .collect(Collectors.toList());
-
-        // Crear metodo de obtener pedidos asignados a printerId
-        List<Order> allOrders = orderService.getAllOrders();
 
         //Falta convertir a OrderDTO
 
-        List<Order> ordersDTOByPrinter = orderService.getOrdersByPrinterId2(printerIds, allOrders);
-        List<OrderDTO> getOrdersWithoutUserEntity =
-        ordersDTOByPrinter.stream()
-            .map(order -> {
-                OrderDTO orderDTO = new OrderDTO();
-                // Copiar todos los atributos de order a orderDTO
-                orderDTO.setId(order.getId());
-                orderDTO.setOrderdate(order.getOrderdate());
-                orderDTO.setSpecs(order.getSpecs());
-                orderDTO.setManufacturerdate(order.getManufacturerdate());
-                orderDTO.setPickupdate(order.getPickupdate());
-                orderDTO.setNumber(order.getNumber());
-                orderDTO.setStatus(order.getStatus());
-                orderDTO.setUser_id(order.getUserEntity().getId());
-                orderDTO.setPrinter_id(order.getPrinter().getId());
-                
-                return orderDTO;
-            })
-            .collect(Collectors.toList());
+        List<Order> ordersByPrinter = orderService.getOrdersByPrinterId(printerIds);
+        List<OrderDTO> ordersDTOByPrinter = new ArrayList<>();
+        for (Order order : ordersByPrinter) {
+            OrderDTO orderDTO = orderService.convertToDTO(order);
+            ordersDTOByPrinter.add(orderDTO);
+        }
+
 
         List<UserDTO> users = new ArrayList<>();
-        for (OrderDTO order : getOrdersWithoutUserEntity) {
+        for (OrderDTO order : ordersDTOByPrinter) {
             UserEntity userEntity = userRepository.findById(order.getUser_id())
                 .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
-            users.add(userEntity.getUsersWithoutEntity());
+            users.add(userEntityService.convertToDTO(userEntity));
         }
-        List<Long> orderIds = getOrdersWithoutUserEntity.stream()
+        List<Long> orderIds = ordersDTOByPrinter.stream()
             .map(OrderDTO::getId)
             .collect(Collectors.toList());
 
@@ -437,7 +441,7 @@ public class OrderController {
 
 
         Map<String, Object> response = new HashMap<>();
-        response.put("orders", getOrdersWithoutUserEntity);
+        response.put("orders", ordersDTOByPrinter);
         response.put("ratings", ratings);
 
         if(response.isEmpty()) {
@@ -448,28 +452,33 @@ public class OrderController {
 
     //Obtener todas las impresoras ¿?¿?¿?
     @GetMapping("/orders")
-    public ResponseEntity<List<PrinterDTO>> getManufacturerPrinters() {
+    public ResponseEntity<List<OrderDTO>> getManufacturerPrinters() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = (authentication != null) ? authentication.getName() : null;
         UserEntity user = userRepository.findByUsername(username)
         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
 
-        List<PrinterDTO> ratings = user.getPrintersWithoutUserEntity();
-        if(ratings.isEmpty()) {
+        List<Order> orders = orderRepository.findAll();
+        List<OrderDTO> ordersDTO = new ArrayList<>();
+        if(orders.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(ratings, HttpStatus.OK);
+        return new ResponseEntity<>(ordersDTO, HttpStatus.OK);
     }
 
     //Obtener todas las impresoras con sus respectivas valoraciones de un fabricante ¿?¿?¿?
     @GetMapping("/{printerId}/ratings")
     public ResponseEntity<List<RatingsDTO>> getPrinterOrderRatings(@PathVariable Long printerId) {
-        List<Order> allOrders = orderService.getAllOrders();
-        List<RatingsDTO> ratings = orderService.getRatingsByPrinterId(printerId, allOrders);
-        ;
+        List<Ratings> ratings = orderService.getRatingsByPrinterId(printerId);
+        List<RatingsDTO> ratingsDTO = new ArrayList<>();
+        for (Ratings rating : ratings) {
+            RatingsDTO ratingDTO = ratingsService.convertToDTO(rating);
+            ratingsDTO.add(ratingDTO);
+        }
+
         if (ratings.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(ratings, HttpStatus.OK);
+        return new ResponseEntity<>(ratingsDTO, HttpStatus.OK);
     }
 }
