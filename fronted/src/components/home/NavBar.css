@@ -126,6 +126,19 @@ a.btn.btn-light {
     .col-2 {
         align-content: center;
     }
+
+    .btn.btn-outline-light {
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+        border-top-right-radius: inherit !important;
+    }
+
+    .btn.btn-outline-warning {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        border-bottom-left-radius: inherit !important;
+        margin: 0;
+    }
 }
 
 @media (max-width: 1400px) {
