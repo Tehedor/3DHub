@@ -48,33 +48,28 @@ public class BackendApplication {
 	@Bean
 	CommandLineRunner init(){
 		return args -> {
-			UserEntity userEntity = UserEntity.builder()
-				.dni("11111111A")
-				.email("denzel@gmail.com")
-				.username("denzel")
-				.password(passwordEncoder.encode("1111"))
-				.roles(Set.of(Role.builder().name(ERole.ROLE_ADMIN).build()))
-				.lat(40.4165)
-				.lon(-3.70256)
-				.address("Calle de la Princesa, 1, 28008 Madrid, España")
-				.factAddress("Calle de la Princesa, 1, 28008 Madrid, España")
-				.build();
-			UserEntity userEntity2 = UserEntity.builder()
+
+
+/**
+ * Creación de usuarios
+ */
+
+			UserEntity designer = UserEntity.builder()
 				.dni("222222222A")
-				.email("sergio@gmail.com")
-				.username("sergio")
-				.password(passwordEncoder.encode("2222"))
+				.email("diseñador@gmail.com")
+				.username("diseñador")
+				.password(passwordEncoder.encode("diseñador"))
 				.roles(Set.of(Role.builder().name(ERole.ROLE_DESIGNER).build()))
 				.lat(40.4165)
 				.lon(-3.70256)
 				.address("Calle de la Princesa, 1, 28008 Madrid, España")
 				.factAddress("Calle de la Princesa, 1, 28008 Madrid, España")
 				.build();
-			UserEntity userEntity3 = UserEntity.builder()
+			UserEntity manufacturer = UserEntity.builder()
 				.dni("333333333A")
-				.email("claudia@gmail.com")
-				.username("claudia")
-				.password(passwordEncoder.encode("3333"))
+				.email("fabricante@gmail.com")
+				.username("fabricante")
+				.password(passwordEncoder.encode("fabricante"))
 				.roles(Set.of(Role.builder().name(ERole.ROLE_MANUFACTURER).build()))
 				.lat(40.4165)
 				.lon(-3.70256)
@@ -82,8 +77,12 @@ public class BackendApplication {
 				.factAddress("Calle de la Princesa, 1, 28008 Madrid, España")
 				.build();
 
+/**
+ * Creación de impresoras
+*/
+
 			Printer printer = Printer.builder()
-				.modelName("ender 3")
+				.modelName("ender 1")
 				.printerLocation("creality")
 				.printerType("Room 1")
 				.printerPhoto(null)
@@ -95,9 +94,25 @@ public class BackendApplication {
 				.printerPrecision(0.1)
 				.color("rojo")
 				.material("plastic")
-				.userEntity(userEntity)
+				.userEntity(manufacturer)
 				.build();
 			Printer printer2 = Printer.builder()
+				.modelName("ender 2")
+				.printerLocation("creality")
+				.printerType("Room 1")
+				.printerPhoto(null)
+				.servicePrice(10.0)
+				.maxUnities(1)
+				.manufacturationSpeed("60")
+				.maxWidth(220.0)
+				.maxHeight(250.0)
+				.printerPrecision(0.1)
+				.color("rojo")
+				.material("plastic")
+				.userEntity(manufacturer)
+				.build();
+				
+			Printer printer3 = Printer.builder()
 				.modelName("ender 3")
 				.printerLocation("creality")
 				.printerType("Room 1")
@@ -110,8 +125,28 @@ public class BackendApplication {
 				.printerPrecision(0.1)
 				.color("rojo")
 				.material("plastic")
-				.userEntity(userEntity)
+				.userEntity(manufacturer)
 				.build();
+			Printer printer4 = Printer.builder()
+				.modelName("ender 4")
+				.printerLocation("creality")
+				.printerType("Room 1")
+				.printerPhoto(null)
+				.servicePrice(10.0)
+				.maxUnities(1)
+				.manufacturationSpeed("60")
+				.maxWidth(220.0)
+				.maxHeight(250.0)
+				.printerPrecision(0.1)
+				.color("rojo")
+				.material("plastic")
+				.userEntity(manufacturer)
+				.build();
+
+
+/**
+ * Creación de pedidos
+ */
 
 			Order order = Order.builder()
 				.orderdate(new Date(System.currentTimeMillis()))
@@ -119,9 +154,9 @@ public class BackendApplication {
 				.specs("specs1")
 				.manufacturerdate(new Date(System.currentTimeMillis()))
 				.file(null)
-				.status(EStatus.SEND)
+				.status(EStatus.KART)
 				.pickupdate(new Date(System.currentTimeMillis()))
-				.userEntity(userEntity)
+				.userEntity(designer)
 				.printer(printer)
 				.build();
 			Order order2 = Order.builder()
@@ -130,11 +165,61 @@ public class BackendApplication {
 				.specs("specs1")
 				.manufacturerdate(new Date(System.currentTimeMillis()))
 				.file(null)
-				.status(EStatus.SEND)
+				.status(EStatus.PAY)
 				.pickupdate(new Date(System.currentTimeMillis()))
-				.userEntity(userEntity)
+				.userEntity(designer)
 				.printer(printer2)
 				.build();
+			Order order3 = Order.builder()
+				.orderdate(new Date(System.currentTimeMillis()))
+				.number(2)
+				.specs("specs1")
+				.manufacturerdate(new Date(System.currentTimeMillis()))
+				.file(null)
+				.status(EStatus.SEND)
+				.pickupdate(new Date(System.currentTimeMillis()))
+				.userEntity(designer)
+				.printer(printer3)
+				.build();
+			Order order4 = Order.builder()
+				.orderdate(new Date(System.currentTimeMillis()))
+				.number(2)
+				.specs("specs1")
+				.manufacturerdate(new Date(System.currentTimeMillis()))
+				.file(null)
+				.status(EStatus.DELIVERED)
+				.pickupdate(new Date(System.currentTimeMillis()))
+				.userEntity(designer)
+				.printer(printer4)
+				.build();
+
+			Order order5 = Order.builder()
+				.orderdate(new Date(System.currentTimeMillis()))
+				.number(2)
+				.specs("specs1")
+				.manufacturerdate(new Date(System.currentTimeMillis()))
+				.file(null)
+				.status(EStatus.DELIVERED)
+				.pickupdate(new Date(System.currentTimeMillis()))
+				.userEntity(designer)
+				.printer(printer4)
+				.build();
+
+			Order order6 = Order.builder()
+				.orderdate(new Date(System.currentTimeMillis()))
+				.number(2)
+				.specs("specs1")
+				.manufacturerdate(new Date(System.currentTimeMillis()))
+				.file(null)
+				.status(EStatus.DELIVERED)
+				.pickupdate(new Date(System.currentTimeMillis()))
+				.userEntity(designer)
+				.printer(printer4)
+				.build();
+
+/**
+ * Creación de reseñas
+ */
 
 			Ratings rating = Ratings.builder()
 				.date(new Date(System.currentTimeMillis()))
@@ -142,29 +227,33 @@ public class BackendApplication {
 				.manufacturerRating(3)
 				.textRating("good")
 				.file(null)
-				.order(order2)
+				.order(order5)
+				.build();
+			Ratings rating2 = Ratings.builder()
+				.date(new Date(System.currentTimeMillis()))
+				.productRating(2)
+				.manufacturerRating(1)
+				.textRating("bad")
+				.file(null)
+				.order(order6)
 				.build();
 
-				Ratings rating2 = Ratings.builder()
-				.date(new Date(System.currentTimeMillis()))
-				.productRating(4)
-				.manufacturerRating(3)
-				.textRating("good")
-				.file(null)
-				.designer(userEntity2)
-				.manufacturer(userEntity3)
-				.printer(printer)
-				.build();
 			
-			userRepository.save(userEntity);
-			userRepository.save(userEntity2);
-			userRepository.save(userEntity3);
+			
+			userRepository.save(designer);
+			userRepository.save(manufacturer);
 			printerRepository.save(printer);
 			printerRepository.save(printer2);
+			printerRepository.save(printer3);
+			printerRepository.save(printer4);
 			orderRepository.save(order);
 			orderRepository.save(order2);
-			ratingsRepository.save(rating);	
-			ratingsRepository.save(rating2);	
+			orderRepository.save(order3);
+			orderRepository.save(order4);
+			orderRepository.save(order5);
+			orderRepository.save(order6);
+			ratingsRepository.save(rating);
+			ratingsRepository.save(rating2);
 		};
 	}
 

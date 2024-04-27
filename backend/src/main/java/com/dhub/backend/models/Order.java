@@ -62,8 +62,7 @@ public class Order {
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date manufacturerdate;
 
-	@Lob
-	private byte[] file;
+	private String file;
 
 	@Column(name = "status")
 	@Enumerated(EnumType.STRING)
@@ -82,6 +81,8 @@ public class Order {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
     private List<Ratings> ratings;
 
+
+	
 // @JsonManagedReference
 //  @ManyToOne(cascade = CascadeType.ALL)
 //  @JoinColumn(name = "printer_id")

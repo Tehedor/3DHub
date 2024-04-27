@@ -1,17 +1,44 @@
 package com.dhub.backend.controllers;
-import java.util.List;
+
+
+import java.io.IOException;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.dhub.backend.controllers.request.RatingsDTO;
+import com.dhub.backend.models.ERole;
+import com.dhub.backend.models.Order;
+import com.dhub.backend.models.Printer;
 import com.dhub.backend.models.Ratings;
+import com.dhub.backend.models.UserEntity;
+import com.dhub.backend.repository.RatingsRepository;
+import com.dhub.backend.repository.UserRepository;
+import com.dhub.backend.services.OrderService;
 import com.dhub.backend.services.RatingsService;
+import com.dhub.backend.util.FileUploadUtil;
+
+import jakarta.validation.Valid;
+
+import com.dhub.backend.models.Role; 
+
+
+
 
 @RestController
 @RequestMapping("/ratings")
@@ -19,54 +46,76 @@ import com.dhub.backend.services.RatingsService;
 
 
 public class RatingsController {
+
+
     @Autowired
     private RatingsService ratingsService;
+
+    @Autowired
+    private OrderService orderService;
     
-// Metodo GET: Obtener todas las reseñas correspondientes a una impresora
-@GetMapping("/ratings/{printerId}")
-public ResponseEntity<List<Ratings>> getRatingsByPrinter(@PathVariable Long printerId) {
-    List<Ratings> ratings = ratingsService.getRatingsByPrinter(printerId);
-    return new ResponseEntity<>(ratings, HttpStatus.OK);
-}
-// @GetMapping("/ratingsDesigner/{printerId}")
-// public ResponseEntity<List<Ratings>> getRatingsDesignerByPrinter(@PathVariable Long printerId) {
-//     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//         String username = (authentication != null) ? authentication.getName() : null;
-//         UserEntity user = userRepository.findByUsername(username)
-//         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
-    
-//     List<Ratings> ratings = user.getRatingsDesigner();
-//     return new ResponseEntity<>(ratings, HttpStatus.OK);
-// }
-// @GetMapping("/ratingsManufacturer/{printerId}")
-// public ResponseEntity<List<Ratings>> getRatingsManufacturerByPrinter(@PathVariable Long printerId) {
-//     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//         String username = (authentication != null) ? authentication.getName() : null;
-//         UserEntity user = userRepository.findByUsername(username)
-//         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
-    
-//     List<Ratings> ratings = user.getRatingsDesigner();
-//     return new ResponseEntity<>(ratings, HttpStatus.OK);
-// }
-// Metodo Post(/addRating): Crear reseña con todos sus atributos incluyendo diseñador e impresora a la que corresponden
-@PostMapping("/addRating")
-public ResponseEntity<Ratings> addRating(@RequestBody Ratings ratings) {
-    Ratings newRating = ratingsService.addRatings(ratings);
-    return new ResponseEntity<>(newRating, HttpStatus.CREATED);
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private RatingsRepository ratingsRepository;
+
+    // Metodo POST: Crear reseña basada en un pedido existente
+    @PostMapping("/{orderId}/createReview")
+    public ResponseEntity<RatingsDTO> createReview(@RequestBody Ratings ratings, @PathVariable Long orderId) {
+
+        Order order = orderService.getOrderById(orderId);
+        // Comprobar que existe el pedido
+        if (order == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        // Usuario asociado a un pedido
+        UserEntity user = order.getUserEntity();
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        ratings.setOrder(order);
+        Ratings newRating = ratingsService.addRatings(ratings);
+        RatingsDTO ratingsDTO = ratingsService.convertToDto(ratings);
+        return new ResponseEntity<>(ratingsDTO, HttpStatus.CREATED);
+
+    }
+
+    @PutMapping("/uploadPhoto/{id}")
+    public ResponseEntity<Printer> uploadPhoto(@Valid @RequestPart("file") MultipartFile file,@PathVariable Long id) throws IOException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = (authentication != null) ? authentication.getName() : null;
+        UserEntity user = userRepository.findByUsername(username)
+        .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
+        Ratings rating = ratingsRepository.findById(id).orElseThrow(() -> new RuntimeException("Error: Reseña no encontrada."));
+
+        if (file != null) {
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        String uploadDir = "ratingsPhotos\\";
+        FileUploadUtil.saveFile(uploadDir, fileName, file);
+        rating.setFile(uploadDir + fileName);
+        ratingsRepository.save(rating);
+    }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<HttpStatus> deleteRating(@PathVariable Long id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = (authentication != null) ? authentication.getName() : null;
+        UserEntity user = userRepository.findByUsername(username)
+        .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
+        Ratings rating = ratingsRepository.findById(id).orElseThrow(() -> new RuntimeException("Error: Reseña no encontrada."));
+        if (user.getId() == rating.getOrder().getUserEntity().getId() || user.getRoles().contains(ERole.ROLE_ADMIN)) {
+            ratingsRepository.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    }
+
+
 }
 
-// Metodo Get: Obtener una media de las reseñas de una impresora por parte de los diseñadores
-@GetMapping("/average/printer/{printerId}/designers")
-public ResponseEntity<Double> getAverageRatingByDesigners(@PathVariable Long printerId) {
-    Double averageRating = ratingsService.getAverageRatingByDesigners(printerId);
-    return new ResponseEntity<>(averageRating, HttpStatus.OK);
-}
 
-// Método GET con media de las reseñas de una impresora por parte del fabricante
-@GetMapping("/average/printer/{printerId}/manufacturer")
-public ResponseEntity<Double> getAverageRatingByManufacturer(@PathVariable Long printerId) {
-    Double averageRating = ratingsService.getAverageRatingByManufacturer(printerId);
-    return new ResponseEntity<>(averageRating, HttpStatus.OK);
-}
-}
  

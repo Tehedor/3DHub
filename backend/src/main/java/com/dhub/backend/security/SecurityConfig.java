@@ -3,6 +3,7 @@ package com.dhub.backend.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -41,18 +42,14 @@ public class SecurityConfig {
         
 
         http
-            .cors(cors -> cors.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()))
+            .cors(cors -> cors.configurationSource(request -> {
+                CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
+                corsConfiguration.addAllowedMethod(HttpMethod.DELETE);
+                return corsConfiguration;
+            }))
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> {
                 auth.requestMatchers("/index**").permitAll();
-                auth.requestMatchers("/api/**").permitAll();
-                // auth.requestMatchers("/api/manumanufacturerPrinters/{userId}").permitAll();
-                auth.requestMatchers("/customerservice/sendMail**").permitAll();
-                auth.requestMatchers("/customerservice/sendMailFile**").permitAll();
-                //auth.requestMatchers("/manufacturer/printers**").permitAll();
-                //auth.requestMatchers("/manufacturer/printers/**").permitAll();
-                //auth.requestMatchers("/printers**").permitAll();
-                //auth.requestMatchers("/printers/**").permitAll();
                 auth.anyRequest().authenticated();
             })
             .sessionManagement(session -> {
@@ -70,9 +67,7 @@ public class SecurityConfig {
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-            
     }
-
 
     @Bean
     AuthenticationManager authenticationManager(HttpSecurity httpSecurity, PasswordEncoder passwordEncoder) throws Exception{

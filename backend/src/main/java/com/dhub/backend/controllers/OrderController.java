@@ -3,11 +3,13 @@ package com.dhub.backend.controllers;
 
 import com.dhub.backend.controllers.request.OrderDTO;
 import com.dhub.backend.controllers.request.PrinterDTO;
+import com.dhub.backend.controllers.request.RatingsDTO;
 import com.dhub.backend.controllers.request.UserDTO;
 import com.dhub.backend.controllers.response.MessageResponse;
 import com.dhub.backend.models.EStatus;
 import com.dhub.backend.models.Order;
 import com.dhub.backend.models.Printer;
+import com.dhub.backend.models.Ratings;
 import com.dhub.backend.models.Status;
 import com.dhub.backend.models.UserEntity;
 import com.dhub.backend.repository.OrderRepository;
@@ -15,12 +17,18 @@ import com.dhub.backend.repository.PrinterRepository;
 import com.dhub.backend.repository.UserRepository;
 import com.dhub.backend.services.OrderService;
 import com.dhub.backend.services.PrinterService;
+import com.dhub.backend.services.RatingsService;
+import com.dhub.backend.util.FileUploadUtil;
+
+import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,7 +38,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.StringUtils;
 
+import com.dhub.backend.repository.RatingsRepository;
 
 @RestController
 // @PreAuthorize("hasRole('ROLE_MANUFACTURER' or 'ROLE_DESIGNER' or 'ROLE_ADMIN')")
@@ -48,6 +58,8 @@ public class OrderController {
     @Autowired
     private PrinterService printerService;
 
+    @Autowired
+    private RatingsService ratingsService;
 
     // @Autowired
     public OrderController(OrderService orderService) {
@@ -122,6 +134,24 @@ public class OrderController {
 
         orderRepository.save(order);
         return ResponseEntity.ok(new MessageResponse("Añadido al carrito"));
+    }
+
+    @PutMapping("/uploadfile/{id}")
+    public ResponseEntity<Printer> uploadFile(@Valid @RequestPart("file") MultipartFile file,@PathVariable Long id) throws IOException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = (authentication != null) ? authentication.getName() : null;
+        UserEntity user = userRepository.findByUsername(username)
+        .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
+        Order order = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Error: Pedido no encontrada."));
+
+        if (file != null) {
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        String uploadDir = "orderFiles\\";
+        FileUploadUtil.saveFile(uploadDir, fileName, file);
+        order.setFile(uploadDir + fileName);
+        orderRepository.save(order);
+    }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
     
     /*
@@ -235,6 +265,32 @@ public class OrderController {
         return new ResponseEntity<>(order1, HttpStatus.OK);
     }
 
+    //Excluye los pedidos en carrito
+    @GetMapping("/designerRatings")
+    public ResponseEntity<Map<String, Object>> getDesignerRatings() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = (authentication != null) ? authentication.getName() : null;
+        UserEntity user = userRepository.findByUsername(username)
+        .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
+
+        List<OrderDTO> orders = user.getOrdersWithoutUserEntity();
+        List<OrderDTO> status = orderService.getOrdersByStatus(EStatus.DELIVERED, orders);
+        List<OrderDTO> order1 = orderService.getOrdersByUserId(user.getId(), status);
+        List<Long> orderIds = order1.stream()
+            .map(OrderDTO::getId)
+            .collect(Collectors.toList());
+
+        List<RatingsDTO> ratings = ratingsService.getRatingsByOrderIds(orderIds);
+        Map<String, Object> response = new HashMap<>();
+        response.put("orders", order1);
+        response.put("ratings", ratings);
+
+        if(order1.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @GetMapping("/manufacturerOrders")
     public ResponseEntity< Map<String, Object>>  getManufacturerOrders() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -248,7 +304,7 @@ public class OrderController {
             .map(PrinterDTO::getId)
             .collect(Collectors.toList());
 
-// Crear metodo de obtener pedidos asignados a printerId
+        // Crear metodo de obtener pedidos asignados a printerId
         List<Order> allOrders = orderService.getAllOrders();
 
         //Falta convertir a OrderDTO
@@ -272,25 +328,6 @@ public class OrderController {
                 return orderDTO;
             })
             .collect(Collectors.toList());
-    
-
-        // for (Order order : ordersByPrinter) {
-        //     UserEntity userEntity = userRepository.findById(order.getId())
-        //         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
-        //         user.add(userEntity.getUsersWithoutEntity());
-        // }
-
-        // List<OrderDTO> orders = user.getOrdersWithoutUserEntity();
-        // List<Long> printerIds = orders.stream()
-        //     .map(order -> order.getPrinter_id())
-        //     .distinct()
-        //     .collect(Collectors.toList());
-        
-        // List<PrinterDTO> printers = new ArrayList<>();
-        // for (Long printerId : printerIds) {
-        //     PrinterDTO printer = printerService.getPrinterById(printerId);
-        //     printers.add(printer);
-        // }
 
         List<UserDTO> users = new ArrayList<>();
         for (OrderDTO order : getOrdersWithoutUserEntity) {
@@ -309,5 +346,92 @@ public class OrderController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/manufacturerRatings")
+    public ResponseEntity< Map<String, Object>>  getManufacturerRatings() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = (authentication != null) ? authentication.getName() : null;
+        UserEntity user = userRepository.findByUsername(username)
+        .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
+
+        List<PrinterDTO> printers = user.getPrintersWithoutUserEntity();
+
+        List<Long> printerIds = printers.stream()
+            .map(PrinterDTO::getId)
+            .collect(Collectors.toList());
+
+        // Crear metodo de obtener pedidos asignados a printerId
+        List<Order> allOrders = orderService.getAllOrders();
+
+        //Falta convertir a OrderDTO
+
+        List<Order> ordersDTOByPrinter = orderService.getOrdersByPrinterId2(printerIds, allOrders);
+        List<OrderDTO> getOrdersWithoutUserEntity =
+        ordersDTOByPrinter.stream()
+            .map(order -> {
+                OrderDTO orderDTO = new OrderDTO();
+                // Copiar todos los atributos de order a orderDTO
+                orderDTO.setId(order.getId());
+                orderDTO.setOrderdate(order.getOrderdate());
+                orderDTO.setSpecs(order.getSpecs());
+                orderDTO.setManufacturerdate(order.getManufacturerdate());
+                orderDTO.setPickupdate(order.getPickupdate());
+                orderDTO.setNumber(order.getNumber());
+                orderDTO.setStatus(order.getStatus());
+                orderDTO.setUser_id(order.getUserEntity().getId());
+                orderDTO.setPrinter_id(order.getPrinter().getId());
+                
+                return orderDTO;
+            })
+            .collect(Collectors.toList());
+
+        List<UserDTO> users = new ArrayList<>();
+        for (OrderDTO order : getOrdersWithoutUserEntity) {
+            UserEntity userEntity = userRepository.findById(order.getUser_id())
+                .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
+            users.add(userEntity.getUsersWithoutEntity());
+        }
+        List<Long> orderIds = getOrdersWithoutUserEntity.stream()
+            .map(OrderDTO::getId)
+            .collect(Collectors.toList());
+
+        List<RatingsDTO> ratings = ratingsService.getRatingsByOrderIds(orderIds);
+
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("orders", getOrdersWithoutUserEntity);
+        response.put("ratings", ratings);
+
+        if(response.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/orders")
+    public ResponseEntity<List<PrinterDTO>> getManufacturerPrinters() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = (authentication != null) ? authentication.getName() : null;
+        UserEntity user = userRepository.findByUsername(username)
+        .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
+
+        List<PrinterDTO> ratings = user.getPrintersWithoutUserEntity();
+        if(ratings.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(ratings, HttpStatus.OK);
+    }
+
+    @GetMapping("/{printerId}/ratings")
+    public ResponseEntity<List<RatingsDTO>> getPrinterOrderRatings(@PathVariable Long printerId) {
+        List<Order> allOrders = orderService.getAllOrders();
+        List<RatingsDTO> ratings = orderService.getRatingsByPrinterId(printerId, allOrders);
+        ;
+        if (ratings.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(ratings, HttpStatus.OK);
     }
 }
