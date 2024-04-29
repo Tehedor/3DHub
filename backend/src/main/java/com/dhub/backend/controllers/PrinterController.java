@@ -58,6 +58,21 @@ public class PrinterController {
     @Autowired
     private RatingsService ratingsService;
 
+
+    @GetMapping
+    public ResponseEntity<List<PrinterDTO>> getPrinters() {
+
+        List<Printer> printers = printerRepository.findAll();
+        if(printers.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        List<PrinterDTO> printersDTO = new ArrayList<>();
+        for (Printer printer : printers) {
+            printersDTO.add(printerService.convertToDTO(printer));
+        }
+        return new ResponseEntity<>(printersDTO, HttpStatus.OK);
+    }
+
     //Obtener todas las impresoras ¿?¿?¿?
     @GetMapping("/printers")
     public ResponseEntity<List<PrinterDTO>> getManufacturerPrinters() {
