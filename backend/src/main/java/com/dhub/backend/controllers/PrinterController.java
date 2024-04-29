@@ -42,7 +42,6 @@ import jakarta.validation.Valid;
 
 @Data
 @RestController
-@PreAuthorize("hasRole('MANUFACTURER') or hasRole('DESIGNER') or hasRole('ADMIN')")
 @RequestMapping("/api/printers")
 public class PrinterController {
 
@@ -59,7 +58,7 @@ public class PrinterController {
     private RatingsService ratingsService;
 
 
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<List<PrinterDTO>> getPrinters() {
 
         List<Printer> printers = printerRepository.findAll();
