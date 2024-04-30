@@ -9,7 +9,10 @@ import com.dhub.backend.models.UserEntity;
 import com.dhub.backend.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -37,6 +40,22 @@ public class OrderServiceImpl implements OrderService {
         orderDTO.setPrinter_id(order.getPrinter().getId());
         orderDTO.setUser_id(order.getUserEntity().getId());
         return orderDTO;
+    }
+
+    @Override
+    public Order convertToEntity(OrderDTO orderDTO) {
+        LocalDateTime now = LocalDateTime.now();
+        Date date = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
+        Order order = new Order();
+        order.setOrderDate(date);
+        order.setFile(orderDTO.getFile());
+        order.setStatus(orderDTO.getStatus());
+        order.setQuantity(orderDTO.getQuantity());
+        order.setAddress(orderDTO.getAddress());
+        order.setSpecs(orderDTO.getSpecs());
+        order.setDeliveryDate(orderDTO.getDeliveryDate());
+        order.setManufacturerDate(orderDTO.getManufacturerDate());
+           return order;
     }
 
     @Override

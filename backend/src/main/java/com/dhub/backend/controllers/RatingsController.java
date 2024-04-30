@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
@@ -33,10 +34,9 @@ import com.dhub.backend.util.FileUploadUtil;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/ratings")
+@RequestMapping("/api/ratings")
 
-
-
+@PreAuthorize("hasRole('DESIGNER')")
 public class RatingsController {
     @Autowired
     private RatingsService ratingsService;
@@ -53,12 +53,13 @@ public class RatingsController {
     /*
      * Create a review for a order
      */    
-    @PostMapping("/{orderId}/createReview")
-    public ResponseEntity<RatingsDTO> createReview(@RequestBody Ratings ratings, @PathVariable Long orderId) {
+    @PostMapping
+    public ResponseEntity<HttpStatus> createReview(@RequestBody RatingsDTO ratingsDTO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = (authentication != null) ? authentication.getName() : null;
         UserEntity user = userRepository.findByUsername(username)
         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
+        Long orderId = ratingsDTO.getOrder_id();
         Order order = orderRepository.findById(orderId)
         .orElseThrow(() -> new RuntimeException("Error: Pedido no encontrado."));
         // Comprobar que existe el pedido
@@ -68,18 +69,16 @@ public class RatingsController {
         if (user.getId() != order.getUserEntity().getId()) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        ratings.setOrder(order);
+        Ratings ratings = ratingsService.convertToEntity(ratingsDTO);
         ratingsRepository.save(ratings);
-        RatingsDTO ratingsDTO = ratingsService.convertToDTO(ratings);
-        return new ResponseEntity<>(ratingsDTO, HttpStatus.CREATED);
-
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     /*
      * Upload photo and save it in the database
      * TODO: check if the user is the owner of the order¿?¿?
      */    
-    @PutMapping("/uploadPhoto/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Printer> uploadPhoto(@Valid @RequestPart("file") MultipartFile file,@PathVariable Long id) throws IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = (authentication != null) ? authentication.getName() : null;

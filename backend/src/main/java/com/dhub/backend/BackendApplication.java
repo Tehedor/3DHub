@@ -17,6 +17,9 @@ import com.dhub.backend.models.Printer;
 import com.dhub.backend.models.Ratings;
 import com.dhub.backend.models.Role;
 import com.dhub.backend.models.UserEntity;
+import com.dhub.backend.models.EColor;
+import com.dhub.backend.models.EMaterial;
+import com.dhub.backend.models.EPrinterType;
 import com.dhub.backend.repository.OrderRepository;
 import com.dhub.backend.repository.RatingsRepository;
 import com.dhub.backend.repository.UserRepository;
@@ -84,7 +87,7 @@ public class BackendApplication {
 			Printer printer = Printer.builder()
 				.modelName("ender 1")
 				.printerLocation("creality")
-				.printerType("Room 1")
+				.printerType(EPrinterType.FDM)
 				.printerPhoto(null)
 				.servicePrice(10.0)
 				.maxUnities(1)
@@ -92,14 +95,14 @@ public class BackendApplication {
 				.maxWidth(220.0)
 				.maxHeight(250.0)
 				.printerPrecision(0.1)
-				.color("rojo")
-				.material("plastic")
+				.color(EColor.BLACK)
+				.material(EMaterial.PLASTIC)
 				.userEntity(manufacturer)
 				.build();
 			Printer printer2 = Printer.builder()
 				.modelName("ender 2")
 				.printerLocation("creality")
-				.printerType("Room 1")
+				.printerType(EPrinterType.SLA)
 				.printerPhoto(null)
 				.servicePrice(10.0)
 				.maxUnities(1)
@@ -107,15 +110,15 @@ public class BackendApplication {
 				.maxWidth(220.0)
 				.maxHeight(250.0)
 				.printerPrecision(0.1)
-				.color("rojo")
-				.material("plastic")
+				.color(EColor.GREEN)
+				.material(EMaterial.RESIN)
 				.userEntity(manufacturer)
 				.build();
 				
 			Printer printer3 = Printer.builder()
 				.modelName("ender 3")
 				.printerLocation("creality")
-				.printerType("Room 1")
+				.printerType(EPrinterType.MSLA)
 				.printerPhoto(null)
 				.servicePrice(10.0)
 				.maxUnities(1)
@@ -123,14 +126,14 @@ public class BackendApplication {
 				.maxWidth(220.0)
 				.maxHeight(250.0)
 				.printerPrecision(0.1)
-				.color("rojo")
-				.material("plastic")
+				.color(EColor.BLUE)
+				.material(EMaterial.PLASTIC)
 				.userEntity(manufacturer)
 				.build();
 			Printer printer4 = Printer.builder()
 				.modelName("ender 4")
 				.printerLocation("creality")
-				.printerType("Room 1")
+				.printerType(EPrinterType.DLP)
 				.printerPhoto(null)
 				.servicePrice(10.0)
 				.maxUnities(1)
@@ -138,8 +141,8 @@ public class BackendApplication {
 				.maxWidth(220.0)
 				.maxHeight(250.0)
 				.printerPrecision(0.1)
-				.color("rojo")
-				.material("plastic")
+				.color(EColor.RED)
+				.material(EMaterial.RESIN)
 				.userEntity(manufacturer)
 				.build();
 

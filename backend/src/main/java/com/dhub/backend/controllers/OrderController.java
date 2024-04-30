@@ -67,12 +67,6 @@ public class OrderController {
     @Autowired
     private RatingsService ratingsService;
 
-    //Obtener todos los pedidos ¿?¿?¿?
-    @GetMapping
-    public List<Order> getAllOrders() {
-        return orderRepository.findAll();
-    }
-
     //Obtener pedido por id ¿?¿?¿?
     @GetMapping("/{id}")
     public ResponseEntity<OrderDTO> getOrderById(@PathVariable Long id) {
@@ -85,12 +79,24 @@ public class OrderController {
         }
     }
 
-    //Actualizar pedido ¿?¿?¿?
-    @PutMapping("/{id}")
-    public Order updateOrder(@PathVariable Long id, @RequestBody Order order) {
-        // You might want to ensure the ID in the Order object and the ID in the path are the same.
-        return orderRepository.save(order);
-    }
+
+    /*
+     * Edit the order if the user is the owner of the order or the printer assigned to the order
+     */
+    // @PutMapping
+    // public ResponseEntity<?> updateOrder(@RequestBody Order order) {
+    //     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    //     String username = (authentication != null) ? authentication.getName() : null;
+    //     UserEntity user = userRepository.findByUsername(username)
+    //     .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
+    //     Order order = orderRepository.findById(order.getId())
+    //     .orElseThrow(() -> new RuntimeException("Error: Pedido no encontrado."));
+    //     if (user.getId() == order.getUserEntity().getId() || user.getId() == order.getPrinter().getUserEntity().getId()) {
+    //         orderRepository.save(order);
+    //         return ResponseEntity.ok(new MessageResponse("Pedido "+ id + " eliminado"));
+    //     }
+        
+    // }
 
     /*
      * Deletes the order if the user is the owner of the order or the printer assigned to the order
@@ -113,26 +119,18 @@ public class OrderController {
 
     /*
      * creates the order, saving the status as KART
+     * TODO: Create a method convertToEntity in OrderService    
      */
-    @PostMapping("/create/{idPrinter}")
-    public ResponseEntity<?> createOrder(@PathVariable Long idPrinter, @RequestBody OrderDTO orderDTO) {
+    @PostMapping
+    public ResponseEntity<?> createOrder(@RequestBody OrderDTO orderDTO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = (authentication != null) ? authentication.getName() : null;
         UserEntity user = userRepository.findByUsername(username)
         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
-        Printer printer = printerRepository.findById(idPrinter)
+        Printer printer = printerRepository.findById(orderDTO.getPrinter_id())
         .orElseThrow(() -> new RuntimeException("Error: Impresora no encontrada."));
         EStatus status = EStatus.KART;
-        Order order = Order.builder()
-            .orderDate(new Date(System.currentTimeMillis()))
-            .specs(orderDTO.getSpecs())
-            .manufacturerDate(orderDTO.getManufacturerDate())
-            .deliveryDate(orderDTO.getDeliveryDate())
-            .quantity(orderDTO.getQuantity())
-            .status(status)
-            .userEntity(user)
-            .printer(printer)
-            .build();
+        Order order = orderService.convertToEntity(orderDTO);
 
         orderRepository.save(order);
         return ResponseEntity.ok(new MessageResponse("Añadido al carrito"));
@@ -143,7 +141,7 @@ public class OrderController {
      * Uploads the 3D file to the order and saves the path in the database
      * TODO: Add a check to see if the user is the owner of the order
      */
-    @PutMapping("/uploadfile/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Printer> uploadFile(@Valid @RequestPart("file") MultipartFile file,@PathVariable Long id) throws IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = (authentication != null) ? authentication.getName() : null;
