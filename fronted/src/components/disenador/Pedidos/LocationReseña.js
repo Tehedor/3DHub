@@ -64,7 +64,7 @@ export default function LocationReseña(props) {
 				</Row>
 				
 				<Row  className="justify-content-center">
-					<VerPedidos pedidos={searchPedido(pedidosId)} printer={searchPrinter(pedidos[pedidosId].printer_id)} thecontrol={false} reseña={searchReseña(pedidosId)} />
+					<VerPedidos pedidos={searchPedido(pedidosId)} printer={searchPrinter(searchPedido(pedidosId).printer_id)} thecontrol={false} reseña={searchReseña(pedidosId)} />
 				</Row>
 
 				<Row  className="justify-content-center"> 

@@ -32,7 +32,7 @@ const app = axios.create({
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
 const descargarPrinters = () => {
   return app.
-    get("api/printers")
+    get("api/printers/")
       .then((response) => {
         // if (response.data) {
         //   localStorage.setItem("printers", JSON.stringify(response.data)); // localStorage.setItem("user", JSON.stringify(response.data));: Si la propiedad username existe, entonces se almacena el objeto data de la respuesta en el almacenamiento local del navegador bajo la clave "user". Antes de almacenarlo, el objeto data se convierte en una cadena JSON.
