@@ -26,8 +26,9 @@ export default function Notificaciones(props) {
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####   const [thePedidos, setThePedidos] = useState();   
     const [thePrinters, setThePrinters] = useState();
     const [theDiseñadores, setTheDiseñadores] = useState();
+    const [thePedidos, setThePedidos] = useState(notificacionesPruebas);
 
-
+    
 
    // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
    // ##### ##### Descarga de datos

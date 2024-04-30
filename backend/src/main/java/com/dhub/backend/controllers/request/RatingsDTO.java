@@ -20,8 +20,7 @@ public class RatingsDTO {
     private Integer manufacturerRating;
     private  Integer productRating;
 
-    @Lob
-    private byte[] file;
+    private String file;
 
     @NotBlank
     private String textRating;
