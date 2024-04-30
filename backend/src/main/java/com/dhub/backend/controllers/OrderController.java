@@ -79,12 +79,24 @@ public class OrderController {
         }
     }
 
-    //Actualizar pedido ¿?¿?¿?
-    @PutMapping("/{id}")
-    public Order updateOrder(@PathVariable Long id, @RequestBody Order order) {
-        // You might want to ensure the ID in the Order object and the ID in the path are the same.
-        return orderRepository.save(order);
-    }
+
+    /*
+     * Edit the order if the user is the owner of the order or the printer assigned to the order
+     */
+    // @PutMapping
+    // public ResponseEntity<?> updateOrder(@RequestBody Order order) {
+    //     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    //     String username = (authentication != null) ? authentication.getName() : null;
+    //     UserEntity user = userRepository.findByUsername(username)
+    //     .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
+    //     Order order = orderRepository.findById(order.getId())
+    //     .orElseThrow(() -> new RuntimeException("Error: Pedido no encontrado."));
+    //     if (user.getId() == order.getUserEntity().getId() || user.getId() == order.getPrinter().getUserEntity().getId()) {
+    //         orderRepository.save(order);
+    //         return ResponseEntity.ok(new MessageResponse("Pedido "+ id + " eliminado"));
+    //     }
+        
+    // }
 
     /*
      * Deletes the order if the user is the owner of the order or the printer assigned to the order
