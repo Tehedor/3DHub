@@ -179,12 +179,22 @@ a.btn.btn-light {
         display: flex;
         flex-direction: row;
     }
+    .navbar-collapse {
+        display: flex;
+        flex-direction: column;
+    }
+    .navbar-expand-sm .navbar-toggler {
+        display: block;
+    }
+    .collapse:not(.show) {
+        display: none !important;
+    }
 }
 
-@media (max-width: 420px) {
+@media (max-width: 605px) {
     .patologo {
-        width: 80px;
-        height: 80px;
+        width: 100px;
+        height: 100px;
         margin: 0;
     }
     .navbar-brand {
@@ -204,6 +214,19 @@ a.btn.btn-light {
     }
     .art1.col {
         margin-left: auto;
+    }
+    #busqueda1 {
+        display: block;
+    }
+    #busqueda2 {
+        display: none;
+    }
+}
+
+@media (max-width: 420px) {
+    .patologo {
+        width: 80px;
+        height: 80px;
     }
 }
 
