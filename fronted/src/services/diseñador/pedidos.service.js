@@ -56,6 +56,23 @@ const añadirPedido = (file, cantidad, fechaFabricacion, fechaEntrega, especific
   })
 }
 
+// ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+// ##### ##### Post añadir reseña
+// ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+const añadirReseña = (productRating, manufacturerRating, textRating, file) => {
+  const fechaFabricacionFormated = new Date(fechaFabricacion).toISOString().split('T')[0];
+  const fechaEntregaFormated = new Date(fechaEntrega).toISOString().split('T')[0];
+  const stringsprinter = String(printer);
+  return app
+  .post(`api/orders/create/${printer}`, {
+    date: "07/02/2024",
+    productRating: productRating,
+    manufacturerRating: manufacturerRating,
+    textRating: textRating,
+    file: null
+  })
+}
+
 
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
 // ##### ##### Get Recivir pedidos carrito
@@ -81,6 +98,7 @@ const PedidosService = {
   confirmarEntrga,
   añadirPedido,
   getPedidosCarrito,
+  añadirReseña,
 }
 
 export default PedidosService;
