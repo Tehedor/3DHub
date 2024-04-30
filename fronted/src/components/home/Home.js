@@ -107,6 +107,7 @@ export default function Home(props) {
             // );
         }
         setThePrinters(downloadprinters);
+        props.setControlPrinters(downloadprinters);
         console.log(theprinters);
     }
 
