@@ -6,6 +6,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -41,8 +42,7 @@ public class Printer {
     @NotBlank
     private String printerLocation;
 
-    @NotBlank
-    private String printerType;
+    private EPrinterType printerType;
     
     private String printerPhoto;
 
@@ -59,10 +59,10 @@ public class Printer {
 
     private Double printerPrecision;
 
-    private String color;
+    private EColor color;
 
-    @NotBlank
-    private String material;
+    @NotNull
+    private EMaterial material;
 
     @ManyToOne
     @JoinColumn(name = "users_id")
