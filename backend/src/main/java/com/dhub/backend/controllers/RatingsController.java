@@ -41,10 +41,10 @@ public class RatingsController {
 
 
 // Metodo POST: Crear reseña basada en un pedido existente
-@PostMapping("/{id}/createReview")
-public ResponseEntity<RatingsDTO> createReview(@RequestBody Ratings ratings, @PathVariable Long id) {
+@PostMapping("/{orderId}/createReview")
+public ResponseEntity<RatingsDTO> createReview(@RequestBody Ratings ratings, @PathVariable Long orderId) {
 
-    Order order = orderService.getOrderById(id);
+    Order order = orderService.getOrderById(orderId);
 
 //Comprobar que existe el pedido 
     if (order == null) {
@@ -62,26 +62,9 @@ public ResponseEntity<RatingsDTO> createReview(@RequestBody Ratings ratings, @Pa
     
     ratings.setOrder(order);
     Ratings newRating = ratingsService.addRatings(ratings);
-    RatingsDTO ratingsDTO = convertToDto(ratings);
+    RatingsDTO ratingsDTO = ratingsService.convertToDto(ratings);
     return new ResponseEntity<>(ratingsDTO, HttpStatus.CREATED);
-
-
-   
-}
-
-
-private RatingsDTO convertToDto(Ratings ratings) {
-    RatingsDTO ratingsDTO = new RatingsDTO();
-    
-    ratingsDTO.setId(ratings.getId());
-    ratingsDTO.setDate(ratings.getDate());
-    ratingsDTO.setManufacturerRating(ratings.getManufacturerRating());
-    ratingsDTO.setProductRating(ratings.getProductRating());
-    ratingsDTO.setFile(ratings.getFile());
-    ratingsDTO.setTextRating(ratings.getTextRating());
-    ratingsDTO.setOrder_id(ratings.getOrder().getId());
-
-    return ratingsDTO;
+  
 }
 
 }

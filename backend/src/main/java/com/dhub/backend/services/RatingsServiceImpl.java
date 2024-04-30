@@ -1,5 +1,6 @@
 package com.dhub.backend.services;
 
+import com.dhub.backend.controllers.request.RatingsDTO;
 import com.dhub.backend.models.Ratings;
 import com.dhub.backend.repository.RatingsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,4 +74,19 @@ public class RatingsServiceImpl implements RatingsService {
         // Esto dependerá de cómo estén estructurados tus datos
         return null;
     }
+
+    @Override
+    public RatingsDTO convertToDto(Ratings ratings) {
+    RatingsDTO ratingsDTO = new RatingsDTO();
+    
+    ratingsDTO.setId(ratings.getId());
+    ratingsDTO.setDate(ratings.getDate());
+    ratingsDTO.setManufacturerRating(ratings.getManufacturerRating());
+    ratingsDTO.setProductRating(ratings.getProductRating());
+    ratingsDTO.setFile(ratings.getFile());
+    ratingsDTO.setTextRating(ratings.getTextRating());
+    ratingsDTO.setOrder_id(ratings.getOrder().getId());
+
+    return ratingsDTO;
+}
 }

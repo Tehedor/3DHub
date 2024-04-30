@@ -3,6 +3,7 @@ package com.dhub.backend.controllers;
 
 import com.dhub.backend.controllers.request.OrderDTO;
 import com.dhub.backend.controllers.request.PrinterDTO;
+import com.dhub.backend.controllers.request.RatingsDTO;
 import com.dhub.backend.controllers.request.UserDTO;
 import com.dhub.backend.controllers.response.MessageResponse;
 import com.dhub.backend.models.EStatus;
@@ -327,12 +328,13 @@ public class OrderController {
     }
 
     @GetMapping("/{printerId}/ratings")
-    public ResponseEntity<List<Integer>> getPrinterOrderRatings(@PathVariable Long printerId) {
+    public ResponseEntity<List<RatingsDTO>> getPrinterOrderRatings(@PathVariable Long printerId) {
         List<Order> allOrders = orderService.getAllOrders();
-        List<Integer> ratings = orderService.getRatingsByPrinterId(printerId, allOrders);
+        List<RatingsDTO> ratings = orderService.getRatingsByPrinterId(printerId, allOrders);
+        ;
         if (ratings.isEmpty()) {
-            return new ResponseEntity<List<Integer>>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<List<Integer>>(ratings, HttpStatus.OK);
+        return new ResponseEntity<>(ratings, HttpStatus.OK);
     }
 }
