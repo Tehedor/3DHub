@@ -48,7 +48,7 @@ function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser
         <Container ClassName="contenido1" id="contenido1">
           {/* Logo */}
           <Navbar.Brand href="/">
-            <Image className="logo" src={"http://localhost:3000/logo_pato.png"} style={{width: '120px', height: '120px'}}/>
+            <Image className="patologo" src={"http://localhost:3000/logo_pato.png"}/>
           </Navbar.Brand>
           <Nav className="me-auto">
             {/* Atención al cliente */}
