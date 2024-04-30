@@ -60,9 +60,10 @@ const añadirPedido = (file, cantidad, fechaFabricacion, fechaEntrega, especific
 // ##### ##### Post añadir reseña
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
 const añadirReseña = (productRating, manufacturerRating, textRating, file) => {
-  const fechaFabricacionFormated = new Date(fechaFabricacion).toISOString().split('T')[0];
-  const fechaEntregaFormated = new Date(fechaEntrega).toISOString().split('T')[0];
-  const stringsprinter = String(printer);
+  // const fechaFabricacionFormated = new Date(fechaFabricacion).toISOString().split('T')[0];
+  // const fechaEntregaFormated = new Date(fechaEntrega).toISOString().split('T')[0];
+  // const stringsprinter = String(printer);
+  const printer = "1";
   return app
   .post(`api/orders/create/${printer}`, {
     date: "07/02/2024",
