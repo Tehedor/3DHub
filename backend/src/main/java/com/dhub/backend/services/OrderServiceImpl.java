@@ -4,11 +4,14 @@ package com.dhub.backend.services;
 import com.dhub.backend.controllers.request.OrderDTO;
 import com.dhub.backend.models.EStatus;
 import com.dhub.backend.models.Order;
+import com.dhub.backend.models.Ratings;
+import com.dhub.backend.models.UserEntity;
 import com.dhub.backend.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -20,77 +23,37 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getAllOrders() {
-        return orderRepository.findAll();
+    public OrderDTO convertToDTO(Order order) {
+        OrderDTO orderDTO = new OrderDTO();
+        orderDTO.setId(order.getId());
+        orderDTO.setOrderDate(order.getOrderDate());
+        orderDTO.setFile(order.getFile());
+        orderDTO.setStatus(order.getStatus());
+        orderDTO.setQuantity(order.getQuantity());
+        orderDTO.setAddress(order.getAddress());
+        orderDTO.setSpecs(order.getSpecs());
+        orderDTO.setDeliveryDate(order.getDeliveryDate());
+        orderDTO.setManufacturerDate(order.getManufacturerDate());
+        orderDTO.setPrinter_id(order.getPrinter().getId());
+        orderDTO.setUser_id(order.getUserEntity().getId());
+        return orderDTO;
     }
 
     @Override
-    public Order getOrderById(Long id) {
-        return orderRepository.findById(id).orElse(null);
-    }
-
-    @Override
-    public Order createOrder(Order order) {
-        return orderRepository.save(order);
-    }
-
-    @Override
-    public Order updateOrder(Order order) {
-        return orderRepository.save(order);
-    }
-
-    @Override
-    public void deleteOrder(Long id) {
-        orderRepository.deleteById(id);
-    }
-
-    @Override
-    public List<OrderDTO> getOrdersByStatus(EStatus status, List<OrderDTO> orders) {
-        List<OrderDTO> ordersByStatus = new ArrayList<>();
-        for (OrderDTO order : orders) {
-            if (order.getStatus().equals(status)) {
-                ordersByStatus.add(order);
+    public List<Order> getOrdersByUser(UserEntity user) {
+        List<Order> ordersByUser = new ArrayList<>();
+        List<Order> allOrders = orderRepository.findAll();
+        for (Order order : allOrders) {
+            if (order.getUserEntity().getId().equals(user.getId())) {
+                ordersByUser.add(order);
             }
         }
-        return ordersByStatus;
+        return ordersByUser;
     }
 
     @Override
-    public List<OrderDTO> getOrdersExcludingStatus(EStatus status, List<OrderDTO> orders) {
-        List<OrderDTO> ordersExcludingStatus = new ArrayList<>();
-        for (OrderDTO order : orders) {
-            if (!order.getStatus().equals(status)) {
-                ordersExcludingStatus.add(order);
-            }
-        }
-        return ordersExcludingStatus;
-    }
-
-
-    @Override
-    public List<OrderDTO> getOrdersByUserId(Long userId, List<OrderDTO> orders) {
-        List<OrderDTO> ordersByUserId = new ArrayList<>();
-        for (OrderDTO order : orders) {
-            if (order.getUser_id()==userId) {
-                ordersByUserId.add(order);
-            }
-        }
-        return ordersByUserId;
-    }
-
-    @Override
-    public List<OrderDTO> getOrdersByPrinterId(Long printerId , List<OrderDTO> orders){
-        List<OrderDTO> ordersByPrinterId = new ArrayList<>();
-        for (OrderDTO order : orders) {
-            if (order.getPrinter_id()==printerId) {
-                ordersByPrinterId.add(order);
-            }
-        }
-        return ordersByPrinterId;
-    }
-
-    @Override
-    public List<Order> getOrdersByPrinterId2(List<Long> ids, List<Order> allOrders){
+    public List<Order> getOrdersByPrinterId(List<Long> ids){
+        List<Order> allOrders = orderRepository.findAll();
         List<Order> ordersByPrinterId = new ArrayList<>();
         for (Order order : allOrders) {
             if (ids.contains(order.getPrinter().getId())) {
@@ -100,5 +63,55 @@ public class OrderServiceImpl implements OrderService {
         return ordersByPrinterId;
     }
 
+    @Override
+    public List<Long> findOrderIdsByPrinterId(Long printerId) {
+        List<Long> ordersIds = new ArrayList<>();
+        List<Order> allOrders = orderRepository.findAll();
+        for (Order order : allOrders) {
+            if (order.getPrinter().getId().equals(printerId)) {
+                ordersIds.add(order.getId());
+            }
+        }
+        return ordersIds;
+    }
+
+    @Override
+    public List<Order> getOrdersByStatus(EStatus status, UserEntity user) {
+        List<Order> ordersByStatus = new ArrayList<>();
+        List<Order> allOrders = orderRepository.findAll();
+        for (Order order : allOrders) {
+            if (order.getUserEntity().getId().equals(user.getId()) && order.getStatus().equals(status)) {
+                ordersByStatus.add(order);
+            }
+        }
+        return ordersByStatus;
+    }
+
+    
+    @Override
+    public List<Order> getOrdersExcludingStatus(EStatus status, UserEntity user) {
+        List<Order> ordersExcludingStatus = new ArrayList<>();
+        List<Order> allOrders = orderRepository.findAll();
+        for (Order order : allOrders) {
+            if (!(order.getUserEntity().getId().equals(user.getId()) && order.getStatus().equals(status))) {
+                ordersExcludingStatus.add(order);
+            }
+        }
+        return ordersExcludingStatus;
+    }
+
+    @Override
+    public List<Ratings> getRatingsByPrinterId(Long printerId) {
+        List<Order> allOrders = orderRepository.findAll();
+        List<Ratings> ratings = new ArrayList<>();
+        for (Order order : allOrders) {
+            if (order.getPrinter().getId().equals(printerId)) {
+                for (Ratings rating : order.getRatings()) {
+                    ratings.add(rating);
+                }
+            }
+        }
+        return ratings;
+    }
 
 }

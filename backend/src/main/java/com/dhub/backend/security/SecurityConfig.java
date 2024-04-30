@@ -50,14 +50,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> {
                 auth.requestMatchers("/index**").permitAll();
-                auth.requestMatchers("/api/**").permitAll();
-                // auth.requestMatchers("/api/manumanufacturerPrinters/{userId}").permitAll();
-                auth.requestMatchers("/customerservice/sendMail**").permitAll();
-                auth.requestMatchers("/customerservice/sendMailFile**").permitAll();
-                //auth.requestMatchers("/manufacturer/printers**").permitAll();
-                //auth.requestMatchers("/manufacturer/printers/**").permitAll();
-                //auth.requestMatchers("/printers**").permitAll();
-                //auth.requestMatchers("/printers/**").permitAll();
+                auth.requestMatchers("/api/printers/").permitAll();
                 auth.anyRequest().authenticated();
             })
             .sessionManagement(session -> {
@@ -75,9 +68,7 @@ public class SecurityConfig {
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-            
     }
-
 
     @Bean
     AuthenticationManager authenticationManager(HttpSecurity httpSecurity, PasswordEncoder passwordEncoder) throws Exception{

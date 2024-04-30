@@ -1,6 +1,5 @@
 package com.dhub.backend.controllers.request;
 
-import jakarta.persistence.Lob;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -23,8 +22,7 @@ public class PrinterDTO {
     @NotBlank
     private String printerType;
     
-    @Lob
-    private byte[] printerPhoto;
+    private String printerPhoto;
 
     private Double servicePrice;
 
@@ -44,6 +42,6 @@ public class PrinterDTO {
     @NotBlank
     private String material;
 
-    private String userIdFabricante;
+    private Long idFabricante;
     
 }
