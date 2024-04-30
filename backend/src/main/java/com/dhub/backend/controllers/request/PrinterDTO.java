@@ -1,5 +1,7 @@
 package com.dhub.backend.controllers.request;
 
+import com.dhub.backend.models.Printer;
+
 import jakarta.persistence.Lob;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -21,7 +23,7 @@ public class PrinterDTO {
     private String printerLocation;
 
     @NotBlank
-    private String printerType;
+    private Printer.PrinterType printerType;
     
     @Lob
     private byte[] printerPhoto;

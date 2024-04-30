@@ -33,14 +33,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import com.dhub.backend.repository.PrinterRepository;
 import com.dhub.backend.repository.UserRepository;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.util.stream.Collectors;
-import java.util.ArrayList;
-import com.dhub.backend.controllers.request.UserDTO;
-import com.dhub.backend.controllers.request.OrderDTO;
-import com.dhub.backend.models.Order;
-
 @Data
 @RestController
 @RequestMapping("/api/printers")

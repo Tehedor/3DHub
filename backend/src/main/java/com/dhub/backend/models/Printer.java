@@ -43,8 +43,17 @@ public class Printer {
     @NotBlank
     private String printerLocation;
 
-    @NotBlank
-    private String printerType;
+    public enum PrinterType{
+        LASER,
+        INKJET,
+        THERMAL,
+        DOT_MATRIX,
+        SOLID_INK,
+        DYE_SUB,
+        LED,
+    }
+
+    private PrinterType printerType;
     
     @Lob
     private byte[] printerPhoto;

@@ -17,6 +17,7 @@ import com.dhub.backend.models.Printer;
 import com.dhub.backend.models.Ratings;
 import com.dhub.backend.models.Role;
 import com.dhub.backend.models.UserEntity;
+import com.dhub.backend.models.Printer.PrinterType;
 import com.dhub.backend.repository.OrderRepository;
 import com.dhub.backend.repository.RatingsRepository;
 import com.dhub.backend.repository.UserRepository;
@@ -85,7 +86,7 @@ public class BackendApplication {
 			Printer printer = Printer.builder()
 				.modelName("ender 3")
 				.printerLocation("creality")
-				.printerType("Room 1")
+				.printerType(PrinterType.LASER)
 				.printerPhoto(null)
 				.servicePrice(10.0)
 				.maxUnities(1)
@@ -100,7 +101,7 @@ public class BackendApplication {
 			Printer printer2 = Printer.builder()
 				.modelName("ender 3")
 				.printerLocation("creality")
-				.printerType("Room 1")
+				.printerType(PrinterType.INKJET)
 				.printerPhoto(null)
 				.servicePrice(10.0)
 				.maxUnities(1)
