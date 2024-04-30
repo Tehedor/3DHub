@@ -50,7 +50,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> {
                 auth.requestMatchers("/index**").permitAll();
-                auth.requestMatchers("/api/printers/").permitAll();
+                auth.requestMatchers("/api/printers").permitAll();
                 auth.anyRequest().authenticated();
             })
             .sessionManagement(session -> {

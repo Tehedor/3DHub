@@ -11,6 +11,8 @@ public interface OrderService {
 
     OrderDTO convertToDTO(Order order);
 
+    Order convertToEntity(OrderDTO orderDTO);
+
     List<Order> getOrdersByUser(UserEntity user);
 
     List<Order> getOrdersByPrinterId(List<Long> ids);

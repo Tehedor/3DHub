@@ -1,6 +1,6 @@
 package com.dhub.backend.controllers.request;
 
-import java.sql.Date;
+import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderDTO {
+public class    OrderDTO {
     private Long Id;
 
     private Date orderDate;

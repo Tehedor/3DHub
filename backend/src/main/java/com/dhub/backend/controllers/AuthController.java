@@ -89,7 +89,7 @@ public class AuthController {
     }
 
     //Subir foto de perfil y actualizar usuario
-    @PutMapping("/uploadPhoto/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Printer> uploadPhoto(@Valid @RequestPart("file") MultipartFile file,@PathVariable Long id) throws IOException {
         UserEntity user = userRepository.findById(id)
         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
@@ -106,10 +106,10 @@ public class AuthController {
 
     //Eliminar usuario
     @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/deleteUser")
-    public String deleteUser(@RequestParam String id){
-        userRepository.deleteById(Long.parseLong(id));
-        return "Se ha eliminado el usuario con id: ".concat(id);
+    @DeleteMapping("/{id}")
+    public String deleteUser(@PathVariable Long id){
+        userRepository.deleteById(id);
+        return "Se ha eliminado el usuario con id: "+ id;
     }
 
 

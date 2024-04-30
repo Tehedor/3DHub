@@ -2,6 +2,7 @@ package com.dhub.backend.services;
 
 import com.dhub.backend.controllers.request.RatingsDTO;
 import com.dhub.backend.models.Ratings;
+import com.dhub.backend.repository.OrderRepository;
 import com.dhub.backend.repository.RatingsRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +14,15 @@ import java.util.List;
 @Service
 public class RatingsServiceImpl implements RatingsService {
 
-
     @Autowired
-    private OrderService orderService;
-
+    private OrderRepository orderRepository;
+    
     @Autowired
     private RatingsRepository ratingsRepository;
-
+    
+    @Autowired
+    private OrderService orderService;
+    
     @Override
     public RatingsDTO convertToDTO(Ratings ratings) {
         RatingsDTO ratingsDTO = new RatingsDTO();
@@ -33,6 +36,21 @@ public class RatingsServiceImpl implements RatingsService {
         ratingsDTO.setOrder_id(ratings.getOrder().getId());
 
         return ratingsDTO;
+    }
+
+    @Override
+    public Ratings convertToEntity(RatingsDTO ratingsDTO) {
+        Ratings ratings = new Ratings();
+
+        // ratings.setId(ratingsDTO.getId());
+        ratings.setDate(ratingsDTO.getDate());
+        ratings.setManufacturerRating(ratingsDTO.getManufacturerRating());
+        ratings.setProductRating(ratingsDTO.getProductRating());
+        ratings.setFile(ratingsDTO.getFile());
+        ratings.setTextRating(ratingsDTO.getTextRating());
+        ratings.setOrder(orderRepository.findById(ratingsDTO.getOrder_id()).get());
+
+        return ratings;
     }
 
     @Override

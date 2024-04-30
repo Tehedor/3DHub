@@ -58,7 +58,7 @@ public class PrinterController {
     private RatingsService ratingsService;
 
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<PrinterDTO>> getPrinters() {
 
         List<Printer> printers = printerRepository.findAll();
@@ -72,8 +72,8 @@ public class PrinterController {
         return new ResponseEntity<>(printersDTO, HttpStatus.OK);
     }
 
-    //Obtener todas las impresoras ¿?¿?¿?
-    @GetMapping("/printers")
+    //Obtener todas las impresoras de fabricante ¿?¿?¿?
+    @GetMapping("/manufacturer")
     public ResponseEntity<List<PrinterDTO>> getManufacturerPrinters() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = (authentication != null) ? authentication.getName() : null;
@@ -124,7 +124,7 @@ public class PrinterController {
 
     //Crear impresora
     @PreAuthorize("hasRole('MANUFACTURER')")
-    @PostMapping("/createPrinter")
+    @PostMapping
     public ResponseEntity<Printer> createPrinter(@Valid @RequestBody Printer printer) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = (authentication != null) ? authentication.getName() : null;
@@ -143,7 +143,7 @@ public class PrinterController {
      * TODO: Add a check to see if the user is the owner of the printer
      */
     @PreAuthorize("hasRole('MANUFACTURER')")
-    @PutMapping("/uploadPhoto/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Printer> uploadPhoto(@Valid @RequestPart("file") MultipartFile file,@PathVariable Long id) throws IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = (authentication != null) ? authentication.getName() : null;

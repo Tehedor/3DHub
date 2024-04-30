@@ -9,6 +9,8 @@ public interface RatingsService {
         
     RatingsDTO convertToDTO(Ratings ratings);
 
+    Ratings convertToEntity(RatingsDTO ratingsDTO);
+
     List<RatingsDTO> getRatingsByPrinterIds(List<Long> printerIds);
 
     List<RatingsDTO> getRatingsByOrderIds(List<Long> orderIds);

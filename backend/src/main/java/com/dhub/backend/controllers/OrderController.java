@@ -67,12 +67,6 @@ public class OrderController {
     @Autowired
     private RatingsService ratingsService;
 
-    //Obtener todos los pedidos ¿?¿?¿?
-    @GetMapping
-    public List<Order> getAllOrders() {
-        return orderRepository.findAll();
-    }
-
     //Obtener pedido por id ¿?¿?¿?
     @GetMapping("/{id}")
     public ResponseEntity<OrderDTO> getOrderById(@PathVariable Long id) {
@@ -113,26 +107,18 @@ public class OrderController {
 
     /*
      * creates the order, saving the status as KART
+     * TODO: Create a method convertToEntity in OrderService    
      */
-    @PostMapping("/create/{idPrinter}")
-    public ResponseEntity<?> createOrder(@PathVariable Long idPrinter, @RequestBody OrderDTO orderDTO) {
+    @PostMapping
+    public ResponseEntity<?> createOrder(@RequestBody OrderDTO orderDTO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = (authentication != null) ? authentication.getName() : null;
         UserEntity user = userRepository.findByUsername(username)
         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
-        Printer printer = printerRepository.findById(idPrinter)
+        Printer printer = printerRepository.findById(orderDTO.getPrinter_id())
         .orElseThrow(() -> new RuntimeException("Error: Impresora no encontrada."));
         EStatus status = EStatus.KART;
-        Order order = Order.builder()
-            .orderDate(new Date(System.currentTimeMillis()))
-            .specs(orderDTO.getSpecs())
-            .manufacturerDate(orderDTO.getManufacturerDate())
-            .deliveryDate(orderDTO.getDeliveryDate())
-            .quantity(orderDTO.getQuantity())
-            .status(status)
-            .userEntity(user)
-            .printer(printer)
-            .build();
+        Order order = orderService.convertToEntity(orderDTO);
 
         orderRepository.save(order);
         return ResponseEntity.ok(new MessageResponse("Añadido al carrito"));
@@ -143,7 +129,7 @@ public class OrderController {
      * Uploads the 3D file to the order and saves the path in the database
      * TODO: Add a check to see if the user is the owner of the order
      */
-    @PutMapping("/uploadfile/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Printer> uploadFile(@Valid @RequestPart("file") MultipartFile file,@PathVariable Long id) throws IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = (authentication != null) ? authentication.getName() : null;
