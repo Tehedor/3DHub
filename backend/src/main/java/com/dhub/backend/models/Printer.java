@@ -6,6 +6,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,17 +44,7 @@ public class Printer {
     @NotBlank
     private String printerLocation;
 
-    public enum PrinterType{
-        LASER,
-        INKJET,
-        THERMAL,
-        DOT_MATRIX,
-        SOLID_INK,
-        DYE_SUB,
-        LED,
-    }
-
-    private PrinterType printerType;
+    private EPrinterType printerType;
     
     @Lob
     private byte[] printerPhoto;
@@ -71,10 +62,10 @@ public class Printer {
 
     private Double printerPrecision;
 
-    private String color;
+    private EColor color;
 
-    @NotBlank
-    private String material;
+    @NotNull
+    private EMaterial material;
 
     @ManyToOne
     @JoinColumn(name = "users_id")

@@ -1,14 +1,15 @@
 package com.dhub.backend.controllers.request;
 
-import com.dhub.backend.models.Printer;
-
 import jakarta.persistence.Lob;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import com.dhub.backend.models.EColor;
+import com.dhub.backend.models.EMaterial;
+import com.dhub.backend.models.EPrinterType;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,15 +17,14 @@ public class PrinterDTO {
     private Long Id;
 
     @NotBlank
-    @Size(max = 24)
     private String modelName;
 
     @NotBlank
     private String printerLocation;
-
-    @NotBlank
-    private Printer.PrinterType printerType;
     
+    @NotBlank
+    private EPrinterType printerType;
+
     @Lob
     private byte[] printerPhoto;
 
@@ -41,10 +41,10 @@ public class PrinterDTO {
 
     private Double printerPrecision;
 
-    private String color;
+    private EColor color;
 
-    @NotBlank
-    private String material;
+    @NotNull
+    private EMaterial material;
 
     private String userIdFabricante;
     

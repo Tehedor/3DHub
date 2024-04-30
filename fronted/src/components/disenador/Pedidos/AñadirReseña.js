@@ -93,7 +93,7 @@ function AñadirReseña  (props) {
             setSuccessful(false);
           }
         );
-        console.log("file: ", file);
+        // console.log("file: ", file);
       }
   };
 
