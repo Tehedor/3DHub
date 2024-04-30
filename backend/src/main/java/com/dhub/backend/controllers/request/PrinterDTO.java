@@ -13,6 +13,7 @@ import com.dhub.backend.models.EPrinterType;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PrinterDTO {
+    
     private Long Id;
 
     @NotBlank

@@ -7,6 +7,7 @@ public enum EStatus {
     PAY,
     REVISION,
     CREATING,
-    SEND
+    SEND,
+    PAID
 
 }
