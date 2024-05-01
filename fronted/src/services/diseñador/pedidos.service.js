@@ -4,7 +4,7 @@ const user = JSON.parse(localStorage.getItem("user"));
 const token = user ? user.token : "";
 
 const app = axios.create({
-  baseURL: "http://localhost:8080/",
+  baseURL: "http://localhost:8080/api/",
   headers: {
     "Content-type": "application/json",
     "Authorization": `Bearer ${token}`,
@@ -16,7 +16,7 @@ const app = axios.create({
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
 const revisado = (id) => {
   return app
-  .post(`api/orders/${id}/status`, {
+  .put(`orders/${id}/status`, {
     "name": "PAY"
   })
 }
@@ -25,18 +25,12 @@ const revisado = (id) => {
 // ##### ##### Post cambiar estado a DELIVERED
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
 const confirmarEntrga = (id) => {
+  console.log(id);
   return app
-  .post(`api/orders/${id}/status`, {
+  .put(`orders/${id}/status`, {
+  // .post(`orders/${id}/status`, {
     "name": "DELIVERED"
   })
-}
-
-// ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
-// ##### ##### Get ordenes
-// ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
-const getPedidos = () => {
-  return app
-  .get(`api/orders`)
 }
 
 
@@ -48,39 +42,54 @@ const añadirPedido = (file, cantidad, fechaFabricacion, fechaEntrega, especific
   const fechaEntregaFormated = new Date(fechaEntrega).toISOString().split('T')[0];
   const stringsprinter = String(printer);
   return app
-  .post(`api/orders/create/${printer}`, {
-    manufacturerdate: fechaFabricacionFormated,
-    pickupdate: fechaEntregaFormated,
-    number : cantidad,
-    specs : especificaciones,
+  .post(`orders`, {
+    manufacturerDate: fechaFabricacionFormated,
+    deliveryDate:fechaEntregaFormated,
+    quantity: cantidad,
+    specs: especificaciones,
+    printer_id: printer,
+    status:"KART",
+    address:"Calle de la Princesa, 1, 28008 Madrid, España"
+
   })
 }
 
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
 // ##### ##### Post añadir reseña
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
-const añadirReseña = (productRating, manufacturerRating, textRating, file) => {
+const añadirReseña = (productRating, manufacturerRating, textRating, file, order_id) => {
   // const fechaFabricacionFormated = new Date(fechaFabricacion).toISOString().split('T')[0];
   // const fechaEntregaFormated = new Date(fechaEntrega).toISOString().split('T')[0];
   // const stringsprinter = String(printer);
-  const printer = "1";
+//   const printer = "1";
+//   return app
+//   .post(`orders/create/${printer}`, {
+//     date: "07/02/2024",
+//     productRating: productRating,
+//     manufacturerRating: manufacturerRating,
+//     textRating: textRating,
+//     file: null
+//   })
+// }
+  const date = new Date().toISOString().split('T')[0];
   return app
-  .post(`api/orders/create/${printer}`, {
-    date: "07/02/2024",
+  .post(`ratings`, {  
+    date: date,
     productRating: productRating,
     manufacturerRating: manufacturerRating,
     textRating: textRating,
-    file: null
+    file: null,
+    order_id:order_id
   })
 }
 
 
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
-// ##### ##### Get Recivir pedidos carrito
+// ##### ##### Get Recivir pedidos diseñador
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
-const getPedidosCarrito = () => {
+const getPedidos = () => {
   return app
-  .get("api/orders/designer", {
+  .get("orders/designer", {
   })
   .then((response) => {
     // if (response) {
@@ -90,6 +99,17 @@ const getPedidosCarrito = () => {
       return response;
     });
   };
+
+// ##### ##### ##### ##### ##### ##### ##### ##### #####
+// ##### ##### delete Pedido
+// ##### ##### ##### ##### ##### ##### ##### ##### #####
+const deletePedido = (id) => {
+  return app
+  .delete(`api/orders/${id}`)
+}
+
+
+
   
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
 // ##### ##### Resuemn
@@ -98,8 +118,9 @@ const PedidosService = {
   revisado,
   confirmarEntrga,
   añadirPedido,
-  getPedidosCarrito,
+  getPedidos,
   añadirReseña,
+  deletePedido,
 }
 
 export default PedidosService;

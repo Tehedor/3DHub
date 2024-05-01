@@ -4,7 +4,7 @@ const user = JSON.parse(localStorage.getItem("user"));
 const token = user ? user.token : "";
 
 const app = axios.create({
-  baseURL: "http://localhost:8080/",
+  baseURL: "http://localhost:8080/api/",
   headers: {
     "Content-type": "application/json",
     "Authorization": `Bearer ${token}`,
@@ -16,7 +16,7 @@ const app = axios.create({
 // ##### ##### ##### ##### ##### ##### ##### ##### #####
 const noAceptadoRevision = (id) => {
   return app
-  .post(`api/orders/${id}/status`, {
+  .put(`orders/${id}/status`, {
     "name": "REVISION"
   })
 }
@@ -26,7 +26,7 @@ const noAceptadoRevision = (id) => {
 // ##### ##### ##### ##### ##### ##### ##### ##### #####
 const cancelarPedido = (id) => { 
   return app
-  .post(`api/orders/${id}/status`, {
+  .put(`orders/${id}/status`, {
     "name": "CANCELLED"
   })
   
@@ -37,7 +37,7 @@ const cancelarPedido = (id) => {
 // ##### ##### ##### ##### ##### ##### ##### ##### #####
 const aceptadoCreando = (id) => { 
   return app
-  .post(`api/orders/${id}/status`, {
+  .put(`orders/${id}/status`, {
     "name": "CREATING"
   })
   
@@ -48,7 +48,7 @@ const aceptadoCreando = (id) => {
 // ##### ##### ##### ##### ##### ##### ##### ##### #####
 const creadoEnviado = (id) => { 
   return app
-  .post(`api/orders/${id}/status`, {
+  .put(`orders/${id}/status`, {
     "name": "SEND"
   }) 
 }
@@ -58,7 +58,7 @@ const creadoEnviado = (id) => {
 // ##### ##### ##### ##### ##### ##### ##### ##### #####
 const getPedidosFabricante = () => {
   return app
-  .get("api/orders/manufacturerOrders", {
+  .get("orders/manufacturerOrders", {
   })
   .then((response) => {
     // if (response.data) {
@@ -76,7 +76,7 @@ const getPedidosFabricante = () => {
 // ##### ##### ##### ##### ##### ##### ##### ##### #####
 const deletePedido = (id) => {
   return app
-  .delete(`api/orders/${id}`)
+  .delete(`orders/${id}`)
 }
 
 // ##### ##### ##### ##### ##### ##### ##### ##### #####

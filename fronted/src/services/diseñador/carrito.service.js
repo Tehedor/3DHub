@@ -4,7 +4,7 @@ const user = JSON.parse(localStorage.getItem("user"));
 const token = user ? user.token : "";
 
 const app = axios.create({
-  baseURL: "http://localhost:8080/",
+  baseURL: "http://localhost:8080/api/",
   headers: {
     "Content-type": "application/json",
     "Authorization": `Bearer ${token}`,
@@ -17,7 +17,7 @@ const app = axios.create({
 const getPedidosCarrito = () => {
   return app
   // .get("api/orders/kart", {
-    .get("api/orders/designer", {
+    .get("orders/designer", {
     })
     .then((response) => {
       // if (response.data) {
@@ -33,7 +33,7 @@ const getPedidosCarrito = () => {
 // ##### ##### ##### ##### ##### ##### ##### ##### #####
 const order = (id) => {
   return app
-  .post(`api/orders/${id}/status`, {
+  .put(`orders/${id}/status`, {
     "name": "PAY"
   })
 }
@@ -43,9 +43,7 @@ const order = (id) => {
 // ##### ##### ##### ##### ##### ##### ##### ##### #####
 const deletePedido = (id) => {
   return app
-  .delete(`api/orders/${id}`)
-
-  console.log(id);
+  .delete(`orders/${id}`)
 }
 
 

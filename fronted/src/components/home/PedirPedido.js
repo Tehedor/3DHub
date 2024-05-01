@@ -16,7 +16,9 @@ function PedirPedido  (props) {
       
   // Impresora del pedido
   const numberPrinter=Number(props.printerId);
-  const printer = props.printers[numberPrinter]; 
+  console.log("numberPrinter: ", numberPrinter);
+  const printer = props.printers[numberPrinter];
+  console.log("printer: ", printer); 
 
   //////////////////////////////////////////////////////7//////////////////////////////////////////////////////7
   const roll = props.roll;

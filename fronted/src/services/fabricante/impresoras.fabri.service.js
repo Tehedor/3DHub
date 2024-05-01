@@ -4,7 +4,7 @@ const user = JSON.parse(localStorage.getItem("user"));
 const token = user ? user.token : "";
 
 const app = axios.create({
-  baseURL: "http://localhost:8080/",
+  baseURL: "http://localhost:8080/api/",
   headers: {
     "Content-type": "application/json",
     "Authorization": `Bearer ${token}`,
@@ -16,9 +16,9 @@ const app = axios.create({
 // ##### ##### ##### ##### ##### ##### ##### ##### #####
 const createPrinter = (modelName, printerLocation, printerType, printerPhoto, servicePrice, maxUnities, manufacturationSpeed, material, maxWidth,maxHeight, printerPrecision,color) => {
   return app.
-  post("api/printers/createPrinter", {
-    modelName, 
-    printerLocation, 
+  post("printers", {
+      modelName, 
+      printerLocation, 
       printerType, 
       printerPhoto, 
       servicePrice, 
@@ -37,7 +37,7 @@ const createPrinter = (modelName, printerLocation, printerType, printerPhoto, se
 // ##### ##### ##### ##### ##### ##### ##### ##### #####
 const getImpresorasFabricante = () => {
   return app.
-  get("api/printers/printers")
+  get("printers/printers")
   .then((response) => {
     
     // if (response.data) {
