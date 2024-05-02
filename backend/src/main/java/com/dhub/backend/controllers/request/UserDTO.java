@@ -46,5 +46,7 @@ public class UserDTO {
     private String address;
 
     private String factAddress;
+
+    private String iban;
     
 }

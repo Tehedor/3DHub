@@ -71,6 +71,8 @@ public class Order {
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date deliveryDate;
 
+	private Double deliveryPrice;
+
 	@ManyToOne
     @JoinColumn(name = "users_id")
     private UserEntity userEntity;

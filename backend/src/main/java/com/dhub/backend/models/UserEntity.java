@@ -71,6 +71,8 @@ public class UserEntity {
 
     private String factAddress;
 
+    private String iban;
+
     @ManyToMany(fetch = FetchType.EAGER, targetEntity = Role.class, cascade = CascadeType.PERSIST)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),

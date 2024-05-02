@@ -60,7 +60,8 @@ public class AuthController {
         @RequestParam("lat") Double lat,
         @RequestParam("lon") Double lon,
         @RequestParam("address") String address,
-        @RequestParam("factAddress") String factAddress
+        @RequestParam("factAddress") String factAddress,
+        @RequestParam("iban") String iban
     ) {
 
         if (userRepository.existsByDni(dni)) {
@@ -92,6 +93,7 @@ public class AuthController {
             .address(address)
             .factAddress(factAddress)
             .roles(setRoles)
+            .iban(iban)
             .build();
 
         userRepository.save(userEntity);

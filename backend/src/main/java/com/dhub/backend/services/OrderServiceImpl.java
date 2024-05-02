@@ -51,6 +51,7 @@ public class OrderServiceImpl implements OrderService {
         orderDTO.setSpecs(order.getSpecs());
         orderDTO.setDeliveryDate(order.getDeliveryDate());
         orderDTO.setManufacturerDate(order.getManufacturerDate());
+        orderDTO.setDeliveryPrice(order.getDeliveryPrice());
         orderDTO.setPrinter_id(order.getPrinter().getId());
         orderDTO.setUser_id(order.getUserEntity().getId());
         return orderDTO;
@@ -69,6 +70,7 @@ public class OrderServiceImpl implements OrderService {
         order.setSpecs(orderDTO.getSpecs());
         order.setDeliveryDate(orderDTO.getDeliveryDate());
         order.setManufacturerDate(orderDTO.getManufacturerDate());
+        order.setDeliveryPrice(orderDTO.getDeliveryPrice());
            return order;
     }
 
@@ -166,6 +168,10 @@ public class OrderServiceImpl implements OrderService {
         } catch (IOException e) {
             // Handle the exception here
         }
+
+        Double deliveryPrice;
+
+
         order.setFileFormat(getFileExtension(file.getOriginalFilename()));
         order.setOrderDate(new Date(System.currentTimeMillis()));
         order.setManufacturerDate(manufacturerDate);
