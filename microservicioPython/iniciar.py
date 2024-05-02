@@ -3,14 +3,14 @@ import subprocess
 
 # Comprobar si Python está instalado
 try:
-    subprocess.check_call(['python', '--version'])
+    subprocess.check_call(['python3', '--version'])
 except subprocess.CalledProcessError:
     print("Python no está instalado. Por favor, instálalo primero.")
     exit(1)
 
 # Comprobar si pip está instalado
 try:
-    subprocess.check_call(['pip', '--version'])
+    subprocess.check_call(['pip3', '--version'])
 except subprocess.CalledProcessError:
     print("pip no está instalado. Intentando instalarlo...")
     os.system('sudo apt install python3-pip')
@@ -31,7 +31,7 @@ except subprocess.CalledProcessError:
 
 # Comprobar si flask está instalado
 try:
-    subprocess.check_call(['pip', 'show', 'flask'])
+    subprocess.check_call(['pip3', 'show', 'flask'])
 except subprocess.CalledProcessError:
     print("flask no está instalado. Intentando instalarlo...")
-    os.system('pip install flask')
+    os.system('pip3 install flask')
