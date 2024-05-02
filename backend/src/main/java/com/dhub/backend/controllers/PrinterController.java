@@ -59,7 +59,7 @@ public class PrinterController {
 
 
     @GetMapping
-    public ResponseEntity<List<PrinterDTO>> getPrinters() {
+    public ResponseEntity<Map<String, Object>> getPrinters() {
 
         List<Printer> printers = printerRepository.findAll();
         if(printers.isEmpty()) {
@@ -69,7 +69,16 @@ public class PrinterController {
         for (Printer printer : printers) {
             printersDTO.add(printerService.convertToDTO(printer));
         }
-        return new ResponseEntity<>(printersDTO, HttpStatus.OK);
+        List<Long> printerIds = printers.stream()
+        .map(Printer::getId)
+        .collect(Collectors.toList());
+
+        List<RatingsDTO> ratingsDTO = ratingsService.getRatingsByPrinterIds(printerIds);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("printers", printersDTO);
+        response.put("ratings", ratingsDTO);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     //Obtener todas las impresoras de fabricante ¿?¿?¿?
