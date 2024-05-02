@@ -1,9 +1,10 @@
 package com.dhub.backend.models;
 
-import java.sql.Date;
+import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -55,6 +56,7 @@ public class Ratings {
 	private String fileFormat;
 
 	@Lob
+	@Column(columnDefinition="MEDIUMBLOB")
 	private byte[] file;
 
 	@ManyToOne(fetch = FetchType.LAZY)

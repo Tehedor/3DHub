@@ -1,6 +1,7 @@
 package com.dhub.backend.controllers;
 
 import java.io.IOException;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -53,12 +55,14 @@ public class RatingsController {
      * Create a review for a order
      */    
     @PostMapping
-    public ResponseEntity<HttpStatus> createReview(@RequestBody RatingsDTO ratingsDTO) {
+    public ResponseEntity<HttpStatus> createReview(@RequestParam("file") MultipartFile file,
+    @RequestParam("textRating") String textRating, @RequestParam("productRating") int productRating,
+    @RequestParam("manufacturerRating") int manufacturerRating, @RequestParam("order_id") Long order_id) throws IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = (authentication != null) ? authentication.getName() : null;
         UserEntity user = userRepository.findByUsername(username)
         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
-        Long orderId = ratingsDTO.getOrder_id();
+        Long orderId = order_id;
         Order order = orderRepository.findById(orderId)
         .orElseThrow(() -> new RuntimeException("Error: Pedido no encontrado."));
         // Comprobar que existe el pedido
@@ -68,7 +72,7 @@ public class RatingsController {
         if (user.getId() != order.getUserEntity().getId()) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        Ratings ratings = ratingsService.convertToEntity(ratingsDTO);
+        Ratings ratings = ratingsService.createRatingWithFile(file, textRating, productRating, manufacturerRating, order.getId());
         ratingsRepository.save(ratings);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

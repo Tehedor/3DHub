@@ -121,18 +121,24 @@ public class OrderController {
      * TODO: Create a method convertToEntity in OrderService    
      */
     @PostMapping
-    public ResponseEntity<?> createOrder(@RequestBody OrderDTO orderDTO) {
+    public ResponseEntity<?> createOrder(@RequestParam("file") MultipartFile file,
+                                        @RequestParam("manufacturerDate") Date manufacturerDate,
+                                        @RequestParam("deliveryDate") Date deliveryDate,
+                                        @RequestParam("quantity") Integer quantity,
+                                        @RequestParam("specs") String specs,
+                                        @RequestParam("printer_id") Long printer_id,
+                                        @RequestParam("address") String address
+                                        ) throws IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = (authentication != null) ? authentication.getName() : null;
         UserEntity user = userRepository.findByUsername(username)
         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
-        Printer printer = printerRepository.findById(orderDTO.getPrinter_id())
+        Printer printer = printerRepository.findById(printer_id)
         .orElseThrow(() -> new RuntimeException("Error: Impresora no encontrada."));
         EStatus status = EStatus.KART;
-        Order order = orderService.convertToEntity(orderDTO);
+        Order order = orderService.createOrderWithFile(file, status, manufacturerDate, deliveryDate, address, specs, quantity, user.getId(), printer.getId());
         order.setUserEntity(user);
         order.setPrinter(printer);
-        order.setStatus(status);
         orderRepository.save(order);
         return ResponseEntity.ok(new MessageResponse("Añadido al carrito"));
     }

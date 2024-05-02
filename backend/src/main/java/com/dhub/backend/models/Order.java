@@ -49,6 +49,7 @@ public class Order {
 	private String fileFormat;
 
 	@Lob
+	@Column(columnDefinition="LONGBLOB")
 	private byte[] file;
 
 	@Column(name = "status")

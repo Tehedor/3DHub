@@ -15,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,6 +27,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dhub.backend.models.UserEntity;
+import com.dhub.backend.models.EColor;
+import com.dhub.backend.models.EMaterial;
+import com.dhub.backend.models.EPrinterType;
 import com.dhub.backend.models.Printer;
 import com.dhub.backend.repository.PrinterRepository;
 import com.dhub.backend.repository.UserRepository;
@@ -133,12 +137,23 @@ public class PrinterController {
     //Crear impresora
     @PreAuthorize("hasRole('MANUFACTURER')")
     @PostMapping
-    public ResponseEntity<Printer> createPrinter(@Valid @RequestBody Printer printer) {
+    public ResponseEntity<Printer> createPrinter(@RequestParam("file") MultipartFile file,
+                                                 @RequestParam("modelName") String modelName,
+                                                 @RequestParam("printerLocation") String printerLocation,
+                                                 @RequestParam("printerType") EPrinterType printerType,
+                                                 @RequestParam("servicePrice") Double servicePrice,
+                                                 @RequestParam("maxUnities") Integer maxUnities,
+                                                 @RequestParam("manufacturationSpeed") String manufacturationSpeed,
+                                                 @RequestParam("maxWidth") Double maxWidth,
+                                                 @RequestParam("maxHeight") Double maxHeight,
+                                                 @RequestParam("printerPrecision") Double printerPrecision,
+                                                 @RequestParam("color") EColor color,
+                                                 @RequestParam("material") EMaterial material) throws IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = (authentication != null) ? authentication.getName() : null;
         UserEntity user = userRepository.findByUsername(username)
         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
-        Printer createdPrinter = printerRepository.save(printer);
+        Printer createdPrinter = printerService.createPrinterWithFile(file, modelName, printerLocation, printerType, servicePrice, maxUnities, manufacturationSpeed, maxWidth, maxHeight, printerPrecision, color, material, user.getId());
         createdPrinter.setUserEntity(user);
         user.getPrinters().add(createdPrinter);
         userRepository.save(user);
@@ -152,7 +167,7 @@ public class PrinterController {
      */
     @PreAuthorize("hasRole('MANUFACTURER')")
     @PutMapping("/{id}")
-    public ResponseEntity<Printer> uploadPhoto(@PathVariable Long id) throws IOException {
+    public ResponseEntity<Printer> editPrinter(@PathVariable Long id) throws IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = (authentication != null) ? authentication.getName() : null;
         UserEntity user = userRepository.findByUsername(username)

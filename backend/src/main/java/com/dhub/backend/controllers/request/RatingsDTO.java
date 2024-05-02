@@ -1,6 +1,6 @@
 package com.dhub.backend.controllers.request;
 
-import java.sql.Date;
+import java.util.Date;
 
 import jakarta.persistence.Lob;
 import jakarta.validation.constraints.NotBlank;

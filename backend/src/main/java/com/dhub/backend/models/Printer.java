@@ -3,6 +3,7 @@ package com.dhub.backend.models;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
@@ -48,6 +49,7 @@ public class Printer {
     private String fileFormat;
 
     @Lob
+    @Column(columnDefinition="MEDIUMBLOB")
     private byte[] printerPhoto;
 
     private Double servicePrice;
@@ -72,12 +74,6 @@ public class Printer {
     @JoinColumn(name = "users_id")
     private UserEntity userEntity;
 
-    // @OneToMany(cascade = CascadeType.ALL, mappedBy = "printer")
-    // private List<Ratings> ratings;
-
-    // @ManyToOne
-    // @JoinColumn(name = "order_id")
-    // private Order order;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "printer")
     private List<Order> orders;
 

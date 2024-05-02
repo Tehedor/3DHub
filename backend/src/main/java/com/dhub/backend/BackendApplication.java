@@ -247,8 +247,8 @@ public class BackendApplication {
 				.order(order6)
 				.build();
 
-			
-			
+				
+				
 			userRepository.save(designer);
 			userRepository.save(manufacturer);
 			printerRepository.save(printer);

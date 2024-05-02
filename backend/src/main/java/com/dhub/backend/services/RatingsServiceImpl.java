@@ -7,8 +7,11 @@ import com.dhub.backend.repository.RatingsRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -86,5 +89,28 @@ public class RatingsServiceImpl implements RatingsService {
         }
 
         return ratingsDTOs;
+    }
+
+    public static String getFileExtension(String fileName) {
+        if (fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0) {
+            return fileName.substring(fileName.lastIndexOf(".") + 1);
+        } else {
+            return ""; // No hay extensión
+        }
+    }
+
+    @Override
+    public Ratings createRatingWithFile(MultipartFile file, String textRating, int productRating, int manufacturerRating, Long order_id) throws IOException {
+        Ratings rating = new Ratings();
+        rating.setDate(new Date(System.currentTimeMillis()));
+        rating.setProductRating(productRating);
+        rating.setManufacturerRating(manufacturerRating);
+        rating.setTextRating(textRating);
+        rating.setFile(file.getBytes());
+        rating.setFileFormat(getFileExtension(file.getOriginalFilename()));
+        rating.setOrder(orderRepository.findById(order_id).orElse(null));
+    
+        return rating;
+
     }
 }
