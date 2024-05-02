@@ -131,7 +131,9 @@ public class OrderController {
         .orElseThrow(() -> new RuntimeException("Error: Impresora no encontrada."));
         EStatus status = EStatus.KART;
         Order order = orderService.convertToEntity(orderDTO);
-
+        order.setUserEntity(user);
+        order.setPrinter(printer);
+        order.setStatus(status);
         orderRepository.save(order);
         return ResponseEntity.ok(new MessageResponse("Añadido al carrito"));
     }
@@ -186,7 +188,7 @@ public class OrderController {
         } else {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Estado inválido."));
         }
-        return ResponseEntity.ok(new MessageResponse("Petición de"+ user.getUsername() +" del pedido " 
+        return ResponseEntity.ok(new MessageResponse("Petición de "+ user.getUsername() +" del pedido " 
         + idOrder.toString() + " guardada como " + newStatus.toString()));
     }
 
@@ -424,13 +426,6 @@ public class OrderController {
             ordersDTOByPrinter.add(orderDTO);
         }
 
-
-        List<UserDTO> users = new ArrayList<>();
-        for (OrderDTO order : ordersDTOByPrinter) {
-            UserEntity userEntity = userRepository.findById(order.getUser_id())
-                .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
-            users.add(userEntityService.convertToDTO(userEntity));
-        }
         List<Long> orderIds = ordersDTOByPrinter.stream()
             .map(OrderDTO::getId)
             .collect(Collectors.toList());

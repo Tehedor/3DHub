@@ -34,6 +34,7 @@ public class RatingsServiceImpl implements RatingsService {
         ratingsDTO.setFile(ratings.getFile());
         ratingsDTO.setTextRating(ratings.getTextRating());
         ratingsDTO.setOrder_id(ratings.getOrder().getId());
+        ratingsDTO.setPrinter_id(ratings.getOrder().getPrinter().getId());
 
         return ratingsDTO;
     }
