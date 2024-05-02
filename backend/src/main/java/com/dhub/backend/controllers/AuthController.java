@@ -9,7 +9,6 @@ import com.dhub.backend.controllers.response.MessageResponse;
 import com.dhub.backend.models.*;
 import com.dhub.backend.repository.UserRepository;
 import com.dhub.backend.security.jwt.JwtUtils;
-import com.dhub.backend.util.FileUploadUtil;
 
 import jakarta.validation.Valid;
 
@@ -90,17 +89,11 @@ public class AuthController {
 
     //Subir foto de perfil y actualizar usuario
     @PutMapping("/{id}")
-    public ResponseEntity<Printer> uploadPhoto(@Valid @RequestPart("file") MultipartFile file,@PathVariable Long id) throws IOException {
+    public ResponseEntity<Printer> uploadPhoto(@PathVariable Long id) throws IOException {
         UserEntity user = userRepository.findById(id)
         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
 
-        if (file != null) {
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        String uploadDir = "profilePhotos\\";
-        FileUploadUtil.saveFile(uploadDir, fileName, file);
-        user.setProfileImage(uploadDir + fileName);
         userRepository.save(user);
-    }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

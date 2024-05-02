@@ -33,7 +33,6 @@ import com.dhub.backend.controllers.request.PrinterDTO;
 import com.dhub.backend.controllers.request.RatingsDTO;
 import com.dhub.backend.services.PrinterServiceImpl;
 import com.dhub.backend.services.RatingsService;
-import com.dhub.backend.util.FileUploadUtil;
 
 import lombok.Data;
 
@@ -153,24 +152,17 @@ public class PrinterController {
      */
     @PreAuthorize("hasRole('MANUFACTURER')")
     @PutMapping("/{id}")
-    public ResponseEntity<Printer> uploadPhoto(@Valid @RequestPart("file") MultipartFile file,@PathVariable Long id) throws IOException {
+    public ResponseEntity<Printer> uploadPhoto(@PathVariable Long id) throws IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = (authentication != null) ? authentication.getName() : null;
         UserEntity user = userRepository.findByUsername(username)
         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
         Printer printer = printerRepository.findById(id).orElseThrow(() -> new RuntimeException("Error: Impresora no encontrada."));
 
-        // if (user.getId() != printer.getUserEntity().getId()) {
-        //     return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        // }
-
-        if (file != null) {
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        String uploadDir = "printerPhotos\\";
-        FileUploadUtil.saveFile(uploadDir, fileName, file);
-        printer.setPrinterPhoto((uploadDir + fileName));
+        if (user.getId() != printer.getUserEntity().getId()) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
         printerRepository.save(printer);
-    }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

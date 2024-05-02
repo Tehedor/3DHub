@@ -4,6 +4,7 @@ import java.util.Set;
 
 import com.dhub.backend.models.Role;
 
+import jakarta.persistence.Lob;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -33,7 +34,10 @@ public class UserDTO {
     private String password;
     private Set<Role> roles;
     
-    private String profileImage;
+    private String fileFormat;
+
+    @Lob
+    private byte[] profileImage;
 
     private Double lat;
 

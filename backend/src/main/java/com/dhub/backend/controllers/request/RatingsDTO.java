@@ -12,15 +12,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RatingsDTO {
     
-
     private long Id;
     
     private Date date;
 
     private Integer manufacturerRating;
+
     private  Integer productRating;
 
-    private String file;
+    private String fileFormat;
+
+    @Lob
+    private byte[] file;
 
     @NotBlank
     private String textRating;

@@ -17,6 +17,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Min;
@@ -45,7 +46,10 @@ public class Order {
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date orderDate;
 
-	private String file;
+	private String fileFormat;
+
+	@Lob
+	private byte[] file;
 
 	@Column(name = "status")
 	@Enumerated(EnumType.STRING)

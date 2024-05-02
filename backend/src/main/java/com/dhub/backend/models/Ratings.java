@@ -52,7 +52,10 @@ public class Ratings {
 	@Size(max = 50)
 	private String textRating;
 
-	private String file;
+	private String fileFormat;
+
+	@Lob
+	private byte[] file;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "order_id")

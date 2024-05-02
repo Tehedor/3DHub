@@ -15,6 +15,7 @@ import jakarta.validation.constraints.Size;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 
@@ -55,7 +56,10 @@ public class UserEntity {
     @NotBlank
     private String password;
 
-    private String profileImage;
+    private String fileFormat;
+
+    @Lob
+    private byte[] profileImage;
 
     private String address;
 

@@ -18,7 +18,6 @@ import com.dhub.backend.services.OrderService;
 import com.dhub.backend.services.PrinterService;
 import com.dhub.backend.services.RatingsService;
 import com.dhub.backend.services.UserEntityService;
-import com.dhub.backend.util.FileUploadUtil;
 
 import jakarta.validation.Valid;
 
@@ -144,24 +143,18 @@ public class OrderController {
      * TODO: Add a check to see if the user is the owner of the order
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Printer> uploadFile(@Valid @RequestPart("file") MultipartFile file,@PathVariable Long id) throws IOException {
+    public ResponseEntity<Printer> uploadFile(@PathVariable Long id) throws IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = (authentication != null) ? authentication.getName() : null;
         UserEntity user = userRepository.findByUsername(username)
         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
         Order order = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Error: Pedido no encontrada."));
 
-        // if (user.getId() != order.getUserEntity().getId()) {
-        //     return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        // }
+        if (user.getId() != order.getUserEntity().getId()) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
 
-        if (file != null) {
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        String uploadDir = "orderFiles\\";
-        FileUploadUtil.saveFile(uploadDir, fileName, file);
-        order.setFile(uploadDir + fileName);
         orderRepository.save(order);
-    }
         return new ResponseEntity<>(HttpStatus.OK);
     }
     

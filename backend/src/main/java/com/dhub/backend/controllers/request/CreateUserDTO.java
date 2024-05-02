@@ -2,6 +2,7 @@ package com.dhub.backend.controllers.request;
 
 import java.util.Set;
 
+import jakarta.persistence.Lob;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -27,7 +28,8 @@ public class CreateUserDTO {
     private String password;
     private Set<String> roles;
     
-    // private byte[] profileImage;
+    @Lob
+    private byte[] profileImage;
 
     private Double lat;
 

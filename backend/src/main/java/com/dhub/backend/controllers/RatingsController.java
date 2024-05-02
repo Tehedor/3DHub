@@ -29,7 +29,6 @@ import com.dhub.backend.repository.OrderRepository;
 import com.dhub.backend.repository.RatingsRepository;
 import com.dhub.backend.repository.UserRepository;
 import com.dhub.backend.services.RatingsService;
-import com.dhub.backend.util.FileUploadUtil;
 
 import jakarta.validation.Valid;
 
@@ -75,11 +74,11 @@ public class RatingsController {
     }
 
     /*
-     * Upload photo and save it in the database
+     * Update a review
      * TODO: check if the user is the owner of the order¿?¿?
      */    
     @PutMapping("/{id}")
-    public ResponseEntity<Printer> uploadPhoto(@Valid @RequestPart("file") MultipartFile file,@PathVariable Long id) throws IOException {
+    public ResponseEntity<Printer> uploadPhoto(@PathVariable Long id) throws IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = (authentication != null) ? authentication.getName() : null;
         UserEntity user = userRepository.findByUsername(username)
@@ -87,18 +86,10 @@ public class RatingsController {
         Ratings rating = ratingsRepository.findById(id)
         .orElseThrow(() -> new RuntimeException("Error: Reseña no encontrada."));
 
-        // if (user.getId() != rating.getOrder().getUserEntity().getId()) {
-        //     return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        // }
-
-        if (file != null) {
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        String uploadDir = "ratingsPhotos\\";
-        FileUploadUtil.saveFile(uploadDir, fileName, file);
-        rating.setFile(uploadDir + fileName);
+        if (user.getId() != rating.getOrder().getUserEntity().getId()) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
         ratingsRepository.save(rating);
-    }
-
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
