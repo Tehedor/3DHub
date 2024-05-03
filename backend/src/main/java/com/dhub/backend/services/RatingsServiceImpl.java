@@ -34,7 +34,6 @@ public class RatingsServiceImpl implements RatingsService {
         ratingsDTO.setDate(ratings.getDate());
         ratingsDTO.setManufacturerRating(ratings.getManufacturerRating());
         ratingsDTO.setProductRating(ratings.getProductRating());
-        ratingsDTO.setFile(ratings.getFile());
         ratingsDTO.setTextRating(ratings.getTextRating());
         ratingsDTO.setOrder_id(ratings.getOrder().getId());
         ratingsDTO.setPrinter_id(ratings.getOrder().getPrinter().getId());
@@ -50,7 +49,6 @@ public class RatingsServiceImpl implements RatingsService {
         ratings.setDate(ratingsDTO.getDate());
         ratings.setManufacturerRating(ratingsDTO.getManufacturerRating());
         ratings.setProductRating(ratingsDTO.getProductRating());
-        ratings.setFile(ratingsDTO.getFile());
         ratings.setTextRating(ratingsDTO.getTextRating());
         ratings.setOrder(orderRepository.findById(ratingsDTO.getOrder_id()).get());
 
@@ -100,15 +98,15 @@ public class RatingsServiceImpl implements RatingsService {
     }
 
     @Override
-    public Ratings createRatingWithFile(MultipartFile file, String textRating, int productRating, int manufacturerRating, Long order_id) throws IOException {
+    public Ratings createRatingWithFile(MultipartFile file, RatingsDTO ratingsDTO) throws IOException {
         Ratings rating = new Ratings();
         rating.setDate(new Date(System.currentTimeMillis()));
-        rating.setProductRating(productRating);
-        rating.setManufacturerRating(manufacturerRating);
-        rating.setTextRating(textRating);
+        rating.setProductRating(ratingsDTO.getProductRating());
+        rating.setManufacturerRating(ratingsDTO.getManufacturerRating());
+        rating.setTextRating(ratingsDTO.getTextRating());
         rating.setFile(file.getBytes());
         rating.setFileFormat(getFileExtension(file.getOriginalFilename()));
-        rating.setOrder(orderRepository.findById(order_id).orElse(null));
+        rating.setOrder(orderRepository.findById(ratingsDTO.getOrder_id()).orElse(null));
     
         return rating;
 

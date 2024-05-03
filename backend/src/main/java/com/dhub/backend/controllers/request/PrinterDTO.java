@@ -26,10 +26,7 @@ public class PrinterDTO {
     @NotBlank
     private EPrinterType printerType;
 
-    private String fileFormat;
-
-    @Lob
-    private byte[] printerPhoto;
+    private String urlPhoto;
 
     private Double servicePrice;
 

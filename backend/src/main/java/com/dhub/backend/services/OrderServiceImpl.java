@@ -159,11 +159,22 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
-    public Order createOrderWithFile(MultipartFile file, EStatus status, Date manufacturerDate, Date deliveryDate, 
-    String address, String specs, Integer quantity, Long userId, Long printerId) {
-        UserEntity userEntity = userRepository.findById(userId).orElse(null);
-        Printer printer = printerRepository.findById(printerId).orElse(null);
+    public Order createOrderWithFile(MultipartFile file, OrderDTO orderDTO) {
         Order order = new Order();
+        LocalDateTime now = LocalDateTime.now();
+        Date date = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
+        order.setOrderDate(date);
+        order.setStatus(orderDTO.getStatus());
+        order.setQuantity(orderDTO.getQuantity());
+        order.setAddress(orderDTO.getAddress());
+        order.setSpecs(orderDTO.getSpecs());
+        order.setDeliveryDate(orderDTO.getDeliveryDate());
+        order.setManufacturerDate(orderDTO.getManufacturerDate());
+        order.setDeliveryPrice(orderDTO.getDeliveryPrice());
+        UserEntity user = userRepository.findById(orderDTO.getUser_id()).get();
+        order.setUserEntity(user);
+        Printer printer = printerRepository.findById(orderDTO.getPrinter_id()).get();
+        order.setPrinter(printer);
         try {
             order.setFile(file.getBytes());
         } catch (IOException e) {
@@ -171,7 +182,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         String url = "http://localhost:5000/process";
-        String jsonData = "{\"price_filamen\": 0.02, \"filament_width\": 0.15}";
+        String jsonData = "{\"price_filamen\": "+ printer.getServicePrice() +", \"filament_width\": "+printer.getPrinterPrecision()+ "}";
         String body = "";
         Double price = 0.0;
 
@@ -181,18 +192,7 @@ public class OrderServiceImpl implements OrderService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        order.setFileFormat(getFileExtension(file.getOriginalFilename()));
-        order.setOrderDate(new Date(System.currentTimeMillis()));
-        order.setManufacturerDate(manufacturerDate);
-        order.setDeliveryDate(deliveryDate);
-        order.setAddress(address);
-        order.setSpecs(specs);
-        order.setStatus(status);
-        order.setQuantity(quantity);
         order.setDeliveryPrice(price);
-        order.setUserEntity(userEntity);
-        order.setPrinter(printer);
         return order;
     }
 

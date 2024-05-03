@@ -20,10 +20,7 @@ public class RatingsDTO {
 
     private  Integer productRating;
 
-    private String fileFormat;
-
-    @Lob
-    private byte[] file;
+    private String urlPhoto;
 
     @NotBlank
     private String textRating;

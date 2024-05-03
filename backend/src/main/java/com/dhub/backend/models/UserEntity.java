@@ -57,12 +57,6 @@ public class UserEntity {
     @NotBlank
     private String password;
 
-    private String fileFormat;
-
-    @Lob        
-    @Column(columnDefinition="MEDIUMBLOB")
-    private byte[] profileImage;
-
     private String address;
 
     private String factAddress;

@@ -28,7 +28,6 @@ public class PrinterServiceImpl implements PrinterService{
         printerDTO.setModelName(printer.getModelName());
         printerDTO.setPrinterLocation(printer.getPrinterLocation());
         printerDTO.setPrinterType(printer.getPrinterType());
-        printerDTO.setPrinterPhoto(printer.getPrinterPhoto());
         printerDTO.setServicePrice(printer.getServicePrice());
         printerDTO.setMaxUnities(printer.getMaxUnities());
         printerDTO.setManufacturationSpeed(printer.getManufacturationSpeed());
@@ -50,29 +49,27 @@ public class PrinterServiceImpl implements PrinterService{
     }
 
     @Override
-    public Printer createPrinterWithFile(MultipartFile file, String modelName, String printerLocation, 
-    EPrinterType printerType, Double servicePrice, Integer maxUnities, String manufacturationSpeed, 
-    Double maxWidth, Double maxHeight, Double printerPrecision, EColor color, EMaterial material, Long userId) {
-    UserEntity userEntity = userRepository.findById(userId).orElse(null);
+    public Printer createPrinterWithFile(MultipartFile file, PrinterDTO printerDTO) {
     Printer printer = new Printer();
-    printer.setModelName(modelName);
-    printer.setPrinterLocation(printerLocation);
-    printer.setPrinterType(printerType);
-    printer.setFileFormat(getFileExtension(file.getOriginalFilename()));
+    UserEntity user = userRepository.findById(printerDTO.getIdFabricante()).orElse(null);
     try {
         printer.setPrinterPhoto(file.getBytes());
     } catch (IOException e) {
         // Handle the exception here
     }
-    printer.setServicePrice(servicePrice);
-    printer.setMaxUnities(maxUnities);
-    printer.setManufacturationSpeed(manufacturationSpeed);
-    printer.setMaxWidth(maxWidth);
-    printer.setMaxHeight(maxHeight);
-    printer.setPrinterPrecision(printerPrecision);
-    printer.setColor(color);
-    printer.setMaterial(material);
-    printer.setUserEntity(userEntity);
+    printer.setFileFormat(getFileExtension(file.getOriginalFilename()));
+    printer.setServicePrice(printerDTO.getServicePrice());
+    printer.setMaxUnities(printerDTO.getMaxUnities());
+    printer.setModelName(printerDTO.getModelName());
+    printer.setPrinterLocation(printerDTO.getPrinterLocation());
+    printer.setPrinterType(printerDTO.getPrinterType());
+    printer.setManufacturationSpeed(printerDTO.getManufacturationSpeed());
+    printer.setMaxWidth(printerDTO.getMaxWidth());
+    printer.setMaxHeight(printerDTO.getMaxHeight());
+    printer.setPrinterPrecision(printerDTO.getPrinterPrecision());
+    printer.setColor(printerDTO.getColor());
+    printer.setMaterial(printerDTO.getMaterial());
+    printer.setUserEntity(user);
     
         return printer;
     }

@@ -48,11 +48,13 @@ public class SecurityConfig {
                 corsConfiguration.addAllowedMethod(HttpMethod.PUT);
                 return corsConfiguration;
             }))
+            // .cors(cors -> cors.disable())
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> {
                 auth.requestMatchers("/index**").permitAll();
                 auth.requestMatchers("/api/auth/**").permitAll();
                 auth.requestMatchers("/api/printers").permitAll();
+                // auth.requestMatchers("/api/users/**").permitAll();
                 auth.anyRequest().authenticated();
             })
             .sessionManagement(session -> {

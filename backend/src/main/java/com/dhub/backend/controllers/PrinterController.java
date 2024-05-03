@@ -33,10 +33,12 @@ import com.dhub.backend.models.EPrinterType;
 import com.dhub.backend.models.Printer;
 import com.dhub.backend.repository.PrinterRepository;
 import com.dhub.backend.repository.UserRepository;
+import com.dhub.backend.controllers.request.OrderDTO;
 import com.dhub.backend.controllers.request.PrinterDTO;
 import com.dhub.backend.controllers.request.RatingsDTO;
 import com.dhub.backend.services.PrinterServiceImpl;
 import com.dhub.backend.services.RatingsService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.Data;
 
@@ -138,22 +140,16 @@ public class PrinterController {
     @PreAuthorize("hasRole('MANUFACTURER')")
     @PostMapping
     public ResponseEntity<Printer> createPrinter(@RequestParam("file") MultipartFile file,
-                                                 @RequestParam("modelName") String modelName,
-                                                 @RequestParam("printerLocation") String printerLocation,
-                                                 @RequestParam("printerType") EPrinterType printerType,
-                                                 @RequestParam("servicePrice") Double servicePrice,
-                                                 @RequestParam("maxUnities") Integer maxUnities,
-                                                 @RequestParam("manufacturationSpeed") String manufacturationSpeed,
-                                                 @RequestParam("maxWidth") Double maxWidth,
-                                                 @RequestParam("maxHeight") Double maxHeight,
-                                                 @RequestParam("printerPrecision") Double printerPrecision,
-                                                 @RequestParam("color") EColor color,
-                                                 @RequestParam("material") EMaterial material) throws IOException {
+    @RequestParam("data") String printerString) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        PrinterDTO printerDTO = objectMapper.readValue(printerString, PrinterDTO.class);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = (authentication != null) ? authentication.getName() : null;
         UserEntity user = userRepository.findByUsername(username)
         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
-        Printer createdPrinter = printerService.createPrinterWithFile(file, modelName, printerLocation, printerType, servicePrice, maxUnities, manufacturationSpeed, maxWidth, maxHeight, printerPrecision, color, material, user.getId());
+        printerDTO.setIdFabricante(user.getId());
+
+        Printer createdPrinter = printerService.createPrinterWithFile(file, printerDTO);
         createdPrinter.setUserEntity(user);
         user.getPrinters().add(createdPrinter);
         userRepository.save(user);

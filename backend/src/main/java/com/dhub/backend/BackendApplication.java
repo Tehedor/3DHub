@@ -248,9 +248,7 @@ public class BackendApplication {
 				.textRating("bad")
 				.file(null)
 				.order(order6)
-				.build();
-
-				
+				.build();		
 				
 			userRepository.save(designer);
 			userRepository.save(manufacturer);

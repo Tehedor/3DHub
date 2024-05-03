@@ -30,15 +30,8 @@ public class UserDTO {
     @NotBlank
     private String username;
     
-    @NotBlank
-    private String password;
     private Set<Role> roles;
     
-    private String fileFormat;
-
-    @Lob
-    private byte[] profileImage;
-
     private String address;
 
     private String factAddress;
