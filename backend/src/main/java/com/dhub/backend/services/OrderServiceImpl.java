@@ -10,6 +10,8 @@ import com.dhub.backend.models.UserEntity;
 import com.dhub.backend.repository.OrderRepository;
 import com.dhub.backend.repository.PrinterRepository;
 import com.dhub.backend.repository.UserRepository;
+import com.dhub.backend.utils.HttpRequestSender;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -157,6 +159,7 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
+
     @Override
     public Order createOrderWithFile(MultipartFile file, EStatus status, Date manufacturerDate, Date deliveryDate, 
     String address, String specs, Integer quantity, Long userId, Long printerId) {
@@ -169,8 +172,17 @@ public class OrderServiceImpl implements OrderService {
             // Handle the exception here
         }
 
-        Double deliveryPrice;
+        String url = "http://localhost:5000/process";
+        String jsonData = "{\"price_filamen\": 0.02, \"filament_width\": 0.15}";
+        String body = "";
+        Double price = 0.0;
 
+        try {
+            body = HttpRequestSender.sendMultipartFormDataRequest(url, file, jsonData);
+            price = HttpRequestSender.getPriceFromResponse(body);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         order.setFileFormat(getFileExtension(file.getOriginalFilename()));
         order.setOrderDate(new Date(System.currentTimeMillis()));
@@ -180,6 +192,7 @@ public class OrderServiceImpl implements OrderService {
         order.setSpecs(specs);
         order.setStatus(status);
         order.setQuantity(quantity);
+        order.setDeliveryPrice(price);
         order.setUserEntity(userEntity);
         order.setPrinter(printer);
         return order;
