@@ -1,24 +1,69 @@
-import { useState, useRef } from 'react';
-import { Container, Row, Col, Table,Button} from 'react-bootstrap';
+import { useState, useRef, useEffect } from 'react';
+import { Container, Row, Col, Table, Button } from 'react-bootstrap';
 
 import Form from 'react-validation/build/form';
 import CheckButton from 'react-validation/build/button';
 
-import {MyValidationInput} from '../../common/ValidationComponents.js';
+import { MyValidationInput } from '../../common/ValidationComponents.js';
 
 import VerPedir from './VerPedir.js';
 
 import PedidosService from "../../services/diseñador/pedidos.service.js";
 
-function PedirPedido  (props) {
+function PedirPedido(props) {
   const form = useRef();
   const checkBtn = useRef();
-      
+
   // Impresora del pedido
-  const numberPrinter=Number(props.printerId);
+  const numberPrinter = Number(props.printerId);
   console.log("numberPrinter: ", numberPrinter);
   const printer = props.printers[numberPrinter];
-  console.log("printer: ", printer); 
+  console.log("printer: ", printer);
+
+
+  // Raings 
+  // productRating
+  const allratings = props.ratings ? props.ratings : [];
+  console.log(allratings);
+
+  // ...
+
+  // const [printerRating, setPrinterRating] = useState([]);
+  // const [manufacturerRatingAll, setManufacturerRatingAll] = useState(0);
+  // const [productRatingAll, setProductRatingAll] = useState(0);
+
+  // useEffect(() => {
+  //   const allratings = props.ratings ? props.ratings : [];
+
+  //   console.log(allratings);
+
+  //   let tempManufacturerRatingAll = 0;
+  //   let tempProductRatingAll = 0;
+  //   let tempPrinterRating = [];
+
+  //   console.log(allratings.length);
+
+  //   for (let i = 0; i < allratings.length; i++) {
+  //     console.log(allratings[i].printer_id);
+  //     if (allratings[i].printer_id === printerId) {
+  //       tempManufacturerRatingAll += allratings[i].manufacturerRating;
+  //       tempProductRatingAll += allratings[i].productRating;
+  //       // tempPrinterRating = allratings[i].rating;
+  //       tempPrinterRating.push(allratings[i]);
+  //       console.log(tempPrinterRating);
+  //     }
+  //   }
+  //   console.log("buenas tardas")
+
+  //   setManufacturerRatingAll(tempManufacturerRatingAll);
+  //   setProductRatingAll(tempProductRatingAll);
+  //   setPrinterRating(tempPrinterRating);
+  // }, [props.ratings]); // Dependencias para que se ejecute cada vez que cambien las propiedades
+
+  // const manufacturerRating = printerRating.length > 0 ? manufacturerRatingAll/printerRating.length : 0;
+  // console.log(manufacturerRating);
+  // const productRating = printerRating.length > 0 ? productRatingAll/printerRating.length : 0;
+  // console.log(productRating);
 
   //////////////////////////////////////////////////////7//////////////////////////////////////////////////////7
   const roll = props.roll;
@@ -27,7 +72,7 @@ function PedirPedido  (props) {
   const currentUser = props.currentUser;
 
   const PrinterMaxUnities = printer.maxUnities;
-  
+
   // ##### ##### ##### ##### ##### ##### ##### ##### #####
   // ##### ##### Validación de los inputs
   // ##### ##### ##### ##### ##### ##### ##### ##### #####
@@ -56,14 +101,12 @@ function PedirPedido  (props) {
         </div>
       );
     }
-
-
   };
 
   const validFechaFabricacion = (value) => {
     const fecha = new Date(value);
     const fechaSinHora = new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate());
-    if (fechaSinHora <  today) {
+    if (fechaSinHora < today) {
       return (
         <div className="invalid-feedback d-block">
           Imposible to fabricate in the past!
@@ -71,11 +114,11 @@ function PedirPedido  (props) {
       );
     }
   };
-  
+
   const validFechaEntrega = (value) => {
     const fecha = new Date(value);
     const fechaSinHora = new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate());
-    
+
     const fechaFabricacionAux = new Date(fechaFabricacion.current);
     const fechaFabricacionSinHora = new Date(fechaFabricacionAux.getFullYear(), fechaFabricacionAux.getMonth(), fechaFabricacionAux.getDate());
 
@@ -106,9 +149,9 @@ function PedirPedido  (props) {
     }
   };
 
-  
-// File content
- const content = `Tamaño: original \nColor: ${printer.color.split(",")[0]} \nMaterial: ${printer.material.split(",")[0]}`
+
+  // File content
+  const content = `Tamaño: original \nColor: ${printer.color.split(",")[0]} \nMaterial: ${printer.material.split(",")[0]}`
 
   // ####### ####### ####### ####### ####### ####### ####### ####### #######
   // ####### ####### Variables input    ####### ####### ####### ####### #######
@@ -122,7 +165,7 @@ function PedirPedido  (props) {
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   // const [fechaFabricacion, setFechaFabricacion] = useState(now);
   const fechaFabricacion = useRef();
-  const [fechaEntrega, setFechaEntrega] = useState(now);  
+  const [fechaEntrega, setFechaEntrega] = useState(now);
 
 
   // ####### ####### ####### ####### ####### ####### ####### ####### #######
@@ -133,8 +176,8 @@ function PedirPedido  (props) {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  
-  
+
+
   // ####### ####### ####### ####### ####### ####### ####### ####### #######
   // ####### ####### Handel    ####### ####### ####### ####### #######
   // ####### ####### ####### ####### ####### ####### ####### ####### #######
@@ -149,149 +192,149 @@ function PedirPedido  (props) {
 
     if (checkBtn.current.context._errors.length === 0) {
       PedidosService.añadirPedido(file, cantidad, fechaFabricacion.current, fechaEntrega, especificaciones, printer.id).then(
-          (response) => {
-            setMessage(response.data.message);
-            setSuccessful(true);
-          },
-          (error) => {
-            const resMessage =
-              (error.response &&
-                error.response.data &&
-                error.response.data.message) ||
-              error.message ||
-              error.toString();
+        (response) => {
+          setMessage(response.data.message);
+          setSuccessful(true);
+        },
+        (error) => {
+          const resMessage =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.message ||
+            error.toString();
 
-            setMessage(resMessage);
-            setSuccessful(false);
-          }
-        );
-        console.log("file: ", file);
-      }
+          setMessage(resMessage);
+          setSuccessful(false);
+        }
+      );
+      console.log("file: ", file);
+    }
   };
 
 
   return (
-    
-  <Container>
-    <Row class="impresora-caracteristicas">
-      <VerPedir printer={printer}/>
-    </Row>
-    
-    <Form onSubmit={handlePedido} ref={form}>
-      {!successful && (
-        <Row>   
-          <Col lg={3} className="reseñas order-3 order-lg-1">
-          reseñas
-          </Col>
-          <Col lg={6} className="central order-1 order-lg-2">
-            <Row class="subir">          
-            {/* ########## */}
-            {/*  SUBIR FIL */}
-            {/* ########## */}
-              <MyValidationInput
-                type="file" 
-                formlabel="Subir file" 
-                onChange={(e) => setFile(e.target.files[0])}
+
+    <Container>
+      <Row class="impresora-caracteristicas">
+        <VerPedir printer={printer} ratings={allratings}/>
+      </Row>
+
+      <Form onSubmit={handlePedido} ref={form}>
+        {!successful && (
+          <Row>
+            <Col lg={3} className="reseñas order-3 order-lg-1">
+              reseñas
+            </Col>
+            <Col lg={6} className="central order-1 order-lg-2">
+              <Row class="subir">
+                {/* ########## */}
+                {/*  SUBIR FIL */}
+                {/* ########## */}
+                <MyValidationInput
+                  type="file"
+                  formlabel="Subir file"
+                  onChange={(e) => setFile(e.target.files[0])}
                 // validations={[required]} 
-              />
-            </Row>
-            <Row>
-              {/* ################ */}
-              {/* ESPECIFICACIONES */}
-              {/* ################ */}
-              <MyValidationInput
-                as="textarea"
-                formlabel="Especificaciones del pedido"
-                rows={7}
-                maxLength={400}
-                value={especificaciones}
-                onChange={e => setEspecificaciones(e.target.value)}
-                validations={[required,validEspecificaciones]} // Agrega tus validaciones aquí
-              />
-            </Row>
-          </Col>
-          <Col lg={3} className="derecha order-2 order-lg-3">
-            <Row class="Tabla">
-              <Table striped bordered hover variant="gray">
-                <tbody>
-                  <tr>
-                    <td>Cantidad</td>
-                    <td>
-                      {/* ########## */}
-                      {/* CANTIDAD */}
-                      {/* ########## */}
-                      <MyValidationInput
-                        type="number" 
-                        max={PrinterMaxUnities} 
-                        min="0" 
-                        value={cantidad} 
-                        onChange={e => setCantidad(e.target.value)}
-                        validations={[required,validCantidad]} 
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Límite de fabricación</td>
-                    <td>
-                      {/* ################## */}
-                      {/* LIMITE FABRICACION */}
-                      {/* ################## */}
-                      <MyValidationInput
-                        type="date" 
-                        name="fechaFabricacion" 
-                        // value={fechaFabricacion} 
-                        onChange={e => {fechaFabricacion.current = e.target.value}}
-                        // onChange={e => setFechaFabricacion(e.target.value)}
-                        validations={[required, validFechaFabricacion]} 
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Límite de entrega</td>
-                    <td>
-                      {/* ############## */}
-                      {/* LIMITE ENTREGA */}
-                      {/* ############## */}
-                      <MyValidationInput
-                        type="date" 
-                        name="fechaEntrega" 
-                        onChange={e => setFechaEntrega(e.target.value)}
-                        validations={[required, validFechaEntrega]}
-                      />
-                    </td>
-                  </tr>
-                </tbody>
-              </Table>
-            </Row>
-            <Row className="Añadir" style={{display: 'flex', alignItems: 'flex-end'}}>
-                    {/* ############# */}
-                    {/* Añadir Carrito*/}
-                    {/* ############# */}
-              <Button variant="success" onClick={handlePedido}>Añadir al Carrito</Button>
-              <p></p>
-                    {/* ############# */}
-                    {/*    Vovler     */}
-                    {/* ############# */}
-              <Button href="/" variant="danger">Vover</Button>
-            </Row>
-          </Col>
-        </Row>
-      )}
-      {message && (
-        <div className="form-group">
-          <div
-            className={
-              successful ? "alert alert-success" : "alert alert-danger"
-            }
-            role="alert"
-          >
-            {message}
+                />
+              </Row>
+              <Row>
+                {/* ################ */}
+                {/* ESPECIFICACIONES */}
+                {/* ################ */}
+                <MyValidationInput
+                  as="textarea"
+                  formlabel="Especificaciones del pedido"
+                  rows={7}
+                  maxLength={400}
+                  value={especificaciones}
+                  onChange={e => setEspecificaciones(e.target.value)}
+                  validations={[required, validEspecificaciones]} // Agrega tus validaciones aquí
+                />
+              </Row>
+            </Col>
+            <Col lg={3} className="derecha order-2 order-lg-3">
+              <Row class="Tabla">
+                <Table striped bordered hover variant="gray">
+                  <tbody>
+                    <tr>
+                      <td>Cantidad</td>
+                      <td>
+                        {/* ########## */}
+                        {/* CANTIDAD */}
+                        {/* ########## */}
+                        <MyValidationInput
+                          type="number"
+                          max={PrinterMaxUnities}
+                          min="0"
+                          value={cantidad}
+                          onChange={e => setCantidad(e.target.value)}
+                          validations={[required, validCantidad]}
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Límite de fabricación</td>
+                      <td>
+                        {/* ################## */}
+                        {/* LIMITE FABRICACION */}
+                        {/* ################## */}
+                        <MyValidationInput
+                          type="date"
+                          name="fechaFabricacion"
+                          // value={fechaFabricacion} 
+                          onChange={e => { fechaFabricacion.current = e.target.value }}
+                          // onChange={e => setFechaFabricacion(e.target.value)}
+                          validations={[required, validFechaFabricacion]}
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Límite de entrega</td>
+                      <td>
+                        {/* ############## */}
+                        {/* LIMITE ENTREGA */}
+                        {/* ############## */}
+                        <MyValidationInput
+                          type="date"
+                          name="fechaEntrega"
+                          onChange={e => setFechaEntrega(e.target.value)}
+                          validations={[required, validFechaEntrega]}
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                </Table>
+              </Row>
+              <Row className="Añadir" style={{ display: 'flex', alignItems: 'flex-end' }}>
+                {/* ############# */}
+                {/* Añadir Carrito*/}
+                {/* ############# */}
+                <Button variant="success" onClick={handlePedido}>Añadir al Carrito</Button>
+                <p></p>
+                {/* ############# */}
+                {/*    Vovler     */}
+                {/* ############# */}
+                <Button href="/" variant="danger">Vover</Button>
+              </Row>
+            </Col>
+          </Row>
+        )}
+        {message && (
+          <div className="form-group">
+            <div
+              className={
+                successful ? "alert alert-success" : "alert alert-danger"
+              }
+              role="alert"
+            >
+              {message}
+            </div>
           </div>
-        </div>
-      )}
-      <CheckButton style={{ display: "none" }} ref={checkBtn} />
-    </Form>
-  </Container>
+        )}
+        <CheckButton style={{ display: "none" }} ref={checkBtn} />
+      </Form>
+    </Container>
   );
 }
 

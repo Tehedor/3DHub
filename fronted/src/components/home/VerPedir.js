@@ -16,7 +16,9 @@ export default function Ver(props) {
     
 
     // productRating
-    const allratings =  props.ratings;
+    // const allratings =  props.ratings;
+    const allratings = props.ratings ? props.ratings : [];
+
     console.log(allratings);
 
     // ...
@@ -26,7 +28,9 @@ export default function Ver(props) {
     const [productRatingAll, setProductRatingAll] = useState(0);
 
     useEffect(() => {
-        const allratings = props.ratings;
+        // const allratings = props.ratings;
+        const allratings = props.ratings ? props.ratings : [];
+    
         let tempManufacturerRatingAll = 0;
         let tempProductRatingAll = 0;
         let tempPrinterRating = [];

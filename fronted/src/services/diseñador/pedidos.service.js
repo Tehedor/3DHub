@@ -11,6 +11,13 @@ const app = axios.create({
   },
 });
 
+const appform = axios.create({
+  baseURL: "http://localhost:8080/api/",
+  headers: { 
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'multipart/form-data'
+  },
+});
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
 // ##### ##### Post cambiar estado a PAY
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
@@ -41,17 +48,26 @@ const añadirPedido = (file, cantidad, fechaFabricacion, fechaEntrega, especific
   const fechaFabricacionFormated = new Date(fechaFabricacion).toISOString().split('T')[0];
   const fechaEntregaFormated = new Date(fechaEntrega).toISOString().split('T')[0];
   const stringsprinter = String(printer);
-  return app
-  .post(`orders`, {
+
+  const data = {
     manufacturerDate: fechaFabricacionFormated,
-    deliveryDate:fechaEntregaFormated,
+    deliveryDate: fechaEntregaFormated,
     quantity: cantidad,
     specs: especificaciones,
     printer_id: printer,
-    status:"KART",
-    address:"Calle de la Princesa, 1, 28008 Madrid, España"
+    status: "KART",
+    address: "Calle de la Princesa, 1, 28008 Madrid, España"
+  };
 
-  })
+  const formData = new FormData();
+  formData.append('data', JSON.stringify(data));
+  formData.append('file', file); // Asegúrate de tener el archivo definido
+
+
+  // return appform.
+  return app
+  .post(`orders`, formData)
+
 }
 
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####

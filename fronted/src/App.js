@@ -112,7 +112,7 @@ const App = () => {
             <Route exact path="/impresorasfabri" element={<ImpresorasFabri />} />
             <Route exact path="/crearimpresora" element={<CrearImpresora />} />
 
-            <Route path="/pedirpedido/:printerId" element={<Location controlPrinters={controlPrinters} roll={roll} query={query} queryUbica={queryUbica} currentUser={currentUser} />}/>
+            <Route path="/pedirpedido/:printerId" element={<Location controlPrinters={controlPrinters} roll={roll} query={query} queryUbica={queryUbica} currentUser={currentUser} controlRatings={controlRatings}/>}/>
 
             <Route exact path="/atencionCliente" element={<AtencionCliente />} />
 
