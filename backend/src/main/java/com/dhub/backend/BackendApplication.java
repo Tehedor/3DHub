@@ -63,8 +63,6 @@ public class BackendApplication {
 				.username("diseñador")
 				.password(passwordEncoder.encode("diseñador"))
 				.roles(Set.of(Role.builder().name(ERole.ROLE_DESIGNER).build()))
-				.lat(40.4165)
-				.lon(-3.70256)
 				.address("Calle de la Princesa, 1, 28008 Madrid, España")
 				.factAddress("Calle de la Princesa, 1, 28008 Madrid, España")
 				.build();
@@ -74,10 +72,9 @@ public class BackendApplication {
 				.username("fabricante")
 				.password(passwordEncoder.encode("fabricante"))
 				.roles(Set.of(Role.builder().name(ERole.ROLE_MANUFACTURER).build()))
-				.lat(40.4165)
-				.lon(-3.70256)
 				.address("Calle de la Princesa, 1, 28008 Madrid, España")
 				.factAddress("Calle de la Princesa, 1, 28008 Madrid, España")
+				.iban("ES7921000813610123456789")
 				.build();
 
 /**
@@ -160,6 +157,7 @@ public class BackendApplication {
 				.file(null)
 				.status(EStatus.KART)
 				.deliveryDate(new Date(System.currentTimeMillis()))
+				.deliveryPrice(10.0)
 				.userEntity(designer)
 				.printer(printer)
 				.build();
@@ -172,6 +170,7 @@ public class BackendApplication {
 				.file(null)
 				.status(EStatus.PAY)
 				.deliveryDate(new Date(System.currentTimeMillis()))
+				.deliveryPrice(10.0)
 				.userEntity(designer)
 				.printer(printer2)
 				.build();
@@ -184,6 +183,7 @@ public class BackendApplication {
 				.file(null)
 				.status(EStatus.SEND)
 				.deliveryDate(new Date(System.currentTimeMillis()))
+				.deliveryPrice(10.0)
 				.userEntity(designer)
 				.printer(printer3)
 				.build();
@@ -196,6 +196,7 @@ public class BackendApplication {
 				.file(null)
 				.status(EStatus.DELIVERED)
 				.deliveryDate(new Date(System.currentTimeMillis()))
+				.deliveryPrice(10.0)
 				.userEntity(designer)
 				.printer(printer4)
 				.build();
@@ -209,6 +210,7 @@ public class BackendApplication {
 				.file(null)
 				.status(EStatus.DELIVERED)
 				.deliveryDate(new Date(System.currentTimeMillis()))
+				.deliveryPrice(10.0)
 				.userEntity(designer)
 				.printer(printer4)
 				.build();
@@ -222,6 +224,7 @@ public class BackendApplication {
 				.file(null)
 				.status(EStatus.DELIVERED)
 				.deliveryDate(new Date(System.currentTimeMillis()))
+				.deliveryPrice(10.0)
 				.userEntity(designer)
 				.printer(printer4)
 				.build();
@@ -247,8 +250,8 @@ public class BackendApplication {
 				.order(order6)
 				.build();
 
-			
-			
+				
+				
 			userRepository.save(designer);
 			userRepository.save(manufacturer);
 			printerRepository.save(printer);

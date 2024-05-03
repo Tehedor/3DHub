@@ -18,7 +18,6 @@ import com.dhub.backend.services.OrderService;
 import com.dhub.backend.services.PrinterService;
 import com.dhub.backend.services.RatingsService;
 import com.dhub.backend.services.UserEntityService;
-import com.dhub.backend.util.FileUploadUtil;
 
 import jakarta.validation.Valid;
 
@@ -122,19 +121,45 @@ public class OrderController {
      * TODO: Create a method convertToEntity in OrderService    
      */
     @PostMapping
-    public ResponseEntity<?> createOrder(@RequestBody OrderDTO orderDTO) {
+    public ResponseEntity<?> createOrder(@RequestParam("file") MultipartFile file,
+                                        @RequestParam("manufacturerDate") Date manufacturerDate,
+                                        @RequestParam("deliveryDate") Date deliveryDate,
+                                        @RequestParam("quantity") Integer quantity,
+                                        @RequestParam("specs") String specs,
+                                        @RequestParam("printer_id") Long printer_id,
+                                        @RequestParam("address") String address
+                                        ) throws IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = (authentication != null) ? authentication.getName() : null;
         UserEntity user = userRepository.findByUsername(username)
         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
-        Printer printer = printerRepository.findById(orderDTO.getPrinter_id())
+        Printer printer = printerRepository.findById(printer_id)
         .orElseThrow(() -> new RuntimeException("Error: Impresora no encontrada."));
         EStatus status = EStatus.KART;
-        Order order = orderService.convertToEntity(orderDTO);
-
+        Order order = orderService.createOrderWithFile(file, status, manufacturerDate, deliveryDate, address, specs, quantity, user.getId(), printer.getId());
+        order.setUserEntity(user);
+        order.setPrinter(printer);
         orderRepository.save(order);
         return ResponseEntity.ok(new MessageResponse("Añadido al carrito"));
     }
+
+    // @PostMapping
+    // public ResponseEntity<?> createOrder(@RequestParam("file") MultipartFile file,
+    // @RequestBody @Valid OrderDTO orderDTO) throws IOException {
+    //     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    //     String username = (authentication != null) ? authentication.getName() : null;
+    //     UserEntity user = userRepository.findByUsername(username)
+    //     .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
+    //     Printer printer = printerRepository.findById(orderDTO.getPrinter_id())
+    //     .orElseThrow(() -> new RuntimeException("Error: Impresora no encontrada."));
+    //     EStatus status = EStatus.KART;
+    //     Order order = new Order();
+    //     order.setStatus(status);
+    //     order.setUserEntity(user);
+    //     order.setPrinter(printer);
+    //     orderRepository.save(order);
+    //     return ResponseEntity.ok(new MessageResponse("Añadido al carrito"));
+    // }
 
 
     /*
@@ -142,24 +167,18 @@ public class OrderController {
      * TODO: Add a check to see if the user is the owner of the order
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Printer> uploadFile(@Valid @RequestPart("file") MultipartFile file,@PathVariable Long id) throws IOException {
+    public ResponseEntity<Printer> uploadFile(@PathVariable Long id) throws IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = (authentication != null) ? authentication.getName() : null;
         UserEntity user = userRepository.findByUsername(username)
         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
         Order order = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Error: Pedido no encontrada."));
 
-        // if (user.getId() != order.getUserEntity().getId()) {
-        //     return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        // }
+        if (user.getId() != order.getUserEntity().getId()) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
 
-        if (file != null) {
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        String uploadDir = "orderFiles\\";
-        FileUploadUtil.saveFile(uploadDir, fileName, file);
-        order.setFile(uploadDir + fileName);
         orderRepository.save(order);
-    }
         return new ResponseEntity<>(HttpStatus.OK);
     }
     
@@ -186,7 +205,7 @@ public class OrderController {
         } else {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Estado inválido."));
         }
-        return ResponseEntity.ok(new MessageResponse("Petición de"+ user.getUsername() +" del pedido " 
+        return ResponseEntity.ok(new MessageResponse("Petición de "+ user.getUsername() +" del pedido " 
         + idOrder.toString() + " guardada como " + newStatus.toString()));
     }
 
@@ -424,13 +443,6 @@ public class OrderController {
             ordersDTOByPrinter.add(orderDTO);
         }
 
-
-        List<UserDTO> users = new ArrayList<>();
-        for (OrderDTO order : ordersDTOByPrinter) {
-            UserEntity userEntity = userRepository.findById(order.getUser_id())
-                .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
-            users.add(userEntityService.convertToDTO(userEntity));
-        }
         List<Long> orderIds = ordersDTOByPrinter.stream()
             .map(OrderDTO::getId)
             .collect(Collectors.toList());

@@ -9,7 +9,6 @@ import com.dhub.backend.controllers.response.MessageResponse;
 import com.dhub.backend.models.*;
 import com.dhub.backend.repository.UserRepository;
 import com.dhub.backend.security.jwt.JwtUtils;
-import com.dhub.backend.util.FileUploadUtil;
 
 import jakarta.validation.Valid;
 
@@ -51,56 +50,67 @@ public class AuthController {
 
     //Crear usuario
     @PostMapping("/createUser")
-    public ResponseEntity<?> CreateUSer(@Valid @RequestBody CreateUserDTO createUserDTO) {
+    public ResponseEntity<?> CreateUSer(
+        @RequestParam("file") MultipartFile file,
+        @RequestParam("dni") String dni,
+        @RequestParam("email") String email,
+        @RequestParam("username") String username,
+        @RequestParam("password") String password,
+        @RequestParam("roles") Set<String> roles,
+        @RequestParam("lat") Double lat,
+        @RequestParam("lon") Double lon,
+        @RequestParam("address") String address,
+        @RequestParam("factAddress") String factAddress,
+        @RequestParam("iban") String iban
+    ) {
 
-        if (userRepository.existsByDni(createUserDTO.getDni())) {
+        if (userRepository.existsByDni(dni)) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: DNI ya existe"));
           }
 
-        if (userRepository.existsByUsername(createUserDTO.getUsername())) {
+        if (userRepository.existsByUsername(username)) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Nombre de usuario ya existe"));
           }
       
-        if (userRepository.existsByEmail(createUserDTO.getEmail())) {
+        if (userRepository.existsByEmail(email)) {
         return ResponseEntity.badRequest().body(new MessageResponse("Error: Email ya existe"));
         }
        
-        Set<Role> roles = createUserDTO.getRoles().stream()
+        Set<Role> setRoles = roles.stream()
             .map(role -> Role.builder()
                 .name(ERole.valueOf(role))
                 .build())
             .collect(Collectors.toSet());   
 
         UserEntity userEntity = UserEntity.builder()
-            .dni(createUserDTO.getDni())
-            .username(createUserDTO.getUsername())
-            .password(passwordEncoder.encode(createUserDTO.getPassword()))
-            .email(createUserDTO.getEmail())
-            .lat(createUserDTO.getLat())
-            .lon(createUserDTO.getLon())
-            .address(createUserDTO.getAddress())
-            .factAddress(createUserDTO.getFactAddress())
-            .roles(roles)
+            .dni(dni)
+            .username(username)
+            .password(passwordEncoder.encode(password))
+            .email(email)
+            .fileFormat(StringUtils.cleanPath(file.getOriginalFilename()))
+            .address(address)
+            .factAddress(factAddress)
+            .roles(setRoles)
+            .iban(iban)
             .build();
 
         userRepository.save(userEntity);
+        try {
+            userEntity.setProfileImage(file.getBytes());
+        } catch (IOException e) {
+            // Handle the exception here
+        }
         return ResponseEntity.ok(new MessageResponse("Usuario creado exitosamente"));
 
     }
 
     //Subir foto de perfil y actualizar usuario
     @PutMapping("/{id}")
-    public ResponseEntity<Printer> uploadPhoto(@Valid @RequestPart("file") MultipartFile file,@PathVariable Long id) throws IOException {
+    public ResponseEntity<Printer> uploadPhoto(@PathVariable Long id) throws IOException {
         UserEntity user = userRepository.findById(id)
         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
 
-        if (file != null) {
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        String uploadDir = "profilePhotos\\";
-        FileUploadUtil.saveFile(uploadDir, fileName, file);
-        user.setProfileImage(uploadDir + fileName);
         userRepository.save(user);
-    }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

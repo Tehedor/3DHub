@@ -4,11 +4,21 @@ package com.dhub.backend.services;
 import com.dhub.backend.controllers.request.OrderDTO;
 import com.dhub.backend.models.EStatus;
 import com.dhub.backend.models.Order;
+import com.dhub.backend.models.Printer;
 import com.dhub.backend.models.Ratings;
 import com.dhub.backend.models.UserEntity;
 import com.dhub.backend.repository.OrderRepository;
+import com.dhub.backend.repository.PrinterRepository;
+import com.dhub.backend.repository.UserRepository;
+import com.dhub.backend.utils.HttpRequestSender;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -18,6 +28,12 @@ import java.util.List;
 
 @Service
 public class OrderServiceImpl implements OrderService {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private PrinterRepository printerRepository;
 
     private final OrderRepository orderRepository;
 
@@ -30,13 +46,13 @@ public class OrderServiceImpl implements OrderService {
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setId(order.getId());
         orderDTO.setOrderDate(order.getOrderDate());
-        orderDTO.setFile(order.getFile());
         orderDTO.setStatus(order.getStatus());
         orderDTO.setQuantity(order.getQuantity());
         orderDTO.setAddress(order.getAddress());
         orderDTO.setSpecs(order.getSpecs());
         orderDTO.setDeliveryDate(order.getDeliveryDate());
         orderDTO.setManufacturerDate(order.getManufacturerDate());
+        orderDTO.setDeliveryPrice(order.getDeliveryPrice());
         orderDTO.setPrinter_id(order.getPrinter().getId());
         orderDTO.setUser_id(order.getUserEntity().getId());
         return orderDTO;
@@ -48,13 +64,13 @@ public class OrderServiceImpl implements OrderService {
         Date date = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
         Order order = new Order();
         order.setOrderDate(date);
-        order.setFile(orderDTO.getFile());
         order.setStatus(orderDTO.getStatus());
         order.setQuantity(orderDTO.getQuantity());
         order.setAddress(orderDTO.getAddress());
         order.setSpecs(orderDTO.getSpecs());
         order.setDeliveryDate(orderDTO.getDeliveryDate());
         order.setManufacturerDate(orderDTO.getManufacturerDate());
+        order.setDeliveryPrice(orderDTO.getDeliveryPrice());
            return order;
     }
 
@@ -131,6 +147,53 @@ public class OrderServiceImpl implements OrderService {
             }
         }
         return ratings;
+    }
+
+    public static String getFileExtension(String fileName) {
+        if (fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0) {
+            return fileName.substring(fileName.lastIndexOf(".") + 1);
+        } else {
+            return ""; // No hay extensión
+        }
+    }
+
+
+    @Override
+    public Order createOrderWithFile(MultipartFile file, EStatus status, Date manufacturerDate, Date deliveryDate, 
+    String address, String specs, Integer quantity, Long userId, Long printerId) {
+        UserEntity userEntity = userRepository.findById(userId).orElse(null);
+        Printer printer = printerRepository.findById(printerId).orElse(null);
+        Order order = new Order();
+        try {
+            order.setFile(file.getBytes());
+        } catch (IOException e) {
+            // Handle the exception here
+        }
+
+        String url = "http://localhost:5000/process";
+        String jsonData = "{\"price_filamen\": 0.02, \"filament_width\": 0.15}";
+        String body = "";
+        Double price = 0.0;
+
+        try {
+            body = HttpRequestSender.sendMultipartFormDataRequest(url, file, jsonData);
+            price = HttpRequestSender.getPriceFromResponse(body);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        order.setFileFormat(getFileExtension(file.getOriginalFilename()));
+        order.setOrderDate(new Date(System.currentTimeMillis()));
+        order.setManufacturerDate(manufacturerDate);
+        order.setDeliveryDate(deliveryDate);
+        order.setAddress(address);
+        order.setSpecs(specs);
+        order.setStatus(status);
+        order.setQuantity(quantity);
+        order.setDeliveryPrice(price);
+        order.setUserEntity(userEntity);
+        order.setPrinter(printer);
+        return order;
     }
 
 }

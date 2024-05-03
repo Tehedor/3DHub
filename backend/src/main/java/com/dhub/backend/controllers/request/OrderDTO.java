@@ -19,8 +19,6 @@ public class    OrderDTO {
 
     private Date orderDate;
 
-    private String file;
-
     private EStatus status;
 
     @NotBlank
@@ -38,6 +36,8 @@ public class    OrderDTO {
     @NotBlank
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date deliveryDate;
+
+    private double deliveryPrice;
 
     @NotBlank
     private Long user_id;

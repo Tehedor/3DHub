@@ -1,6 +1,6 @@
 package com.dhub.backend.controllers.request;
 
-import java.sql.Date;
+import java.util.Date;
 
 import jakarta.persistence.Lob;
 import jakarta.validation.constraints.NotBlank;
@@ -12,15 +12,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RatingsDTO {
     
-
     private long Id;
     
     private Date date;
 
     private Integer manufacturerRating;
+
     private  Integer productRating;
 
-    private String file;
+    private String fileFormat;
+
+    @Lob
+    private byte[] file;
 
     @NotBlank
     private String textRating;

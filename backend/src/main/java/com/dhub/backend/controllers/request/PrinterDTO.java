@@ -1,5 +1,6 @@
 package com.dhub.backend.controllers.request;
 
+import jakarta.persistence.Lob;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -25,7 +26,10 @@ public class PrinterDTO {
     @NotBlank
     private EPrinterType printerType;
 
-    private String printerPhoto;
+    private String fileFormat;
+
+    @Lob
+    private byte[] printerPhoto;
 
     private Double servicePrice;
 
