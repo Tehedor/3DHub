@@ -143,6 +143,24 @@ public class OrderController {
         return ResponseEntity.ok(new MessageResponse("Añadido al carrito"));
     }
 
+    // @PostMapping
+    // public ResponseEntity<?> createOrder(@RequestParam("file") MultipartFile file,
+    // @RequestBody @Valid OrderDTO orderDTO) throws IOException {
+    //     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    //     String username = (authentication != null) ? authentication.getName() : null;
+    //     UserEntity user = userRepository.findByUsername(username)
+    //     .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
+    //     Printer printer = printerRepository.findById(orderDTO.getPrinter_id())
+    //     .orElseThrow(() -> new RuntimeException("Error: Impresora no encontrada."));
+    //     EStatus status = EStatus.KART;
+    //     Order order = new Order();
+    //     order.setStatus(status);
+    //     order.setUserEntity(user);
+    //     order.setPrinter(printer);
+    //     orderRepository.save(order);
+    //     return ResponseEntity.ok(new MessageResponse("Añadido al carrito"));
+    // }
+
 
     /*
      * Uploads the 3D file to the order and saves the path in the database

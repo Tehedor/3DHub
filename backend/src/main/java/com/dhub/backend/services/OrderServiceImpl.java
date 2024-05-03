@@ -46,7 +46,6 @@ public class OrderServiceImpl implements OrderService {
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setId(order.getId());
         orderDTO.setOrderDate(order.getOrderDate());
-        orderDTO.setFile(order.getFile());
         orderDTO.setStatus(order.getStatus());
         orderDTO.setQuantity(order.getQuantity());
         orderDTO.setAddress(order.getAddress());
@@ -65,7 +64,6 @@ public class OrderServiceImpl implements OrderService {
         Date date = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
         Order order = new Order();
         order.setOrderDate(date);
-        order.setFile(orderDTO.getFile());
         order.setStatus(orderDTO.getStatus());
         order.setQuantity(orderDTO.getQuantity());
         order.setAddress(orderDTO.getAddress());

@@ -6,7 +6,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.dhub.backend.models.EStatus;
 
-import jakarta.persistence.Lob;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,11 +18,6 @@ public class    OrderDTO {
     private Long Id;
 
     private Date orderDate;
-
-    private String fileFormat;
-
-    @Lob
-    private byte[] file;
 
     private EStatus status;
 

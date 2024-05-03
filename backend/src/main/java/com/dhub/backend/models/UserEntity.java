@@ -65,10 +65,6 @@ public class UserEntity {
 
     private String address;
 
-    private Double lat;
-
-    private Double lon;
-
     private String factAddress;
 
     private String iban;

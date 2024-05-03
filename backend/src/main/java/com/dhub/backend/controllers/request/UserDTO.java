@@ -39,10 +39,6 @@ public class UserDTO {
     @Lob
     private byte[] profileImage;
 
-    private Double lat;
-
-    private Double lon;
-
     private String address;
 
     private String factAddress;

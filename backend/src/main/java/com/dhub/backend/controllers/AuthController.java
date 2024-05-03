@@ -88,8 +88,6 @@ public class AuthController {
             .password(passwordEncoder.encode(password))
             .email(email)
             .fileFormat(StringUtils.cleanPath(file.getOriginalFilename()))
-            .lat(lat)
-            .lon(lon)
             .address(address)
             .factAddress(factAddress)
             .roles(setRoles)

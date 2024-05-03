@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 
 public class HttpRequestSender {
     public static String sendMultipartFormDataRequest(String urlString, MultipartFile file, String jsonData) throws IOException {
