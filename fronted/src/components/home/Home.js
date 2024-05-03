@@ -26,6 +26,8 @@ export default function Home(props) {
  
      // Estado en el que se alamcenan las impresoras
     const [theprinters, setThePrinters] = useState();
+    const [theratings, setTheRatings] = useState();
+    // const [theprinters, setThePrinters] = useState();
     
     // ###### ###### ###### ###### ###### ###### ###### ###### ######
     // ###### ###### ###### Geolocalización
@@ -95,12 +97,15 @@ export default function Home(props) {
     
     const download = async () => {
         let downloadprinters;
+        let dowloadratings;
         
         try {
-            const response = await ImpresorasService.descargarPrinters();
+            const response = (await ImpresorasService.descargarPrinters()).data;
             console.log(response);
-            downloadprinters=response.data;
-        
+            downloadprinters=response.printers;
+            console.log(downloadprinters);
+            dowloadratings=response.ratings;
+            console.log(dowloadratings);
         } catch (error) {
             // setResultados(
             // { "cod": error.cod, "message": cod.message}
@@ -109,6 +114,8 @@ export default function Home(props) {
         setThePrinters(downloadprinters);
         props.setControlPrinters(downloadprinters);
         console.log(theprinters);
+        setTheRatings(dowloadratings);
+        props.setControlRatings(dowloadratings);
     }
 
 
@@ -132,7 +139,7 @@ export default function Home(props) {
             {loading ? <img id="loading" src={process.env.PUBLIC_URL + "/spinners/cxyduck.gif"} className="spinner" alt="spinner" />:
         
             <Row>
-                <ImpresorasLista printers={theprinters} />
+                <ImpresorasLista printers={theprinters} ratings={theratings} />
             </Row>  
             }
         </div>

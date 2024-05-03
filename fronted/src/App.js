@@ -43,7 +43,7 @@ const App = () => {
   // ##### ##### Control de impresoras
   // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
   const [controlPrinters, setControlPrinters] = useLocalStorage('printers',[]); 
-
+  const [controlRatings, setControlRatings] = useLocalStorage('ratings',[]);
   // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
   // ##### ##### Control de roles
   // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
@@ -96,8 +96,8 @@ const App = () => {
           
         <div className="container mt-3">
           <Routes>
-            <Route exact path={"/"} element={<Home setControlPrinters={setControlPrinters} controlPrinters={controlPrinters} />} />
-            <Route exact path={"/home"} element={<Home setControlPrinters={setControlPrinters} controlPrinters={controlPrinters} />} />
+            <Route exact path={"/"} element={<Home setControlPrinters={setControlPrinters} controlPrinters={controlPrinters} setControlRatings={setControlRatings} controlRatings={controlRatings} />} />
+            <Route exact path={"/home"} element={<Home setControlPrinters={setControlPrinters} controlPrinters={controlPrinters} setControlRatings={setControlRatings} controlRatings={controlRatings}/>} />
 
             <Route exact path="/login" element={<Login/>} />
             <Route exact path="/register" element={<Register />} />
