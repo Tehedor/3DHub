@@ -26,8 +26,6 @@ public class PrinterDTO {
     @NotBlank
     private EPrinterType printerType;
 
-    private String fileFormat;
-
     private Double servicePrice;
 
     private Integer maxUnities;

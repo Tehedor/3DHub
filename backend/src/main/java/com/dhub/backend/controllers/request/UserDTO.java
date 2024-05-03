@@ -32,8 +32,6 @@ public class UserDTO {
     
     private Set<Role> roles;
     
-    private String fileFormat;
-
     private String address;
 
     private String factAddress;

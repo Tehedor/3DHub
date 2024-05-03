@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dhub.backend.controllers.request.PrinterDTO;
 import com.dhub.backend.controllers.request.RatingsDTO;
 import com.dhub.backend.models.ERole;
 import com.dhub.backend.models.Order;
@@ -31,6 +32,7 @@ import com.dhub.backend.repository.OrderRepository;
 import com.dhub.backend.repository.RatingsRepository;
 import com.dhub.backend.repository.UserRepository;
 import com.dhub.backend.services.RatingsService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.validation.Valid;
 
@@ -56,13 +58,14 @@ public class RatingsController {
      */    
     @PostMapping
     public ResponseEntity<HttpStatus> createReview(@RequestParam("file") MultipartFile file,
-    @RequestParam("textRating") String textRating, @RequestParam("productRating") int productRating,
-    @RequestParam("manufacturerRating") int manufacturerRating, @RequestParam("order_id") Long order_id) throws IOException {
+    @RequestParam("data") String ratingsString) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        RatingsDTO ratingsDTO = objectMapper.readValue(ratingsString, RatingsDTO.class);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = (authentication != null) ? authentication.getName() : null;
         UserEntity user = userRepository.findByUsername(username)
         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
-        Long orderId = order_id;
+        Long orderId = ratingsDTO.getOrder_id();
         Order order = orderRepository.findById(orderId)
         .orElseThrow(() -> new RuntimeException("Error: Pedido no encontrado."));
         // Comprobar que existe el pedido
@@ -72,7 +75,8 @@ public class RatingsController {
         if (user.getId() != order.getUserEntity().getId()) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        Ratings ratings = ratingsService.createRatingWithFile(file, textRating, productRating, manufacturerRating, order.getId());
+        Ratings ratings = ratingsService.createRatingWithFile(file, ratingsDTO);
+        ratings.setOrder(order);
         ratingsRepository.save(ratings);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
