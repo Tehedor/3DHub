@@ -171,7 +171,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         String url = "http://localhost:5000/process";
-        String jsonData = "{\"price_filamen\": 0.02, \"filament_width\": 0.15}";
+        String jsonData = "{\"price_filamen\": "+ printer.getServicePrice() +", \"filament_width\": "+printer.getPrinterPrecision()+ "}";
         String body = "";
         Double price = 0.0;
 
