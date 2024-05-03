@@ -22,9 +22,6 @@ public class RatingsDTO {
 
     private String fileFormat;
 
-    @Lob
-    private byte[] file;
-
     @NotBlank
     private String textRating;
 

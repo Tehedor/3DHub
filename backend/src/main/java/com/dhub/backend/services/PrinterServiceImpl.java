@@ -28,7 +28,6 @@ public class PrinterServiceImpl implements PrinterService{
         printerDTO.setModelName(printer.getModelName());
         printerDTO.setPrinterLocation(printer.getPrinterLocation());
         printerDTO.setPrinterType(printer.getPrinterType());
-        printerDTO.setPrinterPhoto(printer.getPrinterPhoto());
         printerDTO.setServicePrice(printer.getServicePrice());
         printerDTO.setMaxUnities(printer.getMaxUnities());
         printerDTO.setManufacturationSpeed(printer.getManufacturationSpeed());

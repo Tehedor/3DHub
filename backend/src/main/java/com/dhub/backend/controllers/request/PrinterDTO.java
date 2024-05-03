@@ -28,9 +28,6 @@ public class PrinterDTO {
 
     private String fileFormat;
 
-    @Lob
-    private byte[] printerPhoto;
-
     private Double servicePrice;
 
     private Integer maxUnities;
