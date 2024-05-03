@@ -39,7 +39,6 @@ public class    OrderDTO {
 
     private double deliveryPrice;
 
-    @NotBlank
     private Long user_id;
 
     @NotBlank
