@@ -137,10 +137,9 @@ export default function Home(props) {
         <div>
             <h2 id="catálogo">impresoras</h2> 
             {loading ? <img id="loading" src={process.env.PUBLIC_URL + "/spinners/cxyduck.gif"} className="spinner" alt="spinner" />:
-        
-            <Row>
-                <ImpresorasLista printers={theprinters} ratings={theratings} />
-            </Row>  
+                <Row>
+                    <ImpresorasLista printers={theprinters} ratings={theratings} />
+                </Row>  
             }
         </div>
     );
