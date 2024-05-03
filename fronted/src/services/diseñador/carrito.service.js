@@ -16,8 +16,8 @@ const app = axios.create({
 // ##### ##### ##### ##### ##### ##### ##### ##### #####
 const getPedidosCarrito = () => {
   return app
-  // .get("api/orders/kart", {
-    .get("orders/designer", {
+  .get("orders/kart", {
+    // .get("orders/designer", {
     })
     .then((response) => {
       // if (response.data) {

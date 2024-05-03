@@ -127,7 +127,8 @@ export default function Carrito(props) {
                             {/* ######################## */}
                             {/* Boton comprar */}
                             {/* ######################## */}
-                            <Button id="volver" variant="primary"  onClick={comprar} href="/">Comprar</Button>
+                            {/* <Button id="volver" variant="primary"  onClick={comprar} href="/">Comprar</Button> */}
+                            <Button id="volver" variant="primary"  onClick={comprar} href="/carritocompra/pasarelapago">Comprar</Button>
                         </Col>
 
                     </Row>

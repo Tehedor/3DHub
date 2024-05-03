@@ -14,6 +14,7 @@ import Profile from "./components/home/Profile";
 
 import ControlPedidos from "./components/disenador/Pedidos/ControlPedidos";
 import Carrito from "./components/disenador/Carrito/Carrito";
+import PasarelaPago from "./components/disenador/Carrito/PasarelaPago";
 
 import Notificaciones from "./components/fabricante/Notificaciones/Notificaciones";
 import ImpresorasFabri from "./components/fabricante/Impresoras/TodasImpresoras";
@@ -105,6 +106,7 @@ const App = () => {
             <Route exact path="/pedidos/*" element={<ControlPedidos />} />
             
             <Route exact path="/carritocompra" element={<Carrito />} />
+            <Route exact path="/carritocompra/pasarelapago" element={<PasarelaPago />} />
           
             <Route exact path="/notificaciones" element={<Notificaciones />} />
             <Route exact path="/impresorasfabri" element={<ImpresorasFabri />} />

@@ -5,3 +5,6 @@ profilePhotos/
 orderFiles/
 ratingsPhotos/
 microservicioPython/configuraciones/export-gcodes/
+
+
+backend/src/main/resources/application.properties
