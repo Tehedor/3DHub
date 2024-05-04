@@ -31,6 +31,16 @@ function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser
 
 
   // ##### ##### ##### ##### ##### ##### ##### #####
+  // ##### ##### Control de filtros
+  // ##### ##### ##### ##### ##### ##### ##### #####
+  const [printerType, setPrinterType] = useState('');
+
+
+
+
+
+
+  // ##### ##### ##### ##### ##### ##### ##### #####
   // ##### ##### Control de búsqueda
   // ##### ##### ##### ##### ##### ##### ##### #####
   const [localQuery, setLocalQuery] = useState(query);
@@ -130,21 +140,43 @@ function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser
                 </InputGroup>
               </Row> */}
               <Row className="w-100">
-  <Accordion defaultActiveKey="0" flush>
-    <Accordion.Item eventKey="0">
-      <Accordion.Header>Accordion Item #1</Accordion.Header>
-      <Accordion.Body style={{  zIndex: 4 }}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-        eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-        minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-        aliquip ex ea commodo consequat. Duis aute irure dolor in
-        reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-        culpa qui officia deserunt mollit anim id est laborum.
-      </Accordion.Body>
-    </Accordion.Item>
-  </Accordion>
-</Row>
+                <Accordion flush>
+                  <Accordion.Item eventKey="0">
+                    <Accordion.Header>Filtro
+                    </Accordion.Header>
+                    <Accordion.Body style={{ zIndex: 4 }}>
+                      <Col md={6}>
+                        <Row className="printertype">
+                          {/* #################### */}
+                          {/* TIPO DE LA IMPRESORA */}
+                          {/* #################### */}
+                          <div className="form-group">
+                            <label htmlFor="printerType">Tipo de impresora</label>
+                            <select
+                              className="form-control"
+                              name="printerType"
+                              value={printerType}
+                              onChange={e => setPrinterType(e.target.value)}
+                            >
+                              <option value="">Seleccione el tipo de impresora</option>
+                              <option value="FDM">FDM - Deposición de material Fundido</option>
+                              <option value="SLA">SLA - Resina (Estereolitografia)</option>
+                              <option value="MSLA">MSLA - Máscara de Sombra de Matriz de Pixeles</option>
+                              <option value="DLP">DLP - Resina (Procesamiento Digital de Luz)</option>
+                              <option value="SLS">SLS - Sintetización Selectiva por laser</option>
+                              <option value="MJ">MJ - Inyección de Material</option>
+                              <option value="MJF">MJF - Fusión Multijet</option>
+                            </select>
+                          </div>
+                        </Row>
+                      </Col>
+                      <Col md={6}>
+                        buenas
+                      </Col>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                </Accordion>
+              </Row>
             </Form>
           </Container>
           {/* Role/Login */}
