@@ -30,6 +30,8 @@ import Home from "./components/home/Home";
 
 import EventBus from "./common/EventBus";
 
+// import AuthService from "./services/auth.service.js";
+
 const App = () => {
 
   // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
@@ -45,7 +47,10 @@ const App = () => {
   const [controlPrinters, setControlPrinters] = useLocalStorage('printers',[]); 
   const [controlRatings, setControlRatings] = useLocalStorage('ratings',[]);
   const [controlFabricantes, setControlFabricantes] = useLocalStorage('fabricantes',[]);
+  // const descargar = AuthService.getDescargarUsuario();
+  // console.log(descargar);
   const [controlUsuario, setControlUsuario] = useLocalStorage('usuarioDescargado',[]);
+  console.log(controlUsuario);
   
   // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
   // ##### ##### Control de roles
