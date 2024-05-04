@@ -36,9 +36,11 @@ import com.dhub.backend.repository.UserRepository;
 import com.dhub.backend.controllers.request.OrderDTO;
 import com.dhub.backend.controllers.request.PrinterDTO;
 import com.dhub.backend.controllers.request.RatingsDTO;
+import com.dhub.backend.controllers.request.UserDTO;
 import com.dhub.backend.services.GoogleCloudStorageService;
 import com.dhub.backend.services.PrinterServiceImpl;
 import com.dhub.backend.services.RatingsService;
+import com.dhub.backend.services.UserEntityService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.Data;
@@ -58,6 +60,9 @@ public class PrinterController {
     private UserRepository userRepository;
 
     @Autowired
+    private UserEntityService userService;
+
+    @Autowired
     private PrinterRepository printerRepository;
 
     @Autowired
@@ -74,6 +79,12 @@ public class PrinterController {
         if(printers.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
+
+        List<UserDTO> usersDTO = new ArrayList<>();
+        for (Printer printer : printers) {
+            usersDTO.add(userService.convertToDTO(printer.getUserEntity()));
+        }
+
         List<PrinterDTO> printersDTO = new ArrayList<>();
         for (Printer printer : printers) {
             printersDTO.add(printerService.convertToDTO(printer));
@@ -87,6 +98,7 @@ public class PrinterController {
         Map<String, Object> response = new HashMap<>();
         response.put("printers", printersDTO);
         response.put("ratings", ratingsDTO);
+        response.put("users", usersDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

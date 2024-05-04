@@ -39,4 +39,6 @@ public class CreateUserDTO {
 
     private String factAddress;
 
+    private String iban;
+
 }

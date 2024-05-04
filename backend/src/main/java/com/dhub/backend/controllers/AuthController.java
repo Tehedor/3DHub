@@ -71,6 +71,7 @@ public class AuthController {
             .email(createUserDTO.getEmail())
             .address(createUserDTO.getAddress())
             .factAddress(createUserDTO.getFactAddress())
+            .iban(createUserDTO.getIban())
             .roles(roles)
             .build();
 
