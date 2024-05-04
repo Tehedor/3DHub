@@ -77,7 +77,7 @@ export default function Ver(props) {
                     </Col>
                     <Col md={6} lg={9} class="datos_impresora">
                         <Row style={{backgroundColor: "gray"}}>
-                       <Col sm={4} style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <Col sm={4} style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                             <Card.Text style={{color: 'black'}}>Nombre: {printer.modelName}</Card.Text>
                         </Col>
                             <Col sm={4}>

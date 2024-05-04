@@ -50,7 +50,7 @@ const confirmarEntrga = (id) => {
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
 // ##### ##### Post añadir pedido
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
-const añadirPedido = (file, cantidad, fechaFabricacion, fechaEntrega, especificaciones, printer) => {
+const añadirPedido = (file, cantidad, fechaFabricacion, fechaEntrega, especificaciones, printer, address) => {
   const fechaFabricacionFormated = new Date(fechaFabricacion).toISOString().split('T')[0];
   console.log(file);
   // console.log(filepruebas);
@@ -68,7 +68,7 @@ const añadirPedido = (file, cantidad, fechaFabricacion, fechaEntrega, especific
     specs: especificaciones,
     printer_id: printer,
     // status: "KART",
-    address: "Calle de la Princesa, 1, 28008 Madrid, España"
+    address: address
   };
   console.log(data);
 
