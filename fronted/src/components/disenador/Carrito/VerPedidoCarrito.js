@@ -1,4 +1,4 @@
-import {Card,Row, Col, Button} from "react-bootstrap";
+import { Card, Row, Col, Button, Table } from "react-bootstrap";
 
 // Apis
 import CarritoService from "../../../services/diseñador/carrito.service";
@@ -9,25 +9,28 @@ export default function VerPedidoCarrito(props) {
     // ##### ##### Variables de descarga
     // ##### ##### ##### ##### ##### ##### ##### ##### #####
     const carrito = props.carrito;
+    console.log("carrito", carrito);
     const printer = props.printer;
+    console.log("printer", printer);
     const fabricante = props.fabricante;
-    
+    console.log("fabricante", fabricante);
+
     // ##### ##### ##### ##### ##### ##### ##### ##### #####
     // ##### ##### Función eliminar pedido
     // ##### ##### ##### ##### ##### ##### ##### ##### #####
-    const eliminarPedido = () => { 
+    const eliminarPedido = () => {
         console.log("Eliminando pedido");
         console.log(carrito.id);
         CarritoService.deletePedido(carrito.id);
     }
-    
+
     // ##### ##### ##### ##### ##### ##### ##### ##### #####
     // ##### ##### Return
     // ##### ##### ##### ##### ##### ##### ##### ##### #####
-    return(
-        <Card border="gray" > 
+    return (
+        <Card border="gray" >
 
-            <Card.Header   style={{ backgroundColor: 'orange', color: 'white', fontWeight: 'bold' }}>
+            <Card.Header style={{ backgroundColor: 'orange', color: 'white', fontWeight: 'bold' }}>
                 <Row>
 
                     <Col lm={5}>
@@ -41,28 +44,54 @@ export default function VerPedidoCarrito(props) {
                     <Col lm={2}>
                         <Button variant="danger" size="sm" onClick={eliminarPedido}>Eliminar</Button>
                     </Col>
- 
+
                 </Row>
             </Card.Header>
 
-            <Card.Body>                
+            <Card.Body>
                 <Row>
-                    <Col >            
-                        <Row>id: {carrito.id}</Row>
-                        <Row>Fecha de pedido: {carrito.orderdate}</Row>
-                        <Row>Fecha de fabricación: {carrito.manufacturerdate}</Row>
-                        <Row>Fecha de recogida: {carrito.pickupdate}</Row>
-                        <Row>Número de impresoras: {carrito.number}</Row>
-                        <Row>Estado: {carrito.status}</Row>
-                        <Row>Especificaciones: {carrito.specs}</Row>
-                    </Col> 
+                    <Col md={4}>
+                        <Row className="text-start">id: {carrito.id}</Row>
+                        <Row className="text-start">Fecha de pedido: {new Date(carrito.orderDate).toLocaleDateString('es-ES')}</Row>
+                        <Row className="text-start">Fecha de fabricación: {new Date(carrito.manufacturerDate).toLocaleDateString('es-ES')}</Row>
+                        <Row className="text-start">Fecha de entrega: {new Date(carrito.deliveryDate).toLocaleDateString('es-ES')}</Row>
+                        <Row className="text-start">Dirección: {carrito.address}</Row>
+                    </Col>
+                    <Col md={4} >
+                        <Row>
+                            <p>Especificaciones:</p>
+                            <p>{carrito.specs}</p>
+                        </Row>
+                    </Col>
+                    <Col md={4} >
+                        <Table responsive="sm" bordered striped style={{ border: '2px solid black' }}>
+                            <tbody>
+                                <tr>
+                                    <td>Precio Producto</td>
+                                    <td>{carrito.productPrice} €</td>
+                                </tr>
+                                <tr>
+                                    <td>Precio Envio</td>
+                                    <td>{carrito.deliveryPrice} €</td>
+                                </tr>
+                                <tr>
+                                    <td>Cantidad impresiones</td>
+                                    <td>{carrito.quantity}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Precio Total</strong></td>
+                                    <td><strong>{(carrito.productPrice + carrito.deliveryPrice) * carrito.quantity} €</strong></td>
+                                </tr>
+                            </tbody>
+                        </Table>
+                    </Col>
                 </Row>
-           
+
             </Card.Body>
 
-        </Card>  
+        </Card>
     );
- 
+
 }
 
 

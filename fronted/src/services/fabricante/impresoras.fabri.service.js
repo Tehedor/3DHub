@@ -14,16 +14,16 @@ const app = axios.create({
 // ##### ##### ##### ##### ##### ##### ##### ##### #####
 // ##### ##### Post create printer
 // ##### ##### ##### ##### ##### ##### ##### ##### #####
-const createPrinter = (modelName, printerLocation, printerType, printerPhoto, servicePrice, maxUnities, manufacturationSpeed, material, maxWidth,maxHeight, printerPrecision,color) => {
+const createPrinter = (modelName, printerLocation, printerType, printerPhoto, servicePrice, maxUnities, manufacturationSpeed, material, maxWidth, maxHeight, printerPrecision, color) => {
   return app.
-  post("printers", {
-      modelName, 
-      printerLocation, 
-      printerType, 
-      printerPhoto, 
-      servicePrice, 
-      maxUnities, 
-      manufacturationSpeed, 
+    post("printers", {
+      modelName,
+      printerLocation,
+      printerType,
+      printerPhoto,
+      servicePrice,
+      maxUnities,
+      manufacturationSpeed,
       material,
       maxWidth,
       maxHeight,
@@ -31,35 +31,33 @@ const createPrinter = (modelName, printerLocation, printerType, printerPhoto, se
       color
     });
 };
-  
+
 // ##### ##### ##### ##### ##### ##### ##### ##### #####
 // ##### ##### Get Impresoras fabricante
 // ##### ##### ##### ##### ##### ##### ##### ##### #####
 const getImpresorasFabricante = () => {
   return app.
-  get("printers/printers")
-  .then((response) => {
-    
-    // if (response.data) {
+    get("printers/manufacturer")
+    .then((response) => {
+
+      // if (response.data) {
       //   localStorage.setItem("printersFabri", JSON.stringify(response.data)); // localStorage.setItem("user", JSON.stringify(response.data));: Si la propiedad username existe, entonces se almacena el objeto data de la respuesta en el almacenamiento local del navegador bajo la clave "user". Antes de almacenarlo, el objeto data se convierte en una cadena JSON.
       //   console.log(JSON.parse(localStorage.getItem("printersFabri")));
       // }
       return response;
-    }); 
-    
+    });
+
 }
-  
+
 // ##### ##### ##### ##### ##### ##### ##### ##### #####
 // ##### ##### Get Impresoras fabricante
 // ##### ##### ##### ##### ##### ##### ##### ##### #####
 const deletePrinter = (id) => {
-  // console.log("id",id);
+  console.log("id", id);
+  const idString = id.toString();
   return app.
-  delete(`deletePrinter`, 
-  {
-    id
-  }
-);
+    delete(`printers/${idString}`,
+    );
 }
 
 // ##### ##### ##### ##### ##### ##### ##### ##### #####

@@ -27,9 +27,11 @@ export default function CarritoLista(props) {
     
     const searchFabricante = (id) => {
         const printer = searchPrinter(id);
-        const idFabricante = printer.userIdFabricante;
+        const idFabricante = printer.idFabricante;
+        console.log(idFabricante);
         for (let i = 0; i < fabricantes.length; i++) {
-            if (fabricantes[i].id == id) {
+            if (fabricantes[i].id == idFabricante) {
+                console.log(fabricantes[i]);
                 return fabricantes[i];
             }
         }

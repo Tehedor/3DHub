@@ -19,7 +19,7 @@ const app = axios.create({
 
 const appform = axios.create({
   baseURL: "http://localhost:8080/api/",
-  headers: { 
+  headers: {
     'Content-Type': 'multipart/form-data',
     'Authorization': `Bearer ${token}`
   },
@@ -29,9 +29,9 @@ const appform = axios.create({
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
 const revisado = (id) => {
   return app
-  .put(`orders/${id}/status`, {
-    "name": "PAY"
-  })
+    .put(`orders/${id}/status`, {
+      "name": "PAY"
+    })
 }
 
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
@@ -40,10 +40,10 @@ const revisado = (id) => {
 const confirmarEntrga = (id) => {
   console.log(id);
   return app
-  .put(`orders/${id}/status`, {
-  // .post(`orders/${id}/status`, {
-    "name": "DELIVERED"
-  })
+    .put(`orders/${id}/status`, {
+      // .post(`orders/${id}/status`, {
+      "name": "DELIVERED"
+    })
 }
 
 
@@ -60,65 +60,74 @@ const añadirPedido = (file, cantidad, fechaFabricacion, fechaEntrega, especific
   console.log(fechaEntregaFormated);
 
   const data = {
-    // manufacturerDate: fechaFabricacionFormated,
-    manufacturerDate: "2022-11-16",
-    // deliveryDate: fechaEntregaFormated,
-    deliveryDate: "2022-11-16",
+    manufacturerDate: fechaFabricacionFormated,
+    deliveryDate: fechaEntregaFormated,
     quantity: cantidad,
     specs: especificaciones,
     printer_id: printer,
-    // status: "KART",
     address: address
   };
   console.log(data);
 
-  // data:{"manufacturerDate":"2022-11-16","deliveryDate":"2022-11-16","quantity":3,"specs":"Debe de tener cosas","printer_id":3,"address":"Calle de la Princesa, 1, 28008 Madrid, España"}
-
   const formData = new FormData();
   formData.append('data', JSON.stringify(data));
-  // formData.append('data', data);
-  formData.append('file', file); // Asegúrate de tener el archivo definido
-  // formData.append('file', filepruebas); // Asegúrate de tener el archivo definido
-  // formData.append('file', fileBuffer); // Asegúrate de tener el archivo definido
+  formData.append('file', file);
 
-
-  // return appform.
   return appform
-  .post(`orders`, formData)
-  .then((response) => {
-    console.log(response);
-    return response;
-  });
+    .post(`orders`, formData)
+    .then((response) => {
+      console.log(response);
+      return response;
+    });
 
 }
 
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
 // ##### ##### Post añadir reseña
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
-const añadirReseña = (productRating, manufacturerRating, textRating, file, order_id) => {
-  // const fechaFabricacionFormated = new Date(fechaFabricacion).toISOString().split('T')[0];
-  // const fechaEntregaFormated = new Date(fechaEntrega).toISOString().split('T')[0];
-  // const stringsprinter = String(printer);
-//   const printer = "1";
+// const añadirReseña = (productRating, manufacturerRating, textRating, file, order_id) => {
+//   // const fechaFabricacionFormated = new Date(fechaFabricacion).toISOString().split('T')[0];
+//   // const fechaEntregaFormated = new Date(fechaEntrega).toISOString().split('T')[0];
+//   // const stringsprinter = String(printer);
+// //   const printer = "1";
+
+//   const date = new Date().toISOString().split('T')[0];
 //   return app
-//   .post(`orders/create/${printer}`, {
-//     date: "07/02/2024",
+//   .post(`ratings`, {  
+//     date: date,
 //     productRating: productRating,
 //     manufacturerRating: manufacturerRating,
 //     textRating: textRating,
-//     file: null
+//     file: null,
+//     order_id:order_id
 //   })
 // }
-  const date = new Date().toISOString().split('T')[0];
-  return app
-  .post(`ratings`, {  
-    date: date,
-    productRating: productRating,
-    manufacturerRating: manufacturerRating,
-    textRating: textRating,
-    file: null,
-    order_id:order_id
-  })
+const añadirReseña = (valorProducto, valorFabricante, reseñaTexto, foto, order_id) => {
+  // const fechaFabricacionFormated = new Date(fechaFabricacion).toISOString().split('T')[0];
+  // const fechaEntregaFormated = new Date(fechaEntrega).toISOString().split('T')[0];
+  // const stringsprinter = String(printer);
+  //   const printer = "1";
+
+
+  const data = {
+    manufacturerRating: valorFabricante,
+    productRating: valorProducto,
+    textRating: reseñaTexto,
+    order_id: order_id
+  };
+  console.log(data);
+
+  const formData = new FormData();
+  formData.append('data', JSON.stringify(data));
+  formData.append('file', foto);
+
+  return appform
+    .post(` ratings`, formData)
+    .then((response) => {
+      console.log(response);
+      return response;
+    });
+
 }
 
 
@@ -127,28 +136,28 @@ const añadirReseña = (productRating, manufacturerRating, textRating, file, ord
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
 const getPedidos = () => {
   return app
-  .get("orders/designer", {
-  })
-  .then((response) => {
-    // if (response) {
+    .get("orders/designer", {
+    })
+    .then((response) => {
+      // if (response) {
       //   localStorage.setItem("orderDesigner", JSON.stringify(response)); 
       //   console.log(JSON.parse(localStorage.getItem("orderDesigner"))); 
       // }
       return response;
     });
-  };
+};
 
 // ##### ##### ##### ##### ##### ##### ##### ##### #####
 // ##### ##### delete Pedido
 // ##### ##### ##### ##### ##### ##### ##### ##### #####
 const deletePedido = (id) => {
   return app
-  .delete(`api/orders/${id}`)
+    .delete(`api/orders/${id}`)
 }
 
 
 
-  
+
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
 // ##### ##### Resuemn
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####

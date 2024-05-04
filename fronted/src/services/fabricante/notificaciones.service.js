@@ -80,6 +80,19 @@ const deletePedido = (id) => {
 }
 
 // ##### ##### ##### ##### ##### ##### ##### ##### #####
+// ##### ##### downloadFile
+// ##### ##### ##### ##### ##### ##### ##### ##### #####
+const downloadFile = (id) => {
+  console.log(id);
+  // return app
+  // .get(`orders/fiel/${id}`)
+  // .then((response) => {
+  //   console.log(response.data);
+  //   return response;
+  // });
+}
+
+// ##### ##### ##### ##### ##### ##### ##### ##### #####
 // ##### ##### Resumen
 // ##### ##### ##### ##### ##### ##### ##### ##### #####
 const NotificacionService = {
@@ -89,6 +102,7 @@ const NotificacionService = {
   creadoEnviado,
   getPedidosFabricante,
   deletePedido,
+  downloadFile
 }
 
 export default NotificacionService;

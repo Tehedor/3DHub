@@ -1,19 +1,24 @@
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import VerPedir from "./VerPedir";
 
 export default function ImpresorasLista(props) {
-    let lista = props.printers;    
+    let lista = props.printers ? props.printers : [];
     console.log(lista);
 
 
     let ratings = props.ratings;
 
-   return(
+    return (
         <div id="productosresultados" >
-                {lista.map((items,index) => (
+            {lista.length > 0 ? (
+                lista.map((items, index) => (
                     <Link to={`/pedirpedido/${index}`} style={{ textDecoration: 'none' }}>
                         <VerPedir printer={items} ratings={ratings} />
                     </Link>
-                ))}
-        </div>);
+                ))
+            ) : (
+                <p>No hay impresoras disponibles.</p>
+            )}
+        </div>
+    );
 }

@@ -11,6 +11,7 @@ export default function VerImpresora(props) {
     const deletePrinter = () => {
         // console.log("ideliminar", printerId);      
         ImpresorasServiceFabri.deletePrinter(printerId);
+        window.location.reload();
     };
     
     return(

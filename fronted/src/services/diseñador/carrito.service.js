@@ -14,7 +14,7 @@ const app = axios.create({
 // ##### ##### ##### ##### ##### ##### ##### ##### #####
 // ##### ##### Get Carrito
 // ##### ##### ##### ##### ##### ##### ##### ##### #####
-const getPedidosCarrito = () => {
+const getPedidosCarrito = async () => {
   return app
   .get("orders/kart", {
     // .get("orders/designer", {
