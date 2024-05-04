@@ -75,6 +75,9 @@ public class RatingsController {
         if (user.getId() != order.getUserEntity().getId()) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+        if (ratingsRepository.findByOrderId(order.getId()) != null) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
         Ratings ratings = ratingsService.createRatingWithFile(file, ratingsDTO);
         ratings.setOrder(order);
         ratingsRepository.save(ratings);

@@ -159,7 +159,7 @@ public class OrderController {
         EStatus status = EStatus.KART;
         Order order = new Order();
         orderDTO.setStatus(status);
-        orderDTO.setUser_id(user.getId());
+        orderDTO.setDesigner_id(user.getId());
         orderDTO.setPrinter_id(printer.getId());
         order = orderService.createOrderWithFile(file, orderDTO);
         orderRepository.save(order);
@@ -247,8 +247,8 @@ public class OrderController {
         }
 
         List<UserDTO> usersDTO = new ArrayList<>();
-        for (OrderDTO statu : ordersKartDTO) {
-            UserEntity userEntity = userRepository.findById(statu.getUser_id())
+        for (Order order : ordersKart) {
+            UserEntity userEntity = userRepository.findById(order.getPrinter().getUserEntity().getId())
                 .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
             usersDTO.add(userEntityService.convertToDTO(userEntity));
         }
@@ -296,7 +296,7 @@ public class OrderController {
         }
         List<UserDTO> users = new ArrayList<>();
         for (Order order : orders) {
-            UserEntity userEntity = userRepository.findById(order.getUserEntity().getId())
+            UserEntity userEntity = userRepository.findById(order.getPrinter().getUserEntity().getId())
                 .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
             users.add(userEntityService.convertToDTO(userEntity));
         }
@@ -406,7 +406,7 @@ public class OrderController {
 
         List<UserDTO> usersDTO = new ArrayList<>();
         for (OrderDTO order : ordersDTOByPrinter) {
-            UserEntity userEntity = userRepository.findById(order.getUser_id())
+            UserEntity userEntity = userRepository.findById(order.getDesigner_id())
                 .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
             usersDTO.add(userEntityService.convertToDTO(userEntity));
         }
