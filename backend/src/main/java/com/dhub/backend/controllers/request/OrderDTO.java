@@ -19,6 +19,8 @@ public class    OrderDTO {
 
     private Date orderDate;
 
+    private String urlPhoto;
+
     private EStatus status;
 
     @NotBlank
