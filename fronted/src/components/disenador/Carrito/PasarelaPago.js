@@ -161,15 +161,10 @@ export default function Pasareladepago(props) {
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     // ##### ##### Funciones de comprar (cambio de estado a "PAY")
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
-    const comprar = () => {
-        for (let i = 0; i < 1; i++) {
-            // for (let i = 0; i < theCarrito.length; i++) {
-            console.log("carrito", theCarrito[i].id);
-            if (theCarrito[i].status === "KART") {
-                CarritoService.order(theCarrito[i].id);
-            }
-        }
-
+    const comprar = async () => {
+        console.log(theCarrito.length);
+        const promises = theCarrito.map(item => CarritoService.order(item.id));
+        await Promise.all(promises);
     }
 
 
