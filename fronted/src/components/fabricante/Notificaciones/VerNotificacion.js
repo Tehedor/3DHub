@@ -12,6 +12,7 @@ export default function VerNotificaciones(props) {
     const pedidos = props.pedidos;
     const printer = props.printer;
     const diseñador = props.diseñador;
+    console.log(diseñador);
 
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     // ##### ##### Cmabio de estados 

@@ -400,7 +400,7 @@ function PedirPedido(props) {
             </Form >
           ) : null}
           <Row className="d-flex justify-content-center align-items-center" style={{ marginTop: '10px' }}>
-            <ReseñaLista printer={printer} ratings={allratings} numberPrinter={numberPrinter} />
+            <ReseñaLista printer={printer} ratings={allratings} numberPrinter={numberPrinter}  />
           </Row>
         </Container>
       }

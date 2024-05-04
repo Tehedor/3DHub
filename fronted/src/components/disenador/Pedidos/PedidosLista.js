@@ -1,15 +1,15 @@
 import VerPedidos from "./VerPedidos";
 
 export default function PedidosLista(props) {
-    
+
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     // ##### ##### Datos descargados
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
-    let lista = props.pedidos;    
+    let lista = props.pedidos;
     let fabricantes = props.fabricantes;
     let printers = props.printers;
     let reseñas = props.reseñas;
-    
+
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     // ##### ##### Funciones de busqueda
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
@@ -20,29 +20,41 @@ export default function PedidosLista(props) {
             }
         }
     }
-    
+
     const searchReseña = (id) => {
-        if (reseñas !== undefined){
-            for (let i=0; i < reseñas.length; i++ ) {
+        if (reseñas !== undefined) {
+            for (let i = 0; i < reseñas.length; i++) {
                 if (reseñas.id == id) {
                     return reseñas[i];
-				}
-			}
-		}
-		return false;
-	}
-    
-    
+                }
+            }
+        }
+        return false;
+    }
+
+
+    const searchFabricante = (id) => {
+        const printer = searchPrinter(id);
+        const idFabricante = printer.idFabricante;
+        for (let i = 0; i < fabricantes.length; i++) {
+            console.log(fabricantes[i]);
+            if (fabricantes[i].id == idFabricante) {
+                return fabricantes[i];
+            }
+        }
+    }
+
+
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     // ##### ##### Return
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
-   return(
+    return (
         <div id="productosresultados" >
-                { Array.isArray(lista) && lista.length > 0 &&lista.map((items,index) => (
-                    items.status !== "KART" && 
+            {Array.isArray(lista) && lista.length > 0 && lista.map((items, index) => (
+                items.status !== "KART" &&
 
-                        <VerPedidos pedidos={items} printer={searchPrinter(items.printer_id)} reseña={searchReseña(items.id)}/>
-                
-                ))}
+                <VerPedidos pedidos={items} printer={searchPrinter(items.printer_id)} reseña={searchReseña(items.id)} fabricante={searchFabricante(items.printer_id)} />
+
+            ))}
         </div>);
 }

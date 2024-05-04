@@ -5,7 +5,7 @@ import AuthService from "../../services/auth.service";
 
 
 import './NavBar.css';
-import { Navbar, Nav, Form, FormControl, Button, Container, Row, Col, InputGroup, Image, ButtonGroup, ToggleButton } from 'react-bootstrap';
+import { Navbar, Nav, Form, FormControl, Button, Container, Row, Col, InputGroup, Image, ButtonGroup, ToggleButton, Accordion } from 'react-bootstrap';
 
 function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser, logOut, theRollActual, setTheRollControl, setCambioRoll, cambioRoll }) {
 
@@ -28,6 +28,16 @@ function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser
   const rolesUser = AuthService.getUserRoles();
   console.log(rolesUser);
   const hasRole = (role) => rolesUser.includes(role);
+
+
+  // ##### ##### ##### ##### ##### ##### ##### #####
+  // ##### ##### Control de filtros
+  // ##### ##### ##### ##### ##### ##### ##### #####
+  const [printerType, setPrinterType] = useState('');
+
+
+
+
 
 
   // ##### ##### ##### ##### ##### ##### ##### #####
@@ -119,15 +129,53 @@ function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser
             <Form inline className="justify-content-center flex-grow-1" id="find">
               <Row className="w-100">
                 <InputGroup className="mb-3" size="sm">
-                  <FormControl placeholder="Search" aria-label="Search" aria-describedby="basic-addon2" value={localQuery} onChange={handleQueryChange} onClick={() => setLocalQuery('')} />
-                  <Button variant="light" id="button-addon2" onClick={handleSearchClick}> Search </Button>
-                </InputGroup>
-              </Row>
-              <Row className="w-100">
-                <InputGroup className="mb-3" size="sm">
                   <FormControl placeholder="Location" aria-label="Search" aria-describedby="basic-addon2" value={localQueryUbica} onChange={handleQueryUbicaChange} onClick={() => setLocalQueryUbica('')} />
                   <Button variant="light" id="button-addon2" onClick={handleSearchClick}>Search</Button>
                 </InputGroup>
+              </Row>
+              {/* <Row className="w-100">
+                <InputGroup className="mb-3" size="sm">
+                <FormControl placeholder="Search" aria-label="Search" aria-describedby="basic-addon2" value={localQuery} onChange={handleQueryChange} onClick={() => setLocalQuery('')} />
+                <Button variant="light" id="button-addon2" onClick={handleSearchClick}> Search </Button>
+                </InputGroup>
+              </Row> */}
+              <Row className="w-100">
+                <Accordion flush>
+                  <Accordion.Item eventKey="0">
+                    <Accordion.Header>Filtro
+                    </Accordion.Header>
+                    <Accordion.Body style={{ zIndex: 4 }}>
+                      <Col md={6}>
+                        <Row className="printertype">
+                          {/* #################### */}
+                          {/* TIPO DE LA IMPRESORA */}
+                          {/* #################### */}
+                          <div className="form-group">
+                            <label htmlFor="printerType">Tipo de impresora</label>
+                            <select
+                              className="form-control"
+                              name="printerType"
+                              value={printerType}
+                              onChange={e => setPrinterType(e.target.value)}
+                            >
+                              <option value="">Seleccione el tipo de impresora</option>
+                              <option value="FDM">FDM - Deposición de material Fundido</option>
+                              <option value="SLA">SLA - Resina (Estereolitografia)</option>
+                              <option value="MSLA">MSLA - Máscara de Sombra de Matriz de Pixeles</option>
+                              <option value="DLP">DLP - Resina (Procesamiento Digital de Luz)</option>
+                              <option value="SLS">SLS - Sintetización Selectiva por laser</option>
+                              <option value="MJ">MJ - Inyección de Material</option>
+                              <option value="MJF">MJF - Fusión Multijet</option>
+                            </select>
+                          </div>
+                        </Row>
+                      </Col>
+                      <Col md={6}>
+                        buenas
+                      </Col>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                </Accordion>
               </Row>
             </Form>
           </Container>

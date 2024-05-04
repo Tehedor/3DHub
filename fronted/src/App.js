@@ -44,6 +44,7 @@ const App = () => {
   // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
   const [controlPrinters, setControlPrinters] = useLocalStorage('printers',[]); 
   const [controlRatings, setControlRatings] = useLocalStorage('ratings',[]);
+  const [controlFabricantes, setControlFabricantes] = useLocalStorage('fabricantes',[]);
   
   // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
   // ##### ##### Control de roles
@@ -102,8 +103,8 @@ const App = () => {
           
         <div className="container mt-3">
           <Routes>
-            <Route exact path={"/"} element={<Home setControlPrinters={setControlPrinters} controlPrinters={controlPrinters} setControlRatings={setControlRatings} controlRatings={controlRatings} />} />
-            <Route exact path={"/home"} element={<Home setControlPrinters={setControlPrinters} controlPrinters={controlPrinters} setControlRatings={setControlRatings} controlRatings={controlRatings}/>} />
+            <Route exact path={"/"} element={<Home setControlPrinters={setControlPrinters} controlPrinters={controlPrinters} setControlRatings={setControlRatings} controlRatings={controlRatings} setControlFabricantes={setControlFabricantes}/>} />
+            <Route exact path={"/home"} element={<Home setControlPrinters={setControlPrinters} controlPrinters={controlPrinters} setControlRatings={setControlRatings} controlRatings={controlRatings} setControlFabricantes={setControlFabricantes}/>} />
 
             <Route exact path="/login" element={<Login setTheRollControl={setTheRollControl} theRollActual={theRollActual}  setCambioRoll={setCambioRoll}/>} />
             <Route exact path="/register" element={<Register />} />
@@ -118,7 +119,7 @@ const App = () => {
             <Route exact path="/impresorasfabri" element={<ImpresorasFabri />} />
             <Route exact path="/crearimpresora" element={<CrearImpresora />} />
 
-            <Route path="/pedirpedido/:printerId" element={<Location controlPrinters={controlPrinters} roll={roll} query={query} queryUbica={queryUbica} currentUser={currentUser} controlRatings={controlRatings} cambioRoll={cambioRoll}/>}/>
+            <Route path="/pedirpedido/:printerId" element={<Location controlPrinters={controlPrinters} roll={roll} query={query} queryUbica={queryUbica} currentUser={currentUser} controlRatings={controlRatings} cambioRoll={cambioRoll} controlFabricantes={controlFabricantes}/>}/>
 
             <Route exact path="/atencionCliente" element={<AtencionCliente />} />
 

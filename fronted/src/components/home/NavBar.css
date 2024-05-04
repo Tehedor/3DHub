@@ -4,6 +4,8 @@
     background-color: #0c304e; 
     padding: 15px; 
     align-items: center;
+    position: relative; /* Asegúrate de que la posición no sea 'static' */
+    /* z-index: -1; Establece el valor de z-index */
 }
 /* 
 .logo {

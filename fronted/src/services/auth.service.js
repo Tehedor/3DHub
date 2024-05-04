@@ -12,18 +12,18 @@ const app = axios.create({
 // ##### ##### Post registrar usuario
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
 // const register = (dni, username, email, password, lat, lon, address, factAdress, roles) => {
-const register = (dni, username, email, password,address, roles) => {
+const register = (dni, username, email, password,address, roles, iban) => {
   console.log("AuthService.register");
   return app.post("api/auth/createUser", {
-    dni,
-    username,
-    email,
-    password,
-    // lat,
+    dni: dni,
+    username: username,
+    email: email,
+    password: password,
+    iban : roles.includes("ROLE_MANUFACTURER") ? iban : null,
     // lon,
-    address,
+    address: address,
     // factAdress,
-    roles,
+    roles: roles,
   });
 };
 

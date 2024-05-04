@@ -106,16 +106,18 @@ export default function Home(props) {
             console.log(downloadprinters);
             dowloadratings = response.ratings;
             console.log(dowloadratings);
+            setThePrinters(downloadprinters);
+            props.setControlPrinters(downloadprinters);
+            console.log(theprinters);
+            setTheRatings(dowloadratings);
+            props.setControlRatings(dowloadratings);
+
+            props.setControlFabricantes(response.fabricantes);
         } catch (error) {
             // setResultados(
             // { "cod": error.cod, "message": cod.message}
             // );
         }
-        setThePrinters(downloadprinters);
-        props.setControlPrinters(downloadprinters);
-        console.log(theprinters);
-        setTheRatings(dowloadratings);
-        props.setControlRatings(dowloadratings);
     }
 
 
