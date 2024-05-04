@@ -27,6 +27,7 @@ export default function Home(props) {
     // Estado en el que se alamcenan las impresoras
     const [theprinters, setThePrinters] = useState([]);
     const [theratings, setTheRatings] = useState();
+    const [theFabricantes, setTheFabricantes] = useState();
     // const [theprinters, setThePrinters] = useState();
 
     // ###### ###### ###### ###### ###### ###### ###### ###### ######
@@ -98,6 +99,7 @@ export default function Home(props) {
     const download = async () => {
         let downloadprinters;
         let dowloadratings;
+        let downloadfabricantes;
 
         try {
             const response = (await ImpresorasService.descargarPrinters()).data;
@@ -109,10 +111,14 @@ export default function Home(props) {
             setThePrinters(downloadprinters);
             props.setControlPrinters(downloadprinters);
             console.log(theprinters);
+            downloadfabricantes = response.users;
+            console.log(downloadfabricantes);
+            setTheFabricantes(downloadfabricantes);
+            props.setControlFabricantes(downloadfabricantes);
+
             setTheRatings(dowloadratings);
             props.setControlRatings(dowloadratings);
 
-            props.setControlFabricantes(response.fabricantes);
         } catch (error) {
             // setResultados(
             // { "cod": error.cod, "message": cod.message}
@@ -140,7 +146,7 @@ export default function Home(props) {
             <h2 id="catálogo">impresoras</h2>
             {loading ? <img id="loading" src={process.env.PUBLIC_URL + "/spinners/cxyduck.gif"} className="spinner" alt="spinner" /> :
                 <Row>
-                    <ImpresorasLista printers={theprinters} ratings={theratings} />
+                    <ImpresorasLista printers={theprinters} ratings={theratings} theFabricantes={theFabricantes}/>
                 </Row>
             }
         </div>

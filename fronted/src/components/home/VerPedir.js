@@ -13,7 +13,11 @@ export default function Ver(props) {
     // const printerId = props.printer_id;
     const printerId = printer.id;
     console.log(printerId);
+    const fabricantes = props.fabricantes;
+    console.log(fabricantes);
     
+    
+
 
     // productRating
     // const allratings =  props.ratings;
@@ -96,7 +100,7 @@ export default function Ver(props) {
                                 </Row>
                             </Col>
                             <Col sm={4} style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                <Card.Text>Fabricante: <strong>{printer.userIdFabricante}</strong>, Id_impresora: {printer.id}</Card.Text>
+                                <Card.Text>Fabricante: <strong>{fabricantes.username}</strong>, Id_impresora: {printer.id}</Card.Text>
                             </Col>
                             
 

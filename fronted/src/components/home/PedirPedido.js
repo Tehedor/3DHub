@@ -26,7 +26,20 @@ function PedirPedido(props) {
   console.log("numberPrinter: ", numberPrinter);
   const printer = props.printers[numberPrinter];
   console.log("printer: ", printer);
+  const fabricantes = props.controlFabricantes;
+  console.log("fabricante: ", fabricantes);
 
+  const searchFabricante = (printer) => {
+    const idFabricante = printer.idFabricante;
+    for (let i = 0; i < fabricantes.length; i++) {
+      console.log(fabricantes[i]);
+      if (fabricantes[i].id == idFabricante) {
+        console.log(fabricantes[i]);
+        return fabricantes[i];
+      }
+    }
+  }
+  const fabricante = searchFabricante(printer);
 
   // Raings 
   // productRating
@@ -217,7 +230,7 @@ function PedirPedido(props) {
 
     <Container>
       <Row class="impresora-caracteristicas">
-        <VerPedir printer={printer} ratings={allratings} />
+        <VerPedir printer={printer} ratings={allratings} fabricantes={fabricante} />
       </Row>
 
       {loading ?
@@ -400,7 +413,7 @@ function PedirPedido(props) {
             </Form >
           ) : null}
           <Row className="d-flex justify-content-center align-items-center" style={{ marginTop: '10px' }}>
-            <ReseñaLista printer={printer} ratings={allratings} numberPrinter={numberPrinter}  />
+            <ReseñaLista printer={printer} ratings={allratings} numberPrinter={numberPrinter}  fabricantes={fabricante}/>
           </Row>
         </Container>
       }

@@ -10,10 +10,11 @@ export default function Location(props) {
 
 	console.log(props.controlPrinters);
 	console.log(props.controlRatings);
+	console.log(props.controlFabricantes);
 
 	return (
 		<div>
-			<PedirPedido printers={props.controlPrinters} printerId={printerId} ratings={props.controlRatings} cambioRoll={props.cambioRoll} />
+			<PedirPedido printers={props.controlPrinters} printerId={printerId} ratings={props.controlRatings} cambioRoll={props.cambioRoll} controlFabricantes={props.controlFabricantes}/>
 		</div>
 	);
 }

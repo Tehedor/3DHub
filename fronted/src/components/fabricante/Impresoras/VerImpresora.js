@@ -13,6 +13,8 @@ export default function VerImpresora(props) {
         ImpresorasServiceFabri.deletePrinter(printerId);
         window.location.reload();
     };
+    console.log("printer", printer);
+    console.log("printer", printer.urlPhoto);
 
     return (
         <Card border="gray" style={{ backgroundColor: "white", marginTop: '0' }}>
@@ -21,7 +23,8 @@ export default function VerImpresora(props) {
 
                     <Col sm={3} class="imagen" className="d-flex justify-content-center align-items-center">
                         {/* <Image src={printer.Foto_impresora} thumbnail  style={{ maxWidth: "100%" }}/> */}
-                        <Card.Img src={printer.printerPhoto || 'http://localhost:3000/printer_default.jpg'} style={{ maxWidth: "100%" }} />
+                        {/* <Card.Img src={printer.urlPhoto } style={{ maxWidth: "100%" }} /> */}
+                        <Card.Img src={printer.url_photo || 'http://localhost:3000/printer_default.jpg'} style={{ maxWidth: "100%" }} />
                     </Col>
 
                     <Col sm={9} class="datos_impresora">

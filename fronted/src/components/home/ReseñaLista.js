@@ -58,15 +58,15 @@ export default function ReseñaLista(props) {
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     // ##### ##### Funcoienes de busqueda
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
-    const searchPrinter = (id) => {
-        // for (let i = 0; i < printers.length; i++) {
-        for (let i = 0; i < 1; i++) {
-            console.log(printers[i].id);
-            if (printers[i].id == id) {
-                return printers[i];
-            }
-        }
-    }
+        // const searchPrinter = (id) => {
+        //     // for (let i = 0; i < printers.length; i++) {
+        //     for (let i = 0; i < 1; i++) {
+        //         console.log(printers[i].id);
+        //         if (printers[i].id == id) {
+        //             return printers[i];
+        //         }
+        //     }
+        // }
 
     const searchFabricante = (id) => {
         // const printer = searchPrinter(id);
@@ -86,7 +86,7 @@ export default function ReseñaLista(props) {
             {
                 printerRating.length > 0 ? (
                     printerRating.map((items, index) => (
-                            <VerReseña printerRating={items} printer={printer} fabricantesName={searchFabricante(items.id)}/>
+                            <VerReseña printerRating={items} printer={printer} fabricantesName={fabricantes.username}/>
                         
                     ))
                 ) : (

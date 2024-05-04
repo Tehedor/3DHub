@@ -30,7 +30,7 @@ export default function VerReseña(props) {
                     <Row>
 
                         <Col lg={6}>
-                            <small >Pedido_ID: {printer.id}, NombrePrinter: {printer.modelName},
+                            <small >Pedido_ID: {printer.id}, NombrePrinter: <strong>{printer.modelName}</strong>,
                                 <StarRatings
                                     // rating={props.ratingProducto}
                                     rating={printerRating.productRating ? printerRating.productRating : 0}
@@ -43,7 +43,8 @@ export default function VerReseña(props) {
                             </small>
                         </Col>
                         <Col lg={6}>
-                            <small>Id_Fabricante: {printer.userIdFabricante}, Fabricante: {fabricantesName}</small>
+                            <small>Fabricante:<strong> {fabricantesName}</strong></small>
+                            {/* <small>Id_Fabricante: {printer.userIdFabricante}, Fabricante: {fabricantesName}</small> */}
                             <StarRatings
                                 // rating={props.ratingProducto}
                                 rating={printerRating.manufacturerRating ? printerRating.manufacturerRating : 0}

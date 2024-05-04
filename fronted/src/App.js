@@ -50,17 +50,14 @@ const App = () => {
   // ##### ##### Control de roles
   // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
   const rolesUser = AuthService.getUserRoles();
-  console.log(rolesUser);
   const getInitialRole = () => {
     const storedRole = localStorage.getItem("theRollActual");
     // const storedRole = localStorage.getItem("theRollActual");
     const validRoles = ["diseñador", "fabricante"];
-    console.log(validRoles.includes(storedRole) ? storedRole : "diseñador");
     return validRoles.includes(storedRole) ? storedRole : "diseñador";
   }
   
   const [theRollActual, setTheRollControl] = useLocalStorage('theRollActual', getInitialRole());
-  console.log(theRollActual);
   const [cambioRoll, setCambioRoll] = useState(theRollActual);
   
   // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
