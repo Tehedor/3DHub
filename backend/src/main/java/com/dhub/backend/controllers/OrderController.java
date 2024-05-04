@@ -40,6 +40,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 // @PreAuthorize("hasRole('ROLE_MANUFACTURER' or 'ROLE_DESIGNER' or 'ROLE_ADMIN')")
@@ -495,4 +498,15 @@ public class OrderController {
         }
         return new ResponseEntity<>(ratingsDTO, HttpStatus.OK);
     }
+
+    @GetMapping("/{orderId}/file")
+    public ResponseEntity<byte[]> getFile(@PathVariable Long orderId) {
+        Order order = orderRepository.findById(orderId).orElse(null);
+        if (order == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(order.getFile(), HttpStatus.OK);
+    }
+    
+
 }

@@ -28,6 +28,7 @@ try:
 except subprocess.CalledProcessError:
     print("prusa-slicer no está instalado. Intentando instalarlo...")
     os.system('sudo snap install prusa-slicer')
+    os.system('sudo apt install prusa-slicer')
 
 # Comprobar si flask está instalado
 try:
