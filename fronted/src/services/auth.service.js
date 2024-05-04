@@ -8,6 +8,21 @@ const app = axios.create({
 });
 
 
+const user = JSON.parse(localStorage.getItem("user"));
+const token = user ? user.token : "";
+
+// const filepruebas = /home/sergio/Desktop/3DHub/archivosPruebas/frog_Head.stl;
+
+const appVerifi = axios.create({
+  baseURL: "http://localhost:8080/api/",
+  headers: {
+    "Content-type": "application/json",
+    "Authorization": `Bearer ${token}`,
+  },
+});
+
+
+
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
 // ##### ##### Post registrar usuario
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
@@ -54,6 +69,7 @@ const login = async (username, password) => {
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
 const logout = () => {
   localStorage.removeItem("user");
+  localStorage.removeItem("usuarioDescargado");
   // return app.post("signout").then((response) => {
   //   return response.data;
   // });
@@ -72,6 +88,24 @@ const getCurrentUser = () => {
     return "";
   }
 };
+
+// ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+// ##### ##### dar datos del usuario online
+// ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+const getDescargarUsuario = async ()  => {
+  return appVerifi.
+    get("users")
+      .then((response) => {
+        // if (response.data) {
+        //   localStorage.setItem("printers", JSON.stringify(response.data)); // localStorage.setItem("user", JSON.stringify(response.data));: Si la propiedad username existe, entonces se almacena el objeto data de la respuesta en el almacenamiento local del navegador bajo la clave "user". Antes de almacenarlo, el objeto data se convierte en una cadena JSON.
+        //   console.log(JSON.parse(localStorage.getItem("printers")));d
+        // }
+        return response;
+      }); 
+
+}
+
+
 
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
 // ##### ##### dar datos del usuario
@@ -96,6 +130,7 @@ const AuthService = {
   logout,
   getCurrentUser,
   getUserRoles,
+  getDescargarUsuario
 }
 
 export default AuthService;

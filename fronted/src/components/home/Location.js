@@ -11,6 +11,7 @@ export default function Location(props) {
 	console.log(props.controlPrinters);
 	console.log(props.controlRatings);
 	console.log(props.controlFabricantes);
+	console.log(props.controlUsuario);
 
 	return (
 		<div>
