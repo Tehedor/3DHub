@@ -290,7 +290,7 @@ public class BackendApplication {
 				.deliveryPrice(10.0)
 				.productPrice(20.0)
 				.userEntity(designer)
-				.printer(printer6)
+				.printer(printer)
 				.build();
 			Order order7 = Order.builder()
 				.orderDate(new Date(System.currentTimeMillis()))
@@ -304,7 +304,7 @@ public class BackendApplication {
 				.deliveryPrice(10.0)
 				.productPrice(20.0)
 				.userEntity(designer)
-				.printer(printer6)
+				.printer(printer2)
 				.build();
 			Order order8 = Order.builder()
 				.orderDate(new Date(System.currentTimeMillis()))
@@ -318,7 +318,7 @@ public class BackendApplication {
 				.deliveryPrice(10.0)
 				.productPrice(20.0)
 				.userEntity(designer)
-				.printer(printer6)
+				.printer(printer3)
 				.build();
 			Order order9 = Order.builder()
 				.orderDate(new Date(System.currentTimeMillis()))
@@ -332,7 +332,7 @@ public class BackendApplication {
 				.deliveryPrice(10.0)
 				.productPrice(20.0)
 				.userEntity(designer)
-				.printer(printer6)
+				.printer(printer4)
 				.build();
 			Order order10 = Order.builder()
 				.orderDate(new Date(System.currentTimeMillis()))
@@ -346,7 +346,7 @@ public class BackendApplication {
 				.deliveryPrice(10.0)
 				.productPrice(20.0)
 				.userEntity(designer)
-				.printer(printer6)
+				.printer(printer5)
 				.build();
 			Order order11 = Order.builder()
 				.orderDate(new Date(System.currentTimeMillis()))
