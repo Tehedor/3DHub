@@ -34,6 +34,7 @@ public class RatingsServiceImpl implements RatingsService {
         ratingsDTO.setDate(ratings.getDate());
         ratingsDTO.setManufacturerRating(ratings.getManufacturerRating());
         ratingsDTO.setProductRating(ratings.getProductRating());
+        ratingsDTO.setUrlPhoto(ratings.getUrlPhoto());
         ratingsDTO.setTextRating(ratings.getTextRating());
         ratingsDTO.setOrder_id(ratings.getOrder().getId());
         ratingsDTO.setPrinter_id(ratings.getOrder().getPrinter().getId());
@@ -49,6 +50,7 @@ public class RatingsServiceImpl implements RatingsService {
         ratings.setDate(ratingsDTO.getDate());
         ratings.setManufacturerRating(ratingsDTO.getManufacturerRating());
         ratings.setProductRating(ratingsDTO.getProductRating());
+        ratings.setUrlPhoto(ratingsDTO.getUrlPhoto());
         ratings.setTextRating(ratingsDTO.getTextRating());
         ratings.setOrder(orderRepository.findById(ratingsDTO.getOrder_id()).get());
 
