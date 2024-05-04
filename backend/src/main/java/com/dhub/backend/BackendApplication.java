@@ -158,6 +158,7 @@ public class BackendApplication {
 				.status(EStatus.KART)
 				.deliveryDate(new Date(System.currentTimeMillis()))
 				.deliveryPrice(10.0)
+				.productPrice(20.0)
 				.userEntity(designer)
 				.printer(printer)
 				.build();
@@ -171,6 +172,7 @@ public class BackendApplication {
 				.status(EStatus.PAY)
 				.deliveryDate(new Date(System.currentTimeMillis()))
 				.deliveryPrice(10.0)
+				.productPrice(20.0)
 				.userEntity(designer)
 				.printer(printer2)
 				.build();
@@ -184,6 +186,7 @@ public class BackendApplication {
 				.status(EStatus.SEND)
 				.deliveryDate(new Date(System.currentTimeMillis()))
 				.deliveryPrice(10.0)
+				.productPrice(20.0)
 				.userEntity(designer)
 				.printer(printer3)
 				.build();
@@ -197,6 +200,7 @@ public class BackendApplication {
 				.status(EStatus.DELIVERED)
 				.deliveryDate(new Date(System.currentTimeMillis()))
 				.deliveryPrice(10.0)
+				.productPrice(20.0)
 				.userEntity(designer)
 				.printer(printer4)
 				.build();
@@ -211,6 +215,7 @@ public class BackendApplication {
 				.status(EStatus.DELIVERED)
 				.deliveryDate(new Date(System.currentTimeMillis()))
 				.deliveryPrice(10.0)
+				.productPrice(20.0)
 				.userEntity(designer)
 				.printer(printer4)
 				.build();
@@ -225,6 +230,7 @@ public class BackendApplication {
 				.status(EStatus.DELIVERED)
 				.deliveryDate(new Date(System.currentTimeMillis()))
 				.deliveryPrice(10.0)
+				.productPrice(20.0)
 				.userEntity(designer)
 				.printer(printer4)
 				.build();

@@ -37,6 +37,8 @@ public class    OrderDTO {
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date deliveryDate;
 
+	private Double productPrice;
+
     private double deliveryPrice;
 
     private Long user_id;
