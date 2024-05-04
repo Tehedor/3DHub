@@ -8,3 +8,4 @@ microservicioPython/configuraciones/export-gcodes/*.gcode
 
 
 backend/src/main/resources/application.properties
+backend/src/main/resources/credentials.json
