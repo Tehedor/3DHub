@@ -1,5 +1,5 @@
 import axios from "axios";
-import filepruebas from "/home/sergio/Desktop/3DHub/fronted/src/constants/frog_Head.stl";
+// import filepruebas from "/home/sergio/Desktop/3DHub/fronted/src/constants/frog_Head.stl";
 // import fs from 'fs';
 // const fileBuffer = fs.readFileSync('/home/sergio/Desktop/3DHub/fronted/src/constants/frog_Head.stl');
 
@@ -53,7 +53,7 @@ const confirmarEntrga = (id) => {
 const añadirPedido = (file, cantidad, fechaFabricacion, fechaEntrega, especificaciones, printer) => {
   const fechaFabricacionFormated = new Date(fechaFabricacion).toISOString().split('T')[0];
   console.log(file);
-  console.log(filepruebas);
+  // console.log(filepruebas);
   // console.log(fileBuffer);
   console.log(fechaFabricacionFormated);
   const fechaEntregaFormated = new Date(fechaEntrega).toISOString().split('T')[0];

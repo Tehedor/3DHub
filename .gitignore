@@ -4,7 +4,7 @@ printerPhotos/
 profilePhotos/
 orderFiles/
 ratingsPhotos/
-microservicioPython/configuraciones/export-gcodes/
+microservicioPython/configuraciones/export-gcodes/*.gcode
 
 
 backend/src/main/resources/application.properties
