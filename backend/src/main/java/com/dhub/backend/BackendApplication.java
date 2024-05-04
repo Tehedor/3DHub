@@ -23,10 +23,11 @@ import com.dhub.backend.models.EPrinterType;
 import com.dhub.backend.repository.OrderRepository;
 import com.dhub.backend.repository.RatingsRepository;
 import com.dhub.backend.repository.UserRepository;
+import com.google.cloud.spring.autoconfigure.storage.GcpStorageAutoConfiguration;
 import com.dhub.backend.repository.PrinterRepository;
 
 
-@SpringBootApplication
+@SpringBootApplication(exclude = {GcpStorageAutoConfiguration.class})
 public class BackendApplication {
 
 	public static void main(String[] args) {
