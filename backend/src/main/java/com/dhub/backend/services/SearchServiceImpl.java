@@ -6,27 +6,51 @@ import java.net.URL;
 import java.io.IOException;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.dhub.backend.models.EPrinterType;
 import com.dhub.backend.models.Printer;
 import com.dhub.backend.repository.PrinterRepository;
+
+import jakarta.annotation.PostConstruct;
 
 public class SearchServiceImpl {
 
     public static void main(String[] args) {
         SearchServiceImpl service = new SearchServiceImpl();
-        String location = "Calle de la Princesa, 1. Madrid, España";
-        String coordinates = service.coordinates(location);
-        System.out.println("Coordinates for " + location + " are: " + coordinates);
+        service.initPrinters();
+        System.out.println(service.closestPrinter("Calle Miami, 1, Madrid, España"));
     }
-    
+    @Autowired
     private PrinterRepository printerRepository;
+    String [] locations = {"Calle de la Princesa, 1, Madrid, España", "Calle de Alcalá, 230, Madrid, España", "Estadio Santiago Bernabéu, Madrid, España"};
+
+    @PostConstruct
+    public void initPrinters() {
+        for (int i = 0; i < locations.length; i++) {
+            Printer printer = new Printer();
+            printer.setModelName("Model Name");
+            printer.setPrinterLocation(locations[i]);
+            printer.setPrinterType(EPrinterType.FDM); // replace with actual type
+            printer.setFileFormat("File Format");
+            printer.setPrinterPhoto(new byte[0]); // replace with actual photo
+            printer.setServicePrice(0.0);
+            printer.setMaxUnities(0);
+            printer.setManufacturationSpeed("Manufacturation Speed");
+            printer.setMaxWidth(0.0);
+            printerRepository.save(printer);
+        }
+    }
 
     public Long closestPrinter(String locUser) {
+        String userLoc = coordinates(locUser);
         List<Printer> printers = printerRepository.findAll();
 
         double minDistance = Double.MAX_VALUE;
         Printer closestPrinter = printers.get(0);
         for (Printer printer : printers) {
-            double distance = distance(locUser, printer.getPrinterLocation());
+            String printerLoc = coordinates(printer.getPrinterLocation());
+            double distance = distance(userLoc, printerLoc);
             if (distance < minDistance) {
                 minDistance = distance;
                 closestPrinter = printer;
@@ -52,7 +76,7 @@ public class SearchServiceImpl {
     }
 
     private double distance(String locUser, String printerLocation) {
-        double R = 6371000;
+        final double R = 6371000;
         double theta1 = Math.toRadians(Double.parseDouble(locUser.split(",")[0]));
         double theta2 = Math.toRadians(Double.parseDouble(printerLocation.split(",")[0]));
         double phy1 = Math.toRadians(Double.parseDouble(locUser.split(",")[1]));
