@@ -13,14 +13,14 @@ try:
     subprocess.check_call(['pip3', '--version'])
 except subprocess.CalledProcessError:
     print("pip no está instalado. Intentando instalarlo...")
-    os.system('sudo apt install python3-pip')
+    os.system('sudo apt install -y python3-pip')
 
 # Comprobar si snap está instalado
 try:
     subprocess.check_call(['snap', '--version'])
 except subprocess.CalledProcessError:
     print("snap no está instalado. Intentando instalarlo...")
-    os.system('sudo apt install snapd')
+    os.system('sudo apt install -y snapd')
 
 # Comprobar si prusa-slicer está instalado
 try:

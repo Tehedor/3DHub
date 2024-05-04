@@ -1,7 +1,13 @@
 import axios from "axios";
+import filepruebas from "/home/sergio/Desktop/3DHub/fronted/src/constants/frog_Head.stl";
+// import fs from 'fs';
+// const fileBuffer = fs.readFileSync('/home/sergio/Desktop/3DHub/fronted/src/constants/frog_Head.stl');
+
 
 const user = JSON.parse(localStorage.getItem("user"));
 const token = user ? user.token : "";
+
+// const filepruebas = /home/sergio/Desktop/3DHub/archivosPruebas/frog_Head.stl;
 
 const app = axios.create({
   baseURL: "http://localhost:8080/api/",
@@ -14,8 +20,8 @@ const app = axios.create({
 const appform = axios.create({
   baseURL: "http://localhost:8080/api/",
   headers: { 
-    'Authorization': `Bearer ${token}`,
-    'Content-Type': 'multipart/form-data'
+    'Content-Type': 'multipart/form-data',
+    'Authorization': `Bearer ${token}`
   },
 });
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
@@ -46,27 +52,43 @@ const confirmarEntrga = (id) => {
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
 const añadirPedido = (file, cantidad, fechaFabricacion, fechaEntrega, especificaciones, printer) => {
   const fechaFabricacionFormated = new Date(fechaFabricacion).toISOString().split('T')[0];
+  console.log(file);
+  console.log(filepruebas);
+  // console.log(fileBuffer);
+  console.log(fechaFabricacionFormated);
   const fechaEntregaFormated = new Date(fechaEntrega).toISOString().split('T')[0];
-  const stringsprinter = String(printer);
+  console.log(fechaEntregaFormated);
 
   const data = {
-    manufacturerDate: fechaFabricacionFormated,
-    deliveryDate: fechaEntregaFormated,
+    // manufacturerDate: fechaFabricacionFormated,
+    manufacturerDate: "2022-11-16",
+    // deliveryDate: fechaEntregaFormated,
+    deliveryDate: "2022-11-16",
     quantity: cantidad,
     specs: especificaciones,
     printer_id: printer,
-    status: "KART",
+    // status: "KART",
     address: "Calle de la Princesa, 1, 28008 Madrid, España"
   };
+  console.log(data);
+
+  // data:{"manufacturerDate":"2022-11-16","deliveryDate":"2022-11-16","quantity":3,"specs":"Debe de tener cosas","printer_id":3,"address":"Calle de la Princesa, 1, 28008 Madrid, España"}
 
   const formData = new FormData();
   formData.append('data', JSON.stringify(data));
+  // formData.append('data', data);
   formData.append('file', file); // Asegúrate de tener el archivo definido
+  // formData.append('file', filepruebas); // Asegúrate de tener el archivo definido
+  // formData.append('file', fileBuffer); // Asegúrate de tener el archivo definido
 
 
   // return appform.
-  return app
+  return appform
   .post(`orders`, formData)
+  .then((response) => {
+    console.log(response);
+    return response;
+  });
 
 }
 

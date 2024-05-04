@@ -174,6 +174,7 @@ function PedirPedido(props) {
 
   const [successful, setSuccessful] = useState(false);
   const [message, setMessage] = useState("");
+  // const [loading, setLoading] = useState(true);
   const [loading, setLoading] = useState(false);
 
 
@@ -191,10 +192,12 @@ function PedirPedido(props) {
     form.current.validateAll();
 
     if (checkBtn.current.context._errors.length === 0) {
+      setLoading(true); // Iniciar el loading
       PedidosService.añadirPedido(file, cantidad, fechaFabricacion.current, fechaEntrega, especificaciones, printer.id).then(
         (response) => {
           setMessage(response.data.message);
           setSuccessful(true);
+          setLoading(false); // Detener el loading
         },
         (error) => {
           const resMessage =
@@ -206,6 +209,7 @@ function PedirPedido(props) {
 
           setMessage(resMessage);
           setSuccessful(false);
+          setLoading(false); // Detener el loading
         }
       );
       console.log("file: ", file);
@@ -217,9 +221,10 @@ function PedirPedido(props) {
 
     <Container>
       <Row class="impresora-caracteristicas">
-        <VerPedir printer={printer} ratings={allratings}/>
+        <VerPedir printer={printer} ratings={allratings} />
       </Row>
 
+      {loading ? <img id="loading" src={process.env.PUBLIC_URL + "/spinners/patitosusio.gif"}  className="spinner"  alt="spinner" style={{ width: "27%", height: "auto" }} />:
       <Form onSubmit={handlePedido} ref={form}>
         {!successful && (
           <Row>
@@ -327,13 +332,15 @@ function PedirPedido(props) {
                 successful ? "alert alert-success" : "alert alert-danger"
               }
               role="alert"
-            >
+              >
               {message}
             </div>
+            <img id="loading" src={process.env.PUBLIC_URL + "/spinners/patitotabien.gif"}  className="spinner"  alt="spinner" style={{ width: "23%", height: "auto" }} />
           </div>
         )}
         <CheckButton style={{ display: "none" }} ref={checkBtn} />
       </Form>
+      }
     </Container>
   );
 }

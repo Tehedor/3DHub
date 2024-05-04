@@ -104,6 +104,9 @@ def process_file_content(file, price_filamen, filament_width):
     # Calculate the price
     price = float(filament_used) * price_filamen
 
+    # Remove the temporary file
+    os.remove("configuraciones/export-gcodes/{}.gcode".format(file))
+
     # Return the result
     return {"price": price}    
 
