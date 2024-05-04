@@ -4,13 +4,13 @@ import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import { isEmail } from "validator";
 
-import { Form as BootstrapForm} from 'react-bootstrap';
+import { Form as BootstrapForm } from 'react-bootstrap';
 
-import {MyValidationCheck} from '../../common/ValidationComponents.js';
+import { MyValidationCheck } from '../../common/ValidationComponents.js';
 
 import AuthService from "../../services/auth.service";
 
-import {Button, Col, Row} from 'react-bootstrap';
+import { Button, Col, Row } from 'react-bootstrap';
 
 
 // ####### ####### ####### ####### ####### ####### ####### ####### ####### ####### ####### ####### ####### ####### #######
@@ -105,10 +105,10 @@ const vpassword = (value) => {
 
 
 const RegisterDisenador = (props) => {
-  
+
   const form = useRef();
   const checkBtn = useRef();
-  
+
 
   const rolesCheckDesigner = useRef("ROLE_DESIGNER");
   const rolesCheckManufacturer = useRef();
@@ -120,20 +120,20 @@ const RegisterDisenador = (props) => {
   const [lat, setLat] = useState("");
   const [lon, setLon] = useState("");
   const [address, setAddress] = useState("");
-  const [factAdress, setFactAdress] = useState(""); 
+  const [factAdress, setFactAdress] = useState("");
   const [roles, setRoles] = useState(["ROLE_DESIGNER"]);
-  
+
   const [successful, setSuccessful] = useState(false);
   const [message, setMessage] = useState("");
 
-  
+
 
   const validRoles = (roll) => {
-    const uniqueRoles = [rolesCheckManufacturer.current,rolesCheckDesigner.current];  
+    const uniqueRoles = [rolesCheckManufacturer.current, rolesCheckDesigner.current];
     if (!uniqueRoles.includes("ROLE_MANUFACTURER") && !uniqueRoles.includes("ROLE_DESIGNER")) {
       return (
         <div className="invalid-feedback d-block">
-         Debes seleccionar al menos un roll: Diseñador o Fabricante.
+          Debes seleccionar al menos un roll: Diseñador o Fabricante.
         </div>
       );
     }
@@ -164,7 +164,8 @@ const RegisterDisenador = (props) => {
     form.current.validateAll();
 
     if (checkBtn.current.context._errors.length === 0) {
-      AuthService.register(dni, username, email, password, lat, lon, address, factAdress, roles).then(
+      // AuthService.register(dni, username, email, password, lat, lon, address, factAdress, roles).then(
+      AuthService.register(dni, username, email, password, address, roles).then(
         (response) => {
           setMessage(response.data.message);
           setSuccessful(true);
@@ -188,7 +189,7 @@ const RegisterDisenador = (props) => {
     <div className="col-md-12">
       <div className="card card-container">
         <div className="text-center">
-            <h2>Registrar</h2>  
+          <h2>Registrar</h2>
         </div>
         <img
           src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
@@ -200,7 +201,7 @@ const RegisterDisenador = (props) => {
           {!successful && (
             <div>
               <div className="form-group">
-                <label htmlFor="username">Username <span style={{color: 'red'}}>*</span></label>
+                <label htmlFor="username">Username <span style={{ color: 'red' }}>*</span></label>
                 <Input
                   type="text"
                   className="form-control"
@@ -212,7 +213,7 @@ const RegisterDisenador = (props) => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="username">DNI/CIF/NIE<span style={{color: 'red'}}>*</span></label>
+                <label htmlFor="username">DNI/CIF/NIE<span style={{ color: 'red' }}>*</span></label>
                 <Input
                   type="text"
                   className="form-control"
@@ -224,7 +225,7 @@ const RegisterDisenador = (props) => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="email">Email<span style={{color: 'red'}}>*</span></label>
+                <label htmlFor="email">Email<span style={{ color: 'red' }}>*</span></label>
                 <Input
                   type="text"
                   className="form-control"
@@ -236,7 +237,7 @@ const RegisterDisenador = (props) => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="password">Password<span style={{color: 'red'}}>*</span></label>
+                <label htmlFor="password">Password<span style={{ color: 'red' }}>*</span></label>
                 <Input
                   type="password"
                   className="form-control"
@@ -247,9 +248,9 @@ const RegisterDisenador = (props) => {
                 />
               </div>
 
-{/*  */}
+              {/*  */}
 
-              <div className="form-group">
+              {/* <div className="form-group">
                 <label htmlFor="Latitud">Lat</label>
                 <Input
                   type="number"
@@ -272,7 +273,7 @@ const RegisterDisenador = (props) => {
                   onChange={e => setLon(e.target.value)}
                   validations={[validLongitude]}
                 />
-              </div>
+              </div> */}
 
               <div className="form-group">
                 <label htmlFor="addres">Dirección</label>
@@ -285,7 +286,7 @@ const RegisterDisenador = (props) => {
                   validations={[validAddress]}
                 />
               </div>
-
+{/* 
               <div className="form-group">
                 <label htmlFor="factaddres">Dirección de facturación</label>
                 <Input
@@ -296,51 +297,51 @@ const RegisterDisenador = (props) => {
                   onChange={e => setFactAdress(e.target.value)}
                   validations={[validAddress]}
                 />
-              </div>
-              
-              
+              </div> */}
+
+
               <BootstrapForm>
-              <label>Roles<span style={{color: 'red'}}>*</span></label>
-              {['checkbox'].map((type) => (
-                <div key={`inline-${type}`} className="mb-3">
-                  <BootstrapForm.Check
-                    inline
-                    label="Diseñador"
-                    name="group1"
-                    type={type}
-                    id={`inline-${type}-1`}
-                    defaultChecked={true}
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        setRoles([...roles, "ROLE_DESIGNER"]);
-                        rolesCheckDesigner.current = "ROLE_DESIGNER";
-                      } else {
-                        setRoles(roles.filter(role => role !== "ROLE_DESIGNER"));
-                        rolesCheckDesigner.current = null;
-                      }
-                    }}
+                <label>Roles<span style={{ color: 'red' }}>*</span></label>
+                {['checkbox'].map((type) => (
+                  <div key={`inline-${type}`} className="mb-3">
+                    <BootstrapForm.Check
+                      inline
+                      label="Diseñador"
+                      name="group1"
+                      type={type}
+                      id={`inline-${type}-1`}
+                      defaultChecked={true}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setRoles([...roles, "ROLE_DESIGNER"]);
+                          rolesCheckDesigner.current = "ROLE_DESIGNER";
+                        } else {
+                          setRoles(roles.filter(role => role !== "ROLE_DESIGNER"));
+                          rolesCheckDesigner.current = null;
+                        }
+                      }}
                     />
-                  <MyValidationCheck
-                  inline
-                  label="Fabricante"
-                  name="group1"
-                  type={type}
-                  id={`inline-${type}-2`}
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        setRoles([...roles, "ROLE_MANUFACTURER"]);
-                        rolesCheckManufacturer.current = "ROLE_MANUFACTURER";
-                      } else {
-                        setRoles(roles.filter(role => role !== "ROLE_MANUFACTURER"));
-                        rolesCheckManufacturer.current = null;
-                      }
-                    }}
-                    validations={[validRoles]}
+                    <MyValidationCheck
+                      inline
+                      label="Fabricante"
+                      name="group1"
+                      type={type}
+                      id={`inline-${type}-2`}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setRoles([...roles, "ROLE_MANUFACTURER"]);
+                          rolesCheckManufacturer.current = "ROLE_MANUFACTURER";
+                        } else {
+                          setRoles(roles.filter(role => role !== "ROLE_MANUFACTURER"));
+                          rolesCheckManufacturer.current = null;
+                        }
+                      }}
+                      validations={[validRoles]}
                     />
-                </div>
-              ))} 
+                  </div>
+                ))}
               </BootstrapForm>
-              
+
               <div className="form-group">
                 <button className="btn btn-primary btn-block">Sign Up</button>
               </div>
@@ -359,26 +360,26 @@ const RegisterDisenador = (props) => {
 
 
               </div>
-              
+
               <Col>
-              
-                  <Row>
-                    <Button href="/login" variant="info" size="sm" >
-                      Login
-                    </Button>
-                    
-                  </Row>
-                  <p>
-                    
-                  </p>
-                  <Row>
-                    <Button href="/" variant="danger" size="sm" >
-                      Volver
-                    </Button>
-                    
-                  </Row>
+
+                <Row>
+                  <Button href="/login" variant="info" size="sm" >
+                    Login
+                  </Button>
+
+                </Row>
+                <p>
+
+                </p>
+                <Row>
+                  <Button href="/" variant="danger" size="sm" >
+                    Volver
+                  </Button>
+
+                </Row>
               </Col>
-                
+
             </div>
           )}
           <CheckButton style={{ display: "none" }} ref={checkBtn} />

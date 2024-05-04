@@ -44,16 +44,22 @@ const App = () => {
   // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
   const [controlPrinters, setControlPrinters] = useLocalStorage('printers',[]); 
   const [controlRatings, setControlRatings] = useLocalStorage('ratings',[]);
+  
   // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
   // ##### ##### Control de roles
   // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+  const rolesUser = AuthService.getUserRoles();
+  console.log(rolesUser);
   const getInitialRole = () => {
-    const storedRole = localStorage.getItem("RolActual");
+    const storedRole = localStorage.getItem("theRollActual");
+    // const storedRole = localStorage.getItem("theRollActual");
     const validRoles = ["diseñador", "fabricante"];
+    console.log(validRoles.includes(storedRole) ? storedRole : "diseñador");
     return validRoles.includes(storedRole) ? storedRole : "diseñador";
   }
   
   const [theRollActual, setTheRollControl] = useLocalStorage('theRollActual', getInitialRole());
+  console.log(theRollActual);
   const [cambioRoll, setCambioRoll] = useState(theRollActual);
   
   // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
@@ -92,14 +98,14 @@ const App = () => {
     <div className="App" style={{ backgroundColor: cambioRoll === "diseñador" ? "white" : cambioRoll === "fabricante" ? "#fcebdc" : "default" }}>
       <div className="containerr">
 
-        <NavBar query={query} setQuery={setQuery} queryUbica={queryUbica} setQueryUbica={setQueryUbica} currentUser={currentUser} cambioRoll={cambioRoll} setCambioRoll={setCambioRoll} setTheRollControl={setTheRollControl}  logOut={logOut}/>
+        <NavBar query={query} setQuery={setQuery} queryUbica={queryUbica} setQueryUbica={setQueryUbica} currentUser={currentUser} cambioRoll={cambioRoll} setCambioRoll={setCambioRoll} theRollActual={theRollActual} setTheRollControl={setTheRollControl}  logOut={logOut}/>
           
         <div className="container mt-3">
           <Routes>
             <Route exact path={"/"} element={<Home setControlPrinters={setControlPrinters} controlPrinters={controlPrinters} setControlRatings={setControlRatings} controlRatings={controlRatings} />} />
             <Route exact path={"/home"} element={<Home setControlPrinters={setControlPrinters} controlPrinters={controlPrinters} setControlRatings={setControlRatings} controlRatings={controlRatings}/>} />
 
-            <Route exact path="/login" element={<Login/>} />
+            <Route exact path="/login" element={<Login setTheRollControl={setTheRollControl} theRollActual={theRollActual}  setCambioRoll={setCambioRoll}/>} />
             <Route exact path="/register" element={<Register />} />
             <Route exact path="/profile" element={<Profile />} />
 

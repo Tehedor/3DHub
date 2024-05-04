@@ -11,16 +11,18 @@ const app = axios.create({
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
 // ##### ##### Post registrar usuario
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
-const register = (dni, username, email, password, lat, lon, address, factAdress, roles) => {
-  return app.post("auth/createUser", {
+// const register = (dni, username, email, password, lat, lon, address, factAdress, roles) => {
+const register = (dni, username, email, password,address, roles) => {
+  console.log("AuthService.register");
+  return app.post("api/auth/createUser", {
     dni,
     username,
     email,
     password,
-    lat,
-    lon,
+    // lat,
+    // lon,
     address,
-    factAdress,
+    // factAdress,
     roles,
   });
 };
@@ -28,7 +30,7 @@ const register = (dni, username, email, password, lat, lon, address, factAdress,
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
 // ##### ##### Post loguear usuario
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
-const login = (username, password) => {
+const login = async (username, password) => {
   return app
     .post("login", {
       username,
@@ -78,14 +80,12 @@ const getUserRoles = () => {
   let user = JSON.parse(localStorage.getItem("user"));
   if (user && user.Roles) {
     console.log(user.Roles);
-    return user.Roles;
+    return user.Roles.map(role => role.authority.replace('ROLE_', ''));
   } else {
     console.log("User o Roles no están definidos");
     return [];
   }
 };
-
-
 
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
 // ##### ##### Resumen
