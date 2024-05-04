@@ -11,6 +11,7 @@ export default function ReseñaLista(props) {
     const printer = props.printer;
     // const printers = props.printers;    
     const fabricantes = props.fabricantes;
+    console.log(fabricantes);
 
     // const printer = props.printer;
     console.log(printer);
@@ -68,10 +69,10 @@ export default function ReseñaLista(props) {
     }
 
     const searchFabricante = (id) => {
-        const printer = searchPrinter(id);
+        // const printer = searchPrinter(id);
         const idFabricante = printer.userIdFabricante;
         for (let i = 0; i < fabricantes.length; i++) {
-            if (fabricantes[i].id == id) {
+            if (fabricantes[i].id == idFabricante) {
                 return fabricantes[i];
             }
         }
@@ -85,7 +86,7 @@ export default function ReseñaLista(props) {
             {
                 printerRating.length > 0 ? (
                     printerRating.map((items, index) => (
-                            <VerReseña printerRating={items} printer={printer} />
+                            <VerReseña printerRating={items} printer={printer} fabricantesName={searchFabricante(items.id)}/>
                         
                     ))
                 ) : (

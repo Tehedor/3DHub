@@ -48,15 +48,15 @@ export default function Notificaciones(props) {
         downloadDiseñadores=response.data.users;
         console.log(downloadDiseñadores);
 
+        setThePedidos(downloadPedidos);
+        setThePrinters(downloadprinters);
+        setTheDiseñadores(downloadDiseñadores);
         
         } catch (error) {
             // setResultados(
             // { "cod": error.cod, "message": cod.message}
             // );
         }
-        setThePedidos(downloadPedidos);
-        setThePrinters(downloadprinters);
-        setTheDiseñadores(downloadDiseñadores);
     }
 
     
@@ -68,9 +68,6 @@ export default function Notificaciones(props) {
         async function fetchData() {
             await download();
             setLoading(false);
-            // setTimeout(()=>{
-            //     setLoading(false);
-            // },50);		
         }
         fetchData();
     }, []);

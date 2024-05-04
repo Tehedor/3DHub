@@ -13,11 +13,9 @@ export default function VerReseña(props) {
     // ##### ##### Variables de Reseña
     // ##### ##### ##### ##### ##### ##### ##### ##### #####
     const printerRating = props.printerRating;
-    console.log(printerRating);
 
     const fabricantesName = props.fabricantesName;
     const printer = props.printer;
-    console.log(printer);
 
     console.log(printerRating.productRating);
     // ##### ##### ##### ##### ##### ##### ##### ##### #####
