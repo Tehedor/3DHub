@@ -31,6 +31,7 @@ import com.dhub.backend.models.UserEntity;
 import com.dhub.backend.repository.OrderRepository;
 import com.dhub.backend.repository.RatingsRepository;
 import com.dhub.backend.repository.UserRepository;
+import com.dhub.backend.services.GoogleCloudStorageService;
 import com.dhub.backend.services.RatingsService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -52,6 +53,9 @@ public class RatingsController {
 
     @Autowired
     private RatingsRepository ratingsRepository;
+
+    @Autowired
+    private GoogleCloudStorageService googleCloudStorageService;
 
     /*
      * Create a review for a order
@@ -75,10 +79,18 @@ public class RatingsController {
         if (user.getId() != order.getUserEntity().getId()) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+        String urlPhoto = "";
+        try {
+            urlPhoto = googleCloudStorageService.uploadRatingsPhoto(file);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        Ratings ratings = ratingsService.convertToEntity(ratingsDTO);
+        ratings.setUrlPhoto(urlPhoto);
         if (ratingsRepository.findByOrderId(order.getId()) != null) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
-        Ratings ratings = ratingsService.createRatingWithFile(file, ratingsDTO);
         ratings.setOrder(order);
         ratingsRepository.save(ratings);
         return new ResponseEntity<>(HttpStatus.CREATED);

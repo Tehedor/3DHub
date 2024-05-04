@@ -36,6 +36,7 @@ import com.dhub.backend.repository.UserRepository;
 import com.dhub.backend.controllers.request.OrderDTO;
 import com.dhub.backend.controllers.request.PrinterDTO;
 import com.dhub.backend.controllers.request.RatingsDTO;
+import com.dhub.backend.services.GoogleCloudStorageService;
 import com.dhub.backend.services.PrinterServiceImpl;
 import com.dhub.backend.services.RatingsService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -61,6 +62,9 @@ public class PrinterController {
 
     @Autowired
     private RatingsService ratingsService;
+
+    @Autowired
+    private GoogleCloudStorageService googleCloudStorageService;
 
 
     @GetMapping
@@ -148,8 +152,15 @@ public class PrinterController {
         UserEntity user = userRepository.findByUsername(username)
         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
         printerDTO.setIdFabricante(user.getId());
-
-        Printer createdPrinter = printerService.createPrinterWithFile(file, printerDTO);
+        String urlPhoto = "";
+        try {
+            urlPhoto = googleCloudStorageService.uploadPrinerPhoto(file);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        Printer createdPrinter = printerService.convertToEntity(printerDTO);
+        createdPrinter.setUrlPhoto(urlPhoto);
         createdPrinter.setUserEntity(user);
         user.getPrinters().add(createdPrinter);
         userRepository.save(user);

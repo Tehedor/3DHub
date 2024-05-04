@@ -40,6 +40,25 @@ public class PrinterServiceImpl implements PrinterService{
         return printerDTO;
     }
 
+    @Override
+    public Printer convertToEntity(PrinterDTO printerDTO) {
+        Printer printer = new Printer();
+        UserEntity user = userRepository.findById(printerDTO.getIdFabricante()).orElse(null);
+        printer.setServicePrice(printerDTO.getServicePrice());
+        printer.setMaxUnities(printerDTO.getMaxUnities());
+        printer.setModelName(printerDTO.getModelName());
+        printer.setPrinterLocation(printerDTO.getPrinterLocation());
+        printer.setPrinterType(printerDTO.getPrinterType());
+        printer.setManufacturationSpeed(printerDTO.getManufacturationSpeed());
+        printer.setMaxWidth(printerDTO.getMaxWidth());
+        printer.setMaxHeight(printerDTO.getMaxHeight());
+        printer.setPrinterPrecision(printerDTO.getPrinterPrecision());
+        printer.setColor(printerDTO.getColor());
+        printer.setMaterial(printerDTO.getMaterial());
+        printer.setUserEntity(user);
+        return printer;
+    }
+
     public static String getFileExtension(String fileName) {
         if (fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0) {
             return fileName.substring(fileName.lastIndexOf(".") + 1);
@@ -48,31 +67,31 @@ public class PrinterServiceImpl implements PrinterService{
         }
     }
 
-    @Override
-    public Printer createPrinterWithFile(MultipartFile file, PrinterDTO printerDTO) {
-    Printer printer = new Printer();
-    UserEntity user = userRepository.findById(printerDTO.getIdFabricante()).orElse(null);
-    try {
-        printer.setPrinterPhoto(file.getBytes());
-    } catch (IOException e) {
-        // Handle the exception here
-    }
-    printer.setFileFormat(getFileExtension(file.getOriginalFilename()));
-    printer.setServicePrice(printerDTO.getServicePrice());
-    printer.setMaxUnities(printerDTO.getMaxUnities());
-    printer.setModelName(printerDTO.getModelName());
-    printer.setPrinterLocation(printerDTO.getPrinterLocation());
-    printer.setPrinterType(printerDTO.getPrinterType());
-    printer.setManufacturationSpeed(printerDTO.getManufacturationSpeed());
-    printer.setMaxWidth(printerDTO.getMaxWidth());
-    printer.setMaxHeight(printerDTO.getMaxHeight());
-    printer.setPrinterPrecision(printerDTO.getPrinterPrecision());
-    printer.setColor(printerDTO.getColor());
-    printer.setMaterial(printerDTO.getMaterial());
-    printer.setUserEntity(user);
+    // @Override
+    // public Printer createPrinterWithFile(MultipartFile file, PrinterDTO printerDTO) {
+    // Printer printer = new Printer();
+    // UserEntity user = userRepository.findById(printerDTO.getIdFabricante()).orElse(null);
+    // try {
+    //     printer.setPrinterPhoto(file.getBytes());
+    // } catch (IOException e) {
+    //     // Handle the exception here
+    // }
+    // printer.setFileFormat(getFileExtension(file.getOriginalFilename()));
+    // printer.setServicePrice(printerDTO.getServicePrice());
+    // printer.setMaxUnities(printerDTO.getMaxUnities());
+    // printer.setModelName(printerDTO.getModelName());
+    // printer.setPrinterLocation(printerDTO.getPrinterLocation());
+    // printer.setPrinterType(printerDTO.getPrinterType());
+    // printer.setManufacturationSpeed(printerDTO.getManufacturationSpeed());
+    // printer.setMaxWidth(printerDTO.getMaxWidth());
+    // printer.setMaxHeight(printerDTO.getMaxHeight());
+    // printer.setPrinterPrecision(printerDTO.getPrinterPrecision());
+    // printer.setColor(printerDTO.getColor());
+    // printer.setMaterial(printerDTO.getMaterial());
+    // printer.setUserEntity(user);
     
-        return printer;
-    }
+    //     return printer;
+    // }
 
 
 }

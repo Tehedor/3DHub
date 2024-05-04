@@ -53,11 +53,7 @@ public class Ratings {
 	@Size(max = 50)
 	private String textRating;
 
-	private String fileFormat;
-
-	@Lob
-	@Column(columnDefinition="MEDIUMBLOB")
-	private byte[] file;
+	private String urlPhoto;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "order_id")

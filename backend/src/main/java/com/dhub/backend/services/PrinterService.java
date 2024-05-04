@@ -11,5 +11,7 @@ public interface PrinterService {
     
     PrinterDTO convertToDTO(Printer printer);
 
-    Printer createPrinterWithFile(MultipartFile file, PrinterDTO printerDTO);
+    Printer convertToEntity(PrinterDTO printerDTO);
+
+    // Printer createPrinterWithFile(MultipartFile file, PrinterDTO printerDTO);
 }

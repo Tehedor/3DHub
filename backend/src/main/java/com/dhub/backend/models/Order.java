@@ -46,11 +46,7 @@ public class Order {
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date orderDate;
 
-	private String fileFormat;
-
-	@Lob
-	@Column(columnDefinition="LONGBLOB")
-	private byte[] file;
+	private String urlPhoto;
 
 	@Column(name = "status")
 	@Enumerated(EnumType.STRING)

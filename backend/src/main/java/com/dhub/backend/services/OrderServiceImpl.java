@@ -178,11 +178,11 @@ public class OrderServiceImpl implements OrderService {
         order.setUserEntity(diseñador);
         Printer printer = printerRepository.findById(orderDTO.getPrinter_id()).get();
         order.setPrinter(printer);
-        try {
-            order.setFile(file.getBytes());
-        } catch (IOException e) {
-            // Handle the exception here
-        }
+        // try {
+        //     order.setFile(file.getBytes());
+        // } catch (IOException e) {
+        //     // Handle the exception here
+        // }
 
         String url = "http://localhost:5000/process";
         String jsonData = "{\"price_filamen\": "+ printer.getServicePrice() +", \"filament_width\": "+printer.getPrinterPrecision()+ "}";

@@ -97,18 +97,18 @@ public class RatingsServiceImpl implements RatingsService {
         }
     }
 
-    @Override
-    public Ratings createRatingWithFile(MultipartFile file, RatingsDTO ratingsDTO) throws IOException {
-        Ratings rating = new Ratings();
-        rating.setDate(new Date(System.currentTimeMillis()));
-        rating.setProductRating(ratingsDTO.getProductRating());
-        rating.setManufacturerRating(ratingsDTO.getManufacturerRating());
-        rating.setTextRating(ratingsDTO.getTextRating());
-        rating.setFile(file.getBytes());
-        rating.setFileFormat(getFileExtension(file.getOriginalFilename()));
-        rating.setOrder(orderRepository.findById(ratingsDTO.getOrder_id()).orElse(null));
+    // @Override
+    // public Ratings createRatingWithFile(MultipartFile file, RatingsDTO ratingsDTO) throws IOException {
+    //     Ratings rating = new Ratings();
+    //     rating.setDate(new Date(System.currentTimeMillis()));
+    //     rating.setProductRating(ratingsDTO.getProductRating());
+    //     rating.setManufacturerRating(ratingsDTO.getManufacturerRating());
+    //     rating.setTextRating(ratingsDTO.getTextRating());
+    //     rating.setFile(file.getBytes());
+    //     rating.setFileFormat(getFileExtension(file.getOriginalFilename()));
+    //     rating.setOrder(orderRepository.findById(ratingsDTO.getOrder_id()).orElse(null));
     
-        return rating;
+    //     return rating;
 
-    }
+    // }
 }
