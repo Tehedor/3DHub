@@ -122,7 +122,7 @@ const añadirReseña = (valorProducto, valorFabricante, reseñaTexto, foto, orde
   formData.append('file', foto);
 
   return appform
-    .post(` ratings`, formData)
+    .post(`ratings`, formData)
     .then((response) => {
       console.log(response);
       return response;

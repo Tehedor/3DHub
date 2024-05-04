@@ -68,10 +68,18 @@ const Login = (props) => {
         }
       ); 
       const userRoles = AuthService.getUserRoles();
-      console.log(userRoles);
-      console.log(userRoles.length === 1 );
-      console.log(userRoles[0] === "MANUFACTURER");
-      // if (userRoles.length < 2 && userRoles.length > 0) {
+
+      
+
+      const userDescargado = (await AuthService.getDescargarUsuario()).data;
+      console.log(userDescargado);
+
+      props.setControlUsuario(userDescargado);
+
+      // console.log(userRoles);
+      // console.log(userRoles.length === 1 );
+      // console.log(userRoles[0] === "MANUFACTURER");
+      // // if (userRoles.length < 2 && userRoles.length > 0) {
       if (userRoles.length === 1 ) {
         console.log(userRoles[0]);  
         props.setTheRollControl((userRoles[0] === "MANUFACTURER") ? "fabricante" : "diseñador");
