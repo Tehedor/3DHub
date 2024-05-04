@@ -7,5 +7,10 @@ public enum EColor {
     BLUE,
     RED,
     BLACK,
+    WHITE,
+    ORANGE,
+    PURPLE,
+    PINK,
+    BROWN
 
 }
