@@ -5,7 +5,7 @@ import AuthService from "../../services/auth.service";
 
 
 import './NavBar.css';
-import { Navbar, Nav, Form, FormControl, Button, Container, Row, Col, InputGroup, Image, ButtonGroup, ToggleButton } from 'react-bootstrap';
+import { Navbar, Nav, Form, FormControl, Button, Container, Row, Col, InputGroup, Image, ButtonGroup, ToggleButton, Accordion } from 'react-bootstrap';
 
 function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser, logOut, theRollActual, setTheRollControl, setCambioRoll, cambioRoll }) {
 
@@ -119,16 +119,32 @@ function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser
             <Form inline className="justify-content-center flex-grow-1" id="find">
               <Row className="w-100">
                 <InputGroup className="mb-3" size="sm">
-                  <FormControl placeholder="Search" aria-label="Search" aria-describedby="basic-addon2" value={localQuery} onChange={handleQueryChange} onClick={() => setLocalQuery('')} />
-                  <Button variant="light" id="button-addon2" onClick={handleSearchClick}> Search </Button>
-                </InputGroup>
-              </Row>
-              <Row className="w-100">
-                <InputGroup className="mb-3" size="sm">
                   <FormControl placeholder="Location" aria-label="Search" aria-describedby="basic-addon2" value={localQueryUbica} onChange={handleQueryUbicaChange} onClick={() => setLocalQueryUbica('')} />
                   <Button variant="light" id="button-addon2" onClick={handleSearchClick}>Search</Button>
                 </InputGroup>
               </Row>
+              {/* <Row className="w-100">
+                <InputGroup className="mb-3" size="sm">
+                <FormControl placeholder="Search" aria-label="Search" aria-describedby="basic-addon2" value={localQuery} onChange={handleQueryChange} onClick={() => setLocalQuery('')} />
+                <Button variant="light" id="button-addon2" onClick={handleSearchClick}> Search </Button>
+                </InputGroup>
+              </Row> */}
+              <Row className="w-100">
+  <Accordion defaultActiveKey="0" flush>
+    <Accordion.Item eventKey="0">
+      <Accordion.Header>Accordion Item #1</Accordion.Header>
+      <Accordion.Body style={{  zIndex: 4 }}>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+        eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+        minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+        aliquip ex ea commodo consequat. Duis aute irure dolor in
+        reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+        culpa qui officia deserunt mollit anim id est laborum.
+      </Accordion.Body>
+    </Accordion.Item>
+  </Accordion>
+</Row>
             </Form>
           </Container>
           {/* Role/Login */}
