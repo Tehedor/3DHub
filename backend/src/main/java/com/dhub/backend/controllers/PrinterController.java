@@ -174,8 +174,9 @@ public class PrinterController {
         Printer createdPrinter = printerService.convertToEntity(printerDTO);
         createdPrinter.setUrlPhoto(urlPhoto);
         createdPrinter.setUserEntity(user);
-        user.getPrinters().add(createdPrinter);
-        userRepository.save(user);
+        printerRepository.save(createdPrinter);
+        // user.getPrinters().add(createdPrinter);
+        // userRepository.save(user);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

@@ -29,6 +29,7 @@ public class PrinterServiceImpl implements PrinterService{
         printerDTO.setPrinterLocation(printer.getPrinterLocation());
         printerDTO.setPrinterType(printer.getPrinterType());
         printerDTO.setServicePrice(printer.getServicePrice());
+        printerDTO.setUrlPhoto(printer.getUrlPhoto());
         printerDTO.setMaxUnities(printer.getMaxUnities());
         printerDTO.setManufacturationSpeed(printer.getManufacturationSpeed());
         printerDTO.setMaxWidth(printer.getMaxWidth());
@@ -54,6 +55,7 @@ public class PrinterServiceImpl implements PrinterService{
         printer.setMaxHeight(printerDTO.getMaxHeight());
         printer.setPrinterPrecision(printerDTO.getPrinterPrecision());
         printer.setColor(printerDTO.getColor());
+        printer.setUrlPhoto(printerDTO.getUrlPhoto());
         printer.setMaterial(printerDTO.getMaterial());
         printer.setUserEntity(user);
         return printer;

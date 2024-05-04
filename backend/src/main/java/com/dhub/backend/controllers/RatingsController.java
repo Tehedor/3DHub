@@ -1,6 +1,8 @@
 package com.dhub.backend.controllers;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,6 +89,9 @@ public class RatingsController {
             e.printStackTrace();
         }
         Ratings ratings = ratingsService.convertToEntity(ratingsDTO);
+        LocalDateTime now = LocalDateTime.now();
+        Date date = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
+        ratings.setDate(date);
         ratings.setUrlPhoto(urlPhoto);
         if (ratingsRepository.findByOrderId(order.getId()) != null) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
