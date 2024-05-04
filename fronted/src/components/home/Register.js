@@ -122,6 +122,8 @@ const RegisterDisenador = (props) => {
   const [address, setAddress] = useState("");
   const [factAdress, setFactAdress] = useState("");
   const [roles, setRoles] = useState(["ROLE_DESIGNER"]);
+  const [iban, setIban] = useState("");
+
 
   const [successful, setSuccessful] = useState(false);
   const [message, setMessage] = useState("");
@@ -165,7 +167,7 @@ const RegisterDisenador = (props) => {
 
     if (checkBtn.current.context._errors.length === 0) {
       // AuthService.register(dni, username, email, password, lat, lon, address, factAdress, roles).then(
-      AuthService.register(dni, username, email, password, address, roles).then(
+      AuthService.register(dni, username, email, password, address, roles, iban).then(
         (response) => {
           setMessage(response.data.message);
           setSuccessful(true);
@@ -184,6 +186,11 @@ const RegisterDisenador = (props) => {
       );
     }
   };
+
+  const validIban = (value) => {
+    // Aquí puedes agregar la lógica de validación del IBAN
+  };
+
 
   return (
     <div className="col-md-12">
@@ -286,7 +293,7 @@ const RegisterDisenador = (props) => {
                   validations={[validAddress]}
                 />
               </div>
-{/* 
+              {/* 
               <div className="form-group">
                 <label htmlFor="factaddres">Dirección de facturación</label>
                 <Input
@@ -341,7 +348,19 @@ const RegisterDisenador = (props) => {
                   </div>
                 ))}
               </BootstrapForm>
-
+              {roles.includes("ROLE_MANUFACTURER") && (
+                <div className="form-group">
+                  <label htmlFor="iban">IBAN</label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    name="iban"
+                    value={iban}
+                    onChange={e => setIban(e.target.value)}
+                    validations={[validIban]} // Si has definido la función de validación del IBAN
+                  />
+                </div>
+              )}
               <div className="form-group">
                 <button className="btn btn-primary btn-block">Sign Up</button>
               </div>
