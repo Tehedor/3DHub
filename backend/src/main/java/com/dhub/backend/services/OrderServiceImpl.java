@@ -55,7 +55,8 @@ public class OrderServiceImpl implements OrderService {
         orderDTO.setProductPrice(order.getProductPrice());
         orderDTO.setDeliveryPrice(order.getDeliveryPrice());
         orderDTO.setPrinter_id(order.getPrinter().getId());
-        orderDTO.setUser_id(order.getUserEntity().getId());
+        orderDTO.setDesigner_id(order.getUserEntity().getId());
+        orderDTO.setManufacturer_id(order.getPrinter().getUserEntity().getId());
         return orderDTO;
     }
 
@@ -173,8 +174,8 @@ public class OrderServiceImpl implements OrderService {
         order.setDeliveryDate(orderDTO.getDeliveryDate());
         order.setManufacturerDate(orderDTO.getManufacturerDate());
         order.setDeliveryPrice(orderDTO.getDeliveryPrice());
-        UserEntity user = userRepository.findById(orderDTO.getUser_id()).get();
-        order.setUserEntity(user);
+        UserEntity diseñador = userRepository.findById(orderDTO.getDesigner_id()).get();
+        order.setUserEntity(diseñador);
         Printer printer = printerRepository.findById(orderDTO.getPrinter_id()).get();
         order.setPrinter(printer);
         // try {

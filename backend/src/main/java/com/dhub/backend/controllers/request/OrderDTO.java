@@ -43,7 +43,9 @@ public class    OrderDTO {
 
     private double deliveryPrice;
 
-    private Long user_id;
+    private Long manufacturer_id;
+    
+    private Long designer_id;
 
     @NotBlank
     private Long printer_id;

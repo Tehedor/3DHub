@@ -88,6 +88,9 @@ public class RatingsController {
         }
         Ratings ratings = ratingsService.convertToEntity(ratingsDTO);
         ratings.setUrlPhoto(urlPhoto);
+        if (ratingsRepository.findByOrderId(order.getId()) != null) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
         ratings.setOrder(order);
         ratingsRepository.save(ratings);
         return new ResponseEntity<>(HttpStatus.CREATED);

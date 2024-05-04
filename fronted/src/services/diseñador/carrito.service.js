@@ -31,7 +31,7 @@ const getPedidosCarrito = async () => {
 // ##### ##### ##### ##### ##### ##### ##### ##### #####
 // ##### ##### Post order
 // ##### ##### ##### ##### ##### ##### ##### ##### #####
-const order = (id) => {
+const order = async (id) => {
   return app
   .put(`orders/${id}/status`, {
     "name": "PAY"

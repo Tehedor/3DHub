@@ -11,26 +11,51 @@ const app = axios.create({
   },
 });
 
+const appform = axios.create({
+  baseURL: "http://localhost:8080/api/",
+  headers: {
+    'Content-Type': 'multipart/form-data',
+    'Authorization': `Bearer ${token}`
+  },
+});
+
 // ##### ##### ##### ##### ##### ##### ##### ##### #####
 // ##### ##### Post create printer
 // ##### ##### ##### ##### ##### ##### ##### ##### #####
 const createPrinter = (modelName, printerLocation, printerType, printerPhoto, servicePrice, maxUnities, manufacturationSpeed, material, maxWidth, maxHeight, printerPrecision, color) => {
-  return app.
-    post("printers", {
-      modelName,
-      printerLocation,
-      printerType,
-      printerPhoto,
-      servicePrice,
-      maxUnities,
-      manufacturationSpeed,
-      material,
-      maxWidth,
-      maxHeight,
-      printerPrecision,
-      color
+
+
+  const data = {
+    modelName: modelName,
+    printerLocation: printerLocation,
+    printerType: printerType,
+    servicePrice: servicePrice,
+    maxUnities: maxUnities,
+    manufacturationSpeed: manufacturationSpeed,
+    maxWidth: maxWidth,
+    maxHeight: maxHeight,
+    printerPrecision: printerPrecision,
+    color: color,
+    material: material,
+    idFabricante: 123
+  };
+  console.log(data);
+
+  const formData = new FormData();
+  formData.append('data', JSON.stringify(data));
+  formData.append('file', printerPhoto);
+
+  return appform
+    .post(`printers`, formData)
+    .then((response) => {
+      console.log(response);
+      return response;
     });
+
+
+
 };
+// {"modelName": "Ender 3","printerLocation": "Oficina","printerType": "FDM","servicePrice": 10.5,"maxUnities": 5,"manufacturationSpeed": "Rápida","maxWidth": 220.0,"maxHeight": 250.0,"printerPrecision": 0.1,"color": "BLACK","material": "PLASTIC","idFabricante": 123}
 
 // ##### ##### ##### ##### ##### ##### ##### ##### #####
 // ##### ##### Get Impresoras fabricante

@@ -13,7 +13,7 @@ export default function Location(props) {
 
 	return (
 		<div>
-			<PedirPedido printers={props.controlPrinters} printerId={printerId} ratings={props.controlRatings} />
+			<PedirPedido printers={props.controlPrinters} printerId={printerId} ratings={props.controlRatings} cambioRoll={props.cambioRoll} />
 		</div>
 	);
 }

@@ -14,6 +14,9 @@ import PedidosService from "../../services/diseñador/pedidos.service.js";
 import DragAndDrop from './../../common/DragAndDrop.js';
 import ReseñaLista from './ReseñaLista.js';
 
+import AuthService from '../../services/auth.service.js';
+import { isEmpty } from 'validator';
+
 function PedirPedido(props) {
   const form = useRef();
   const checkBtn = useRef();
@@ -207,6 +210,8 @@ function PedirPedido(props) {
     }
   };
 
+  console.log(props.cambioRoll);
+  console.log(AuthService.getCurrentUser());
 
   return (
 
@@ -241,159 +246,163 @@ function PedirPedido(props) {
           </Row>
         </Col>
         :
-        <Form onSubmit={handlePedido} ref={form}>
-          {!successful && (
-            <Container>
-              <Row>
-                <Col lg={3} className="reseñas order-3 order-lg-1">
-                  {/* ########## */}
-                  {/*  SUBIR FIL */}
-                  {/* ##########
-                <MyValidationInput
-                  type="file"
-                  formlabel="Subir file"
-                  value={file}
-                  onChange={(e) => setFile(e.target.files[0])}
-                  // validations={[required, validateFile]}
-                // validations={[required]} 
-                /> */}
+        <Container>
+          {(props.cambioRoll === "diseñador" && AuthService.getCurrentUser() && Object.keys(AuthService.getCurrentUser()).length !== 0) ? (
+            <Form onSubmit={handlePedido} ref={form}>
+              {!successful && (
+                <Container>
+                  <Row>
+                    <Col lg={3} className="reseñas order-3 order-lg-1">
+                      {/* ########## */}
+                      {/*  SUBIR FIL */}
+                      {/* ##########
                   <MyValidationInput
                     type="file"
                     formlabel="Subir file"
-                    onChange={(e) => setFile(e.target.files[0])}
-                  // validations={[required]} 
-                  />
-
-                  {/* <DragAndDrop 
-                    type="file"
-                    formlabel="Subir file"
                     value={file}
-                    // setFile={setFile}
-                    // file={file}
                     onChange={(e) => setFile(e.target.files[0])}
-                    validations={[required, validateFile]}
-                  />  */}
-                </Col>
-                <Col lg={6} className="central order-1 order-lg-2">
-                  {/* ######### */}
-                  {/* DIRECCION */}
-                  {/* ######### */}
-                  <Row class="subir">
-                    <MyValidationInput
-                      as="textarea"
-                      formlabel="Especificaciones del pedido"
-                      rows={1}
-                      maxLength={40}
-                      value={address}
-                      placeholder="Dirección de entrega"
-                      onChange={e => setAddress(e.target.value)}
-                      validations={[required]} // Agrega tus validaciones aquí
-                    />
+                    // validations={[required, validateFile]}
+                  // validations={[required]} 
+                  /> */}
+                      <MyValidationInput
+                        type="file"
+                        formlabel="Subir file"
+                        onChange={(e) => setFile(e.target.files[0])}
+                      // validations={[required]} 
+                      />
+
+                      {/* <DragAndDrop 
+                      type="file"
+                      formlabel="Subir file"
+                      value={file}
+                      // setFile={setFile}
+                      // file={file}
+                      onChange={(e) => setFile(e.target.files[0])}
+                      validations={[required, validateFile]}
+                    />  */}
+                    </Col>
+                    <Col lg={6} className="central order-1 order-lg-2">
+                      {/* ######### */}
+                      {/* DIRECCION */}
+                      {/* ######### */}
+                      <Row class="subir">
+                        <MyValidationInput
+                          as="textarea"
+                          formlabel="Especificaciones del pedido"
+                          rows={1}
+                          maxLength={40}
+                          value={address}
+                          placeholder="Dirección de entrega"
+                          onChange={e => setAddress(e.target.value)}
+                          validations={[required]} // Agrega tus validaciones aquí
+                        />
+                      </Row>
+                      <Row>
+                        {/* ################ */}
+                        {/* ESPECIFICACIONES */}
+                        {/* ################ */}
+                        <MyValidationInput
+                          as="textarea"
+                          formlabel="Especificaciones del pedido"
+                          rows={7}
+                          maxLength={400}
+                          value={especificaciones}
+                          onChange={e => setEspecificaciones(e.target.value)}
+                          validations={[required, validEspecificaciones]} // Agrega tus validaciones aquí
+                        />
+                      </Row>
+                    </Col>
+                    <Col lg={3} className="derecha order-2 order-lg-3">
+                      <Row class="Tabla">
+                        <Table striped bordered hover variant="gray">
+                          <tbody>
+                            <tr>
+                              <td>Cantidad</td>
+                              <td>
+                                {/* ########## */}
+                                {/* CANTIDAD */}
+                                {/* ########## */}
+                                <MyValidationInput
+                                  type="number"
+                                  max={PrinterMaxUnities}
+                                  min="0"
+                                  value={cantidad}
+                                  onChange={e => setCantidad(e.target.value)}
+                                  validations={[required, validCantidad]}
+                                />
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Límite de fabricación</td>
+                              <td>
+                                {/* ################## */}
+                                {/* LIMITE FABRICACION */}
+                                {/* ################## */}
+                                <MyValidationInput
+                                  type="date"
+                                  name="fechaFabricacion"
+                                  // value={fechaFabricacion} 
+                                  onChange={e => { fechaFabricacion.current = e.target.value }}
+                                  // onChange={e => setFechaFabricacion(e.target.value)}
+                                  validations={[required, validFechaFabricacion]}
+                                />
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Límite de entrega</td>
+                              <td>
+                                {/* ############## */}
+                                {/* LIMITE ENTREGA */}
+                                {/* ############## */}
+                                <MyValidationInput
+                                  type="date"
+                                  name="fechaEntrega"
+                                  onChange={e => setFechaEntrega(e.target.value)}
+                                  validations={[required, validFechaEntrega]}
+                                />
+                              </td>
+                            </tr>
+                          </tbody>
+                        </Table>
+                      </Row>
+                      <Row className="Añadir" style={{ display: 'flex', alignItems: 'flex-end' }}>
+                        {/* ############# */}
+                        {/* Añadir Carrito*/}
+                        {/* ############# */}
+                        <Button variant="success" onClick={handlePedido}>Añadir al Carrito</Button>
+                        <p></p>
+                        {/* ############# */}
+                        {/*    Vovler     */}
+                        {/* ############# */}
+                        <Button href="/" variant="danger">Vover</Button>
+                      </Row>
+                    </Col>
                   </Row>
-                  <Row>
-                    {/* ################ */}
-                    {/* ESPECIFICACIONES */}
-                    {/* ################ */}
-                    <MyValidationInput
-                      as="textarea"
-                      formlabel="Especificaciones del pedido"
-                      rows={7}
-                      maxLength={400}
-                      value={especificaciones}
-                      onChange={e => setEspecificaciones(e.target.value)}
-                      validations={[required, validEspecificaciones]} // Agrega tus validaciones aquí
-                    />
-                  </Row>
-                </Col>
-                <Col lg={3} className="derecha order-2 order-lg-3">
-                  <Row class="Tabla">
-                    <Table striped bordered hover variant="gray">
-                      <tbody>
-                        <tr>
-                          <td>Cantidad</td>
-                          <td>
-                            {/* ########## */}
-                            {/* CANTIDAD */}
-                            {/* ########## */}
-                            <MyValidationInput
-                              type="number"
-                              max={PrinterMaxUnities}
-                              min="0"
-                              value={cantidad}
-                              onChange={e => setCantidad(e.target.value)}
-                              validations={[required, validCantidad]}
-                            />
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Límite de fabricación</td>
-                          <td>
-                            {/* ################## */}
-                            {/* LIMITE FABRICACION */}
-                            {/* ################## */}
-                            <MyValidationInput
-                              type="date"
-                              name="fechaFabricacion"
-                              // value={fechaFabricacion} 
-                              onChange={e => { fechaFabricacion.current = e.target.value }}
-                              // onChange={e => setFechaFabricacion(e.target.value)}
-                              validations={[required, validFechaFabricacion]}
-                            />
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Límite de entrega</td>
-                          <td>
-                            {/* ############## */}
-                            {/* LIMITE ENTREGA */}
-                            {/* ############## */}
-                            <MyValidationInput
-                              type="date"
-                              name="fechaEntrega"
-                              onChange={e => setFechaEntrega(e.target.value)}
-                              validations={[required, validFechaEntrega]}
-                            />
-                          </td>
-                        </tr>
-                      </tbody>
-                    </Table>
-                  </Row>
-                  <Row className="Añadir" style={{ display: 'flex', alignItems: 'flex-end' }}>
-                    {/* ############# */}
-                    {/* Añadir Carrito*/}
-                    {/* ############# */}
-                    <Button variant="success" onClick={handlePedido}>Añadir al Carrito</Button>
-                    <p></p>
-                    {/* ############# */}
-                    {/*    Vovler     */}
-                    {/* ############# */}
-                    <Button href="/" variant="danger">Vover</Button>
-                  </Row>
-                </Col>
-              </Row>
-              <Row className="d-flex justify-content-center align-items-center" style={{ marginTop: '10px' }}>
-                <ReseñaLista printer={printer} ratings={allratings} numberPrinter={numberPrinter} />
-              </Row>
-            </Container>
-          )
-          }
-          {
-            message && (
-              <div className="form-group">
-                <div
-                  className={
-                    successful ? "alert alert-success" : "alert alert-danger"
-                  }
-                  role="alert"
-                >
-                  {message}
-                </div>
-                {successful ? <img id="loading" src={process.env.PUBLIC_URL + "/spinners/patitotabien.gif"} className="spinner" alt="spinner" style={{ width: "23%", height: "auto" }} /> : <img id="loading" src={process.env.PUBLIC_URL + "/spinners/patitoguerra.gif"} className="spinner" alt="spinner" style={{ width: "23%", height: "auto" }} />}
-              </div>
-            )
-          }
-          <CheckButton style={{ display: "none" }} ref={checkBtn} />
-        </Form >
+                </Container>
+
+              )}
+              {
+                message && (
+                  <div className="form-group">
+                    <div
+                      className={
+                        successful ? "alert alert-success" : "alert alert-danger"
+                      }
+                      role="alert"
+                    >
+                      {message}
+                    </div>
+                    {successful ? <img id="loading" src={process.env.PUBLIC_URL + "/spinners/patitotabien.gif"} className="spinner" alt="spinner" style={{ width: "23%", height: "auto" }} /> : <img id="loading" src={process.env.PUBLIC_URL + "/spinners/patitoguerra.gif"} className="spinner" alt="spinner" style={{ width: "23%", height: "auto" }} />}
+                  </div>
+                )
+              }
+              <CheckButton style={{ display: "none" }} ref={checkBtn} />
+            </Form >
+          ) : null}
+          <Row className="d-flex justify-content-center align-items-center" style={{ marginTop: '10px' }}>
+            <ReseñaLista printer={printer} ratings={allratings} numberPrinter={numberPrinter} />
+          </Row>
+        </Container>
       }
     </Container >
   );
