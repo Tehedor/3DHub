@@ -73,7 +73,7 @@ export default function Ver(props) {
                     <Col md={6} lg={3} class="imagen" className="d-flex justify-content-center align-items-center">
                     <Container style={{ width: "100%", height: "auto", overflow: "hidden", boxShadow: "0px 0px 10px 2px rgba(0,0,0,0.1)" }}>
                         <Image
-                        src={printer.printerPhoto || "http://localhost:3000/printer_default.jpg"}
+                        src={printer.urlPhoto || "http://localhost:3000/printer_default.jpg"}
                         style={{ width: "100%", objectFit: "cover" }}
                         thumbnail
                         />
