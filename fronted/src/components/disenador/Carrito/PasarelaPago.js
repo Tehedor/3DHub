@@ -78,6 +78,9 @@ export default function Pasareladepago(props) {
     const [priceTotal, setPriceTotal] = useState(0);
 
 
+    const precioServicio  = 0.2;
+
+
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     // ##### ##### Funciones de descarga
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
@@ -132,11 +135,11 @@ export default function Pasareladepago(props) {
         let priceTotalCon = 0;
 
         for (let i = 0; i < carrito.length; i++) {
-            priceProductoCon = priceProductoCon + carrito[i].productPrice * carrito[i].quantity;
+            priceProductoCon = priceProductoCon + carrito[i].productPrice * carrito[i].quantity + precioServicio;
             console.log("priceProductoCon", priceProductoCon);
             priceEnvioCon = priceEnvioCon + carrito[i].deliveryPrice * carrito[i].quantity;
             console.log("priceEnvioCon", priceEnvioCon);
-            priceTotalCon = priceTotalCon + (carrito[i].productPrice + carrito[i].deliveryPrice) * carrito[i].quantity;
+            priceTotalCon = priceTotalCon + (carrito[i].productPrice + carrito[i].deliveryPrice) * carrito[i].quantity + precioServicio;
             console.log("priceTotalCon", priceTotalCon);
         }
         setPriceProducto(priceProductoCon);
@@ -243,7 +246,7 @@ export default function Pasareladepago(props) {
                                             <Row>
                                                 <Col md={12} className="red-bg">
                                                     <p className="bill-date" id="total-label">Precio Total</p>
-                                                    <h2 className="bill-head" id="total"> {priceTotal}</h2>
+                                                    <h2 className="bill-head" id="total"> {priceTotal.toFixed(2)}</h2>
                                                     {/* <small className="bill-date" id="total-label">Price includes all taxes</small> */}
                                                 </Col>
                                             </Row>

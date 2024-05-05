@@ -62,18 +62,18 @@ export default function VerReseña(props) {
                     <Row style={{ paddingBottom: '10px' }}>
                             <Col xs={8}>
                                 <Container style={{ marginLeft: '5px' }}>
-                                    <small>Comentario: {printerRating.textRating}</small>
+                                    <small>{printerRating.textRating}</small>
                                 </Container>
                             </Col>
-                        <Col xs={2}>
-                            <div style={{ width: '150px', height: '150px', backgroundColor: 'gray', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                {printerRating.urlPhoto ?
-                                    <img src={printerRating.urlPhoto} alt="imagen" style={{ width: '140px', height: '140px' }} />
-                                    :
-                                    <div style={{ width: '140px', height: '140px', backgroundColor: 'white' }}></div>
-                                }
-                            </div>
-                        </Col>
+                            <Col xs={2}>
+                                <div style={{ width: '150px', height: '150px', backgroundColor: 'gray', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                    {printerRating.urlPhoto ?
+                                        <img src={printerRating.urlPhoto} alt="imagen" style={{ width: '140px', height: '140px' }} />
+                                        :
+                                        <div style={{ width: '140px', height: '140px', backgroundColor: 'white' }}></div>
+                                    }
+                                </div>
+                            </Col>
                     </Row>
                 </Col>
             </Row>

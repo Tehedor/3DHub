@@ -157,7 +157,7 @@ function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser
                       <Row>
                         {JSON.parse(localStorage.getItem("usuarioDescargado")) && (
                           <div>
-                            Localización de ususario:
+                            <strong>Localización de ususario:</strong>
                             <Button variant="light" id="button-addon2" onClick={() => settheFilLocation((JSON.parse(localStorage.getItem("usuarioDescargado"))).address)}>{JSON.parse(localStorage.getItem("usuarioDescargado")) ? (JSON.parse(localStorage.getItem("usuarioDescargado"))).address : "No hay dirección"}</Button>
                           </div>
                         )}
@@ -166,7 +166,7 @@ function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser
 
                         {(localStorage.getItem("actualLocation")) && (
                           <div>
-                            Localización actual:
+                            <strong>Localización actual:</strong>
                             {/* <Button variant="light" id="button-addon2" onClick={() => settheFilLocation(JSON.parse(localStorage.getItem("actualLocation")))}>{JSON.parse(localStorage.getItem("actualLocation")) ? JSON.parse(localStorage.getItem("actualLocation")) : "No hay dirección"}</Button> */}
                             <Button variant="light" id="but ton-addon2" onClick={() => settheFilLocation((localStorage.getItem("actualLocation")))}>{(localStorage.getItem("actualLocation")) ? (localStorage.getItem("actualLocation")) : "No hay dirección"}</Button>
                           </div>
@@ -490,10 +490,40 @@ function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser
             </Row>
 
             <Row className="w-100">
-              <InputGroup className="mb-3" size="sm" style={{ height: "53px" }}>
+              {/* <InputGroup className="mb-3" size="sm" style={{ height: "53px" }}>
                 <FormControl placeholder="Location" aria-label="Search" aria-describedby="basic-addon2" value={localQueryUbica} onChange={handleQueryUbicaChange} onClick={() => setLocalQueryUbica('')} />
                 <Button variant="light" id="button-addon2" onClick={handleSearchClick}>Search</Button>
-              </InputGroup>
+              </InputGroup> */}
+              <Accordion flush>
+                  <Accordion.Item eventKey="0">
+                    <Accordion.Header>Ubicación
+                    </Accordion.Header>
+                    <Accordion.Body style={{ zIndex: 4 }}>
+                      <Row>
+                        {JSON.parse(localStorage.getItem("usuarioDescargado")) && (
+                          <div>
+                            <strong>Localización de ususario:</strong>
+                            <Button variant="light" id="button-addon2" onClick={() => settheFilLocation((JSON.parse(localStorage.getItem("usuarioDescargado"))).address)}>{JSON.parse(localStorage.getItem("usuarioDescargado")) ? (JSON.parse(localStorage.getItem("usuarioDescargado"))).address : "No hay dirección"}</Button>
+                          </div>
+                        )}
+                      </Row>
+                      <Row>
+
+                        {(localStorage.getItem("actualLocation")) && (
+                          <div>
+                            <strong>Localización actual:</strong>
+                            {/* <Button variant="light" id="button-addon2" onClick={() => settheFilLocation(JSON.parse(localStorage.getItem("actualLocation")))}>{JSON.parse(localStorage.getItem("actualLocation")) ? JSON.parse(localStorage.getItem("actualLocation")) : "No hay dirección"}</Button> */}
+                            <Button variant="light" id="but ton-addon2" onClick={() => settheFilLocation((localStorage.getItem("actualLocation")))}>{(localStorage.getItem("actualLocation")) ? (localStorage.getItem("actualLocation")) : "No hay dirección"}</Button>
+                          </div>
+                        )}
+                      </Row>
+                      <InputGroup className="mb-3" size="sm">
+                        <FormControl placeholder="Location" aria-label="Search" aria-describedby="basic-addon2" value={theFilLocation} onChange={() => settheFilLocation('')} />
+                        <Button variant="light" id="button-addon2" onClick={handleSearchClick}>Search</Button>
+                      </InputGroup>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                </Accordion>
             </Row>
           </Form>
         </Container>

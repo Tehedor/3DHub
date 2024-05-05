@@ -6,14 +6,14 @@ export default function CarritoLista(props) {
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     // ##### ##### Datos de descarga
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
-    let lista = props.theCarrito;    
-    console.log("lista",lista);
+    let lista = props.theCarrito;
+    console.log("lista", lista);
     let fabricantes = props.theFabricantes;
-    console.log("fabricantes",fabricantes);
+    console.log("fabricantes", fabricantes);
     let printers = props.thePrinters;
-    console.log("printers",printers);
-    
-    
+    console.log("printers", printers);
+
+
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     // ##### ##### Funcoienes de busqueda
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
@@ -27,7 +27,7 @@ export default function CarritoLista(props) {
             }
         }
     }
-    
+
     const searchFabricante = (id) => {
         const printer = searchPrinter(id);
         // const idFabricante = printer.idFabricante;
@@ -38,28 +38,27 @@ export default function CarritoLista(props) {
         // }
         // return null;
         return fabricantes[0];
-    }       
-    
+    }
+
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     // ##### ##### Return
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
-    return(
+    return (
         <div id="productosresultados">
             {
-            Array.isArray(lista) && lista.length > 0 ? (
-                lista.map((items, index) =>
-                    items.status === "KART" ? (
-                        // <h1>h</h1>
-                        <VerPasarelaPago
-                            carrito={items}
-                            printer={searchPrinter(items.printer_id)}
-                            fabricante={searchFabricante(items.printer_id)}
-                        />
-                    ) : null
+                Array.isArray(lista) && lista.length > 0 ? (
+                    [...lista].reverse().map((items, index) =>
+                        items.status === "KART" ? (
+                            <VerPasarelaPago
+                                carrito={items}
+                                printer={searchPrinter(items.printer_id)}
+                                fabricante={searchFabricante(items.printer_id)}
+                            />
+                        ) : null
                     )
-            ) : (
-                <p>El carrito está vacío</p>
-            )
+                ) : (
+                    <p>El carrito está vacío</p>
+                )
             }
         </div>);
 }

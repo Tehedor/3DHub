@@ -199,7 +199,7 @@ export default function VerPedidos(props) {
 
                 <Row>
                     <Col md={4}>
-                        <Row className="text-start">id: {pedidos.id}</Row>
+                        <Row className="text-start">Nº de Pedido: {pedidos.id}</Row>
                         <Row className="text-start">Fecha de pedido: {new Date(pedidos.orderDate).toLocaleDateString('es-ES')}</Row>
                         <Row className="text-start">Fecha de fabricación: {new Date(pedidos.manufacturerDate).toLocaleDateString('es-ES')}</Row>
                         <Row className="text-start">Fecha de entrega: {new Date(pedidos.deliveryDate).toLocaleDateString('es-ES')}</Row>

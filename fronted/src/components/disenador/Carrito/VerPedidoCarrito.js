@@ -15,6 +15,9 @@ export default function VerPedidoCarrito(props) {
     const fabricante = props.fabricante;
     console.log("fabricante", fabricante);
 
+    const precioServicio  = 0.2;
+
+
     // ##### ##### ##### ##### ##### ##### ##### ##### #####
     // ##### ##### Función eliminar pedido
     // ##### ##### ##### ##### ##### ##### ##### ##### #####
@@ -51,7 +54,7 @@ export default function VerPedidoCarrito(props) {
             <Card.Body>
                 <Row>
                     <Col md={4}>
-                        <Row className="text-start">id: {carrito.id}</Row>
+                        <Row className="text-start">Nº de Pedido: {carrito.id}</Row>
                         <Row className="text-start">Fecha de pedido: {new Date(carrito.orderDate).toLocaleDateString('es-ES')}</Row>
                         <Row className="text-start">Fecha de fabricación: {new Date(carrito.manufacturerDate).toLocaleDateString('es-ES')}</Row>
                         <Row className="text-start">Fecha de entrega: {new Date(carrito.deliveryDate).toLocaleDateString('es-ES')}</Row>
@@ -68,19 +71,23 @@ export default function VerPedidoCarrito(props) {
                             <tbody>
                                 <tr>
                                     <td>Precio Producto</td>
-                                    <td>{carrito.productPrice} €</td>
+                                    <td>{carrito.productPrice.toFixed(2)} €</td>
                                 </tr>
                                 <tr>
                                     <td>Precio Envio</td>
-                                    <td>{carrito.deliveryPrice} €</td>
+                                    <td>{carrito.deliveryPrice.toFixed(2)} €</td>
                                 </tr>
                                 <tr>
                                     <td>Cantidad impresiones</td>
                                     <td>{carrito.quantity}</td>
                                 </tr>
                                 <tr>
+                                    <td>Precio Servicio</td>
+                                    <td>{precioServicio.toFixed(2)} €</td>
+                                </tr>
+                                <tr>
                                     <td><strong>Precio Total</strong></td>
-                                    <td><strong>{(carrito.productPrice + carrito.deliveryPrice) * carrito.quantity} €</strong></td>
+                                    <td><strong>{((carrito.productPrice + carrito.deliveryPrice) * carrito.quantity).toFixed(2)} €</strong></td>
                                 </tr>
                             </tbody>
                         </Table>
