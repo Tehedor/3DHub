@@ -99,14 +99,14 @@ function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser
               {/* Pedidos/Notificaciones */}
               <Col className="d-flex align-items-center art1">
                 <div className="col-1 aling-item-lefth justify-content-between">
-                  {currentUser && theRollActual === "DESIGNER" ?
+                  {currentUser && cambioRoll === "DESIGNER" ?
                     <Button href="/pedidos" variant="light" >
                       <img src={"http://localhost:3000/iconos/inventory_2_icon.svg"} alt="Pedidos" />
                       <strong>Pedidos</strong>
                     </Button>
                     : null
                   }
-                  {currentUser && theRollActual === "MANUFACTURER" ?
+                  {currentUser && cambioRoll === "MANUFACTURER" ?
                     <Button href="/notificaciones" variant="light">
                       <img src={"http://localhost:3000/iconos/bookmark_icon.svg"} alt="Notificaciones" />
                       <strong>Notificaciones</strong>
@@ -118,14 +118,14 @@ function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser
               {/* Carrito/Impresoras */}
               <Col className="d-flex align-items-center  art1">
                 <div className="col-1 aling-item-lefth justify-content-between">
-                  {currentUser && theRollActual === "DESIGNER" ?
+                  {currentUser && cambioRoll === "DESIGNER" ?
                     <Button href="/carritocompra" variant="light">
                       <img src={"http://localhost:3000/iconos/cart_icon.svg"} alt="Carrito" />
                       <strong>Carrito </strong>
                     </Button>
                     : null
                   }
-                  {currentUser && theRollActual === "MANUFACTURER" ?
+                  {currentUser && cambioRoll === "MANUFACTURER" ?
                     <Button href="/impresorasfabri" variant="light">
                       <img src={"http://localhost:3000/iconos/print_FILL0_icon.svg"} alt="Impresoras" />
                       <strong>Impresoras</strong>
@@ -287,7 +287,8 @@ function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser
                         name="roll"
                         value={roll.value}
                         checked={cambioRoll === roll.value}
-                        onChange={(e) => setCambioRoll(e.currentTarget.value)}
+                        // onChange={(e) => setCambioRoll(e.currentTarget.value)}
+                        onChange={(e) => cambiarRoll(e.currentTarget.value)}
                       >
                         {roll.name}
                       </ToggleButton>
