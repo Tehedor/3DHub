@@ -55,6 +55,7 @@ public class SecurityConfig {
                 auth.requestMatchers("/api/auth/**").permitAll();
                 auth.requestMatchers("/api/printers").permitAll();
                 auth.requestMatchers("/api/printers/filter").permitAll();
+                auth.requestMatchers("/api/printers/near").permitAll();
                 auth.requestMatchers("/api/customerService/sendMail").permitAll();
                 // auth.requestMatchers("/api/users/**").permitAll();
                 auth.anyRequest().authenticated();
