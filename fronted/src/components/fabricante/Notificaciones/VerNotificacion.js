@@ -134,7 +134,7 @@ export default function VerNotificaciones(props) {
             <Card.Body>
                 <Row>
                     <Col md={4}>
-                        <Row className="text-start">id: {pedidos.id}</Row>
+                        <Row className="text-start">Número Pedido: {pedidos.id}</Row>
                         <Row className="text-start">Fecha de pedido: {new Date(pedidos.orderDate).toLocaleDateString('es-ES')}</Row>
                         <Row className="text-start">Fecha de fabricación: {new Date(pedidos.manufacturerDate).toLocaleDateString('es-ES')}</Row>
                         <Row className="text-start">Fecha de entrega: {new Date(pedidos.deliveryDate).toLocaleDateString('es-ES')}</Row>
@@ -142,19 +142,19 @@ export default function VerNotificaciones(props) {
                         <Table borderless style={{ lineHeight: '4px' }}>
                             <tbody>
                                 <tr>
-                                    <td style={{ paddingLeft: '3px', marginRight: '2px', textAlign: 'left', width: '55%' }}>Precio Envio:</td>
+                                    <td style={{ paddingLeft: '0px', marginRight: '2px', textAlign: 'left', width: '57%' }}>P. Envio:</td>
                                     <td style={{ textAlign: 'left' }}>{pedidos.deliveryPrice} €</td>
                                 </tr>
                                 <tr>
-                                    <td style={{ paddingLeft: '3px', textAlign: 'left', width: '55%' }}>Precio Producto:</td>
+                                    <td style={{ paddingLeft: '0px', textAlign: 'left', width: '65%' }}>P. Producto:</td>
                                     <td style={{ textAlign: 'left' }}>{pedidos.productPrice} €</td>
                                 </tr>
                                 <tr>
-                                    <td style={{ paddingLeft: '3px', textAlign: 'left', width: '55%' }}>Cantidad:</td>
+                                    <td style={{ paddingLeft: '0px', textAlign: 'left', width: '57%' }}>Cantidad:</td>
                                     <td style={{ textAlign: 'left' }}>{pedidos.quantity} €</td>
                                 </tr>
                                 <tr>
-                                    <td style={{ paddingLeft: '3px', textAlign: 'left', width: '55%' }}><strong>Precio Total:</strong></td>
+                                    <td style={{ paddingLeft: '0px', textAlign: 'left', width: '57%' }}><strong>P. Total:</strong></td>
                                     <td style={{ textAlign: 'left' }}><strong>{(pedidos.productPrice + pedidos.deliveryPrice) * pedidos.quantity} €</strong></td>
                                 </tr>
                             </tbody>

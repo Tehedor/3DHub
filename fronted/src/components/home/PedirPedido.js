@@ -176,6 +176,7 @@ function PedirPedido(props) {
   const fechaFabricacion = useRef();
   const [fechaEntrega, setFechaEntrega] = useState(now);
   // const [address, setAddress] = useState("");
+  // const [address, setAddress] = useState(JSON.parse(localStorage.getItem("usuarioDescargado")) ? (JSON.parse(localStorage.getItem("usuarioDescargado"))).address : "");
   const [address, setAddress] = useState(JSON.parse(localStorage.getItem("usuarioDescargado")) ? (JSON.parse(localStorage.getItem("usuarioDescargado"))).address : "");
 
 

@@ -124,8 +124,13 @@ export default function Home(props) {
             } else {
                 response = (await ImpresorasService.descargarPrinters()).data;
             }
+            
+            if(JSON.parse(localStorage.getItem("user"))){
 
-
+                await ImpresorasService.getDescargarUsuario();
+                console.log(JSON.parse(localStorage.getItem("usuarioDescargado")));
+            }
+            
             console.log(response);
             downloadprinters = response.printers;
             console.log(downloadprinters);
