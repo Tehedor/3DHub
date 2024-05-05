@@ -33,8 +33,7 @@ class MailControllerTest {
     @Test
     void testSendMail() {
         EmailDTO emailDTO = new EmailDTO();
-        emailDTO.setToUser(new String[]{"test@example.com"}); // Fix: Pass an array of strings
-
+        emailDTO.setToUser(new String[]{"test@example.com"});
         emailDTO.setSubject("Test Subject");
         emailDTO.setMessage("Test Message");
 
