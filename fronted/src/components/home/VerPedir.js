@@ -109,17 +109,17 @@ export default function Ver(props) {
                             <Col sm={6}>
                                 <Card.Text>Tipo: {printer.printerType}</Card.Text>
                                 <Card.Text>Max_unid: {printer.maxUnities}</Card.Text>
-                                <Card.Text>Velocidad: {printer.manufacturationSpeed}</Card.Text>
-                                <Card.Text>Max_ancho: {printer.maxWidth}</Card.Text>
-                                <Card.Text>Max_alto: {printer.maxHeight}</Card.Text>
+                                <Card.Text>Velocidad: {printer.manufacturationSpeed} mm³/s</Card.Text>
+                                <Card.Text>Max_ancho: {printer.maxWidth} mm</Card.Text>
+                                <Card.Text>Max_alto: {printer.maxHeight} mm</Card.Text>
                             
                             </Col>
                             <Col sm={6}>
-                                <Card.Text>Precisión: {printer.printerPrecision}</Card.Text>
+                                <Card.Text>Precisión: {printer.printerPrecision} mm</Card.Text>
                                 <Card.Text>Colores: {printer.color}</Card.Text>
                                 <Card.Text>Material: {printer.material}</Card.Text>
                                 {/* <Card.Text>Acabados: {printer.material}</Card.Text> */}
-                                <Card.Text>Precio: {printer.servicePrice} €/mm³/</Card.Text>
+                                <Card.Text>Precio: {printer.servicePrice} €/mm³</Card.Text>
 
                             </Col>
                         </Row>

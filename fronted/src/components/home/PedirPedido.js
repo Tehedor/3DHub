@@ -285,7 +285,7 @@ function PedirPedido(props) {
                   /> */}
                       <MyValidationInput
                         type="file"
-                        formlabel="Subir file"
+                        formlabel="Subir file (stl obj 3mf)"  
                         onChange={(e) => setFile(e.target.files[0])}
                       // validations={[required]} 
                       />
@@ -307,7 +307,7 @@ function PedirPedido(props) {
                       <Row class="subir">
                         <MyValidationInput
                           as="textarea"
-                          formlabel="Especificaciones del pedido"
+                          formlabel="Dirección del pedido"
                           rows={1}
                           maxLength={40}
                           value={address}

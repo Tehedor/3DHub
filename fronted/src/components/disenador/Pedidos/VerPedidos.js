@@ -24,6 +24,8 @@ export default function VerPedidos(props) {
     const printer = props.printer;
     const fabricante = props.fabricante;
 
+    const precioServicio = 0.2;
+
 
 
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
@@ -204,7 +206,7 @@ export default function VerPedidos(props) {
                         <Row className="text-start">Fecha de fabricación: {new Date(pedidos.manufacturerDate).toLocaleDateString('es-ES')}</Row>
                         <Row className="text-start">Fecha de entrega: {new Date(pedidos.deliveryDate).toLocaleDateString('es-ES')}</Row>
                         <Row className="text-start" style={{ marginTop: "4px", marginBottom: "4px" }}>Dirección: {pedidos.address}</Row>
-                        <Row className="text-start"><strong>Precio Total: {(pedidos.productPrice + pedidos.deliveryPrice) * pedidos.quantity} €</strong></Row>
+                        <Row className="text-start"><strong>Precio Total: {((pedidos.productPrice + pedidos.deliveryPrice) * pedidos.quantity + precioServicio).toFixed(2)} €</strong></Row>
                     </Col>
 
                     <Col sm={4}>
