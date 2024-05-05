@@ -126,12 +126,12 @@ export default function Home(props) {
             } else {
                 response = (await ImpresorasService.descargarPrinters()).data;
             }
-            
-            if(JSON.parse(localStorage.getItem("user"))){
+
+            if (JSON.parse(localStorage.getItem("user"))) {
                 await ImpresorasService.getDescargarUsuario();
                 console.log(JSON.parse(localStorage.getItem("usuarioDescargado")));
             }
-            
+
             console.log(response);
             downloadprinters = response.printers;
             console.log(downloadprinters);
@@ -172,17 +172,21 @@ export default function Home(props) {
     }, []);
 
     useEffect(() => {
-        setLoading(true);
-        async function fetchData() {
+        if (props.theFiltrarOn) {
+            setLoading(true);
+            async function fetchData() {
 
-            await download();
+                await download();
 
-            setLoading(false);
-            // setTimeout(()=>{
-            //     setLoading(false);
-            // },800);      
+                setLoading(false);
+                // setTimeout(()=>{
+                //     setLoading(false);
+                // },800);      
+            }
+            fetchData();
+            // setTheFiltrarOn(false);
+            props.setTheFiltrarOn(false);
         }
-        fetchData();
     }, [props.theFiltrarOn]);
 
 

@@ -134,10 +134,12 @@ const App = () => {
             <Route exact path={"/"} element={<Home
               theFiltrarOn={theFiltrarOn} printerType={printerType} maxUnities={maxUnities} material={material} color={color}
               setControlPrinters={setControlPrinters} controlPrinters={controlPrinters} setControlRatings={setControlRatings} controlRatings={controlRatings} setControlFabricantes={setControlFabricantes}
+              setTheFiltrarOn={setTheFiltrarOn}
               theprinters={theprinters} setThePrinters={setThePrinters} theratings={theratings} setTheRatings={setTheRatings} theFabricantes={theFabricantes} setTheFabricantes={setTheFabricantes}
             />}
             />
             <Route exact path={"/pedirpedido"} element={<Home
+              setTheFiltrarOn={setTheFiltrarOn}
               theFiltrarOn={theFiltrarOn} printerType={printerType} maxUnities={maxUnities} material={material} color={color}
               setControlPrinters={setControlPrinters} controlPrinters={controlPrinters} setControlRatings={setControlRatings} controlRatings={controlRatings} setControlFabricantes={setControlFabricantes}
               theprinters={theprinters} setThePrinters={setThePrinters} theratings={theratings} setTheRatings={setTheRatings} theFabricantes={theFabricantes} setTheFabricantes={setTheFabricantes}
