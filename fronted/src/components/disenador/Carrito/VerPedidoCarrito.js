@@ -87,7 +87,7 @@ export default function VerPedidoCarrito(props) {
                                 </tr>
                                 <tr>
                                     <td><strong>Precio Total</strong></td>
-                                    <td><strong>{((carrito.productPrice + carrito.deliveryPrice) * carrito.quantity).toFixed(2)} €</strong></td>
+                                    <td><strong>{((carrito.productPrice + carrito.deliveryPrice) * carrito.quantity + precioServicio).toFixed(2)} €</strong></td>
                                 </tr>
                             </tbody>
                         </Table>
