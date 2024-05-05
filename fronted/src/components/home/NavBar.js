@@ -11,7 +11,7 @@ import ImpresorasService from "../../services/impresoras.service.js";
 import './NavBar.css';
 import { Navbar, Nav, Form, FormControl, Button, Container, Row, Col, InputGroup, Image, ButtonGroup, ToggleButton, Accordion } from 'react-bootstrap';
 
-function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser, logOut, theRollActual, setTheRollControl, setCambioRoll, cambioRoll, setTheFiltrarOn, printerType,maxUnities,material,color, setColor, setMaterial, setMaxUnities, setPrinterType }) {
+function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser, logOut, theRollActual, setTheRollControl, setCambioRoll, cambioRoll, setTheFiltrarOn, printerType, maxUnities, material, color, setColor, setMaterial, setMaxUnities, setPrinterType }) {
 
 
   // ##### ##### ##### ##### ##### ##### ##### #####
@@ -34,8 +34,8 @@ function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser
   const hasRole = (role) => rolesUser.includes(role);
 
 
-  
-  
+
+
   // MANUFACTURER
   // DESIGNER
 
@@ -67,7 +67,7 @@ function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser
     navigate('/');
     window.location.reload();
     // ImpresorasService.mandarFiltro(printerType, maxUnities, material, color);
-    
+
   };
 
   // ##### ##### ##### ##### ##### ##### ##### #####
@@ -193,11 +193,16 @@ function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser
 
                               <input
                                 type="number"
-                                // max={5000} 
                                 min="0"
                                 value={maxUnities}
                                 onChange={e => setMaxUnities(e.target.value)}
                                 validations={[]}
+                                style={{
+                                  width: '100%', // Asegura que el input se adapte al ancho del contenedor
+                                  border: '1px solid lightgray', // Define un borde gris claro
+                                  borderRadius: '5px', // Redondea los bordes del input
+                                  height: '38px', // Ajusta la altura del input
+                                }}
                               />
                             </div>
                           </Row>
@@ -318,14 +323,138 @@ function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser
         {/* Busqueda 2 */}
         <Container ClassName="contenido4" class="busqueda" id="busqueda2">
           <Form inline className="justify-content-center flex-grow-1 find">
-            <Row className="w-100">
+            {/* <Row className="w-100">
               <InputGroup className="mb-3" size="sm">
                 <FormControl placeholder="Search" aria-label="Search" aria-describedby="basic-addon2" value={localQuery} onChange={handleQueryChange} onClick={() => setLocalQuery('')} />
                 <Button variant="light" id="button-addon2" onClick={handleSearchClick}> Search </Button>
               </InputGroup>
-            </Row>
+            </Row> */}
             <Row className="w-100">
-              <InputGroup className="mb-3" size="sm">
+              <Accordion flush className="mb-3" size="sm">
+                <Accordion.Item eventKey="0">
+                  <Accordion.Header>Filtro
+                  </Accordion.Header>
+                  <Accordion.Body style={{ zIndex: 4 }}>
+                    <Row>
+                      <Col md={6}>
+                        <Row className="printertype">
+                          {/* #################### */}
+                          {/* TIPO DE LA IMPRESORA */}
+                          {/* #################### */}
+                          <div className="form-group">
+                            <label htmlFor="printerType">Tipo de impresora</label>
+                            <select
+                              className="form-control"
+                              name="printerType"
+                              value={printerType}
+                              onChange={e => setPrinterType(e.target.value)}
+                            >
+                              <option value="">Seleccione el tipo de impresora</option>
+                              <option value="FDM">FDM - Deposición de material Fundido</option>
+                              <option value="SLA">SLA - Resina (Estereolitografia)</option>
+                              <option value="MSLA">MSLA - Máscara de Sombra de Matriz de Pixeles</option>
+                              <option value="DLP">DLP - Resina (Procesamiento Digital de Luz)</option>
+                              <option value="SLS">SLS - Sintetización Selectiva por laser</option>
+                              <option value="MJ">MJ - Inyección de Material</option>
+                              <option value="MJF">MJF - Fusión Multijet</option>
+                            </select>
+                          </div>
+                        </Row>
+                      </Col>
+                      <Col md={6}>
+                        <Row className="maxunities">
+                          {/* ######## */}
+                          {/* CANTIDAD */}
+                          {/* ######## */}
+                          <div className="form-group">
+                            <label htmlFor="maxUnities">Máximas unidades</label>
+
+                            <input
+                              type="number"
+                              min="0"
+                              value={maxUnities}
+                              onChange={e => setMaxUnities(e.target.value)}
+                              validations={[]}
+                              style={{
+                                width: '100%', // Asegura que el input se adapte al ancho del contenedor
+                                border: '1px solid lightgray', // Define un borde gris claro
+                                borderRadius: '5px', // Redondea los bordes del input
+                                height: '38px', // Ajusta la altura del input
+                              }}
+                            />
+                          </div>
+                        </Row>
+                      </Col>
+                    </Row>
+
+                    <Row>
+                      <Col md={6}>
+                        <Row>
+                          {/* ########## */}
+                          {/* MATERIALES */}
+                          {/* ########## */}
+                          <div className="form-group">
+                            <label htmlFor="material">Materiales</label>
+                            <select
+                              className="form-control"
+                              name="material"
+                              value={material}
+                              onChange={e => setMaterial(e.target.value)}
+                            >
+                              <option value="">Seleccione material</option>
+                              <option value="PLASTIC">Plástico</option>
+                              <option value="RESIN">Resina</option>
+                            </select>
+                          </div>
+                        </Row>
+                      </Col>
+                      <Col md={6}>
+                        <Row>
+                          {/* ##### */}
+                          {/* COLOR */}
+                          {/* ##### */}
+                          <div className="form-group">
+                            <label htmlFor="color">Color</label>
+                            <select
+                              className="form-control"
+                              name="color"
+                              value={color}
+                              onChange={e => setColor(e.target.value)}
+                            >
+                              <option value="">Seleccione Color</option>
+                              <option value="GREEN">Verde</option>
+                              <option value="YELLOW">Amarillo</option>
+                              <option value="BLUE">Azul</option>
+                              <option value="RED">Rojo</option>
+                              <option value="BLACK">Negro</option>
+                              <option value="WHITE">Blanco</option>
+                              <option value="ORANGE">Naranja</option>
+                              <option value="PURPLE">Morado</option>
+                              <option value="PINK">Rosa</option>
+                              <option value="BROWN">Marron</option>
+                            </select>
+                          </div>
+                        </Row>
+                      </Col>
+                    </Row>
+                    <p>
+
+                    </p>
+                    <Row className="justify-content-center">
+                      <Button
+                        onClick={handleFilterClick}
+                        style={{ width: '200px', backgroundColor: 'green', borderColor: 'green' }}
+                      >
+                        Filtrar
+                      </Button>
+                    </Row>
+                  </Accordion.Body>
+                </Accordion.Item>
+              </Accordion>
+            </Row>
+
+            <Row className="w-100">
+              <InputGroup className="mb-3" size="sm" style={{height: "53px"}}>
                 <FormControl placeholder="Location" aria-label="Search" aria-describedby="basic-addon2" value={localQueryUbica} onChange={handleQueryUbicaChange} onClick={() => setLocalQueryUbica('')} />
                 <Button variant="light" id="button-addon2" onClick={handleSearchClick}>Search</Button>
               </InputGroup>

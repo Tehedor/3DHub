@@ -9,6 +9,19 @@ const app = axios.create({
 });
 
 
+const user = JSON.parse(localStorage.getItem("user"));
+const token = user ? user.token : "";
+// const token = "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJmYWJyaWNhbnRlIiwiaWF0IjoxNzE0OTA4NzAzLCJleHAiOjE3MTQ5OTUxMDN9.RghMERXYkQ6Xay-X1zek5ebNQfmeZWIFDQ7_444bZZkbDwnsBALlZlaiXz4-LHd5";
+
+const appVerifi = axios.create({
+  baseURL: "http://localhost:8080/api/",
+  headers: {
+    "Content-type": "application/json",
+    "Authorization": `Bearer ${token}`,
+  },
+});
+
+
 // const descargarPrinters = () => {
 //   return  app.
 //     get("api/printers")
@@ -88,6 +101,27 @@ const mandarFiltro = (printerType, maxUnities, material, color) => {
   // });
 };
 
+// ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+// ##### ##### dar datos del usuario online
+// ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+const getDescargarUsuario = async () => {
+  console.log("AuthService.getDescargarUsuario");
+  return appVerifi.
+    get("users")
+    .then((response) => {
+      console.log(response.data);
+      if (response.data) {
+        localStorage.setItem("usuarioDescargado", JSON.stringify(response.data)); // localStorage.setItem("user", JSON.stringify(response.data));: Si la propiedad username existe, entonces se almacena el objeto data de la respuesta en el almacenamiento local del navegador bajo la clave "user". Antes de almacenarlo, el objeto data se convierte en una cadena JSON.
+      }
+      console.log(JSON.parse(localStorage.getItem("usuarioDescargado")));
+      // return response.data;
+
+    });
+}
+
+
+
+
 
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
 // ##### ##### Resumen
@@ -97,6 +131,7 @@ const ImpresorasService = {
   descargarPrintersFiltred,
   enviarEmail,
   mandarFiltro,
+  getDescargarUsuario,
 }
 
 export default ImpresorasService;

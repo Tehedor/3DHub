@@ -7,6 +7,7 @@ import CheckButton from "react-validation/build/button";
 import AuthService from "../../services/auth.service";
 
 import { Link } from "react-router-dom";
+import { Button } from "react-bootstrap";
 
 const required = (value) => {
   if (!value) {
@@ -53,27 +54,27 @@ const Login = (props) => {
       await AuthService.login(username, password).then(
         () => {
           const userRoles = AuthService.getUserRoles();
-          console.log(userRoles);
+          // console.log(userRoles);
           if (userRoles.length === 1) {
-            console.log(userRoles[0]);
+            // console.log(userRoles[0]);
             props.setTheRollControl((userRoles[0] === "MANUFACTURER") ? "MANUFACTURER" : "DESIGNER");
             props.setCambioRoll((userRoles[0] === "MANUFACTURER") ? "MANUFACTURER" : "DESIGNER");
-            console.log(props.theRollActual);
+            // console.log(props.theRollActual);
           }
-          console.log(props.theRollActual);
+          // console.log(props.theRollActual);
 
 
 
 
-          if (JSON.parse(localStorage.getItem("user"))) {
+          // AuthService.getDescargarUsuario().then(
+          //   () => {
+          //     const userDescargado = JSON.parse(localStorage.getItem("usuarioDescargado"));
+          //     console.log(userDescargado);
+          //   }
+          // );
+          // if (JSON.parse(localStorage.getItem("user"))) {
 
-            AuthService.getDescargarUsuario().then(
-              () => {
-                const userDescargado = JSON.parse(localStorage.getItem("usuarioDescargado"));
-                console.log(userDescargado);
-              }
-            );
-          }
+          // }
 
 
           navigate("/");
@@ -171,6 +172,8 @@ const Login = (props) => {
           )}
           <CheckButton style={{ display: "none" }} ref={checkBtn} />
         </Form>
+
+        {/* <Button variant="link" onClick={AuthService.getDescargarUsuario}>Pruebsa</Button> */}
       </div>
     </div>
   );
