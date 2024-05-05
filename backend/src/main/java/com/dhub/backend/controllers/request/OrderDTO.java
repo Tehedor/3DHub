@@ -1,6 +1,6 @@
 package com.dhub.backend.controllers.request;
 
-import java.sql.Date;
+import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -14,12 +14,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderDTO {
+public class    OrderDTO {
     private Long Id;
 
     private Date orderDate;
 
-    private String file;
+    private String urlPhoto;
 
     private EStatus status;
 
@@ -39,8 +39,13 @@ public class OrderDTO {
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date deliveryDate;
 
-    @NotBlank
-    private Long user_id;
+	private Double productPrice;
+
+    private double deliveryPrice;
+
+    private Long manufacturer_id;
+    
+    private Long designer_id;
 
     @NotBlank
     private Long printer_id;

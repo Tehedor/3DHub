@@ -18,7 +18,7 @@ const required = (value) => {
   }
 };
 
-const Login = () => {
+const Login = (props) => {
   const form = useRef();
   const checkBtn = useRef();
 
@@ -39,7 +39,7 @@ const Login = () => {
     setPassword(password);
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     setMessage("");
@@ -50,10 +50,35 @@ const Login = () => {
     if (checkBtn.current.context._errors.length === 0) {
       console.log(username, password);
       // AuthService.login(username, password).then(
-      AuthService.login(username, password).then(
+      await AuthService.login(username, password).then(
         () => {
+          const userRoles = AuthService.getUserRoles();
+          console.log(userRoles);
+          if (userRoles.length === 1) {
+            console.log(userRoles[0]);
+            props.setTheRollControl((userRoles[0] === "MANUFACTURER") ? "MANUFACTURER" : "DESIGNER");
+            props.setCambioRoll((userRoles[0] === "MANUFACTURER") ? "MANUFACTURER" : "DESIGNER");
+            console.log(props.theRollActual);
+          }
+          console.log(props.theRollActual);
+
+
+
+
+          if (JSON.parse(localStorage.getItem("user"))) {
+
+            AuthService.getDescargarUsuario().then(
+              () => {
+                const userDescargado = JSON.parse(localStorage.getItem("usuarioDescargado"));
+                console.log(userDescargado);
+              }
+            );
+          }
+
+
           navigate("/");
           window.location.reload();
+          setLoading(false);
         },
         (error) => {
           const resMessage =
@@ -67,6 +92,15 @@ const Login = () => {
           setMessage(resMessage);
         }
       );
+
+
+
+      // console.log(userRoles);
+      // console.log(userRoles.length === 1 );
+      // console.log(userRoles[0] === "MANUFACTURER");
+      // // if (userRoles.length < 2 && userRoles.length > 0) {
+
+      // AuthService.getUserRoles();
     } else {
       setLoading(false);
     }
@@ -76,7 +110,7 @@ const Login = () => {
     <div className="col-md-12">
       <div className="card card-container">
         <div className="text-center">
-          <h2>Login</h2>  
+          <h2>Login</h2>
         </div>
         <img
           src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
@@ -130,7 +164,8 @@ const Login = () => {
           {message && (
             <div className="form-group">
               <div className="alert alert-danger" role="alert">
-                {message}
+                {/* {message} */}
+                usuario o contraseña incorrectos
               </div>
             </div>
           )}

@@ -4,6 +4,8 @@
     background-color: #0c304e; 
     padding: 15px; 
     align-items: center;
+    position: relative; /* Asegúrate de que la posición no sea 'static' */
+    /* z-index: -1; Establece el valor de z-index */
 }
 /* 
 .logo {
@@ -12,7 +14,7 @@
     height: 50px;
 } */
 
-.logo {
+.patologo {
     width: 120px;
     height: 120px;
     margin-left: 20px; /* Añadido */
@@ -22,6 +24,27 @@
     grid-column: 2;
     color: antiquewhite;
     text-align: center;
+}
+
+#contenido1 {
+    display: inline-flex;
+}
+
+.art1 {
+    margin-left: 15px;
+}
+
+#busqueda2 {
+    display: none;
+}
+
+.navbar-toggler {
+    border-color: beige;
+    border-width: 2px;
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(245, 245, 220, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
 
 /* 
@@ -63,3 +86,181 @@
     background-color: rgb(158, 0, 173);
     /* border-color: orange; */
 }   
+
+a.btn.btn-light {
+    width: 140px;
+    height: 64px;
+    display: grid;
+    justify-items: center;
+}
+
+.col-2 {
+    margin-left: auto;
+    width: auto;
+}
+
+.col-8 {
+    width: auto;
+}
+
+.w-100 {
+    margin: 0;
+}
+
+@media (max-width: 1400px) {
+    .find {
+        display: flex;
+        flex-direction: row;
+    }
+    #busqueda1 {
+        display: none;
+    }
+    #busqueda2 {
+        display: block;
+        margin: 20px auto auto;
+    }
+    #flexing {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 1055px) {
+    .col-8 > div:first-child {
+        display: flex;
+        flex-direction: column;
+    }
+    .col-2 {
+        align-content: center;
+    }
+
+    .btn.btn-outline-light {
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+        border-top-right-radius: inherit !important;
+    }
+
+    .btn.btn-outline-warning {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        border-bottom-left-radius: inherit !important;
+        margin: 0;
+    }
+}
+
+@media (max-width: 950px) {
+    a.btn.btn-light {
+        width: 64px;
+        align-content: center;
+    }
+
+    a.btn.btn-light strong {
+        display: none;
+    }
+    a.btn.btn-light img {
+        width: 38px;
+    }
+
+    .d-flex.align-items-center.col + .d-flex.align-items-center.col {
+        margin-left: 10px;
+    }
+
+    .busqueda {
+        display: none;
+    }
+}
+
+@media (max-width: 640px) {
+    #busqueda1 {
+        display: block;
+    }
+    #busqueda2 {
+        display: none;
+    }
+    .navbar-nav {
+        display: flex;
+        flex-direction: row;
+    }
+    .navbar-collapse {
+        display: flex;
+        flex-direction: column;
+    }
+    .navbar-expand-sm .navbar-toggler {
+        display: block;
+    }
+    .collapse:not(.show) {
+        display: none !important;
+    }
+}
+
+@media (max-width: 605px) {
+    .patologo {
+        width: 100px;
+        height: 100px;
+        margin: 0;
+    }
+    .navbar-brand {
+        margin: 0;
+    }
+
+    a.btn.btn-light img {
+        width: 28px;
+    }
+    a.btn.btn-light {
+        width: 55px;
+        height: 55px;
+    }
+
+    .contenido3 {
+        width: 90%;
+    }
+    .art1.col {
+        margin-left: auto;
+    }
+    #busqueda1 {
+        display: block;
+    }
+    #busqueda2 {
+        display: none;
+    }
+}
+
+@media (max-width: 420px) {
+    .patologo {
+        width: 80px;
+        height: 80px;
+    }
+}
+
+@media (max-width: 300px) {
+    .me-auto {
+        display: flex;
+        flex-direction: row;
+        margin-right: 0 !important;
+    }
+    a.btn.btn-light {
+        width: 0;
+        height: 40px;
+        background: transparent;
+        border: transparent;
+    }
+    #contenido1 {
+        justify-content: center;
+    }
+    .navbar-brand {
+        width: 30%;
+    }
+    .patologo {
+        width: 100%;
+        height: auto;
+    }
+
+    .btn-light img:hover {
+        background: beige;
+        border-radius: 50%;
+    }
+    .btn.btn-outline-fabricante:hover {
+        color: transparent;
+        background-color: transparent;
+    }
+}

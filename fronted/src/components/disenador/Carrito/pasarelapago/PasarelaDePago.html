@@ -1,0 +1,199 @@
+<div class="container-fluid">
+	<div class="row justify-content-center">
+		<div class="col-12 col-lg-11">
+			<div class="card card0 rounded-0">
+				<div class="row">
+					<div class="col-md-5 d-md-block d-none p-0 box">
+						<div class="card rounded-0 border-0 card1" id="bill">
+							<h3 id="heading1">Payment Summary</h3>
+							<div class="row">
+								<div class="col-lg-7 col-8 mt-4 line pl-4">
+									<h2 class="bill-head">Electronics</h2>
+									<small class="bill-date">2017 Feb 10 at 10:30 PM</small>
+								</div>
+								<div class="col-lg-5 col-4 mt-4">
+									<h2 class="bill-head px-xl-5 px-lg-4">CAF</h2>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-7 col-8 mt-4 line pl-4">
+									<h2 class="bill-head">Food</h2>
+									<small class="bill-date">2017 Feb 25 at 11:30 PM</small>
+								</div>
+								<div class="col-lg-5 col-4 mt-4">
+									<h2 class="bill-head px-xl-5 px-lg-4">JFK</h2>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-7 col-8 mt-4 line pl-4">
+									<h2 class="bill-head">Grocery</h2>
+									<small class="bill-date">2017 Mar 17 at 10:45 PM</small><br>
+									<small class="bill-date">2017 Mar 18 at 11:45 PM</small>
+								</div>
+								<div class="col-lg-5 col-4 mt-4">
+									<h2 class="bill-head px-xl-5 px-lg-4">LHR</h2>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-7 col-8 mt-4 line pl-4">
+									<h2 class="bill-head">Accessories</h2>
+									<small class="bill-date">2017 Apr 13 at 05:30 PM</small>
+								</div>
+								<div class="col-lg-5 col-4 mt-4">
+									<h2 class="bill-head px-xl-5 px-lg-4">JFK</h2>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12 red-bg">
+									<p class="bill-date" id="total-label">Total Price</p>
+									<h2 class="bill-head" id="total">$ 523.65</h2>
+									<small class="bill-date" id="total-label">Price includes all taxes</small>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-7 col-sm-12 p-0 box">
+						<div class="card rounded-0 border-0 card2" id="paypage">
+							<div class="form-card">
+			                    <h2 id="heading2" class="text-danger">Payment Method</h2>
+			                    <div class="radio-group">
+			                        <div class='radio' data-value="credit"><img src="https://i.imgur.com/28akQFX.jpg" width="200px" height="60px"></div>
+			                        <div class='radio' data-value="paypal"><img src="https://i.imgur.com/5QFsx7K.jpg" width="200px" height="60px"></div>
+			                        <br>
+			                    </div>
+			                    <label class="pay">Name on Card</label>
+			                    <input type="text" name="holdername" placeholder="John Smith">
+			                    <div class="row">
+			                        <div class="col-8 col-md-6">
+			                            <label class="pay">Card Number</label>
+			                            <input type="text" name="cardno" id="cr_no" placeholder="0000-0000-0000-0000" minlength="19" maxlength="19">
+			                        </div>
+			                        <div class="col-4 col-md-6">
+			                            <label class="pay">CVV</label>
+			                            <input type="password" name="cvcpwd" placeholder="&#9679;&#9679;&#9679;" class="placeicon" minlength="3" maxlength="3">
+			                        </div>
+			                    </div>
+			                    <div class="row">
+			                        <div class="col-md-12">
+			                            <label class="pay">Expiration Date</label>
+			                        </div>
+			                        <div class="col-md-12">
+			                            <input type="text" name="exp" id="exp" placeholder="MM/YY" minlength="5" maxlength="5">
+			                        </div>
+			                    </div>
+			                    <div class="row">
+			                        <div class="col-md-6">
+			                            <input type="submit" value="MAKE A PAYMENT &nbsp; &#xf178;" class="btn btn-info placeicon">
+			                        </div>
+			                    </div>
+			                </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+import { Container, Row, Col, Card } from 'react-bootstrap';
+
+<Container fluid>
+	<Row className="justify-content-center">
+		<Col xs={12} lg={11}>
+			<Card className="card0 rounded-0">
+				<Row>
+					<Col md={5} className="d-md-block d-none p-0 box">
+						<Card className="rounded-0 border-0 card1" id="bill">
+							<h3 id="heading1">Payment Summary</h3>
+							<!-- <h3 id="heading1">Payment Summary</h3> -->
+							<Row>
+								<Col lg={7} xs={8} className="mt-4 line pl-4">
+									<h2 className="bill-head">Electronics</h2>
+									<small className="bill-date">2017 Feb 10 at 10:30 PM</small>
+								</Col>
+								<Col lg={5} xs={4} className="mt-4">
+									<h2 className="bill-head px-xl-5 px-lg-4">CAF</h2>
+								</Col>
+							</Row>
+							<Row>
+								<Col lg={7} xs={8} className="mt-4 line pl-4">
+									<h2 className="bill-head">Food</h2>
+									<small className="bill-date">2017 Feb 25 at 11:30 PM</small>
+								</Col>
+								<Col lg={5} xs={4} className="mt-4">
+									<h2 className="bill-head px-xl-5 px-lg-4">JFK</h2>
+								</Col>
+							</Row>
+							<Row>
+								<Col lg={7} xs={8} className="mt-4 line pl-4">
+									<h2 className="bill-head">Grocery</h2>
+									<small className="bill-date">2017 Mar 17 at 10:45 PM</small><br/>
+									<small className="bill-date">2017 Mar 18 at 11:45 PM</small>
+								</Col>
+								<Col lg={5} xs={4} className="mt-4">
+									<h2 className="bill-head px-xl-5 px-lg-4">LHR</h2>
+								</Col>
+							</Row>
+							<Row>
+								<Col lg={7} xs={8} className="mt-4 line pl-4">
+									<h2 className="bill-head">Accessories</h2>
+									<small className="bill-date">2017 Apr 13 at 05:30 PM</small>
+								</Col>
+								<Col lg={5} xs={4} className="mt-4">
+									<h2 className="bill-head px-xl-5 px-lg-4">JFK</h2>
+								</Col>
+							</Row>
+							<Row>
+								<Col md={12} className="red-bg">
+									<p className="bill-date" id="total-label">Total Price</p>
+									<h2 className="bill-head" id="total">$ 523.65</h2>
+									<small className="bill-date" id="total-label">Price includes all taxes</small>
+								</Col>
+							</Row>
+						</Card>
+					</Col>
+					<Col md={7} sm={12} className="p-0 box">
+						<Card className="rounded-0 border-0 card2" id="paypage">
+							<div className="form-card">
+								<h2 id="heading2" className="text-danger">Payment Method</h2>
+								<div className="radio-group">
+									<div className='radio' data-value="credit"><img src="https://i.imgur.com/28akQFX.jpg" width="200px" height="60px"/></div>
+									<div className='radio' data-value="paypal"><img src="https://i.imgur.com/5QFsx7K.jpg" width="200px" height="60px"/></div>
+									<br/>
+								</div>
+								<label className="pay">Name on Card</label>
+								<input type="text" name="holdername" placeholder="John Smith"/>
+								<Row>
+									<Col xs={8} md={6}>
+										<label className="pay">Card Number</label>
+										<input type="text" name="cardno" id="cr_no" placeholder="0000-0000-0000-0000" minLength="19" maxLength="19"/>
+									</Col>
+									<Col xs={4} md={6}>
+										<label className="pay">CVV</label>
+										<input type="password" name="cvcpwd" placeholder="&#9679;&#9679;&#9679;" className="placeicon" minLength="3" maxLength="3"/>
+									</Col>
+								</Row>
+								<Row>
+									<Col md={12}>
+										<label className="pay">Expiration Date</label>
+									</Col>
+									<Col md={12}>
+										<input type="text" name="exp" id="exp" placeholder="MM/YY" minLength="5" maxLength="5"/>
+									</Col>
+								</Row>
+								<Row>
+									<Col md={6}>
+										<input type="submit" value="MAKE A PAYMENT &nbsp; &#xf178;" className="btn btn-info placeicon"/>
+									</Col>
+								</Row>
+							</div>
+						</Card>
+					</Col>
+				</Row>
+			</Card>
+		</Col>
+	</Row>
+</Container>

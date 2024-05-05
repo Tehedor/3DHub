@@ -1,4 +1,4 @@
-import {Button , Row, Col, Container} from "react-bootstrap";
+import { Button, Row, Col, Container } from "react-bootstrap";
 
 import PedidosLista from './PedidosLista';
 
@@ -6,7 +6,7 @@ import PedidosLista from './PedidosLista';
 import TablaEstados from '../../../common/Tabla_estados.js';
 
 export default function PedidosHistorico(props) {
- 
+
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     // ##### ##### Datos descargados
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
@@ -14,29 +14,29 @@ export default function PedidosHistorico(props) {
     const thePrinters = props.printers;
     const theFabricantes = props.fabricantes;
     const theReseñas = props.reseñas;
-    
+
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     // ##### ##### Return
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     return (
         <div>
             <Container>
-             
-                <h2 id="AllPedidos">Todos los pedidos</h2> 
+
+                <h2 id="AllPedidos">Todos los pedidos</h2>
                 <Container>
                     <Row>
 
-                        <Col sm={2}>         
+                        <Col sm={2}>
                             <TablaEstados />
-                            <Button id="volver" variant="primary"  href="/">Volver</Button>
+                            <Button id="volver" variant="primary" href="/">Volver</Button>
                         </Col>
 
                         <Col sm={10}>
                             <Row>
-                                <PedidosLista pedidos={thePedidos} printers={thePrinters} fabricantes={theFabricantes} reseñas={theReseñas}/>
-                            </Row>  
+                                <PedidosLista pedidos={thePedidos} printers={thePrinters} fabricantes={theFabricantes} reseñas={theReseñas} />
+                            </Row>
                         </Col>
-                        
+
                     </Row>
                 </Container>
 

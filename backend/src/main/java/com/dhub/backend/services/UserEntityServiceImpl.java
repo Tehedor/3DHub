@@ -16,13 +16,10 @@ public class UserEntityServiceImpl implements UserEntityService{
         userDTO.setDni(userEntity.getDni());
         userDTO.setEmail(userEntity.getEmail());
         userDTO.setUsername(userEntity.getUsername());
-        userDTO.setPassword(userEntity.getPassword());
         userDTO.setRoles(userEntity.getRoles());
-        userDTO.setProfileImage(userEntity.getProfileImage());
-        userDTO.setLat(userEntity.getLat());
-        userDTO.setLon(userEntity.getLon());
         userDTO.setAddress(userEntity.getAddress());
         userDTO.setFactAddress(userEntity.getFactAddress());
+        userDTO.setIban(userEntity.getIban());
 
         return userDTO;
     }

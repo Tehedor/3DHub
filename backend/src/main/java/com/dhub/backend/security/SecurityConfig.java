@@ -45,12 +45,17 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(request -> {
                 CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
                 corsConfiguration.addAllowedMethod(HttpMethod.DELETE);
+                corsConfiguration.addAllowedMethod(HttpMethod.PUT);
                 return corsConfiguration;
             }))
+            // .cors(cors -> cors.disable())
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> {
                 auth.requestMatchers("/index**").permitAll();
-                auth.requestMatchers("/api/printers/").permitAll();
+                auth.requestMatchers("/api/auth/**").permitAll();
+                auth.requestMatchers("/api/printers").permitAll();
+                auth.requestMatchers("/api/customerService/sendMail").permitAll();
+                // auth.requestMatchers("/api/users/**").permitAll();
                 auth.anyRequest().authenticated();
             })
             .sessionManagement(session -> {

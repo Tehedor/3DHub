@@ -3,6 +3,7 @@ package com.dhub.backend.models;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -14,6 +15,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.UniqueConstraint;
@@ -48,7 +50,7 @@ public class Printer {
     @Enumerated(EnumType.STRING)
     private EPrinterType printerType;
     
-    private String printerPhoto;
+    private String urlPhoto;
 
     private Double servicePrice;
 
@@ -74,12 +76,6 @@ public class Printer {
     @JoinColumn(name = "users_id")
     private UserEntity userEntity;
 
-    // @OneToMany(cascade = CascadeType.ALL, mappedBy = "printer")
-    // private List<Ratings> ratings;
-
-    // @ManyToOne
-    // @JoinColumn(name = "order_id")
-    // private Order order;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "printer")
     private List<Order> orders;
 
