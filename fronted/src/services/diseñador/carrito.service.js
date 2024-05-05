@@ -14,7 +14,7 @@ const app = axios.create({
 // ##### ##### ##### ##### ##### ##### ##### ##### #####
 // ##### ##### Get Carrito
 // ##### ##### ##### ##### ##### ##### ##### ##### #####
-const getPedidosCarrito = () => {
+const getPedidosCarrito = async () => {
   return app
   .get("orders/kart", {
     // .get("orders/designer", {
@@ -31,12 +31,22 @@ const getPedidosCarrito = () => {
 // ##### ##### ##### ##### ##### ##### ##### ##### #####
 // ##### ##### Post order
 // ##### ##### ##### ##### ##### ##### ##### ##### #####
+// const order = (id) => {
+//   return app
+//   .put(`orders/${id}/status`, {
+//     "name": "PAY"
+//   })
+// }
 const order = (id) => {
+  console.log(id);
   return app
-  .put(`orders/${id}/status`, {
-    "name": "PAY"
-  })
+    .put(`orders/${id}/status`, {
+      // .post(`orders/${id}/status`, {
+      "name": "PAY"
+    })
 }
+
+
 
 // ##### ##### ##### ##### ##### ##### ##### ##### #####
 // ##### ##### Delete pedido

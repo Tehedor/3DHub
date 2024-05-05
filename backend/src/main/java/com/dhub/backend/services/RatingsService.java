@@ -19,6 +19,6 @@ public interface RatingsService {
 
     List<RatingsDTO> getRatingsByOrderIds(List<Long> orderIds);
 
-    Ratings createRatingWithFile(MultipartFile file, String textRating, int productRating, int manufacturerRating, Long order_id) throws IOException;
+    // Ratings createRatingWithFile(MultipartFile file, RatingsDTO ratingsDTO) throws IOException;
 
 }

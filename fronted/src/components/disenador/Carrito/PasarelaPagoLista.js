@@ -22,6 +22,7 @@ export default function CarritoLista(props) {
         for (let i = 0; i < 1; i++) {
             console.log(printers[i].id);
             if (printers[i].id == id) {
+                console.log(printers[i]);
                 return printers[i];
             }
         }
@@ -29,12 +30,14 @@ export default function CarritoLista(props) {
     
     const searchFabricante = (id) => {
         const printer = searchPrinter(id);
-        const idFabricante = printer.userIdFabricante;
-        for (let i = 0; i < fabricantes.length; i++) {
-            if (fabricantes[i].id == id) {
-                return fabricantes[i];
-            }
-        }
+        // const idFabricante = printer.idFabricante;
+        // console.log("idFabricante", idFabricante);
+        // for (let i = 0; i < fabricantes.length; i++) {
+        //     if (fabricantes[i].id == printer.idFabricante) {
+        //     }
+        // }
+        // return null;
+        return fabricantes[0];
     }       
     
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####

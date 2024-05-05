@@ -19,6 +19,8 @@ public class    OrderDTO {
 
     private Date orderDate;
 
+    private String urlPhoto;
+
     private EStatus status;
 
     @NotBlank
@@ -37,10 +39,13 @@ public class    OrderDTO {
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date deliveryDate;
 
+	private Double productPrice;
+
     private double deliveryPrice;
 
-    @NotBlank
-    private Long user_id;
+    private Long manufacturer_id;
+    
+    private Long designer_id;
 
     @NotBlank
     private Long printer_id;

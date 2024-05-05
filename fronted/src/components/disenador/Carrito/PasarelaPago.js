@@ -21,7 +21,7 @@ import './pasarelapago/PasarelaDePago.css';
 
 export default function Pasareladepago(props) {
 
-   
+
 
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     // ##### ##### Añadir formato
@@ -44,7 +44,7 @@ export default function Pasareladepago(props) {
 
         setCardNumber(parts.join('-'));
     };
-   
+
 
     const handleInputChangeDate = (e) => {
         let input = e.target.value.replace(/[^0-9]/gi, '');
@@ -73,6 +73,9 @@ export default function Pasareladepago(props) {
     const [thePrinters, setThePrinters] = useState();
     const [theFabricantes, setTheFabricantes] = useState();
 
+    const [priceProducto, setPriceProducto] = useState(0);
+    const [priceEnvio, setPriceEnvio] = useState(0);
+    const [priceTotal, setPriceTotal] = useState(0);
 
 
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
@@ -91,36 +94,56 @@ export default function Pasareladepago(props) {
             console.log(downloadprinters);
             downloadFabricantes = response.data.users;
             console.log(downloadFabricantes);
-
+            setTheCarrito(downloadCarrito);
+            setThePrinters(downloadprinters);
+            setTheFabricantes(downloadFabricantes);
+            console.log("pedidos", theCarrito);
+            console.log("pedidoslength", theCarrito);
+            console.log("printers", thePrinters);
+            console.log("fabricantes", theFabricantes);
+            total(downloadCarrito);
         } catch (error) {
             // setResultados(
             // { "cod": error.cod, "message": cod.message}
             // );
         }
-        setTheCarrito(downloadCarrito);
-        setThePrinters(downloadprinters);
-        setTheFabricantes(downloadFabricantes);
-        console.log("pedidos", theCarrito);
-        console.log("pedidoslength", theCarrito);
-        console.log("printers", thePrinters);
-        console.log("fabricantes", theFabricantes);
     }
 
 
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     // ##### ##### Precio Total
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
-    const [theTotal, settheTotal] = useState(0);
+    // const [theTotal, settheTotal] = useState(0);
 
-    const total = (pedidos) => {
-        let total = 0;
-        // for (let i = 0; i < pedidos.length; i++) {
-        for (let i = 0; i < 1; i++) {
-            total += 10;
-            // total += pedidos[i].price;
+    // const total = (pedidos) => {
+    //     let total = 0;
+    //     // for (let i = 0; i < pedidos.length; i++) {
+    //     for (let i = 0; i < 1; i++) {
+    //         total += 10;
+    //         // total += pedidos[i].price;
+    //     }
+    //     settheTotal(total);
+    // }
+    const total = (carrito) => {
+        console.log("carrito", carrito);
+        console.log("carrito", carrito.length);
+        let priceProductoCon = 0;
+        let priceEnvioCon = 0;
+        let priceTotalCon = 0;
+
+        for (let i = 0; i < carrito.length; i++) {
+            priceProductoCon = priceProductoCon + carrito[i].productPrice * carrito[i].quantity;
+            console.log("priceProductoCon", priceProductoCon);
+            priceEnvioCon = priceEnvioCon + carrito[i].deliveryPrice * carrito[i].quantity;
+            console.log("priceEnvioCon", priceEnvioCon);
+            priceTotalCon = priceTotalCon + (carrito[i].productPrice + carrito[i].deliveryPrice) * carrito[i].quantity;
+            console.log("priceTotalCon", priceTotalCon);
         }
-        settheTotal(total);
+        setPriceProducto(priceProductoCon);
+        setPriceEnvio(priceEnvioCon);
+        setPriceTotal(priceTotalCon);
     }
+
 
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     // ##### ##### Funciones de carga
@@ -129,10 +152,7 @@ export default function Pasareladepago(props) {
         setLoading(true);
         async function fetchData() {
             await download();
-            await total(theCarrito);
-            setTimeout(() => {
-                setLoading(false);
-            }, 800);
+            setLoading(false);
         }
         fetchData();
     }, []);
@@ -141,14 +161,20 @@ export default function Pasareladepago(props) {
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     // ##### ##### Funciones de comprar (cambio de estado a "PAY")
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
-    const comprar = () => {
-        for (let i = 0; i < 1; i++) {
-        // for (let i = 0; i < theCarrito.length; i++) {
-            console.log("carrito", theCarrito[i].id);
-            if (theCarrito[i].status === "KART") {
-                CarritoService.order(theCarrito[i].id);
-            }
+    const comprar = async () => {
+        console.log(theCarrito.length);
+        console.log(theCarrito);
+        // const promises = theCarrito.map(item => CarritoService.order(12));
+        // const promises = theCarrito.map(item => CarritoService.order(item.id));
+        // await Promise.all(promises);
+        
+        // CarritoService.order(theCarrito[0].id)
+
+        for (let i = 0; i < theCarrito.length; i++) {
+            console.log(theCarrito[i].id);
+            CarritoService.order(theCarrito[i].id);
         }
+
 
     }
 
@@ -162,7 +188,7 @@ export default function Pasareladepago(props) {
         <div>
 
             {/* <h2 id="catálogo">Carrito</h2>  */}
-            {loading ? <img id="loading" src={process.env.PUBLIC_URL + "/spinners/cxyduck.gif"} className="spinner" alt="spinner" />: 
+            {loading ? <img id="loading" src={process.env.PUBLIC_URL + "/spinners/cxyduck.gif"} className="spinner" alt="spinner" /> :
 
                 <Container fluid>
                     <Row className="justify-content-center">
@@ -171,9 +197,12 @@ export default function Pasareladepago(props) {
                                 <Row>
                                     <Col md={5} className="d-md-block d-none p-0 box">
                                         <Card className="rounded-0 border-0 card1" id="bill">
-                                            <h3 id="heading1">Resumen Pedido</h3>
+                                            <h3 id="heading1"><strong>Resumen Pedido</strong></h3>
 
-                                            <PasarelaPagoLista theCarrito={theCarrito}  thePrinters={thePrinters} theFabricantes={theFabricantes}/>
+                                            {/* <PasarelaPagoLista theCarrito={theCarrito} thePrinters={thePrinters} theFabricantes={theFabricantes} /> */}
+                                            <div style={{ maxHeight: '500px', overflowY: 'auto' }}>
+                                                <PasarelaPagoLista theCarrito={theCarrito} thePrinters={thePrinters} theFabricantes={theFabricantes} />
+                                            </div>
                                             {/* <Row>
                                                 <Col lg={7} xs={8} className="mt-4 line pl-4">
                                                     <h2 className="bill-head">Electronics</h2>
@@ -214,7 +243,7 @@ export default function Pasareladepago(props) {
                                             <Row>
                                                 <Col md={12} className="red-bg">
                                                     <p className="bill-date" id="total-label">Precio Total</p>
-                                                    <h2 className="bill-head" id="total"> {theTotal}</h2>
+                                                    <h2 className="bill-head" id="total"> {priceTotal}</h2>
                                                     {/* <small className="bill-date" id="total-label">Price includes all taxes</small> */}
                                                 </Col>
                                             </Row>
@@ -240,7 +269,7 @@ export default function Pasareladepago(props) {
                                                         <Row>
                                                             <Col xs={8} md={6}>
                                                                 <label className="pay">Numero Tarjeta</label>
-                                                                <input type="text"  value={cardNumber} onChange={handleInputChangeCard} name="cardno" id="cr_no" placeholder="0000-0000-0000-0000" minLength="19" maxLength="19" />
+                                                                <input type="text" value={cardNumber} onChange={handleInputChangeCard} name="cardno" id="cr_no" placeholder="0000-0000-0000-0000" minLength="19" maxLength="19" />
                                                             </Col>
                                                             <Col xs={4} md={6}>
                                                                 <label className="pay">CVV</label>
@@ -252,20 +281,20 @@ export default function Pasareladepago(props) {
                                                                 <label className="pay">Fecha caducidad</label>
                                                             </Col>
                                                             <Col md={12}>
-                                                                <input type="text"  value={expiryDate} onChange={handleInputChangeDate} name="exp" id="exp" placeholder="MM/YY" minLength="5" maxLength="5" />
+                                                                <input type="text" value={expiryDate} onChange={handleInputChangeDate} name="exp" id="exp" placeholder="MM/YY" minLength="5" maxLength="5" />
                                                             </Col>
                                                         </Row>
                                                     </>
                                                 ) : (
                                                     <>
                                                         <label className="pay">Email</label>
-                                                        <input type="email" value={email}  onChange={(e) => setEmail(e.target.value)} name="email" placeholder="johnsmith@example.com" />
+                                                        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} name="email" placeholder="johnsmith@example.com" />
                                                         <label className="pay">Contraseña</label>
                                                         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} name="password" placeholder="Contraseña Paypal" />
                                                     </>
                                                 )}
                                                 <Row>
-                                                    <Col md={6}>
+                                                    <Col md={12}>
                                                         {/* ######################## */}
                                                         {/* Boton comprar */}
                                                         {/* ######################## */}
@@ -281,7 +310,7 @@ export default function Pasareladepago(props) {
                         </Col>
                     </Row>
                 </Container>
-            } 
+            }
         </div>
     );
 }

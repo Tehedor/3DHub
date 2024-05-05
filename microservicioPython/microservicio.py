@@ -7,14 +7,13 @@ app = Flask(__name__)
 ALLOWED_EXTENSIONS = {'obj', '3mf', 'stl'}
 
 def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/process', methods=['POST'])
 def process_file():
     if request.method == 'POST':
 
-         # Parse the JSON data from the form
+        # Parse the JSON data from the form
         data = json.loads(request.form.get('data'))
 
         # Get the file from the form
@@ -87,8 +86,10 @@ def process_file_content(file, price_filamen, filament_width):
     # Run the command
     os.system(command)
 
+
+    gcode_file = "configuraciones/export-gcodes/{}.gcode".format(file)
     # Read the output file
-    with open("configuraciones/export-gcodes/{}.gcode".format(file), "r") as f:
+    with open(gcode_file, "r") as f:
         data = []
         for num, line in enumerate(f, 1):
             if "filament used" in line:
@@ -104,6 +105,9 @@ def process_file_content(file, price_filamen, filament_width):
     # Calculate the price
     price = float(filament_used) * price_filamen
 
+    # Remove the temporary file
+    os.remove(gcode_file)
+    
     # Return the result
     return {"price": price}    
 

@@ -1,24 +1,27 @@
-import { Card, Button , Container, Row, Col} from "react-bootstrap";
-import {Link} from "react-router-dom";
+import { Card, Button, Container, Row, Col } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 import VerNotificacion from "./VerNotificacion";
+import ControlPedidos from "../../disenador/Pedidos/ControlPedidos";
 
 export default function NotificacionesLista(props) {
-    
 
-    
+
+
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     // ##### ##### Variables descarga
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
-    let lista = props.pedidos;    
+    let lista = props.pedidos;
+    console.log(lista);
     let diseñadores = props.diseñadores;
+    console.log(diseñadores);
     let printers = props.printers;
-    
+
     // console.log("lista",lista);
     // console.log("printers",printers);
     // console.log("diseñador",diseñadores);
-    
-    
+
+
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     // ##### ##### funcioens de busqueda
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
@@ -41,18 +44,18 @@ export default function NotificacionesLista(props) {
         }
 
     }
-    
-    
+
+
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     // ##### ##### Return
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####  
-    return(
+    return (
         <div id="productosresultados" >
-                { Array.isArray(lista) && lista.length > 0 &&lista.map((items,index) => (
-                             items.status !== "KART" && 
-                        <VerNotificacion pedidos={items} printer={searchPrinter(items.printer_id)} diseñador={searchDiseñador(items.user_id)}/>
-                  
-                ))}
+            {Array.isArray(lista) && lista.length > 0 && lista.map((items, index) => (
+                items.status !== "KART" &&
+                <VerNotificacion pedidos={items} printer={searchPrinter(items.printer_id)} diseñador={searchDiseñador(items.designer_id)} />
+
+            ))}
         </div>
     );
 }

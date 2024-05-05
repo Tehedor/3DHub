@@ -1,7 +1,7 @@
-import { Card,Row, Col, Button} from "react-bootstrap";
+import { Card, Row, Col, Button } from "react-bootstrap";
 
 // Apis
-import ImpresorasServiceFabri from "../../../services/fabricante/impresoras.fabri.service"; 
+import ImpresorasServiceFabri from "../../../services/fabricante/impresoras.fabri.service";
 
 export default function VerImpresora(props) {
 
@@ -11,27 +11,31 @@ export default function VerImpresora(props) {
     const deletePrinter = () => {
         // console.log("ideliminar", printerId);      
         ImpresorasServiceFabri.deletePrinter(printerId);
+        window.location.reload();
     };
-    
-    return(
-        <Card border="gray" style={{ backgroundColor: "white", marginTop: '0' }}>   
+    console.log("printer", printer);
+    console.log("printer", printer.urlPhoto);
+
+    return (
+        <Card border="gray" style={{ backgroundColor: "white", marginTop: '0' }}>
             <Card.Body>
                 <Row>
 
                     <Col sm={3} class="imagen" className="d-flex justify-content-center align-items-center">
                         {/* <Image src={printer.Foto_impresora} thumbnail  style={{ maxWidth: "100%" }}/> */}
-                        <Card.Img src={printer.printerPhoto || 'https://m.media-amazon.com/images/I/61L4aoIqYOL._AC_SX466_.jpg'} style={{ maxWidth: "100%" }}/>               
+                        {/* <Card.Img src={printer.urlPhoto } style={{ maxWidth: "100%" }} /> */}
+                        <Card.Img src={printer.urlPhoto || 'http://localhost:3000/printer_default.jpg'} style={{ maxWidth: "100%" }} />
                     </Col>
-                    
+
                     <Col sm={9} class="datos_impresora">
 
                         <Row >
                             <Col sm={4}>
-                                <Card.Text style={{color: 'black'}}>Nombre: {printer.modelName}</Card.Text>
+                                <Card.Text style={{ color: 'black' }}>Nombre: {printer.modelName}</Card.Text>
                             </Col>
 
                             <Col sm={4}>
-                                
+
                             </Col>
                             <Col sm={4}>
                                 {/* <Card.Text>Fabricante: {printer.Fabricante}</Card.Text> */}
@@ -45,7 +49,7 @@ export default function VerImpresora(props) {
                                 <Card.Text>Velocidad: {printer.manufacturationSpeed}</Card.Text>
                                 <Card.Text>Max_ancho: {printer.maxWidth}</Card.Text>
                                 <Card.Text>Max_alto: {printer.maxHeight}</Card.Text>
-                            
+
                             </Col>
                             <Col sm={6}>
                                 <Card.Text>Precisión: {printer.printerPrecision}</Card.Text>
@@ -56,7 +60,7 @@ export default function VerImpresora(props) {
                             </Col>
                         </Row>
 
-                    </Col> 
+                    </Col>
 
                     <Col>
                         <Button variant="primary" onClick={deletePrinter} >Eliminar Impresoras</Button>
@@ -64,10 +68,10 @@ export default function VerImpresora(props) {
 
                 </Row>
             </Card.Body>
-        </Card>  
+        </Card>
 
     );
- 
+
 }
 
 

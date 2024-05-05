@@ -33,10 +33,15 @@ import com.dhub.backend.models.EPrinterType;
 import com.dhub.backend.models.Printer;
 import com.dhub.backend.repository.PrinterRepository;
 import com.dhub.backend.repository.UserRepository;
+import com.dhub.backend.controllers.request.OrderDTO;
 import com.dhub.backend.controllers.request.PrinterDTO;
 import com.dhub.backend.controllers.request.RatingsDTO;
+import com.dhub.backend.controllers.request.UserDTO;
+import com.dhub.backend.services.GoogleCloudStorageService;
 import com.dhub.backend.services.PrinterServiceImpl;
 import com.dhub.backend.services.RatingsService;
+import com.dhub.backend.services.UserEntityService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.Data;
 
@@ -55,10 +60,16 @@ public class PrinterController {
     private UserRepository userRepository;
 
     @Autowired
+    private UserEntityService userService;
+
+    @Autowired
     private PrinterRepository printerRepository;
 
     @Autowired
     private RatingsService ratingsService;
+
+    @Autowired
+    private GoogleCloudStorageService googleCloudStorageService;
 
 
     @GetMapping
@@ -68,6 +79,12 @@ public class PrinterController {
         if(printers.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
+
+        List<UserDTO> usersDTO = new ArrayList<>();
+        for (Printer printer : printers) {
+            usersDTO.add(userService.convertToDTO(printer.getUserEntity()));
+        }
+
         List<PrinterDTO> printersDTO = new ArrayList<>();
         for (Printer printer : printers) {
             printersDTO.add(printerService.convertToDTO(printer));
@@ -81,6 +98,7 @@ public class PrinterController {
         Map<String, Object> response = new HashMap<>();
         response.put("printers", printersDTO);
         response.put("ratings", ratingsDTO);
+        response.put("users", usersDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -138,25 +156,29 @@ public class PrinterController {
     @PreAuthorize("hasRole('MANUFACTURER')")
     @PostMapping
     public ResponseEntity<Printer> createPrinter(@RequestParam("file") MultipartFile file,
-                                                 @RequestParam("modelName") String modelName,
-                                                 @RequestParam("printerLocation") String printerLocation,
-                                                 @RequestParam("printerType") EPrinterType printerType,
-                                                 @RequestParam("servicePrice") Double servicePrice,
-                                                 @RequestParam("maxUnities") Integer maxUnities,
-                                                 @RequestParam("manufacturationSpeed") String manufacturationSpeed,
-                                                 @RequestParam("maxWidth") Double maxWidth,
-                                                 @RequestParam("maxHeight") Double maxHeight,
-                                                 @RequestParam("printerPrecision") Double printerPrecision,
-                                                 @RequestParam("color") EColor color,
-                                                 @RequestParam("material") EMaterial material) throws IOException {
+    @RequestParam("data") String printerString) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        PrinterDTO printerDTO = objectMapper.readValue(printerString, PrinterDTO.class);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = (authentication != null) ? authentication.getName() : null;
         UserEntity user = userRepository.findByUsername(username)
         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
-        Printer createdPrinter = printerService.createPrinterWithFile(file, modelName, printerLocation, printerType, servicePrice, maxUnities, manufacturationSpeed, maxWidth, maxHeight, printerPrecision, color, material, user.getId());
+        printerDTO.setIdFabricante(user.getId());
+        String urlPhoto = "";
+        if (file != null) {
+            try {
+                urlPhoto = googleCloudStorageService.uploadPrinerPhoto(file);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        Printer createdPrinter = printerService.convertToEntity(printerDTO);
+        createdPrinter.setUrlPhoto(urlPhoto);
         createdPrinter.setUserEntity(user);
-        user.getPrinters().add(createdPrinter);
-        userRepository.save(user);
+        printerRepository.save(createdPrinter);
+        // user.getPrinters().add(createdPrinter);
+        // userRepository.save(user);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -195,5 +217,49 @@ public class PrinterController {
             printerRepository.deleteById(id);
         }
         
+    }
+
+    //Obtener impresora por Filtro
+    @GetMapping("/filter")
+    public ResponseEntity<Map<String, Object>> getPrintersByFilter(@RequestParam(required = false) String printerType, @RequestParam(required = false) String material, @RequestParam(required = false) String color, @RequestParam(required = false) String maxUnities) {
+        List<Printer> printers = printerRepository.findAll();
+        if(printers.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        List<PrinterDTO> printersDTO = new ArrayList<>();
+        for (Printer printer : printers) {
+            boolean matches = true;
+            if (printerType != null && !printer.getPrinterType().equals(EPrinterType.valueOf(printerType))) {
+                matches = false;
+            }
+            if (material != null && !printer.getMaterial().equals(EMaterial.valueOf(material))) {
+                matches = false;
+            }
+            if (color != null && !printer.getColor().equals(EColor.valueOf(color))) {
+                matches = false;
+            }
+            if (maxUnities != null && printer.getMaxUnities() < Integer.parseInt(maxUnities)) {
+                matches = false;
+            }
+            if (matches) {
+                printersDTO.add(printerService.convertToDTO(printer));
+            }
+        }
+        List<Long> printerIds = printersDTO.stream()
+        .map(PrinterDTO::getId)
+        .collect(Collectors.toList());
+    
+        List<RatingsDTO> ratingsDTO = ratingsService.getRatingsByPrinterIds(printerIds);
+
+        List<UserDTO> usersDTO = new ArrayList<>();
+        for (PrinterDTO printerDTO : printersDTO) {
+            usersDTO.add(userService.convertToDTO(userRepository.findById(printerDTO.getIdFabricante()).orElseThrow()));
+        }
+    
+        Map<String, Object> response = new HashMap<>();
+        response.put("printers", printersDTO);
+        response.put("ratings", ratingsDTO);
+        response.put("users", usersDTO);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

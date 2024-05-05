@@ -28,7 +28,6 @@ public interface OrderService {
 
     List<Ratings> getRatingsByPrinterId(Long printerId);
 
-    Order createOrderWithFile(MultipartFile file, EStatus status, Date manufacturerDate, Date deliveryDate, 
-    String address, String specs, Integer quantity, Long userId, Long printerId);
+    Order createOrderWithFile(MultipartFile file, OrderDTO orderDTO);
 
 }

@@ -52,9 +52,11 @@ public class OrderServiceImpl implements OrderService {
         orderDTO.setSpecs(order.getSpecs());
         orderDTO.setDeliveryDate(order.getDeliveryDate());
         orderDTO.setManufacturerDate(order.getManufacturerDate());
+        orderDTO.setProductPrice(order.getProductPrice());
         orderDTO.setDeliveryPrice(order.getDeliveryPrice());
         orderDTO.setPrinter_id(order.getPrinter().getId());
-        orderDTO.setUser_id(order.getUserEntity().getId());
+        orderDTO.setDesigner_id(order.getUserEntity().getId());
+        orderDTO.setManufacturer_id(order.getPrinter().getUserEntity().getId());
         return orderDTO;
     }
 
@@ -71,6 +73,7 @@ public class OrderServiceImpl implements OrderService {
         order.setDeliveryDate(orderDTO.getDeliveryDate());
         order.setManufacturerDate(orderDTO.getManufacturerDate());
         order.setDeliveryPrice(orderDTO.getDeliveryPrice());
+        order.setProductPrice(orderDTO.getProductPrice());
            return order;
     }
 
@@ -159,11 +162,22 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
-    public Order createOrderWithFile(MultipartFile file, EStatus status, Date manufacturerDate, Date deliveryDate, 
-    String address, String specs, Integer quantity, Long userId, Long printerId) {
-        UserEntity userEntity = userRepository.findById(userId).orElse(null);
-        Printer printer = printerRepository.findById(printerId).orElse(null);
+    public Order createOrderWithFile(MultipartFile file, OrderDTO orderDTO) {
         Order order = new Order();
+        LocalDateTime now = LocalDateTime.now();
+        Date date = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
+        order.setOrderDate(date);
+        order.setStatus(orderDTO.getStatus());
+        order.setQuantity(orderDTO.getQuantity());
+        order.setAddress(orderDTO.getAddress());
+        order.setSpecs(orderDTO.getSpecs());
+        order.setDeliveryDate(orderDTO.getDeliveryDate());
+        order.setManufacturerDate(orderDTO.getManufacturerDate());
+        order.setDeliveryPrice(orderDTO.getDeliveryPrice());
+        UserEntity diseñador = userRepository.findById(orderDTO.getDesigner_id()).get();
+        order.setUserEntity(diseñador);
+        Printer printer = printerRepository.findById(orderDTO.getPrinter_id()).get();
+        order.setPrinter(printer);
         try {
             order.setFile(file.getBytes());
         } catch (IOException e) {
@@ -181,18 +195,7 @@ public class OrderServiceImpl implements OrderService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        order.setFileFormat(getFileExtension(file.getOriginalFilename()));
-        order.setOrderDate(new Date(System.currentTimeMillis()));
-        order.setManufacturerDate(manufacturerDate);
-        order.setDeliveryDate(deliveryDate);
-        order.setAddress(address);
-        order.setSpecs(specs);
-        order.setStatus(status);
-        order.setQuantity(quantity);
-        order.setDeliveryPrice(price);
-        order.setUserEntity(userEntity);
-        order.setPrinter(printer);
+        order.setProductPrice(price);
         return order;
     }
 

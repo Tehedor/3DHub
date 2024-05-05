@@ -46,8 +46,6 @@ public class Order {
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date orderDate;
 
-	private String fileFormat;
-
 	@Lob
 	@Column(columnDefinition="LONGBLOB")
 	private byte[] file;
@@ -70,6 +68,8 @@ public class Order {
 
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date deliveryDate;
+
+	private Double productPrice;
 
 	private Double deliveryPrice;
 

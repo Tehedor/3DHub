@@ -46,11 +46,7 @@ public class Printer {
 
     private EPrinterType printerType;
     
-    private String fileFormat;
-
-    @Lob
-    @Column(columnDefinition="MEDIUMBLOB")
-    private byte[] printerPhoto;
+    private String urlPhoto;
 
     private Double servicePrice;
 
