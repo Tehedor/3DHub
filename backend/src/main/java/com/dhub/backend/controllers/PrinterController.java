@@ -250,10 +250,16 @@ public class PrinterController {
         .collect(Collectors.toList());
     
         List<RatingsDTO> ratingsDTO = ratingsService.getRatingsByPrinterIds(printerIds);
+
+        List<UserDTO> usersDTO = new ArrayList<>();
+        for (PrinterDTO printerDTO : printersDTO) {
+            usersDTO.add(userService.convertToDTO(userRepository.findById(printerDTO.getIdFabricante()).orElseThrow()));
+        }
     
         Map<String, Object> response = new HashMap<>();
         response.put("printers", printersDTO);
         response.put("ratings", ratingsDTO);
+        response.put("users", usersDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
