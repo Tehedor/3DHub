@@ -117,8 +117,10 @@ export default function Home(props) {
         let downloadfabricantes;
 
         try {
+            console.log(props.printerType, props.maxUnities, props.material, props.color);
 
             let response;
+            console.log(props.theFiltrarOn);
             if (props.theFiltrarOn === true) {
                 response = (await ImpresorasService.descargarPrintersFiltred(props.printerType, props.maxUnities, props.material, props.color)).data;
             } else {
@@ -126,7 +128,6 @@ export default function Home(props) {
             }
             
             if(JSON.parse(localStorage.getItem("user"))){
-
                 await ImpresorasService.getDescargarUsuario();
                 console.log(JSON.parse(localStorage.getItem("usuarioDescargado")));
             }
@@ -156,6 +157,20 @@ export default function Home(props) {
 
 
     // Efecto que se ejecuta al cargar la página
+    useEffect(() => {
+        setLoading(true);
+        async function fetchData() {
+
+            await download();
+
+            setLoading(false);
+            // setTimeout(()=>{
+            //     setLoading(false);
+            // },800);      
+        }
+        fetchData();
+    }, []);
+
     useEffect(() => {
         setLoading(true);
         async function fetchData() {

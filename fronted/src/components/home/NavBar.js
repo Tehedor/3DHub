@@ -62,10 +62,10 @@ function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser
   };
 
   const handleFilterClick = () => {
-    setTheFiltrarOn(true);
+    // setTheFiltrarOn(true);
     // navigate("/");
-    navigate('/');
-    window.location.reload();
+    // navigate('/');
+    // window.location.reload();
     // ImpresorasService.mandarFiltro(printerType, maxUnities, material, color);
 
   };
