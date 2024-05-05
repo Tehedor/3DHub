@@ -117,22 +117,30 @@ export default function Home(props) {
         let downloadfabricantes;
 
         try {
-            const response = (await ImpresorasService.descargarPrinters()).data;
+
+            let response;
+            if (props.theFiltrarOn === true) {
+                response = (await ImpresorasService.descargarPrintersFiltred(props.printerType, props.maxUnities, props.material, props.color)).data;
+            } else {
+                response = (await ImpresorasService.descargarPrinters()).data;
+            }
+
+
             console.log(response);
             downloadprinters = response.printers;
             console.log(downloadprinters);
             dowloadratings = response.ratings;
             console.log(dowloadratings);
             setThePrinters(downloadprinters);
-            // props.setControlPrinters(downloadprinters);
+            props.setControlPrinters(downloadprinters);
             console.log(theprinters);
             downloadfabricantes = response.users;
             console.log(downloadfabricantes);
             setTheFabricantes(downloadfabricantes);
-            // props.setControlFabricantes(downloadfabricantes);
+            props.setControlFabricantes(downloadfabricantes);
 
             setTheRatings(dowloadratings);
-            // props.setControlRatings(dowloadratings);
+            props.setControlRatings(dowloadratings);
 
         } catch (error) {
             // setResultados(
@@ -146,14 +154,16 @@ export default function Home(props) {
     useEffect(() => {
         setLoading(true);
         async function fetchData() {
+
             await download();
+
             setLoading(false);
             // setTimeout(()=>{
             //     setLoading(false);
-            // },800);		
+            // },800);      
         }
         fetchData();
-    }, []);
+    }, [props.theFiltrarOn]);
 
 
     return (

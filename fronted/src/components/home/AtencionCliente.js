@@ -1,12 +1,12 @@
 import { useState, useRef } from 'react';
-import { Container, Row,Button} from 'react-bootstrap';
+import { Container, Row, Button } from 'react-bootstrap';
 
 import Form from 'react-validation/build/form';
 import CheckButton from 'react-validation/build/button';
 import { isEmail } from "validator";
 
 
-import {MyValidationInput,  } from '../../common/ValidationComponents.js';
+import { MyValidationInput, } from '../../common/ValidationComponents.js';
 
 import ImpresorasService from '../../services/impresoras.service.js';
 
@@ -18,7 +18,7 @@ export default function AtencionCliente(props) {
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
 
-    
+
     const [email, setEmail] = useState("");
     const [solicitud, setSolicitud] = useState(null);
     const [photo, setPhoto] = useState(null);
@@ -27,9 +27,9 @@ export default function AtencionCliente(props) {
     const required = (value) => {
         if (!value) {
             return (
-            <div className="invalid-feedback d-block">
-                This field is required!
-            </div>
+                <div className="invalid-feedback d-block">
+                    This field is required!
+                </div>
             );
         }
     };
@@ -37,26 +37,26 @@ export default function AtencionCliente(props) {
     const validEmail = (value) => {
         if (!isEmail(value)) {
             return (
-            <div className="invalid-feedback d-block">
-                This is not a valid email.
-            </div>
+                <div className="invalid-feedback d-block">
+                    This is not a valid email.
+                </div>
             );
         }
     };
 
     const validSolicitud = (value) => {
         if (value.trim().length < 10) {
-          return "Las solicitud deben tener al menos 10 caracteres.";
+            return "Las solicitud deben tener al menos 10 caracteres.";
         }
     };
-      
+
     const validPhoto = (value) => {
         //una foto con dudas
-        if(value == "null"){
+        if (value == "null") {
             return "no hay foto"
         }
     };
-      
+
     const subirSolicitud = (e) => {
         e.preventDefault();
 
@@ -66,24 +66,24 @@ export default function AtencionCliente(props) {
         form.current.validateAll();
         console.log("llega");
         if (checkBtn.current.context._errors.length === 0) {
-        // if (checkBtn.current && checkBtn.current.isEmpty()) {
+            // if (checkBtn.current && checkBtn.current.isEmpty()) {
             console.log(email, asunto, solicitud, photo);
-            ImpresorasService.enviarEmail(email, asunto,solicitud, photo).then(
-              (response) => {
-                setMessage(response.data.message);
-                setSuccessful(true);
-              },
-              (error) => {
-                const resMessage =
-                  (error.response &&
-                    error.response.data &&
-                    error.response.data.message) ||
-                  error.message ||
-                  error.toString();
+            ImpresorasService.enviarEmail(email, asunto, solicitud, photo).then(
+                (response) => {
+                    setMessage(response.data.message);
+                    setSuccessful(true);
+                },
+                (error) => {
+                    const resMessage =
+                        (error.response &&
+                            error.response.data &&
+                            error.response.data.message) ||
+                        error.message ||
+                        error.toString();
 
-                setMessage(resMessage);
-                setSuccessful(false);
-              }
+                    setMessage(resMessage);
+                    setSuccessful(false);
+                }
             );
             // console.log("file: ");
         }
@@ -96,12 +96,12 @@ export default function AtencionCliente(props) {
                 <h2 >AtencionCliente</h2>
             </Row>
             <Form onSubmit={subirSolicitud} ref={form}>
-            {!successful && (    
-                <>
-                    <Row>
-                
+                {!successful && (
+                    <>
+                        <Row>
 
-                {/* <label htmlFor="email">Email</label>
+
+                            {/* <label htmlFor="email">Email</label>
                     <Input
                     type="text"
                     className="form-control"
@@ -110,85 +110,85 @@ export default function AtencionCliente(props) {
                     onChange={onChangeEmail}
                     validations={[required, validEmail]}
                     /> */}
-                    <MyValidationInput
-                    type="text"
-                    className="form-control"
-                    formlabel="email"
-                    name="email"
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}      
-                    validations={[required, validEmail]}
-                    /> 
-                </Row>
-                <Row class="subir">          
-                    {/*  SUBIR PHOTO */}
-                    <MyValidationInput
-                        type="file" 
-                        formlabel="Subir Imagen" 
-                        onChange={(e) => setPhoto(e.target.files[0])}
-                        validations={[validPhoto]} 
-                    />
-                </Row>
-                <Row>
+                            <MyValidationInput
+                                type="text"
+                                className="form-control"
+                                formlabel="email"
+                                name="email"
+                                value={email}
+                                onChange={e => setEmail(e.target.value)}
+                                validations={[required, validEmail]}
+                            />
+                        </Row>
+                        <Row class="subir">
+                            {/*  SUBIR PHOTO */}
+                            {/* <MyValidationInput
+                                type="file"
+                                formlabel="Subir Imagen"
+                                onChange={(e) => setPhoto(e.target.files[0])}
+                                validations={[validPhoto]}
+                            /> */}
+                        </Row>
+                        <Row>
 
-                    <MyValidationInput
-                        as="textarea"
-                        formlabel="Asunto"
-                        rows={1}
-                        maxLength={30}
-                        value={asunto}
-                        onChange={e => setAsunto(e.target.value)}
-                        validations={[required]} // Agrega tus validaciones aquí
-                    />
-                </Row>
-                <Row>
+                            <MyValidationInput
+                                as="textarea"
+                                formlabel="Asunto"
+                                rows={1}
+                                maxLength={30}
+                                value={asunto}
+                                onChange={e => setAsunto(e.target.value)}
+                                validations={[required]} // Agrega tus validaciones aquí
+                            />
+                        </Row>
+                        <Row>
 
-                    <MyValidationInput
-                        as="textarea"
-                        formlabel="Solicitud"
-                        rows={7}
-                        maxLength={400}
-                        value={solicitud}
-                        onChange={e => setSolicitud(e.target.value)}
-                        validations={[required,validSolicitud]} // Agrega tus validaciones aquí
-                    />
-                </Row>
-                <Row className="Añadir" style={{display: 'flex', alignItems: 'flex-end'}}>
-                    <p></p>
-                <Button variant="success" onClick={subirSolicitud}>Mandar solicitud</Button>
-                {/* <div className="form-group">
+                            <MyValidationInput
+                                as="textarea"
+                                formlabel="Solicitud"
+                                rows={7}
+                                maxLength={400}
+                                value={solicitud}
+                                onChange={e => setSolicitud(e.target.value)}
+                                validations={[required, validSolicitud]} // Agrega tus validaciones aquí
+                            />
+                        </Row>
+                        <Row className="Añadir" style={{ display: 'flex', alignItems: 'flex-end' }}>
+                            <p></p>
+                            <Button variant="success" onClick={subirSolicitud}>Mandar solicitud</Button>
+                            {/* <div className="form-group">
                     <button className="btn btn-primary btn-block" onClick={subirSolicitud}>Mandar Solicitud</button>
                 </div> */}
-                
-                <p>
-                </p>
-                <Button href="/" variant="danger">Vover</Button>
-                <p>
-                </p>
-            </Row>
-            </>
-            )}
-            {message && (
-                <div className="form-group">
+
+                            <p>
+                            </p>
+                            <Button href="/" variant="danger">Vover</Button>
+                            <p>
+                            </p>
+                        </Row>
+                    </>
+                )}
+                {message && (
+                    <div className="form-group">
                         <div
-                        className={
-                            successful ? "alert alert-success" : "alert alert-danger"
-                        }
-                        role="alert"
+                            className={
+                                successful ? "alert alert-success" : "alert alert-danger"
+                            }
+                            role="alert"
                         >
-                        {message}
+                            {message}
                         </div>
                         <p>
-                        <Button href="/" variant="danger">Vover</Button>
+                            <Button href="/" variant="danger">Vover</Button>
                         </p>
-                        
+
                     </div>
-            )}
-            <CheckButton style={{ display: "none" }} ref={checkBtn} />
-            </Form> 
-        
+                )}
+                <CheckButton style={{ display: "none" }} ref={checkBtn} />
+            </Form>
+
         </Container>
-    
+
     );
 
 }

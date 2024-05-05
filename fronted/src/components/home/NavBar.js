@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+
 import AuthService from "../../services/auth.service";
 import { MyValidationInput } from '../../common/ValidationComponents.js';
 
@@ -10,7 +11,7 @@ import ImpresorasService from "../../services/impresoras.service.js";
 import './NavBar.css';
 import { Navbar, Nav, Form, FormControl, Button, Container, Row, Col, InputGroup, Image, ButtonGroup, ToggleButton, Accordion } from 'react-bootstrap';
 
-function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser, logOut, theRollActual, setTheRollControl, setCambioRoll, cambioRoll }) {
+function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser, logOut, theRollActual, setTheRollControl, setCambioRoll, cambioRoll, setTheFiltrarOn, printerType,maxUnities,material,color, setColor, setMaterial, setMaxUnities, setPrinterType }) {
 
 
   // ##### ##### ##### ##### ##### ##### ##### #####
@@ -33,15 +34,8 @@ function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser
   const hasRole = (role) => rolesUser.includes(role);
 
 
-  // ##### ##### ##### ##### ##### ##### ##### #####
-  // ##### ##### Control de filtros
-  // ##### ##### ##### ##### ##### ##### ##### #####
-  const [printerType, setPrinterType] = useState('');
-  const [maxUnities, setMaxUnities] = useState('');
-  const [material, setMaterial] = useState('');
-  const [color, setColor] = useState('');
-
-
+  
+  
   // MANUFACTURER
   // DESIGNER
 
@@ -68,7 +62,11 @@ function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser
   };
 
   const handleFilterClick = () => {
-    ImpresorasService.mandarFiltro(printerType, maxUnities, material, color);
+    setTheFiltrarOn(true);
+    // navigate("/");
+    navigate('/');
+    window.location.reload();
+    // ImpresorasService.mandarFiltro(printerType, maxUnities, material, color);
     
   };
 

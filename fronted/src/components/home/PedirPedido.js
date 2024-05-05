@@ -263,7 +263,7 @@ function PedirPedido(props) {
         </Col>
         :
         <Container>
-          {(props.cambioRoll === "DESIGNER" && AuthService.getCurrentUser() && Object.keys(AuthService.getCurrentUser()).length !== 0) ? (
+          {(props.cambioRoll === "DESIGNER") ? (
             <Form onSubmit={handlePedido} ref={form}>
               {!successful && (
                 <Container>

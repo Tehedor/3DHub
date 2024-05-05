@@ -44,13 +44,26 @@ const App = () => {
   // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
   // ##### ##### Control de impresoras
   // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
-  // const [controlPrinters, setControlPrinters] = useLocalStorage('printers',[]); 
-  // const [controlRatings, setControlRatings] = useLocalStorage('ratings',[]);
-  // const [controlFabricantes, setControlFabricantes] = useLocalStorage('fabricantes',[]);
+  const [controlPrinters, setControlPrinters] = useLocalStorage('printers',[]); 
+  const [controlRatings, setControlRatings] = useLocalStorage('ratings',[]);
+  const [controlFabricantes, setControlFabricantes] = useLocalStorage('fabricantes',[]);
 
   const [theprinters, setThePrinters] = useState([]);
   const [theratings, setTheRatings] = useState();
   const [theFabricantes, setTheFabricantes] = useState();
+  
+
+  // ##### ##### ##### ##### ##### ##### ##### #####
+  // ##### ##### Control de filtros
+  // ##### ##### ##### ##### ##### ##### ##### #####
+  const [theFiltrarOn, setTheFiltrarOn] = useState(false);
+
+  const [printerType, setPrinterType] = useState('');
+  const [maxUnities, setMaxUnities] = useState('');
+  const [material, setMaterial] = useState('');
+  const [color, setColor] = useState('');
+
+  // theFiltrarOn={theFiltrarOn} setTheFiltrarOn={setTheFiltrarOn}
 
   // const descargar = AuthService.getDescargarUsuario();
   // console.log(descargar);
@@ -112,17 +125,21 @@ const App = () => {
           query={query} setQuery={setQuery} queryUbica={queryUbica} setQueryUbica={setQueryUbica} 
           currentUser={currentUser} cambioRoll={cambioRoll} setCambioRoll={setCambioRoll} theRollActual={theRollActual} setTheRollControl={setTheRollControl} logOut={logOut} 
           theprinters={theprinters} setThePrinters={setThePrinters} theratings={theratings} setTheRatings={setTheRatings} theFabricantes={theFabricantes} setTheFabricantes={setTheFabricantes}
-          />
+          setTheFiltrarOn={setTheFiltrarOn} printerType={printerType} maxUnities={maxUnities} material={material} color={color}
+          setPrinterType={setPrinterType} setMaxUnities={setMaxUnities} setMaterial={setMaterial} setColor={setColor}
+        />
 
         <div className="container mt-3">
           <Routes>
             <Route exact path={"/"} element={<Home
-              // setControlPrinters={setControlPrinters} controlPrinters={controlPrinters} setControlRatings={setControlRatings} controlRatings={controlRatings} setControlFabricantes={setControlFabricantes}
+              theFiltrarOn={theFiltrarOn} printerType={printerType} maxUnities={maxUnities} material={material} color={color}
+              setControlPrinters={setControlPrinters} controlPrinters={controlPrinters} setControlRatings={setControlRatings} controlRatings={controlRatings} setControlFabricantes={setControlFabricantes}
               theprinters={theprinters} setThePrinters={setThePrinters} theratings={theratings} setTheRatings={setTheRatings} theFabricantes={theFabricantes} setTheFabricantes={setTheFabricantes}
             />}
             />
-            <Route exact path={"/home"} element={<Home
-              // setControlPrinters={setControlPrinters} controlPrinters={controlPrinters} setControlRatings={setControlRatings} controlRatings={controlRatings} setControlFabricantes={setControlFabricantes}
+            <Route exact path={"/pedirpedido"} element={<Home
+              theFiltrarOn={theFiltrarOn} printerType={printerType} maxUnities={maxUnities} material={material} color={color}
+              setControlPrinters={setControlPrinters} controlPrinters={controlPrinters} setControlRatings={setControlRatings} controlRatings={controlRatings} setControlFabricantes={setControlFabricantes}
               theprinters={theprinters} setThePrinters={setThePrinters} theratings={theratings} setTheRatings={setTheRatings} theFabricantes={theFabricantes} setTheFabricantes={setTheFabricantes}
             />} />
             <Route exact path="/login" element={<Login
@@ -140,9 +157,10 @@ const App = () => {
             <Route exact path="/impresorasfabri" element={<ImpresorasFabri />} />
             <Route exact path="/crearimpresora" element={<CrearImpresora />} />
 
+            {/* <Route path="/pedirpedido/:printerId" element={<Location */}
             <Route path="/pedirpedido/:printerId" element={<Location
-              // controlPrinters={controlPrinters} roll={roll} query={query} queryUbica={queryUbica} currentUser={currentUser} controlRatings={controlRatings} cambioRoll={cambioRoll} controlFabricantes={controlFabricantes}
-              theprinters={theprinters} setThePrinters={setThePrinters} theratings={theratings} setTheRatings={setTheRatings} theFabricantes={theFabricantes} setTheFabricantes={setTheFabricantes}
+              controlPrinters={controlPrinters} roll={roll} query={query} queryUbica={queryUbica} currentUser={currentUser} controlRatings={controlRatings} cambioRoll={cambioRoll} controlFabricantes={controlFabricantes}
+              // theprinters={theprinters} setThePrinters={setThePrinters} theratings={theratings} setTheRatings={setTheRatings} theFabricantes={theFabricantes} setTheFabricantes={setTheFabricantes}
             />} />
 
             <Route exact path="/atencionCliente" element={<AtencionCliente />} />
