@@ -15,7 +15,7 @@ export default function VerPedidos(props) {
     // ##### ##### Datos de Control
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     const control = props.thecontrol !== undefined ? props.thecontrol : true;
-    const controlReseña = props.reseña === false ? false : true;
+    const controlReseña = props.reseña ? false : true;
 
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     // ##### ##### Datos descargados
