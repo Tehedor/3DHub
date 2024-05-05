@@ -93,14 +93,14 @@ export default function Home(props) {
 
         if (latitud !== "0" && longitud !== "0") {
 
-            // geocode(RequestType.LATLNG, `${latitud},${longitud}`)
-            //     .then(({ results }) => {
-            //         const address = results[0].formatted_address;
-            //         localStorage.setItem("actualLocation", address);
-            //         console.log(address);
-            //     })
-            //     .catch(console.error);
-            localStorage.setItem("actualLocation", "3Q9H+MF Yanguas de Eresma, Spain");
+            geocode(RequestType.LATLNG, `${latitud},${longitud}`)
+                .then(({ results }) => {
+                    const address = results[0].formatted_address;
+                    localStorage.setItem("actualLocation", address);
+                    console.log(address);
+                })
+                .catch(console.error);
+            // localStorage.setItem("actualLocation", "3Q9H+MF Yanguas de Eresma, Spain");
         }
 
 
