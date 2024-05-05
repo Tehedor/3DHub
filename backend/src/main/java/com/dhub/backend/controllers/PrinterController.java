@@ -121,7 +121,9 @@ public class PrinterController {
         }
         List<PrinterDTO> printersDTO = new ArrayList<>();
         for (Printer printer : printers) {
-            printersDTO.add(printerService.convertToDTO(printer));
+            if (printer.getUserEntity().getId() == user.getId()) {
+                printersDTO.add(printerService.convertToDTO(printer));
+            }
         }
         return new ResponseEntity<>(printersDTO, HttpStatus.OK);
     }
