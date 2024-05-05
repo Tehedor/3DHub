@@ -36,3 +36,4 @@ try:
 except subprocess.CalledProcessError:
     print("flask no está instalado. Intentando instalarlo...")
     os.system('pip3 install flask')
+    os.system('pip3 install geopy')
