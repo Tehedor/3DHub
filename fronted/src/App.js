@@ -108,7 +108,11 @@ const App = () => {
     <div className="App" style={{ backgroundColor: cambioRoll === "DESIGNER" ? "white" : cambioRoll === "MANUFACTURER" ? "#fcebdc" : "default" }}>
       <div className="containerr">
 
-        <NavBar query={query} setQuery={setQuery} queryUbica={queryUbica} setQueryUbica={setQueryUbica} currentUser={currentUser} cambioRoll={cambioRoll} setCambioRoll={setCambioRoll} theRollActual={theRollActual} setTheRollControl={setTheRollControl} logOut={logOut} />
+        <NavBar 
+          query={query} setQuery={setQuery} queryUbica={queryUbica} setQueryUbica={setQueryUbica} 
+          currentUser={currentUser} cambioRoll={cambioRoll} setCambioRoll={setCambioRoll} theRollActual={theRollActual} setTheRollControl={setTheRollControl} logOut={logOut} 
+          theprinters={theprinters} setThePrinters={setThePrinters} theratings={theratings} setTheRatings={setTheRatings} theFabricantes={theFabricantes} setTheFabricantes={setTheFabricantes}
+          />
 
         <div className="container mt-3">
           <Routes>
@@ -121,7 +125,9 @@ const App = () => {
               // setControlPrinters={setControlPrinters} controlPrinters={controlPrinters} setControlRatings={setControlRatings} controlRatings={controlRatings} setControlFabricantes={setControlFabricantes}
               theprinters={theprinters} setThePrinters={setThePrinters} theratings={theratings} setTheRatings={setTheRatings} theFabricantes={theFabricantes} setTheFabricantes={setTheFabricantes}
             />} />
-            <Route exact path="/login" element={<Login setTheRollControl={setTheRollControl} theRollActual={theRollActual} setCambioRoll={setCambioRoll} />} />
+            <Route exact path="/login" element={<Login
+              setTheRollControl={setTheRollControl} theRollActual={theRollActual} setCambioRoll={setCambioRoll}
+            />} />
             <Route exact path="/register" element={<Register />} />
             <Route exact path="/profile" element={<Profile />} />
 
