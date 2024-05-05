@@ -51,6 +51,8 @@ function PedirPedido(props) {
   const query = props.query;
   const queryUbica = props.queryUbica;
   const currentUser = props.currentUser;
+  const controlUser = JSON.parse(localStorage.getItem("user"));
+  console.log("currentUser: ", controlUser);
 
   const PrinterMaxUnities = printer.maxUnities;
 
@@ -263,7 +265,7 @@ function PedirPedido(props) {
         </Col>
         :
         <Container>
-          {(props.cambioRoll === "DESIGNER") ? (
+          {( controlUser  && props.cambioRoll === "DESIGNER")  ? (
             <Form onSubmit={handlePedido} ref={form}>
               {!successful && (
                 <Container>
