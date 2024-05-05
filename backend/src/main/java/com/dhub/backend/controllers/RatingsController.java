@@ -82,11 +82,12 @@ public class RatingsController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         String urlPhoto = "";
-        try {
-            urlPhoto = googleCloudStorageService.uploadRatingsPhoto(file);
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        if(file != null) {
+            try {
+                urlPhoto = googleCloudStorageService.uploadRatingsPhoto(file);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         Ratings ratings = ratingsService.convertToEntity(ratingsDTO);
         LocalDateTime now = LocalDateTime.now();

@@ -165,11 +165,13 @@ public class PrinterController {
         .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
         printerDTO.setIdFabricante(user.getId());
         String urlPhoto = "";
-        try {
-            urlPhoto = googleCloudStorageService.uploadPrinerPhoto(file);
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        if (file != null) {
+            try {
+                urlPhoto = googleCloudStorageService.uploadPrinerPhoto(file);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
         Printer createdPrinter = printerService.convertToEntity(printerDTO);
         createdPrinter.setUrlPhoto(urlPhoto);
