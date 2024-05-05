@@ -50,7 +50,7 @@ public class Ratings {
     private Integer manufacturerRating;
 
     @NotBlank
-	@Size(max = 50)
+	@Size(max = 350, message = "El texto de la valoración no puede tener más de 250 caracteres")
 	private String textRating;
 
 	private String urlPhoto;
