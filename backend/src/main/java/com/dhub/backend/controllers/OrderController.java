@@ -45,7 +45,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
-// @PreAuthorize("hasRole('ROLE_MANUFACTURER' or 'ROLE_DESIGNER' or 'ROLE_ADMIN')")
+@PreAuthorize("hasRole('ROLE_MANUFACTURER' or 'ROLE_DESIGNER' or 'ROLE_ADMIN')")
 @RequestMapping("/api/orders")
 public class OrderController {
 
@@ -82,25 +82,6 @@ public class OrderController {
         }
     }
 
-
-    /*
-     * Edit the order if the user is the owner of the order or the printer assigned to the order
-     */
-    // @PutMapping
-    // public ResponseEntity<?> updateOrder(@RequestBody Order order) {
-    //     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    //     String username = (authentication != null) ? authentication.getName() : null;
-    //     UserEntity user = userRepository.findByUsername(username)
-    //     .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
-    //     Order order = orderRepository.findById(order.getId())
-    //     .orElseThrow(() -> new RuntimeException("Error: Pedido no encontrado."));
-    //     if (user.getId() == order.getUserEntity().getId() || user.getId() == order.getPrinter().getUserEntity().getId()) {
-    //         orderRepository.save(order);
-    //         return ResponseEntity.ok(new MessageResponse("Pedido "+ id + " eliminado"));
-    //     }
-        
-    // }
-
     /*
      * Deletes the order if the user is the owner of the order or the printer assigned to the order
      */
@@ -121,32 +102,9 @@ public class OrderController {
     }
 
     /*
-     * creates the order, saving the status as KART
-     * TODO: Create a method convertToEntity in OrderService    
+     * Creates an order with the file and the data
      */
-    // @PostMapping
-    // public ResponseEntity<?> createOrder(@RequestParam("file") MultipartFile file,
-    //                                     @RequestParam("manufacturerDate") Date manufacturerDate,
-    //                                     @RequestParam("deliveryDate") Date deliveryDate,
-    //                                     @RequestParam("quantity") Integer quantity,
-    //                                     @RequestParam("specs") String specs,
-    //                                     @RequestParam("printer_id") Long printer_id,
-    //                                     @RequestParam("address") String address
-    //                                     ) throws IOException {
-    //     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    //     String username = (authentication != null) ? authentication.getName() : null;
-    //     UserEntity user = userRepository.findByUsername(username)
-    //     .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
-    //     Printer printer = printerRepository.findById(printer_id)
-    //     .orElseThrow(() -> new RuntimeException("Error: Impresora no encontrada."));
-    //     EStatus status = EStatus.KART;
-    //     Order order = orderService.createOrderWithFile(file, status, manufacturerDate, deliveryDate, address, specs, quantity, user.getId(), printer.getId());
-    //     order.setUserEntity(user);
-    //     order.setPrinter(printer);
-    //     orderRepository.save(order);
-    //     return ResponseEntity.ok(new MessageResponse("Añadido al carrito"));
-    // }
-
+    @PreAuthorize("hasRole('ROLE_DESIGNER')")
     @PostMapping
     public ResponseEntity<?> createOrder(@RequestParam("file") MultipartFile file,
     @RequestParam("data") String orderDTOString) throws IOException {
@@ -167,26 +125,6 @@ public class OrderController {
         order = orderService.createOrderWithFile(file, orderDTO);
         orderRepository.save(order);
         return ResponseEntity.ok(new MessageResponse("Añadido al carrito"));
-    }
-
-    /*
-     * Uploads the 3D file to the order and saves the path in the database
-     * TODO: Add a check to see if the user is the owner of the order
-     */
-    @PutMapping("/{id}")
-    public ResponseEntity<Printer> uploadFile(@PathVariable Long id) throws IOException {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = (authentication != null) ? authentication.getName() : null;
-        UserEntity user = userRepository.findByUsername(username)
-        .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado."));
-        Order order = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Error: Pedido no encontrada."));
-
-        if (user.getId() != order.getUserEntity().getId()) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-
-        orderRepository.save(order);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
     
     /*
@@ -223,6 +161,7 @@ public class OrderController {
      * printerService -> printerRepository
      * ....
      */
+    @PreAuthorize("hasRole('ROLE_DESIGNER')")
     @GetMapping("/kart")
     public ResponseEntity<Map<String, Object>> getKart() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -272,6 +211,7 @@ public class OrderController {
      * TODO: Clean up the code:
      * ...
      */    
+    @PreAuthorize("hasRole('ROLE_DESIGNER')")
     @GetMapping("/designer")
     public ResponseEntity<Map<String, Object>> getDesignerOrders() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -321,6 +261,7 @@ public class OrderController {
      * TODO: Clean up the code:
      * ...
      */
+    @PreAuthorize("hasRole('ROLE_DESIGNER')")
     @GetMapping("/designerExcludingKart")
     public ResponseEntity<List<OrderDTO>> getDesignerOrdersExcludingKart() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -345,6 +286,7 @@ public class OrderController {
     /*
      * All designer orders and his ratings excluding the ones in the KART status
      */
+    @PreAuthorize("hasRole('ROLE_DESIGNER')")
     @GetMapping("/designerRatings")
     public ResponseEntity<Map<String, Object>> getDesignerRatings() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -377,6 +319,7 @@ public class OrderController {
     /*
      * All manufacturer orders with the printers and users
      */
+    @PreAuthorize("hasRole('ROLE_MANUFACTURER')")
     @GetMapping("/manufacturerOrders")
     public ResponseEntity< Map<String, Object>>  getManufacturerOrders() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -429,6 +372,7 @@ public class OrderController {
     /*
      * All manufacturer orders with ratings
      */
+    @PreAuthorize("hasRole('ROLE_MANUFACTURER')")
     @GetMapping("/manufacturerRatings")
     public ResponseEntity< Map<String, Object>>  getManufacturerRatings() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -499,6 +443,9 @@ public class OrderController {
         return new ResponseEntity<>(ratingsDTO, HttpStatus.OK);
     }
 
+    /*
+     * Get the file of the order to send to the frontend server
+     */
     @GetMapping("/{orderId}/file")
     public ResponseEntity<byte[]> getFile(@PathVariable Long orderId) {
         Order order = orderRepository.findById(orderId).orElse(null);
