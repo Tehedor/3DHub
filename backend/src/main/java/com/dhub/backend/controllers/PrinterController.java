@@ -218,4 +218,42 @@ public class PrinterController {
         }
         
     }
+
+    //Obtener impresora por Filtro
+    @GetMapping("/filter")
+    public ResponseEntity<Map<String, Object>> getPrintersByFilter(@RequestParam(required = false) String printerType, @RequestParam(required = false) String material, @RequestParam(required = false) String color, @RequestParam(required = false) String maxUnities) {
+        List<Printer> printers = printerRepository.findAll();
+        if(printers.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        List<PrinterDTO> printersDTO = new ArrayList<>();
+        for (Printer printer : printers) {
+            boolean matches = true;
+            if (printerType != null && !printer.getPrinterType().equals(EPrinterType.valueOf(printerType))) {
+                matches = false;
+            }
+            if (material != null && !printer.getMaterial().equals(EMaterial.valueOf(material))) {
+                matches = false;
+            }
+            if (color != null && !printer.getColor().equals(EColor.valueOf(color))) {
+                matches = false;
+            }
+            if (maxUnities != null && printer.getMaxUnities() < Integer.parseInt(maxUnities)) {
+                matches = false;
+            }
+            if (matches) {
+                printersDTO.add(printerService.convertToDTO(printer));
+            }
+        }
+        List<Long> printerIds = printersDTO.stream()
+        .map(PrinterDTO::getId)
+        .collect(Collectors.toList());
+    
+        List<RatingsDTO> ratingsDTO = ratingsService.getRatingsByPrinterIds(printerIds);
+    
+        Map<String, Object> response = new HashMap<>();
+        response.put("printers", printersDTO);
+        response.put("ratings", ratingsDTO);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }
