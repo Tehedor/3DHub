@@ -1,10 +1,14 @@
 import React, { useState, useRef } from "react";
 
+import { useNavigate } from "react-router-dom";
+
+
 import { Row, Col } from "react-bootstrap";
 
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
+import Select from "react-validation/build/select";
 
 import { MyValidationInput } from '../../../common/ValidationComponents.js';
 
@@ -64,12 +68,14 @@ export default function CrearImpresora(props) {
       );
     }
   };
+  const navigate = useNavigate();
 
   // ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### 
   // ##### ##### Handle
   // ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### 
   const handleRegisterPrinter = (e) => {
     e.preventDefault();
+
 
     setMessage("");
     setSuccessful(false);
@@ -80,6 +86,8 @@ export default function CrearImpresora(props) {
       ImpresorasService.createPrinter(modelName, printerLocation, printerType, printerPhoto, servicePrice, maxUnities, manufacturationSpeed, material, maxWidth, maxHeight, printerPrecision, color).then(
         (response) => {
           setMessage(response.data.message);
+          navigate("/");
+          window.location.reload();
           setSuccessful(true);
         },
         (error) => {
@@ -155,11 +163,12 @@ export default function CrearImpresora(props) {
                 {/* #################### */}
                 <div className="form-group">
                   <label htmlFor="printerType">Tipo de impresora</label>
-                  <select
+                  <Select
                     className="form-control"
                     name="printerType"
                     value={printerType}
                     onChange={e => setPrinterType(e.target.value)}
+                    validations={[required]}
                   >
                     <option value="">Seleccione el tipo de impresora</option>
                     <option value="FDM">FDM - Deposición de material Fundido</option>
@@ -169,7 +178,7 @@ export default function CrearImpresora(props) {
                     <option value="SLS">SLS - Sintetización Selectiva por laser</option>
                     <option value="MJ">MJ - Inyección de Material</option>
                     <option value="MJF">MJF - Fusión Multijet</option>
-                  </select>
+                  </Select>
                 </div>
               </Row>
             </Col>
@@ -196,20 +205,22 @@ export default function CrearImpresora(props) {
           <Row>
             <Col md={6}>
               <Row>
-
                 {/* ########## */}
                 {/* MATERIALES */}
                 {/* ########## */}
                 <div className="form-group">
-                  <label htmlFor="addres">Materiales</label>
-                  <Input
-                    type="text"
+                  <label htmlFor="material">Materiales</label>
+                  <Select
                     className="form-control"
-                    name="direccion"
+                    name="material"
                     value={material}
                     onChange={e => setMaterial(e.target.value)}
                     validations={[required]}
-                  />
+                  >
+                    <option value="">Seleccione material</option>
+                    <option value="PLASTIC">Plástico</option>
+                    <option value="RESIN">Resina</option>
+                  </Select>
                 </div>
               </Row>
             </Col>
@@ -220,14 +231,25 @@ export default function CrearImpresora(props) {
                 {/* ##### */}
                 <div className="form-group">
                   <label htmlFor="color">Color</label>
-                  <Input
-                    type="text"
+                  <Select
                     className="form-control"
                     name="color"
                     value={color}
                     onChange={e => setColor(e.target.value)}
                     validations={[required]}
-                  />
+                  >
+                    <option value="">Seleccione Color</option>
+                    <option value="GREEN">Verde</option>
+                    <option value="YELLOW">Amarillo</option>
+                    <option value="BLUE">Azul</option>
+                    <option value="RED">Rojo</option>
+                    <option value="BLACK">Negro</option>
+                    <option value="WHITE">Blanco</option>
+                    <option value="ORANGE">Naranja</option>
+                    <option value="PURPLE">Morado</option>
+                    <option value="PINK">Rosa</option>
+                    <option value="BROWN">Marron</option>
+                  </Select>
                 </div>
               </Row>
             </Col>

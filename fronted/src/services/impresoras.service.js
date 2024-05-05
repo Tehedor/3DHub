@@ -56,11 +56,26 @@ const enviarEmail =  (email, asunto ,solicitud) => {
 };
 
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+// ##### ##### Mandar Filtro
+// ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
+const mandarFiltro =  (printerType, maxUnities, material, color) => {
+  // return app
+  // .post("printers/filtrar", {
+  //   printerType,
+  //   maxUnities,
+  //   material,
+  //   color,
+  // });
+};
+
+
+// ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
 // ##### ##### Resumen
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
 const ImpresorasService = {
   descargarPrinters,
   enviarEmail,
+  mandarFiltro,
 }
 
 export default ImpresorasService;

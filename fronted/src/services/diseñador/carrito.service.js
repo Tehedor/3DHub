@@ -31,12 +31,22 @@ const getPedidosCarrito = async () => {
 // ##### ##### ##### ##### ##### ##### ##### ##### #####
 // ##### ##### Post order
 // ##### ##### ##### ##### ##### ##### ##### ##### #####
-const order = async (id) => {
+// const order = (id) => {
+//   return app
+//   .put(`orders/${id}/status`, {
+//     "name": "PAY"
+//   })
+// }
+const order = (id) => {
+  console.log(id);
   return app
-  .put(`orders/${id}/status`, {
-    "name": "PAY"
-  })
+    .put(`orders/${id}/status`, {
+      // .post(`orders/${id}/status`, {
+      "name": "PAY"
+    })
 }
+
+
 
 // ##### ##### ##### ##### ##### ##### ##### ##### #####
 // ##### ##### Delete pedido

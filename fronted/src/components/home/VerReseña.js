@@ -23,10 +23,10 @@ export default function VerReseña(props) {
     // ##### ##### ##### ##### ##### ##### ##### ##### #####
     return (
 
-        <Container>
+        <Container >
             <Row className="d-flex justify-content-center align-items-center" >
 
-                <Col lg={8} style={{ marginBottom: '20px', border: '3px solid lightgray' }} >
+                <Col lg={8} style={{ marginBottom: '20px', border: '3px solid lightgray', backgroundColor: "white" }} >
                     <Row>
 
                         <Col lg={6}>

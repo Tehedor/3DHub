@@ -173,7 +173,10 @@ function PedirPedido(props) {
   // const [fechaFabricacion, setFechaFabricacion] = useState(now);
   const fechaFabricacion = useRef();
   const [fechaEntrega, setFechaEntrega] = useState(now);
-  const [address, setAddress] = useState("");
+  // const [address, setAddress] = useState("");
+  const [address, setAddress] = useState(JSON.parse(localStorage.getItem("usuarioDescargado")) ? (JSON.parse(localStorage.getItem("usuarioDescargado"))).address : "");
+
+
 
   // ####### ####### ####### ####### ####### ####### ####### ####### #######
   // ####### ####### Variables control    ####### ####### ####### ####### #######
@@ -260,7 +263,7 @@ function PedirPedido(props) {
         </Col>
         :
         <Container>
-          {(props.cambioRoll === "diseñador" && AuthService.getCurrentUser() && Object.keys(AuthService.getCurrentUser()).length !== 0) ? (
+          {(props.cambioRoll === "DESIGNER" && AuthService.getCurrentUser() && Object.keys(AuthService.getCurrentUser()).length !== 0) ? (
             <Form onSubmit={handlePedido} ref={form}>
               {!successful && (
                 <Container>

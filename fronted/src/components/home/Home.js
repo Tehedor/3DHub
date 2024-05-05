@@ -13,7 +13,7 @@ import ImpresorasService from "../../services/impresoras.service.js";
 export default function Home(props) {
 
     // Controlador de impresoras para que funcione el Location
-    const setControlPrinters = props.setControlPrinters;
+    // const setControlPrinters = props.setControlPrinters;
 
 
     const [query, setQuery] = useState("");
@@ -25,10 +25,25 @@ export default function Home(props) {
     const [loading, setLoading] = useState(true);
 
     // Estado en el que se alamcenan las impresoras
-    const [theprinters, setThePrinters] = useState([]);
-    const [theratings, setTheRatings] = useState();
-    const [theFabricantes, setTheFabricantes] = useState();
-    // const [theprinters, setThePrinters] = useState();
+    const theprinters = props.theprinters;
+    const setThePrinters = (a) => {
+        props.setThePrinters(a);
+    }
+
+    const theratings = props.theratings;
+    const setTheRatings = (a) => {
+        props.setTheRatings(a);
+    }
+
+    const theFabricantes = props.theFabricantes;
+    const setTheFabricantes = (a) => {
+        props.setTheFabricantes(a);
+    }
+
+
+    // const [theprinters, setThePrinters] = useState([]);
+    // const [theratings, setTheRatings] = useState();
+    // const [theFabricantes, setTheFabricantes] = useState();
 
     // ###### ###### ###### ###### ###### ###### ###### ###### ######
     // ###### ###### ###### Geolocalización
@@ -109,15 +124,15 @@ export default function Home(props) {
             dowloadratings = response.ratings;
             console.log(dowloadratings);
             setThePrinters(downloadprinters);
-            props.setControlPrinters(downloadprinters);
+            // props.setControlPrinters(downloadprinters);
             console.log(theprinters);
             downloadfabricantes = response.users;
             console.log(downloadfabricantes);
             setTheFabricantes(downloadfabricantes);
-            props.setControlFabricantes(downloadfabricantes);
+            // props.setControlFabricantes(downloadfabricantes);
 
             setTheRatings(dowloadratings);
-            props.setControlRatings(dowloadratings);
+            // props.setControlRatings(dowloadratings);
 
         } catch (error) {
             // setResultados(
@@ -146,7 +161,7 @@ export default function Home(props) {
             <h2 id="catálogo">impresoras</h2>
             {loading ? <img id="loading" src={process.env.PUBLIC_URL + "/spinners/cxyduck.gif"} className="spinner" alt="spinner" /> :
                 <Row>
-                    <ImpresorasLista printers={theprinters} ratings={theratings} theFabricantes={theFabricantes}/>
+                    <ImpresorasLista printers={theprinters} ratings={theratings} theFabricantes={theFabricantes} />
                 </Row>
             }
         </div>

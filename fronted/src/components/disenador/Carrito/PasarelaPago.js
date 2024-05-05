@@ -163,8 +163,19 @@ export default function Pasareladepago(props) {
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     const comprar = async () => {
         console.log(theCarrito.length);
-        const promises = theCarrito.map(item => CarritoService.order(item.id));
-        await Promise.all(promises);
+        console.log(theCarrito);
+        // const promises = theCarrito.map(item => CarritoService.order(12));
+        // const promises = theCarrito.map(item => CarritoService.order(item.id));
+        // await Promise.all(promises);
+        
+        // CarritoService.order(theCarrito[0].id)
+
+        for (let i = 0; i < theCarrito.length; i++) {
+            console.log(theCarrito[i].id);
+            CarritoService.order(theCarrito[i].id);
+        }
+
+
     }
 
 

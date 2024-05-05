@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import AuthService from "../../services/auth.service";
+import { MyValidationInput } from '../../common/ValidationComponents.js';
+
+import ImpresorasService from "../../services/impresoras.service.js";
 
 
 import './NavBar.css';
@@ -21,8 +24,8 @@ function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser
     navigate('/');
   }
   const roll = [
-    { name: 'Diseñador', value: 'diseñador' },
-    { name: 'Fabricante', value: 'fabricante' },
+    { name: 'Diseñador', value: 'DESIGNER' },
+    { name: 'Fabricante', value: 'MANUFACTURER' },
   ];
 
   const rolesUser = AuthService.getUserRoles();
@@ -34,13 +37,18 @@ function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser
   // ##### ##### Control de filtros
   // ##### ##### ##### ##### ##### ##### ##### #####
   const [printerType, setPrinterType] = useState('');
+  const [maxUnities, setMaxUnities] = useState('');
+  const [material, setMaterial] = useState('');
+  const [color, setColor] = useState('');
+
+
+  // MANUFACTURER
+  // DESIGNER
 
 
 
 
-
-
-  // ##### ##### ##### ##### ##### ##### ##### #####
+  // ##### ##### ##### ##pr### ##### ##### ##### #####
   // ##### ##### Control de búsqueda
   // ##### ##### ##### ##### ##### ##### ##### #####
   const [localQuery, setLocalQuery] = useState(query);
@@ -59,12 +67,18 @@ function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser
     setQueryUbica(localQueryUbica);
   };
 
+  const handleFilterClick = () => {
+    ImpresorasService.mandarFiltro(printerType, maxUnities, material, color);
+    
+  };
+
   // ##### ##### ##### ##### ##### ##### ##### #####
   // ##### ##### Return
   // ##### ##### ##### ##### ##### ##### ##### #####
+  // setTheRollControl("DESIGNER");
   console.log(theRollActual);
   return (
-    <Navbar sticky="top" style={{ backgroundColor: cambioRoll === "diseñador" ? "#7D70BA" : cambioRoll === "fabricante" ? "#332a21" : cambioRoll === "user" ? "#006400" : "primary" }} expand="sm">
+    <Navbar sticky="top" style={{ backgroundColor: cambioRoll === "DESIGNER" ? "#7D70BA" : cambioRoll === "MANUFACTURER" ? "#332a21" : cambioRoll === "user" ? "#006400" : "primary" }} expand="sm">
       <Container fluid id="flexing">
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -87,14 +101,14 @@ function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser
               {/* Pedidos/Notificaciones */}
               <Col className="d-flex align-items-center art1">
                 <div className="col-1 aling-item-lefth justify-content-between">
-                  {currentUser && theRollActual === "diseñador" ?
+                  {currentUser && theRollActual === "DESIGNER" ?
                     <Button href="/pedidos" variant="light" >
                       <img src={"http://localhost:3000/iconos/inventory_2_icon.svg"} alt="Pedidos" />
                       <strong>Pedidos</strong>
                     </Button>
                     : null
                   }
-                  {currentUser && theRollActual === "fabricante" ?
+                  {currentUser && theRollActual === "MANUFACTURER" ?
                     <Button href="/notificaciones" variant="light">
                       <img src={"http://localhost:3000/iconos/bookmark_icon.svg"} alt="Notificaciones" />
                       <strong>Notificaciones</strong>
@@ -106,14 +120,14 @@ function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser
               {/* Carrito/Impresoras */}
               <Col className="d-flex align-items-center  art1">
                 <div className="col-1 aling-item-lefth justify-content-between">
-                  {currentUser && theRollActual === "diseñador" ?
+                  {currentUser && theRollActual === "DESIGNER" ?
                     <Button href="/carritocompra" variant="light">
                       <img src={"http://localhost:3000/iconos/cart_icon.svg"} alt="Carrito" />
                       <strong>Carrito </strong>
                     </Button>
                     : null
                   }
-                  {currentUser && theRollActual === "fabricante" ?
+                  {currentUser && theRollActual === "MANUFACTURER" ?
                     <Button href="/impresorasfabri" variant="light">
                       <img src={"http://localhost:3000/iconos/print_FILL0_icon.svg"} alt="Impresoras" />
                       <strong>Impresoras</strong>
@@ -145,34 +159,114 @@ function NavigationBar({ query, setQuery, queryUbica, setQueryUbica, currentUser
                     <Accordion.Header>Filtro
                     </Accordion.Header>
                     <Accordion.Body style={{ zIndex: 4 }}>
-                      <Col md={6}>
-                        <Row className="printertype">
-                          {/* #################### */}
-                          {/* TIPO DE LA IMPRESORA */}
-                          {/* #################### */}
-                          <div className="form-group">
-                            <label htmlFor="printerType">Tipo de impresora</label>
-                            <select
-                              className="form-control"
-                              name="printerType"
-                              value={printerType}
-                              onChange={e => setPrinterType(e.target.value)}
-                            >
-                              <option value="">Seleccione el tipo de impresora</option>
-                              <option value="FDM">FDM - Deposición de material Fundido</option>
-                              <option value="SLA">SLA - Resina (Estereolitografia)</option>
-                              <option value="MSLA">MSLA - Máscara de Sombra de Matriz de Pixeles</option>
-                              <option value="DLP">DLP - Resina (Procesamiento Digital de Luz)</option>
-                              <option value="SLS">SLS - Sintetización Selectiva por laser</option>
-                              <option value="MJ">MJ - Inyección de Material</option>
-                              <option value="MJF">MJF - Fusión Multijet</option>
-                            </select>
-                          </div>
-                        </Row>
-                      </Col>
-                      <Col md={6}>
-                        buenas
-                      </Col>
+                      <Row>
+                        <Col md={6}>
+                          <Row className="printertype">
+                            {/* #################### */}
+                            {/* TIPO DE LA IMPRESORA */}
+                            {/* #################### */}
+                            <div className="form-group">
+                              <label htmlFor="printerType">Tipo de impresora</label>
+                              <select
+                                className="form-control"
+                                name="printerType"
+                                value={printerType}
+                                onChange={e => setPrinterType(e.target.value)}
+                              >
+                                <option value="">Seleccione el tipo de impresora</option>
+                                <option value="FDM">FDM - Deposición de material Fundido</option>
+                                <option value="SLA">SLA - Resina (Estereolitografia)</option>
+                                <option value="MSLA">MSLA - Máscara de Sombra de Matriz de Pixeles</option>
+                                <option value="DLP">DLP - Resina (Procesamiento Digital de Luz)</option>
+                                <option value="SLS">SLS - Sintetización Selectiva por laser</option>
+                                <option value="MJ">MJ - Inyección de Material</option>
+                                <option value="MJF">MJF - Fusión Multijet</option>
+                              </select>
+                            </div>
+                          </Row>
+                        </Col>
+                        <Col md={6}>
+                          <Row className="maxunities">
+                            {/* ######## */}
+                            {/* CANTIDAD */}
+                            {/* ######## */}
+                            <div className="form-group">
+                              <label htmlFor="maxUnities">Máximas unidades</label>
+
+                              <input
+                                type="number"
+                                // max={5000} 
+                                min="0"
+                                value={maxUnities}
+                                onChange={e => setMaxUnities(e.target.value)}
+                                validations={[]}
+                              />
+                            </div>
+                          </Row>
+                        </Col>
+                      </Row>
+
+                      <Row>
+                        <Col md={6}>
+                          <Row>
+                            {/* ########## */}
+                            {/* MATERIALES */}
+                            {/* ########## */}
+                            <div className="form-group">
+                              <label htmlFor="material">Materiales</label>
+                              <select
+                                className="form-control"
+                                name="material"
+                                value={material}
+                                onChange={e => setMaterial(e.target.value)}
+                              >
+                                <option value="">Seleccione material</option>
+                                <option value="PLASTIC">Plástico</option>
+                                <option value="RESIN">Resina</option>
+                              </select>
+                            </div>
+                          </Row>
+                        </Col>
+                        <Col md={6}>
+                          <Row>
+                            {/* ##### */}
+                            {/* COLOR */}
+                            {/* ##### */}
+                            <div className="form-group">
+                              <label htmlFor="color">Color</label>
+                              <select
+                                className="form-control"
+                                name="color"
+                                value={color}
+                                onChange={e => setColor(e.target.value)}
+                              >
+                                <option value="">Seleccione Color</option>
+                                <option value="GREEN">Verde</option>
+                                <option value="YELLOW">Amarillo</option>
+                                <option value="BLUE">Azul</option>
+                                <option value="RED">Rojo</option>
+                                <option value="BLACK">Negro</option>
+                                <option value="WHITE">Blanco</option>
+                                <option value="ORANGE">Naranja</option>
+                                <option value="PURPLE">Morado</option>
+                                <option value="PINK">Rosa</option>
+                                <option value="BROWN">Marron</option>
+                              </select>
+                            </div>
+                          </Row>
+                        </Col>
+                      </Row>
+                      <p>
+
+                      </p>
+                      <Row className="justify-content-center">
+                        <Button
+                          onClick={handleFilterClick}
+                          style={{ width: '200px', backgroundColor: 'green', borderColor: 'green' }}
+                        >
+                          Filtrar
+                        </Button>
+                      </Row>
                     </Accordion.Body>
                   </Accordion.Item>
                 </Accordion>

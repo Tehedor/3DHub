@@ -52,8 +52,33 @@ const Login = (props) => {
       // AuthService.login(username, password).then(
       await AuthService.login(username, password).then(
         () => {
+          const userRoles = AuthService.getUserRoles();
+          console.log(userRoles);
+          if (userRoles.length === 1) {
+            console.log(userRoles[0]);
+            props.setTheRollControl((userRoles[0] === "MANUFACTURER") ? "MANUFACTURER" : "DESIGNER");
+            props.setCambioRoll((userRoles[0] === "MANUFACTURER") ? "MANUFACTURER" : "DESIGNER");
+            console.log(props.theRollActual);
+          }
+          console.log(props.theRollActual);
+
+
+
+
+          if (JSON.parse(localStorage.getItem("user"))) {
+
+            AuthService.getDescargarUsuario().then(
+              () => {
+                const userDescargado = JSON.parse(localStorage.getItem("usuarioDescargado"));
+                console.log(userDescargado);
+              }
+            );
+          }
+
+
           navigate("/");
           window.location.reload();
+          setLoading(false);
         },
         (error) => {
           const resMessage =
@@ -66,27 +91,15 @@ const Login = (props) => {
           setLoading(false);
           setMessage(resMessage);
         }
-      ); 
-      const userRoles = AuthService.getUserRoles();
+      );
 
-      
 
-      const userDescargado = (await AuthService.getDescargarUsuario()).data;
-      console.log(userDescargado);
-
-      props.setControlUsuario(userDescargado);
 
       // console.log(userRoles);
       // console.log(userRoles.length === 1 );
       // console.log(userRoles[0] === "MANUFACTURER");
       // // if (userRoles.length < 2 && userRoles.length > 0) {
-      if (userRoles.length === 1 ) {
-        console.log(userRoles[0]);  
-        props.setTheRollControl((userRoles[0] === "MANUFACTURER") ? "fabricante" : "diseñador");
-        props.setCambioRoll((userRoles[0] === "MANUFACTURER") ? "fabricante" : "diseñador");
-        console.log(props.theRollActual);
-      }
-      console.log(props.theRollActual);
+
       // AuthService.getUserRoles();
     } else {
       setLoading(false);
@@ -151,7 +164,8 @@ const Login = (props) => {
           {message && (
             <div className="form-group">
               <div className="alert alert-danger" role="alert">
-                {message}
+                {/* {message} */}
+                usuario o contraseña incorrectos
               </div>
             </div>
           )}
