@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 import StarRatings from 'react-star-ratings';
 
@@ -18,7 +19,7 @@ function AñadirReseña(props) {
   const order_id = pedidos.id;
   console.log("numberPedidos", numberPedidos);
   console.log("order_id", pedidos);
-  
+
   const printerId = pedidos.printer_id;
 
   // ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
@@ -214,7 +215,10 @@ function AñadirReseña(props) {
             </div>
           </div>
         )}
-        <CheckButton style={{ display: "none" }} ref={checkBtn} />
+        {/* <CheckButton style={{ display: "none" }} ref={checkBtn} /> */}
+        <Link to="/pedidos">
+          <CheckButton style={{ display: "none" }} ref={checkBtn} />
+        </Link>
 
       </Form>
     </Container>

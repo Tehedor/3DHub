@@ -1,17 +1,22 @@
 import VerImpresora from "./VerImpresora";
+import { Link } from 'react-router-dom';
 
 export default function TodasImpresorasLista(props) {
 
-    let lista = props.printers;    
+    let lista = props.printers;
 
-    return(
+    return (
         <div id="productosresultados" >
 
-            { Array.isArray(lista) && lista.length > 0 &&
-                lista.map((items,index) => (
+            {Array.isArray(lista) && lista.length > 0 &&
+                lista.map((items, index) => (
                     // ##### ##### ##### ##### ##### ##### #####
-                    <VerImpresora printer={items}/>
                     // ##### ##### ##### ##### ##### ##### #####
+
+                    <Link to={`/pedirpedido/${items.id}`} style={{ textDecoration: 'none' }}>
+                        {/* <VerPedir printer={items} ratings={ratings} fabricantes={searchFabricante(items.id)} /> */}
+                        <VerImpresora printer={items} />
+                    </Link>
                 ))
             }
 

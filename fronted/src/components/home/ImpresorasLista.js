@@ -34,6 +34,7 @@ export default function ImpresorasLista(props) {
 
     const searchFabricante = (id) => {
         const printer = searchPrinter(id);
+        console.log(printer);
         const idFabricante = printer.idFabricante;
         for (let i = 0; i < fabricantes.length; i++) {
             console.log(fabricantes[i]);
@@ -49,7 +50,7 @@ export default function ImpresorasLista(props) {
         <div id="productosresultados" >
             {lista.length > 0 ? (
                 lista.map((items, index) => (
-                    <Link to={`/pedirpedido/${index}`} style={{ textDecoration: 'none' }}>
+                    <Link to={`/pedirpedido/${items.id}`} style={{ textDecoration: 'none' }}>
                         <VerPedir printer={items} ratings={ratings} fabricantes={searchFabricante(items.id)} />
                     </Link>
                 ))
