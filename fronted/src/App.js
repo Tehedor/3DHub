@@ -57,11 +57,23 @@ const App = () => {
   // ##### ##### Control de filtros
   // ##### ##### ##### ##### ##### ##### ##### #####
   const [theFiltrarOn, setTheFiltrarOn] = useState(false);
-
+  
   const [printerType, setPrinterType] = useState('');
   const [maxUnities, setMaxUnities] = useState('');
   const [material, setMaterial] = useState('');
   const [color, setColor] = useState('');
+  
+  // ##### ##### ##### ##### ##### ##### ##### #####
+  // ##### ##### Control de filtros
+  // ##### ##### ##### ##### ##### ##### ##### #####
+  const [theLocationOn, setLocationOn] = useState(false);
+  
+  const [theFilLocation, settheFilLocation] = useState('');
+  
+  // theLocationOn={theLocationOn} setLocationOn={setLocationOn} theFilLocation={theFilLocation} settheFilLocation={settheFilLocation}
+  
+
+
 
   // theFiltrarOn={theFiltrarOn} setTheFiltrarOn={setTheFiltrarOn}
 
@@ -126,8 +138,10 @@ const App = () => {
           currentUser={currentUser} cambioRoll={cambioRoll} setCambioRoll={setCambioRoll} theRollActual={theRollActual} setTheRollControl={setTheRollControl} logOut={logOut} 
           theprinters={theprinters} setThePrinters={setThePrinters} theratings={theratings} setTheRatings={setTheRatings} theFabricantes={theFabricantes} setTheFabricantes={setTheFabricantes}
           setTheFiltrarOn={setTheFiltrarOn} printerType={printerType} maxUnities={maxUnities} material={material} color={color}
+          theLocationOn={theLocationOn} setLocationOn={setLocationOn} theFilLocation={theFilLocation} settheFilLocation={settheFilLocation}
           setPrinterType={setPrinterType} setMaxUnities={setMaxUnities} setMaterial={setMaterial} setColor={setColor}
         />
+
 
         <div className="container mt-3">
           <Routes>
@@ -135,6 +149,7 @@ const App = () => {
               theFiltrarOn={theFiltrarOn} printerType={printerType} maxUnities={maxUnities} material={material} color={color}
               setControlPrinters={setControlPrinters} controlPrinters={controlPrinters} setControlRatings={setControlRatings} controlRatings={controlRatings} setControlFabricantes={setControlFabricantes}
               setTheFiltrarOn={setTheFiltrarOn}
+              theLocationOn={theLocationOn} setLocationOn={setLocationOn} theFilLocation={theFilLocation} settheFilLocation={settheFilLocation}
               theprinters={theprinters} setThePrinters={setThePrinters} theratings={theratings} setTheRatings={setTheRatings} theFabricantes={theFabricantes} setTheFabricantes={setTheFabricantes}
             />}
             />
@@ -142,6 +157,7 @@ const App = () => {
               setTheFiltrarOn={setTheFiltrarOn}
               theFiltrarOn={theFiltrarOn} printerType={printerType} maxUnities={maxUnities} material={material} color={color}
               setControlPrinters={setControlPrinters} controlPrinters={controlPrinters} setControlRatings={setControlRatings} controlRatings={controlRatings} setControlFabricantes={setControlFabricantes}
+              theLocationOn={theLocationOn} setLocationOn={setLocationOn} theFilLocation={theFilLocation} settheFilLocation={settheFilLocation}
               theprinters={theprinters} setThePrinters={setThePrinters} theratings={theratings} setTheRatings={setTheRatings} theFabricantes={theFabricantes} setTheFabricantes={setTheFabricantes}
             />} />
             <Route exact path="/login" element={<Login

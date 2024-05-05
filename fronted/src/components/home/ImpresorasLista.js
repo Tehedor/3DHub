@@ -20,16 +20,16 @@ export default function ImpresorasLista(props) {
         }
     }
 
-    const searchReseña = (id) => {
-        if (reseñas !== undefined) {
-            for (let i = 0; i < reseñas.length; i++) {
-                if (reseñas.id == id) {
-                    return reseñas[i];
-                }
-            }
-        }
-        return false;
-    }
+    // const searchReseña = (id) => {
+    //     if (reseñas !== undefined) {
+    //         for (let i = 0; i < reseñas.length; i++) {
+    //             if (reseñas.id == id) {
+    //                 return reseñas[i];
+    //             }
+    //         }
+    //     }
+    //     return false;
+    // }
 
 
     const searchFabricante = (id) => {
