@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.dhub.backend.models.EPrinterType;
@@ -19,25 +20,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.annotation.PostConstruct;
 
-public class SearchServiceImpl {
+@Service
+public class SearchServiceImpl implements SearchService{
 
-    public static void main(String[] args) {
-        SearchServiceImpl service = new SearchServiceImpl();
-        // System.out.println(service.coordinates("Calle de la Montera, 32, 28013 Madrid, España"));
-        String origen = service.coordinates("Calle de la Montera, 32, 28013 Madrid, España");
-        String destino = service.coordinates("Camp Nou, Barcelona, España");
-        String duracion = getDuration(origen,destino);
-        System.out.println((duracion));
-    }
-    // @Autowired
-    // private PrinterRepository printerRepository;
+    private static final String OS = System.getProperty("os.name").toLowerCase();
 
-    /*
-     * Get coordinates from a location inputed as String
-     */
-    private String coordinates(String location) {
+    public String coordinates(String location) {
         // Ruta al script de Python
-        String pythonScriptPath = "C:\\Users\\denze\\Documents\\GitHub\\3DHub\\backend\\src\\main\\resources\\python\\position.py"; // Actualiza la ruta según la ubicación de tu script
+        String pythonScriptPath; // Actualiza la ruta según la ubicación de tu script
+        if (OS.contains("win")) {
+            pythonScriptPath = "backend\\src\\main\\resources\\python\\position.py";
+        } else {
+            pythonScriptPath = "backend/src/main/resources/python/position.py";
+        } 
 
         // Comando para ejecutar el script de Python
         String[] cmd = new String[3];
@@ -67,7 +62,8 @@ public class SearchServiceImpl {
         return output;
     }
 
-    public static String getDuration(String origen, String destino){
+    @Override
+    public Long getDuration(String origen, String destino){
                 // Construye la URL con los parámetros recibidos
         String apiUrl = "https://maps.googleapis.com/maps/api/distancematrix/json" +
                 "?origins=" + origen +
@@ -85,7 +81,7 @@ public class SearchServiceImpl {
             JsonNode rowsNode = root.get("rows");
             JsonNode elementsNode = rowsNode.get(0).get("elements");
             JsonNode durationNode = elementsNode.get(0).get("duration");
-            String durationText = durationNode.get("text").asText();
+            Long durationText = durationNode.get("value").asLong();
             
             // Devuelve el texto de la duración
             return durationText;
