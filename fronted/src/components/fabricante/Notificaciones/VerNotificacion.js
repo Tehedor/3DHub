@@ -143,19 +143,19 @@ export default function VerNotificaciones(props) {
                             <tbody>
                                 <tr>
                                     <td style={{ paddingLeft: '0px', marginRight: '2px', textAlign: 'left', width: '57%' }}>P. Envio:</td>
-                                    <td style={{ textAlign: 'left' }}>{pedidos.deliveryPrice} €</td>
+                                    <td style={{ textAlign: 'left' }}>{pedidos.deliveryPrice.toFixed(2)} €</td>
                                 </tr>
                                 <tr>
                                     <td style={{ paddingLeft: '0px', textAlign: 'left', width: '65%' }}>P. Producto:</td>
-                                    <td style={{ textAlign: 'left' }}>{pedidos.productPrice} €</td>
+                                    <td style={{ textAlign: 'left' }}>{pedidos.productPrice.toFixed(2)} €</td>
                                 </tr>
                                 <tr>
                                     <td style={{ paddingLeft: '0px', textAlign: 'left', width: '57%' }}>Cantidad:</td>
-                                    <td style={{ textAlign: 'left' }}>{pedidos.quantity} €</td>
+                                    <td style={{ textAlign: 'left' }}>{pedidos.quantity.toFixed(2)} €</td>
                                 </tr>
                                 <tr>
                                     <td style={{ paddingLeft: '0px', textAlign: 'left', width: '57%' }}><strong>P. Total:</strong></td>
-                                    <td style={{ textAlign: 'left' }}><strong>{(pedidos.productPrice + pedidos.deliveryPrice) * pedidos.quantity} €</strong></td>
+                                    <td style={{ textAlign: 'left' }}><strong>{((pedidos.productPrice + pedidos.deliveryPrice) * pedidos.quantity).toFixed(2)} €</strong></td>
                                 </tr>
                             </tbody>
                         </Table>
