@@ -151,7 +151,7 @@ export default function VerNotificaciones(props) {
                                 </tr>
                                 <tr>
                                     <td style={{ paddingLeft: '0px', textAlign: 'left', width: '57%' }}>Cantidad:</td>
-                                    <td style={{ textAlign: 'left' }}>{pedidos.quantity.toFixed(2)} </td>
+                                    <td style={{ textAlign: 'left' }}>{pedidos.quantity} </td>
                                 </tr>
                                 <tr>
                                     <td style={{ paddingLeft: '0px', textAlign: 'left', width: '57%' }}><strong>P. Total:</strong></td>
