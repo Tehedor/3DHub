@@ -24,7 +24,8 @@ export default function PedidosLista(props) {
     const searchReseña = (id) => {
         if (reseñas !== undefined) {
             for (let i = 0; i < reseñas.length; i++) {
-                if (reseñas.id == id) {
+                console.log(reseñas[i]);
+                if (reseñas[i].order_id === id) {
                     return reseñas[i];
                 }
             }
@@ -37,7 +38,6 @@ export default function PedidosLista(props) {
         const printer = searchPrinter(id);
         const idFabricante = printer.idFabricante;
         for (let i = 0; i < fabricantes.length; i++) {
-            console.log(fabricantes[i]);
             if (fabricantes[i].id == idFabricante) {
                 return fabricantes[i];
             }

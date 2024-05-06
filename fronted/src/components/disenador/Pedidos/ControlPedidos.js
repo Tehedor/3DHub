@@ -37,25 +37,31 @@ export default function ControlPedidos(props) {
         let downloadReseñas;
         try {
             const response = await PedidosService.getPedidos();
+            const response2 = await PedidosService.getPedidos2();
             console.log(response.data);
+            console.log(response2.data);
+            
             downloadPedidos=response.data.orders;
             console.log(downloadPedidos);
+            
             downloadprinters=response.data.printers;
             console.log(downloadprinters);
+
             downloadFabricantes=response.data.users;
             console.log(downloadFabricantes);
-            downloadReseñas=response.data.reseñas;
+
+            downloadReseñas=response2.data.ratings;
             console.log(downloadReseñas);
         
+            setThePedidos(downloadPedidos);
+            setThePrinters(downloadprinters);
+            setTheFabricantes(downloadFabricantes);
+            setTheReseñas(downloadReseñas);
         } catch (error) {
             // setResultados(
-            // { "cod": error.cod, "message": cod.message}
-            // );
-        }
-        setThePedidos(downloadPedidos);
-        setThePrinters(downloadprinters);
-        setTheFabricantes(downloadFabricantes);
-        setTheReseñas(downloadReseñas);
+                // { "cod": error.cod, "message": cod.message}
+                // );
+            }
         console.log("pedidos",thePedidos);
         console.log("printers",thePrinters);
         console.log("fabricantes",theFabricantes);

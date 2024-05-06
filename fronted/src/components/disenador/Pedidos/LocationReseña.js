@@ -16,7 +16,8 @@ export default function LocationReseña(props) {
 	// ##### ##### ##### ##### ##### ##### ##### #####
 	const pedidos = props.pedidos;
 	const printers = props.printers;
-	const fabricante = props.fabricante;
+	const fabricantes = props.fabricantes;
+	console.log(fabricantes);
 	const reseñas = props.reseñas;
 
 
@@ -52,6 +53,18 @@ export default function LocationReseña(props) {
 		return false;
 	}
 
+	const searchFabricante = (id) => {
+		// return fabricantes[0];
+        const printer = searchPrinter(id);
+        const idFabricante = printer.idFabricante;
+		console.log("hola");
+        for (let i = 0; i < fabricantes.length; i++) {
+            if (fabricantes[i].id == idFabricante) {
+				return fabricantes[i];
+            }
+        }
+    }
+
 	// ##### ##### ##### ##### ##### ##### ##### #####
 	// ##### ##### retruns
 	// ##### ##### ##### ##### ##### ##### ##### #####
@@ -64,7 +77,7 @@ export default function LocationReseña(props) {
 				</Row>
 
 				<Row className="justify-content-center">
-					<VerPedidos pedidos={searchPedido(pedidosId)} printer={searchPrinter(searchPedido(pedidosId).printer_id)} thecontrol={false} reseña={searchReseña(pedidosId)} />
+					<VerPedidos pedidos={searchPedido(pedidosId)} printer={searchPrinter(searchPedido(pedidosId).printer_id)} thecontrol={false} reseña={searchReseña(pedidosId)} fabricante={searchFabricante(searchPedido(pedidosId).printer_id)}/>
 				</Row>
 
 				<Row className="justify-content-center">

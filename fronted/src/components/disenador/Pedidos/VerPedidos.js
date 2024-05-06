@@ -126,7 +126,7 @@ export default function VerPedidos(props) {
                     </Row>
 
                     <Row>
-                        {!controlReseña ?
+                        {controlReseña ?
 
                             <Link to={`./reseña/${pedidos.id}`}>
                                 <Button variant="warning" size="sm">Añadir Reseña</Button>
@@ -139,27 +139,31 @@ export default function VerPedidos(props) {
                                 <Row>
                                     <label>Valoración del producto</label>
                                     <StarRatings
-                                        rating={props.reseña.valorProducto}
+                                        rating={props.reseña.productRating}
                                         starRatedColor="orange"
                                         numberOfStars={5}
                                         name='ratingProducto'
+                                        starDimension="15px"
+                                        starSpacing="0px"
                                     />
                                 </Row>
 
                                 <Row>
                                     <label>Valoración del fabricante</label>
                                     <StarRatings
-                                        rating={props.reseña.valorFabricante}
-                                        starRatedColor="yellow"
+                                        rating={props.reseña.manufacturerRating}
+                                        starRatedColor="red"
                                         numberOfStars={5}
                                         name='ratingFabricante'
+                                        starDimension="15px"
+                                        starSpacing="0px"
                                     />
                                 </Row>
 
                                 <Row>
-                                    <p>
-                                        {props.reseña.reseñaTexto}
-                                    </p>
+                                    <small>
+                                        {props.reseña.textRating}
+                                    </small>
                                 </Row>
                             </Container>
 

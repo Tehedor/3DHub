@@ -29,18 +29,29 @@ export default function VerImpresora(props) {
 
                     <Col sm={9} class="datos_impresora">
 
-                        <Row >
-                            <Col sm={4}>
-                                <Card.Text style={{ color: 'black' }}>Nombre: {printer.modelName}</Card.Text>
-                            </Col>
 
-                            <Col sm={4}>
-
+                        <Row  style={{ color: 'black', marginBottom:"10px" }}>
+                            <Col md={6}>
+                                <Card.Text className="text-start" style={{ color: 'black', marginLeft:"90px" }}>
+                                    Nombre: <strong>{printer.modelName}</strong>
+                                </Card.Text>
                             </Col>
-                            <Col sm={4}>
-                                {/* <Card.Text>Fabricante: {printer.Fabricante}</Card.Text> */}
+                            <Col md={6}>
+                            <Button variant="danger" onClick={deletePrinter} >Eliminar Impresoras</Button>
                             </Col>
                         </Row>
+                        {/* <Row > */}
+                        {/* <Card.Text style={{ color: 'black' }}>Nombre: <strong>{printer.modelName}</strong></Card.Text> */}
+                        {/* <Col sm={5}>
+                            </Col> */}
+                        {/* 
+                            <Col sm={4}>
+
+                            </Col>
+                            <Col sm={4}>
+                                <Card.Text>Fabricante: {printer.Fabricante}</Card.Text>
+                            </Col> */}
+                        {/* </Row> */}
 
                         <Row>
                             <Col sm={6}>
@@ -61,10 +72,10 @@ export default function VerImpresora(props) {
                         </Row>
 
                     </Col>
-
-                    <Col>
-                        <Button variant="primary" onClick={deletePrinter} >Eliminar Impresoras</Button>
-                    </Col>
+                                
+                    {/* <Col>
+                        
+                    </Col> */}
 
                 </Row>
             </Card.Body>

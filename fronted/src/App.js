@@ -29,6 +29,7 @@ import AtencionCliente from "./components/home/AtencionCliente";
 import Home from "./components/home/Home";
 
 import EventBus from "./common/EventBus";
+import LocationImpresora from "./components/fabricante/Impresoras/LocationImpresora";
 
 // import AuthService from "./services/auth.service.js";
 
@@ -37,44 +38,45 @@ const App = () => {
   // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
   // ##### ##### Variables de busqueda
   // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
-  const [query, setQuery] = useState("");
-  const [queryUbica, setQueryUbica] = useState("");
+  // const [query, setQuery] = useState("");
+  // const [queryUbica, setQueryUbica] = useState("");
   const [roll, setRoll] = useState();
 
   // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
   // ##### ##### Control de impresoras
   // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
-  const [controlPrinters, setControlPrinters] = useLocalStorage('printers',[]); 
-  const [controlRatings, setControlRatings] = useLocalStorage('ratings',[]);
-  const [controlFabricantes, setControlFabricantes] = useLocalStorage('fabricantes',[]);
+  const [controlPrinters, setControlPrinters] = useLocalStorage('printers', []);
+  const [controlRatings, setControlRatings] = useLocalStorage('ratings', []);
+  const [controlFabricantes, setControlFabricantes] = useLocalStorage('fabricantes', []);
 
   const [theprinters, setThePrinters] = useState([]);
   const [theratings, setTheRatings] = useState();
   const [theFabricantes, setTheFabricantes] = useState();
-  
+
+
+
+  // const [theControlDom, setTheControDom] = useState();
+
+
 
   // ##### ##### ##### ##### ##### ##### ##### #####
   // ##### ##### Control de filtros
   // ##### ##### ##### ##### ##### ##### ##### #####
   const [theFiltrarOn, setTheFiltrarOn] = useState(false);
-  
+
   const [printerType, setPrinterType] = useState('');
   const [maxUnities, setMaxUnities] = useState('');
   const [material, setMaterial] = useState('');
   const [color, setColor] = useState('');
-  
+
   // ##### ##### ##### ##### ##### ##### ##### #####
   // ##### ##### Control de filtros
   // ##### ##### ##### ##### ##### ##### ##### #####
   const [theLocationOn, setLocationOn] = useState(false);
-  
+
   const [theFilLocation, settheFilLocation] = useState('');
-  
+
   // theLocationOn={theLocationOn} setLocationOn={setLocationOn} theFilLocation={theFilLocation} settheFilLocation={settheFilLocation}
-  
-
-
-
   // theFiltrarOn={theFiltrarOn} setTheFiltrarOn={setTheFiltrarOn}
 
   // const descargar = AuthService.getDescargarUsuario();
@@ -133,9 +135,8 @@ const App = () => {
     <div className="App" style={{ backgroundColor: cambioRoll === "DESIGNER" ? "white" : cambioRoll === "MANUFACTURER" ? "#fcebdc" : "default" }}>
       <div className="containerr">
 
-        <NavBar 
-          query={query} setQuery={setQuery} queryUbica={queryUbica} setQueryUbica={setQueryUbica} 
-          currentUser={currentUser} cambioRoll={cambioRoll} setCambioRoll={setCambioRoll} theRollActual={theRollActual} setTheRollControl={setTheRollControl} logOut={logOut} 
+        <NavBar
+          currentUser={currentUser} cambioRoll={cambioRoll} setCambioRoll={setCambioRoll} theRollActual={theRollActual} setTheRollControl={setTheRollControl} logOut={logOut}
           theprinters={theprinters} setThePrinters={setThePrinters} theratings={theratings} setTheRatings={setTheRatings} theFabricantes={theFabricantes} setTheFabricantes={setTheFabricantes}
           setTheFiltrarOn={setTheFiltrarOn} printerType={printerType} maxUnities={maxUnities} material={material} color={color}
           theLocationOn={theLocationOn} setLocationOn={setLocationOn} theFilLocation={theFilLocation} settheFilLocation={settheFilLocation}
@@ -149,12 +150,14 @@ const App = () => {
               theFiltrarOn={theFiltrarOn} printerType={printerType} maxUnities={maxUnities} material={material} color={color}
               setControlPrinters={setControlPrinters} controlPrinters={controlPrinters} setControlRatings={setControlRatings} controlRatings={controlRatings} setControlFabricantes={setControlFabricantes}
               setTheFiltrarOn={setTheFiltrarOn}
+
               theLocationOn={theLocationOn} setLocationOn={setLocationOn} theFilLocation={theFilLocation} settheFilLocation={settheFilLocation}
               theprinters={theprinters} setThePrinters={setThePrinters} theratings={theratings} setTheRatings={setTheRatings} theFabricantes={theFabricantes} setTheFabricantes={setTheFabricantes}
             />}
             />
             <Route exact path={"/pedirpedido"} element={<Home
               setTheFiltrarOn={setTheFiltrarOn}
+
               theFiltrarOn={theFiltrarOn} printerType={printerType} maxUnities={maxUnities} material={material} color={color}
               setControlPrinters={setControlPrinters} controlPrinters={controlPrinters} setControlRatings={setControlRatings} controlRatings={controlRatings} setControlFabricantes={setControlFabricantes}
               theLocationOn={theLocationOn} setLocationOn={setLocationOn} theFilLocation={theFilLocation} settheFilLocation={settheFilLocation}
@@ -173,12 +176,23 @@ const App = () => {
 
             <Route exact path="/notificaciones" element={<Notificaciones />} />
             <Route exact path="/impresorasfabri" element={<ImpresorasFabri />} />
-            <Route exact path="/crearimpresora" element={<CrearImpresora />} />
 
-            {/* <Route path="/pedirpedido/:printerId" element={<Location */}
+            <Route exact path="/crearimpresora" element={<CrearImpresora
+              theprinters={theprinters} setThePrinters={setThePrinters} theratings={theratings} setTheRatings={setTheRatings} theFabricantes={theFabricantes} setTheFabricantes={setTheFabricantes}
+
+              setControlPrinters={setControlPrinters} controlPrinters={controlPrinters} setControlRatings={setControlRatings} controlRatings={controlRatings} setControlFabricantes={setControlFabricantes}
+            />} />
+
+            <Route path="/impresoravista/:printerId" element={<LocationImpresora
+              controlPrinters={controlPrinters} controlRatings={controlRatings} cambioRoll={cambioRoll} controlFabricantes={controlFabricantes}
+            />}
+            />
+
             <Route path="/pedirpedido/:printerId" element={<Location
-              controlPrinters={controlPrinters} roll={roll} query={query} queryUbica={queryUbica} currentUser={currentUser} controlRatings={controlRatings} cambioRoll={cambioRoll} controlFabricantes={controlFabricantes}
-              // theprinters={theprinters} setThePrinters={setThePrinters} theratings={theratings} setTheRatings={setTheRatings} theFabricantes={theFabricantes} setTheFabricantes={setTheFabricantes}
+              theprinters={theprinters} setThePrinters={setThePrinters} theratings={theratings} setTheRatings={setTheRatings} theFabricantes={theFabricantes} setTheFabricantes={setTheFabricantes}
+
+              controlPrinters={controlPrinters} controlRatings={controlRatings} cambioRoll={cambioRoll} controlFabricantes={controlFabricantes}
+              roll={roll} currentUser={currentUser}
             />} />
 
             <Route exact path="/atencionCliente" element={<AtencionCliente />} />

@@ -136,7 +136,22 @@ const añadirReseña = (valorProducto, valorFabricante, reseñaTexto, foto, orde
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
 const getPedidos = () => {
   return app
+    // .get("orders/designerRatings", {
     .get("orders/designer", {
+    })
+    .then((response) => {
+      // if (response) {
+      //   localStorage.setItem("orderDesigner", JSON.stringify(response)); 
+      //   console.log(JSON.parse(localStorage.getItem("orderDesigner"))); 
+      // }
+      return response;
+    });
+};
+
+const getPedidos2 = () => {
+  return app
+    .get("orders/designerRatings", {
+    // .get("orders/designer", {
     })
     .then((response) => {
       // if (response) {
@@ -166,6 +181,7 @@ const PedidosService = {
   confirmarEntrga,
   añadirPedido,
   getPedidos,
+  getPedidos2,
   añadirReseña,
   deletePedido,
 }

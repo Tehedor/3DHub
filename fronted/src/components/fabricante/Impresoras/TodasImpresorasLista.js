@@ -13,7 +13,7 @@ export default function TodasImpresorasLista(props) {
                     // ##### ##### ##### ##### ##### ##### #####
                     // ##### ##### ##### ##### ##### ##### #####
 
-                    <Link to={`/pedirpedido/${items.id}`} style={{ textDecoration: 'none' }}>
+                    <Link to={`/impresoravista/${items.id}`} style={{ textDecoration: 'none' }}>
                         {/* <VerPedir printer={items} ratings={ratings} fabricantes={searchFabricante(items.id)} /> */}
                         <VerImpresora printer={items} />
                     </Link>

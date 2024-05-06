@@ -1,6 +1,8 @@
 import { useState, useRef } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+
 
 import StarRatings from 'react-star-ratings';
 
@@ -13,6 +15,7 @@ import { MyValidationInput } from '../../../common/ValidationComponents.js';
 import PedidosService from "../../../services/diseñador/pedidos.service.js";
 
 function AñadirReseña(props) {
+  const navigate = useNavigate();
 
   const pedidos = props.pedidos;
   const numberPedidos = Number(props.pedidosId);
@@ -84,6 +87,9 @@ function AñadirReseña(props) {
         (response) => {
           setMessage(response.data.message);
           setSuccessful(true);
+          navigate("/pedidos");
+          window.location.reload();
+
         },
         (error) => {
           const resMessage =
