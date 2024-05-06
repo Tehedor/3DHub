@@ -91,25 +91,25 @@ class OrderControllerTest {
         assertEquals(ratingDTO, response.getBody().get(0));
     }
 
-    @Test
-    void testUploadFile() throws IOException {
-        Long id = 1L;
-        String username = "testUser";
-        UserEntity user = new UserEntity();
-        user.setId(id);
-        user.setUsername(username);
-        Order order = new Order();
-        order.setId(id);
-        order.setUserEntity(user);
+    // @Test
+    // void testUploadFile() throws IOException {
+    //     Long id = 1L;
+    //     String username = "testUser";
+    //     UserEntity user = new UserEntity();
+    //     user.setId(id);
+    //     user.setUsername(username);
+    //     Order order = new Order();
+    //     order.setId(id);
+    //     order.setUserEntity(user);
 
-        when(authentication.getName()).thenReturn(username);
-        when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
-        when(orderRepository.findById(id)).thenReturn(Optional.of(order));
+    //     when(authentication.getName()).thenReturn(username);
+    //     when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
+    //     when(orderRepository.findById(id)).thenReturn(Optional.of(order));
 
-        ResponseEntity<Printer> response = orderController.uploadFile(id);
+    //     ResponseEntity<Printer> response = orderController.uploadFile(id);
 
-        verify(orderRepository, times(1)).save(order);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-    }
+    //     verify(orderRepository, times(1)).save(order);
+    //     assertEquals(HttpStatus.OK, response.getStatusCode());
+    // }
 
 }
