@@ -13,6 +13,7 @@ export default function VerPedidoCarrito(props) {
     const carrito = props.carrito;
     const printer = props.printer;
     const fabricante = props.fabricante;
+    const precioServicio = 0.2;
 
     // ##### ##### ##### ##### ##### ##### ##### ##### #####
     // ##### ##### Función eliminar pedido
@@ -37,16 +38,16 @@ export default function VerPedidoCarrito(props) {
             <Row>
                 <Col lg={5} xs={5}>
                     <p style={{ marginTop: "10px" }}></p>
-                    <p><small className="bill-date"><strong>Pedido_ID: {carrito.id}</strong></small></p>
+                    <p><small className="bill-date"><strong>Nº de Pedido: {carrito.id}</strong></small></p>
                     <p><small className="bill-date" style={{ wordWrap: 'break-word' }}>Dirección: {carrito.address}</small></p>
                 </Col>
                 <Col lg={5} xs={5}>
-                    <p style={{ margin: "35px" }}></p>
-                    <p style={{ margin: 0 }}><small className="bill-date px-xl-4 px-lg-4">Precio: {carrito.productPrice} €</small></p>
-                    <p style={{ margin: 0 }}><small className="bill-date px-xl-4 px-lg-4">Envio: {carrito.deliveryPrice} €</small></p>
-                    <p style={{ margin: 0 }}><small className="bill-date px-xl-4 px-lg-4">Cantidad: {carrito.quantity}</small></p>
-                    <p style={{ margin: 0 }}> <small className="bill-date px-xl-4 px-lg-4"><strong>Total: {(carrito.productPrice + carrito.deliveryPrice) * carrito.quantity} €</strong> </small></p>
-                </Col>
+                    <p style={{ margin: "35px", textAlign: "left" }}></p>
+                    <p style={{ margin: 0, textAlign: "left" }}><small className="bill-date px-xl-4 px-lg-4">Precio: {carrito.productPrice.toFixed(2)} €</small></p>
+                    <p style={{ margin: 0, textAlign: "left" }}><small className="bill-date px-xl-4 px-lg-4">Envio: {carrito.deliveryPrice.toFixed(2)} €</small></p>
+                    <p style={{ margin: 0, textAlign: "left" }}><small className="bill-date px-xl-4 px-lg-4">Cantidad: {carrito.quantity}</small></p>
+                    <p style={{ margin: 0, textAlign: "left" }}><small className="bill-date px-xl-4 px-lg-4">Servicio: {precioServicio.toFixed(2)}€</small></p>
+                    <p style={{ margin: 0, textAlign: "left" }}> <small className="bill-date px-xl-4 px-lg-4"><strong>Total: {((carrito.productPrice + carrito.deliveryPrice) * carrito.quantity + precioServicio).toFixed(2)} €</strong> </small></p> </Col>
             </Row>
         </div>
 

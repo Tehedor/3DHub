@@ -77,6 +77,7 @@ const login = async (username, password) => {
 const logout = () => {
   localStorage.removeItem("user");
   localStorage.removeItem("usuarioDescargado");
+  localStorage.removeItem("actualLocation");
   // return app.post("signout").then((response) => {
   //   return response.data;
   // });

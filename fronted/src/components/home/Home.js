@@ -9,6 +9,25 @@ import { printersPruebas } from '../../constants/printersPruebas.js';
 
 import ImpresorasService from "../../services/impresoras.service.js";
 
+import {
+    setKey,
+    setDefaults,
+    setLanguage,
+    setRegion,
+    fromAddress,
+    fromLatLng,
+    fromPlaceId,
+    setLocationType,
+    geocode,
+    RequestType,
+} from "react-geocode";
+
+setDefaults({
+    key: "AIzaSyBpo1XjPia4u_NUHO60g8kILg9vgZb9AP0", // Your API key here.
+    language: "en", // Default language for responses.
+    region: "es", // Default region for responses.
+});
+
 
 export default function Home(props) {
 
@@ -51,6 +70,10 @@ export default function Home(props) {
 
     // Localizacion usuario
     // https://www.npmjs.com/package/react-geolocated?activeTab=readme
+    // const [latitude, setLatitude] = useState(0);
+    // const [longitude, setLongitude] = useState(0);
+
+
     const { coords, isGeolocationAvailable, isGeolocationEnabled } =
         useGeolocated({
             positionOptions: {
@@ -58,7 +81,31 @@ export default function Home(props) {
             },
             userDecisionTimeout: 5000,
         });
+    const latitud = coords ? coords.latitude : "0";
+    const longitud = coords ? coords.longitude : "0";
 
+
+    console.log(!(localStorage.getItem("actualLocation")))
+    if (isGeolocationAvailable && isGeolocationEnabled && !(localStorage.getItem("actualLocation"))) {
+
+        console.log(longitud);
+        console.log(latitud);
+
+        if (latitud !== "0" && longitud !== "0") {
+
+            geocode(RequestType.LATLNG, `${latitud},${longitud}`)
+                .then(({ results }) => {
+                    const address = results[0].formatted_address;
+                    localStorage.setItem("actualLocation", address);
+                    console.log(address);
+                })
+                .catch(console.error);
+            // localStorage.setItem("actualLocation", "3Q9H+MF Yanguas de Eresma, Spain");
+        }
+
+
+    }
+    console.log((localStorage.getItem("actualLocation")));
 
 
     // ###### ###### ###### ###### ###### ###### ###### ###### ######
@@ -67,43 +114,43 @@ export default function Home(props) {
 
     // Función que = () => {
     // const downloadprinters;
-    // // Coordenadas de Madrid para que sean por defecto 
+    // Coordenadas de Madrid para que sean por defecto 
     // const latitude=40.4167;
     // const longitude=-3.70325;  
 
     // Poner la manerad para solicitar las impresoras en función de la localizaciónSs
-    // if(CONFIG.use_server){
-    //     try {
-    //     // if(isGeolocationEnabled || !queryUbica===""){
-    //     //     if (!queryUbica===""){
-    //     //     // api que me permita sacar latitud y longitud de la ubicación a partir de la query 
-    //     //     }else{
-    //     //     latitude=coords.latitude;
-    //     //     longitude=coords.longitude;
-    //     //     }
-    //     // }
-    //     // let queryparams =  "?lat=" + latitude + "&lon=" + longitude;
-    //     let queryparams =  "";
-    //     // const data = await ImpresorasService.(queryparams);
-    //     // console.log(JSON.parse(localStorage.getItem("printers")));
-    //     const data = ImpresorasService.descargarPrinters();
+    //     if (CONFIG.use_server) {
+    //         try {
+    //             if (isGeolocationEnabled || !queryUbica === "") {
+    //                 if (!queryUbica === "") {
+    //                     // api que me permita sacar latitud y longitud de la ubicación a partir de la query 
+    //                 } else {
+    //                     latitude = coords.latitude;
+    //                     longitude = coords.longitude;
+    //                 }
+    //             }
+    //             // let queryparams =  "?lat=" + latitude + "&lon=" + longitude;
+    //             let queryparams = "";
+    //             // const data = await ImpresorasService.(queryparams);
+    //             // console.log(JSON.parse(localStorage.getItem("printers")));
+    //             const data = ImpresorasService.descargarPrinters();
 
-    //     console.log(data);
-    //     } catch (error) {
-    //     // setResultados(
-    //     //   { "cod": error.cod, "message": cod.message}
-    //     // );
-    //     }
-    // }else{
-    //     // downloadprinters=printersexample;
-    //     downloadprinters=printersPruebas;
-    //     // console.log(printersexample);
-    // }descarga las impresoras, en función de la localización en la que se encuentra
-    // const download 
-    // setThePrinters(downloadprinters);
-    // console.log(theprinters);
-    // // setControlPrinters(downloadprinters);
-    // // console.log(props.controlPrinters);
+    //             console.log(data);
+    //         } catch (error) {
+    //             // setResultados(
+    //             //   { "cod": error.cod, "message": cod.message}
+    //             // );
+    //         }
+    //     } else {
+    //         // downloadprinters=printersexample;
+    //         downloadprinters = printersPruebas;
+    //         // console.log(printersexample);
+    //     }//descarga las impresoras, en función de la localización en la que se encuentra
+    //     const download
+    //     setThePrinters(downloadprinters);
+    //     console.log(theprinters);
+    //     // setControlPrinters(downloadprinters);
+    //     // console.log(props.controlPrinters);
     // }
 
 
@@ -117,20 +164,29 @@ export default function Home(props) {
         let downloadfabricantes;
 
         try {
+            console.log(props.printerType, props.maxUnities, props.material, props.color);
 
             let response;
+            console.log(props.theFiltrarOn);
+            console.log(props.theLocationOn);
             if (props.theFiltrarOn === true) {
                 response = (await ImpresorasService.descargarPrintersFiltred(props.printerType, props.maxUnities, props.material, props.color)).data;
+                console.log(response);
+            } else if (props.theLocationOn === true) {
+                console.log("buensa");
+                console.log(props.theFilLocation);
+                response = (await ImpresorasService.descargarPrintersNear(props.theFilLocation)).data;
+                console.log(response);
             } else {
                 response = (await ImpresorasService.descargarPrinters()).data;
+                console.log(response);
             }
-            
-            if(JSON.parse(localStorage.getItem("user"))){
 
+            if (JSON.parse(localStorage.getItem("user"))) {
                 await ImpresorasService.getDescargarUsuario();
                 console.log(JSON.parse(localStorage.getItem("usuarioDescargado")));
             }
-            
+
             console.log(response);
             downloadprinters = response.printers;
             console.log(downloadprinters);
@@ -168,7 +224,44 @@ export default function Home(props) {
             // },800);      
         }
         fetchData();
+    }, []);
+
+    useEffect(() => {
+        if (props.theFiltrarOn) {
+            setLoading(true);
+            async function fetchData() {
+
+                await download();
+
+                setLoading(false);
+                // setTimeout(()=>{
+                //     setLoading(false);
+                // },800);      
+            }
+            fetchData();
+            // setTheFiltrarOn(false);
+            props.setTheFiltrarOn(false);
+        }
     }, [props.theFiltrarOn]);
+
+    useEffect(() => {
+        console.log(props.theLocationOn);
+        if (props.theLocationOn) {
+            setLoading(true);
+            async function fetchData() {
+
+                await download();
+
+                setLoading(false);
+                // setTimeout(()=>{
+                //     setLoading(false);
+                // },800);      
+            }
+            fetchData();
+            // setTheFiltrarOn(false);
+            props.setLocationOn(false);
+        }
+    }, [props.theLocationOn]);
 
 
     return (

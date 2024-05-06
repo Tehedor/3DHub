@@ -30,6 +30,9 @@ export default function Carrito(props) {
     const [priceEnvio, setPriceEnvio] = useState(0);
     const [priceTotal, setPriceTotal] = useState(0);
 
+    const precioServicio  = 0.2;
+
+
 
 
 
@@ -74,11 +77,11 @@ export default function Carrito(props) {
         let priceTotalCon = 0;
 
         for (let i = 0; i < carrito.length; i++) {
-            priceProductoCon = priceProductoCon + carrito[i].productPrice * carrito[i].quantity;
+            priceProductoCon = priceProductoCon + carrito[i].productPrice * carrito[i].quantity + precioServicio;
             console.log("priceProductoCon", priceProductoCon);
             priceEnvioCon = priceEnvioCon + carrito[i].deliveryPrice * carrito[i].quantity;
             console.log("priceEnvioCon", priceEnvioCon);
-            priceTotalCon = priceTotalCon + (carrito[i].productPrice + carrito[i].deliveryPrice) * carrito[i].quantity;
+            priceTotalCon = priceTotalCon + (carrito[i].productPrice + carrito[i].deliveryPrice) * carrito[i].quantity + precioServicio;
             console.log("priceTotalCon", priceTotalCon);
         }
         setPriceProducto(priceProductoCon);
@@ -142,15 +145,15 @@ export default function Carrito(props) {
                                 <tbody style={{ border: '3px solid black' }}>
                                     <tr>
                                         <th style={{ fontWeight: 'normal', textDecoration: 'none' }}>Pedidos</th>
-                                        <th style={{ color: 'gray' }}>{priceProducto}</th>
+                                        <th style={{ color: 'gray' }}>{priceProducto.toFixed(2)}</th>
                                     </tr>
                                     <tr>
                                         <th style={{ fontWeight: 'normal', textDecoration: 'none' }}>Envio</th>
-                                        <th style={{ color: 'gray' }}>{priceEnvio}</th>
+                                        <th style={{ color: 'gray' }}>{priceEnvio.toFixed(2)}</th>
                                     </tr>
                                     <tr style={{ border: '3px solid black' }} >
                                         <th style={{ fontWeight: 'bold' }}>Total</th>
-                                        <th style={{ fontWeight: 'bold' }}>{priceTotal}</th>
+                                        <th style={{ fontWeight: 'bold' }}>{priceTotal.toFixed(2)}</th>
                                     </tr>
                                 </tbody>
 

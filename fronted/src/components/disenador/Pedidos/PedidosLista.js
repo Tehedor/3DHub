@@ -50,11 +50,10 @@ export default function PedidosLista(props) {
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     return (
         <div id="productosresultados" >
-            {Array.isArray(lista) && lista.length > 0 && lista.map((items, index) => (
+            {Array.isArray(lista) && lista.length > 0 && [...lista].reverse().map((items, index) => (
                 items.status !== "KART" &&
-
                 <VerPedidos pedidos={items} printer={searchPrinter(items.printer_id)} reseña={searchReseña(items.id)} fabricante={searchFabricante(items.printer_id)} />
-
             ))}
-        </div>);
+        </div>
+    );
 }

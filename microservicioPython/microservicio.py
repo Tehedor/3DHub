@@ -56,7 +56,7 @@ def process_file():
             os.remove(nombre)
 
             # Return the result as JSON
-            return jsonify({'result': result})
+            return jsonify({'result': result })
 
         else:
             return jsonify({'error': 'File type not allowed'}), 400

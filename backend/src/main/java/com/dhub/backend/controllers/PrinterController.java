@@ -40,6 +40,8 @@ import com.dhub.backend.controllers.request.UserDTO;
 import com.dhub.backend.services.GoogleCloudStorageService;
 import com.dhub.backend.services.PrinterServiceImpl;
 import com.dhub.backend.services.RatingsService;
+import com.dhub.backend.services.SearchService;
+import com.dhub.backend.services.SearchServiceImpl;
 import com.dhub.backend.services.UserEntityService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -70,6 +72,9 @@ public class PrinterController {
 
     @Autowired
     private GoogleCloudStorageService googleCloudStorageService;
+
+    @Autowired
+    private SearchService searchService;
 
 
     @GetMapping
@@ -116,7 +121,9 @@ public class PrinterController {
         }
         List<PrinterDTO> printersDTO = new ArrayList<>();
         for (Printer printer : printers) {
-            printersDTO.add(printerService.convertToDTO(printer));
+            if (printer.getUserEntity().getId() == user.getId()) {
+                printersDTO.add(printerService.convertToDTO(printer));
+            }
         }
         return new ResponseEntity<>(printersDTO, HttpStatus.OK);
     }
@@ -245,6 +252,56 @@ public class PrinterController {
                 printersDTO.add(printerService.convertToDTO(printer));
             }
         }
+        List<Long> printerIds = printersDTO.stream()
+        .map(PrinterDTO::getId)
+        .collect(Collectors.toList());
+    
+        List<RatingsDTO> ratingsDTO = ratingsService.getRatingsByPrinterIds(printerIds);
+
+        List<UserDTO> usersDTO = new ArrayList<>();
+        for (PrinterDTO printerDTO : printersDTO) {
+            usersDTO.add(userService.convertToDTO(userRepository.findById(printerDTO.getIdFabricante()).orElseThrow()));
+        }
+    
+        Map<String, Object> response = new HashMap<>();
+        response.put("printers", printersDTO);
+        response.put("ratings", ratingsDTO);
+        response.put("users", usersDTO);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    //Obtener Impresoras por Cercania
+    @GetMapping("/near")
+    public ResponseEntity<Map<String, Object>> getPrintersByNear(@RequestParam String location) {
+        List<Printer> printers = printerRepository.findAll();
+        if(printers.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        String ubicationDesigner = location;
+        
+        // Create a map to associate each printer with its duration
+        Map<Printer, Long> printerDurations = new HashMap<>();
+        for (Printer printer : printers) {
+            Long duration = searchService.getDuration(ubicationDesigner, printer.getPrinterLocation());
+            printerDurations.put(printer, duration);
+        }
+
+        // Sort the entries of the map by duration
+        List<Map.Entry<Printer, Long>> entries = new ArrayList<>(printerDurations.entrySet());
+        entries.sort(Map.Entry.comparingByValue());
+
+        // Extract the printers in the correct order
+        List<Printer> printersNear = new ArrayList<>();
+        for (Map.Entry<Printer, Long> entry : entries) {
+            printersNear.add(entry.getKey());
+        }
+
+        List<PrinterDTO> printersDTO = new ArrayList<>();
+        for (Printer printer : printersNear) {
+            printersDTO.add(printerService.convertToDTO(printer));
+        }
+
         List<Long> printerIds = printersDTO.stream()
         .map(PrinterDTO::getId)
         .collect(Collectors.toList());

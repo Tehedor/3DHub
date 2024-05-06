@@ -56,25 +56,47 @@ const descargarPrinters = () => {
 
 }
 
+const descargarPrintersFiltred = (printerType, maxUnities, material, color) => {
+  let url = 'printers/filter?';
 
+  if (printerType) {
+    url += `printerType=${printerType}&`;
+  }
+  if (maxUnities) {
+    url += `maxUnities=${maxUnities}&`;
+  }
+  if (material) {
+    url += `material=${material}&`;
+  }
+  if (color) {
+    url += `color=${color}&`;
+  }
 
-const descargarPrintersFiltred = (printerType,maxUnities,material,color) => {
-  return app.
-    post("printers", {
-      printerType,
-      maxUnities,
-      material,
-      color,
-    })
+  // Remove the trailing '&' or '?' if no parameters were added
+  url = url.endsWith('&') ? url.slice(0, -1) : url;
+  url = url.endsWith('?') ? url.slice(0, -1) : url;
+
+  return app.get(url)
     .then((response) => {
-      // if (response.data) {
+      return response;
+    });
+}
+const descargarPrintersNear = (location) => {
+  console.log(`printers/near?location=${location}`);
+  return app.
+  get(`printers/near?location=${location}`)
+  .then((response) => {
+    // if (response.data) {
       //   localStorage.setItem("printers", JSON.stringify(response.data)); // localStorage.setItem("user", JSON.stringify(response.data));: Si la propiedad username existe, entonces se almacena el objeto data de la respuesta en el almacenamiento local del navegador bajo la clave "user". Antes de almacenarlo, el objeto data se convierte en una cadena JSON.
       //   console.log(JSON.parse(localStorage.getItem("printers")));d
       // }
+      console.log(response); 
       return response;
     });
-
 }
+
+
+
 
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
 // ##### ##### enciar email/ atención al cliente
@@ -132,6 +154,7 @@ const ImpresorasService = {
   enviarEmail,
   mandarFiltro,
   getDescargarUsuario,
+  descargarPrintersNear,
 }
 
 export default ImpresorasService;

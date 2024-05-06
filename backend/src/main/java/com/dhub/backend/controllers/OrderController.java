@@ -17,11 +17,13 @@ import com.dhub.backend.repository.UserRepository;
 import com.dhub.backend.services.OrderService;
 import com.dhub.backend.services.PrinterService;
 import com.dhub.backend.services.RatingsService;
+import com.dhub.backend.services.SearchService;
 import com.dhub.backend.services.UserEntityService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.validation.Valid;
 
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,14 +36,15 @@ import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
@@ -69,6 +72,9 @@ public class OrderController {
     
     @Autowired
     private RatingsService ratingsService;
+
+    @Autowired
+    private SearchService searchService;
 
     //Obtener pedido por id ¿?¿?¿?
     @GetMapping("/{id}")
@@ -118,8 +124,13 @@ public class OrderController {
         Printer printer = printerRepository.findById(orderDTO.getPrinter_id())
         .orElseThrow(() -> new RuntimeException("Error: Impresora no encontrada."));
         EStatus status = EStatus.KART;
+        Long duration = searchService.getDuration(orderDTO.getAddress(), printer.getPrinterLocation());
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+        DecimalFormat decimalFormat = new DecimalFormat("#.##", symbols);
+        Double price = Double.valueOf(decimalFormat.format(4 + duration * 0.0005));
         Order order = new Order();
         orderDTO.setStatus(status);
+        orderDTO.setDeliveryPrice(price);
         orderDTO.setDesigner_id(user.getId());
         orderDTO.setPrinter_id(printer.getId());
         order = orderService.createOrderWithFile(file, orderDTO);

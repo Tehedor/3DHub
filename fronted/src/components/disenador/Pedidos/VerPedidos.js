@@ -15,7 +15,7 @@ export default function VerPedidos(props) {
     // ##### ##### Datos de Control
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     const control = props.thecontrol !== undefined ? props.thecontrol : true;
-    const controlReseña = props.reseña === false ? false : true;
+    const controlReseña = props.reseña ? false : true;
 
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     // ##### ##### Datos descargados
@@ -23,6 +23,8 @@ export default function VerPedidos(props) {
     const pedidos = props.pedidos;
     const printer = props.printer;
     const fabricante = props.fabricante;
+
+    const precioServicio = 0.2;
 
 
 
@@ -199,12 +201,12 @@ export default function VerPedidos(props) {
 
                 <Row>
                     <Col md={4}>
-                        <Row className="text-start">id: {pedidos.id}</Row>
+                        <Row className="text-start">Nº de Pedido: {pedidos.id}</Row>
                         <Row className="text-start">Fecha de pedido: {new Date(pedidos.orderDate).toLocaleDateString('es-ES')}</Row>
                         <Row className="text-start">Fecha de fabricación: {new Date(pedidos.manufacturerDate).toLocaleDateString('es-ES')}</Row>
                         <Row className="text-start">Fecha de entrega: {new Date(pedidos.deliveryDate).toLocaleDateString('es-ES')}</Row>
                         <Row className="text-start" style={{ marginTop: "4px", marginBottom: "4px" }}>Dirección: {pedidos.address}</Row>
-                        <Row className="text-start"><strong>Precio Total: {(pedidos.productPrice + pedidos.deliveryPrice) * pedidos.quantity} €</strong></Row>
+                        <Row className="text-start"><strong>Precio Total: {((pedidos.productPrice + pedidos.deliveryPrice) * pedidos.quantity + precioServicio).toFixed(2)} €</strong></Row>
                     </Col>
 
                     <Col sm={4}>

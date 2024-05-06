@@ -93,7 +93,7 @@ export default function AtencionCliente(props) {
 
         <Container>
             <Row>
-                <h2 >AtencionCliente</h2>
+                <h2 >Atencion al Cliente</h2>
             </Row>
             <Form onSubmit={subirSolicitud} ref={form}>
                 {!successful && (
@@ -113,7 +113,7 @@ export default function AtencionCliente(props) {
                             <MyValidationInput
                                 type="text"
                                 className="form-control"
-                                formlabel="email"
+                                formlabel="Email"
                                 name="email"
                                 value={email}
                                 onChange={e => setEmail(e.target.value)}
