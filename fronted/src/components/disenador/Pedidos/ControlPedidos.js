@@ -36,8 +36,8 @@ export default function ControlPedidos(props) {
         let downloadFabricantes;
         let downloadReseñas;
         try {
-            const response2 = await PedidosService.getPedidos2();
             const response = await PedidosService.getPedidos();
+            const response2 = await PedidosService.getPedidos2();
             console.log(response.data);
             console.log(response2.data);
             
@@ -50,7 +50,7 @@ export default function ControlPedidos(props) {
             downloadFabricantes=response.data.users;
             console.log(downloadFabricantes);
 
-            downloadReseñas=response.data.ratings;
+            downloadReseñas=response2.data.ratings;
             console.log(downloadReseñas);
         
             setThePedidos(downloadPedidos);
