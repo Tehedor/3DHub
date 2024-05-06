@@ -19,18 +19,34 @@ import { isEmpty } from 'validator';
 
 function PedirPedido(props) {
   const form = useRef();
-  const checkBtn = useRef();
+    const checkBtn = useRef();
+
+
+
+  useEffect(() => {
+    // props.setTheControDom(false);
+    console.log("pruebas")
+    // Aquí va el código que quieres ejecutar cuando el valor de file cambia
+  }, [props.theControlDom]);
+
+  // props.setTheControDom(false);
 
   // Impresora del pedido
-  const numberPrinter = Number(props.printerId) -1;
+  const numberPrinter = Number(props.printerId) - 1;
   console.log("numberPrinter: ", numberPrinter);
   const printer = props.printers[numberPrinter];
   console.log("printer: ", printer);
   const fabricantes = props.controlFabricantes;
   console.log("fabricante: ", fabricantes);
 
+  if (!props.printers) {
+    // return <div>Cargando...</div>
+    window.location.reload();
+  }
+
+
   const searchFabricante = (printer) => {
-    const idFabricante = printer.idFabricante;
+    const idFabricante = printer ? printer.idFabricante : 1;
     for (let i = 0; i < fabricantes.length; i++) {
       console.log(fabricantes[i]);
       if (fabricantes[i].id == idFabricante) {
@@ -266,7 +282,7 @@ function PedirPedido(props) {
         </Col>
         :
         <Container>
-          {( controlUser  && props.cambioRoll === "DESIGNER")  ? (
+          {(controlUser && props.cambioRoll === "DESIGNER") ? (
             <Form onSubmit={handlePedido} ref={form}>
               {!successful && (
                 <Container>
@@ -285,7 +301,7 @@ function PedirPedido(props) {
                   /> */}
                       <MyValidationInput
                         type="file"
-                        formlabel="Subir file (stl obj 3mf)"  
+                        formlabel="Subir file (stl obj 3mf)"
                         onChange={(e) => setFile(e.target.files[0])}
                       // validations={[required]} 
                       />
@@ -419,7 +435,7 @@ function PedirPedido(props) {
             </Form >
           ) : null}
           <Row className="d-flex justify-content-center align-items-center" style={{ marginTop: '10px' }}>
-            <ReseñaLista printer={printer} ratings={allratings} numberPrinter={numberPrinter}  fabricantes={fabricante}/>
+            <ReseñaLista printer={printer} ratings={allratings} numberPrinter={numberPrinter} fabricantes={fabricante} />
           </Row>
         </Container>
       }

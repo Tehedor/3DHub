@@ -14,6 +14,10 @@ import { MyValidationInput } from '../../../common/ValidationComponents.js';
 
 import ImpresorasService from "../../../services/fabricante/impresoras.fabri.service.js";
 
+import ImpresorasServicePrincipal from "../../../services/impresoras.service.js";
+
+
+
 export default function CrearImpresora(props) {
 
 
@@ -82,13 +86,17 @@ export default function CrearImpresora(props) {
 
     form.current.validateAll();
 
+    // props.setTheControDom(true);
+
+    download();
+
     if (checkBtn.current.context._errors.length === 0) {
       ImpresorasService.createPrinter(modelName, printerLocation, printerType, printerPhoto, servicePrice, maxUnities, manufacturationSpeed, material, maxWidth, maxHeight, printerPrecision, color).then(
         (response) => {
           setMessage(response.data.message);
           navigate("/");
-          window.location.reload();
           setSuccessful(true);
+          window.location.reload();
         },
         (error) => {
           const resMessage =
@@ -104,6 +112,45 @@ export default function CrearImpresora(props) {
       );
     }
   };
+
+  const download = async () => {
+    console.log(props.theControlDom);
+    let downloadprinters;
+    let dowloadratings;
+    let downloadfabricantes;
+
+    try {
+      console.log(props.printerType, props.maxUnities, props.material, props.color);
+
+      let response;
+      console.log(props.theFiltrarOn);
+      console.log(props.theLocationOn);
+
+      response = (await ImpresorasServicePrincipal.descargarPrinters()).data;
+      
+      if (JSON.parse(localStorage.getItem("user"))) {
+        await ImpresorasService.getDescargarUsuario();
+        console.log(JSON.parse(localStorage.getItem("usuarioDescargado")));
+      }
+
+      downloadprinters = response.printers;
+      dowloadratings = response.ratings;
+      downloadfabricantes = response.users;
+      props.setControlPrinters(downloadprinters);
+      props.setControlFabricantes(downloadfabricantes);
+      props.setControlRatings(dowloadratings);
+
+
+      props.setThePrinters(downloadprinters);
+      props.setTheRatings(downloadfabricantes);
+      props.setTheFabricantes(dowloadratings);
+
+    } catch (error) {
+      // setResultados(
+      // { "cod": error.cod, "message": cod.message}
+      // );
+    }
+  }
 
   return (
     <Form onSubmit={handleRegisterPrinter} ref={form}>
@@ -256,13 +303,11 @@ export default function CrearImpresora(props) {
           </Row>
           <Row>
             <Col md={6}>
-              {/* ###################### */}
-              {/* VELOCIDAD DE IMRPESIÓN */}
-              {/* ###################### */}
-              <label htmlFor="maxUnities">Velocidad De Impresión</label>
+              {/* VELOCIDAD DE IMPRESIÓN */}
+              <label htmlFor="maxUnities">Velocidad De Impresión (mm²/s)</label>
               <Input
                 type="number"
-                step="any"
+                step="0.05"
                 className="form-control"
                 name="manufacturationSpeed"
                 value={manufacturationSpeed}
@@ -272,30 +317,25 @@ export default function CrearImpresora(props) {
             </Col>
 
             <Col md={6}>
-              {/* ######################### */}
               {/* PRECISIÓN DE LA IMPRESORA */}
-              {/* ######################### */}
-              <label htmlFor="printerPrecision">Precisión de la impresora</label>
+              <label htmlFor="printerPrecision">Precisión de la impresora (mm)</label>
               <MyValidationInput
                 type="number"
-                // max={5000} 
+                step="0.05"
                 min="0"
                 value={printerPrecision}
                 onChange={e => setPrinterPrecision(e.target.value)}
                 validations={[required]}
               />
             </Col>
-          </Row>
-          <Row>
+
             <Col md={6}>
-              <Row class="maxwidth">
-                {/* ############ */}
+              <Row className="maxwidth">
                 {/* ANCHO MÁXIMO */}
-                {/* ############ */}
-                <label htmlFor="maxWidth">Ancho máximo</label>
+                <label htmlFor="maxWidth">Ancho máximo (mm)</label>
                 <MyValidationInput
                   type="number"
-                  // max={5000} 
+                  step="10"
                   min="0"
                   value={maxWidth}
                   onChange={e => setMaxWidth(e.target.value)}
@@ -303,15 +343,14 @@ export default function CrearImpresora(props) {
                 />
               </Row>
             </Col>
+
             <Col md={6}>
-              <Row class="maxheight">
-                {/* ########### */}
+              <Row className="maxheight">
                 {/* ALTO MÁXIMO */}
-                {/* ########### */}
-                <label htmlFor="maxHeight">Alto máximo</label>
+                <label htmlFor="maxHeight">Alto máximo (mm)</label>
                 <MyValidationInput
                   type="number"
-                  // max={5000} 
+                  step="10"
                   min="0"
                   value={maxHeight}
                   onChange={e => setMaxHeight(e.target.value)}
@@ -322,17 +361,13 @@ export default function CrearImpresora(props) {
 
           </Row>
 
-
-
-
-
           <Row class="serviceprice">
           </Row>
           <div className="form-group">
-            <label htmlFor="addres">Precio servicio</label>
+            <label htmlFor="addres">Precio servicio (€/mm³)</label>
             <Input
               type="number"
-              step="0.001"
+              step="0.015"
               min="0"
               className="form-control"
               name="servicePrice"

@@ -34,12 +34,6 @@ export default function Home(props) {
     // Controlador de impresoras para que funcione el Location
     // const setControlPrinters = props.setControlPrinters;
 
-
-    const [query, setQuery] = useState("");
-
-    // Contenido de la barra de ubicación
-    const [queryUbica, setQueryUbica] = useState("");
-
     // Estado en el que muestra el spinner si esta cargando
     const [loading, setLoading] = useState(true);
 
@@ -108,57 +102,22 @@ export default function Home(props) {
     console.log((localStorage.getItem("actualLocation")));
 
 
-    // ###### ###### ###### ###### ###### ###### ###### ###### ######
-    // ###### ###### ###### dowload versioón 2
-    // ###### ###### ###### ###### ###### ###### ###### ###### ######
-
-    // Función que = () => {
-    // const downloadprinters;
-    // Coordenadas de Madrid para que sean por defecto 
-    // const latitude=40.4167;
-    // const longitude=-3.70325;  
-
-    // Poner la manerad para solicitar las impresoras en función de la localizaciónSs
-    //     if (CONFIG.use_server) {
-    //         try {
-    //             if (isGeolocationEnabled || !queryUbica === "") {
-    //                 if (!queryUbica === "") {
-    //                     // api que me permita sacar latitud y longitud de la ubicación a partir de la query 
-    //                 } else {
-    //                     latitude = coords.latitude;
-    //                     longitude = coords.longitude;
-    //                 }
-    //             }
-    //             // let queryparams =  "?lat=" + latitude + "&lon=" + longitude;
-    //             let queryparams = "";
-    //             // const data = await ImpresorasService.(queryparams);
-    //             // console.log(JSON.parse(localStorage.getItem("printers")));
-    //             const data = ImpresorasService.descargarPrinters();
-
-    //             console.log(data);
-    //         } catch (error) {
-    //             // setResultados(
-    //             //   { "cod": error.cod, "message": cod.message}
-    //             // );
-    //         }
-    //     } else {
-    //         // downloadprinters=printersexample;
-    //         downloadprinters = printersPruebas;
-    //         // console.log(printersexample);
-    //     }//descarga las impresoras, en función de la localización en la que se encuentra
-    //     const download
-    //     setThePrinters(downloadprinters);
-    //     console.log(theprinters);
-    //     // setControlPrinters(downloadprinters);
-    //     // console.log(props.controlPrinters);
-    // }
-
 
     // ###### ###### ###### ###### ###### ###### ###### ###### ######
     // ###### ###### ###### dowload versioón 1
     // ###### ###### ###### ###### ###### ###### ###### ###### ######
 
+
+    // useEffect(() => {
+    //     props.setTheControDom(false);
+    //     console.log("pruebas")
+    //     // Aquí va el código que quieres ejecutar cuando el valor de file cambia
+    // }, [props.theControlDom]);
+
+    // props.setTheControDom(false);
+
     const download = async () => {
+        console.log(props.theControlDom);
         let downloadprinters;
         let dowloadratings;
         let downloadfabricantes;
@@ -199,6 +158,7 @@ export default function Home(props) {
             console.log(downloadfabricantes);
             setTheFabricantes(downloadfabricantes);
             props.setControlFabricantes(downloadfabricantes);
+            // props.setTheControDom(false);
 
             setTheRatings(dowloadratings);
             props.setControlRatings(dowloadratings);
@@ -269,7 +229,9 @@ export default function Home(props) {
             <h2 id="catálogo">impresoras</h2>
             {loading ? <img id="loading" src={process.env.PUBLIC_URL + "/spinners/cxyduck.gif"} className="spinner" alt="spinner" /> :
                 <Row>
-                    <ImpresorasLista printers={theprinters} ratings={theratings} theFabricantes={theFabricantes} />
+                    <ImpresorasLista
+                        printers={theprinters} ratings={theratings} theFabricantes={theFabricantes}
+                    />
                 </Row>
             }
         </div>
