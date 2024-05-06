@@ -14,6 +14,7 @@ export default function PedidosHistorico(props) {
     const thePrinters = props.printers;
     const theFabricantes = props.fabricantes;
     const theReseñas = props.reseñas;
+    console.log(theReseñas)
 
     // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
     // ##### ##### Return

@@ -84,6 +84,9 @@ function AñadirReseña(props) {
         (response) => {
           setMessage(response.data.message);
           setSuccessful(true);
+          navigate("/pedidos");
+          window.location.reload();
+
         },
         (error) => {
           const resMessage =
