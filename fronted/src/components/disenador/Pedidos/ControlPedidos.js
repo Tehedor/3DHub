@@ -36,15 +36,20 @@ export default function ControlPedidos(props) {
         let downloadFabricantes;
         let downloadReseñas;
         try {
-            const response = await PedidosService.getPedidos();
             const response2 = await PedidosService.getPedidos2();
+            // const response = await PedidosService.getPedidos();
             console.log(response.data);
+            console.log(response2.data);
+            
             downloadPedidos=response.data.orders;
             console.log(downloadPedidos);
+            
             downloadprinters=response2.data.printers;
             console.log(downloadprinters);
+
             downloadFabricantes=response2.data.users;
             console.log(downloadFabricantes);
+
             downloadReseñas=response.data.ratings;
             console.log(downloadReseñas);
         

@@ -136,8 +136,8 @@ const añadirReseña = (valorProducto, valorFabricante, reseñaTexto, foto, orde
 // ##### ##### ##### ##### ##### ##### ##### ##### ##### #####
 const getPedidos = () => {
   return app
-    .get("orders/designerRatings", {
-    // .get("orders/designer", {
+    // .get("orders/designerRatings", {
+    .get("orders/designer", {
     })
     .then((response) => {
       // if (response) {
@@ -147,10 +147,11 @@ const getPedidos = () => {
       return response;
     });
 };
+
 const getPedidos2 = () => {
   return app
-    // .get("orders/designerRatings", {
-    .get("orders/designer", {
+    .get("orders/designerRatings", {
+    // .get("orders/designer", {
     })
     .then((response) => {
       // if (response) {
