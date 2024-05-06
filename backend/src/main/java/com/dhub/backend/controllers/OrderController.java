@@ -48,7 +48,7 @@ import java.util.stream.Collectors;
 
 
 @RestController
-@PreAuthorize("hasRole('ROLE_MANUFACTURER' or 'ROLE_DESIGNER' or 'ROLE_ADMIN')")
+// @PreAuthorize("hasRole('ROLE_MANUFACTURER' or 'ROLE_DESIGNER' or 'ROLE_ADMIN')")
 @RequestMapping("/api/orders")
 public class OrderController {
 
