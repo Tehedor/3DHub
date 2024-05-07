@@ -1,0 +1,1730 @@
+{
+	"info": {
+		"_postman_id": "64353deb-3113-49c8-a861-8126b1d05465",
+		"name": "3DHUB",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33644922",
+		"_collection_link": "https://solar-sunset-526139.postman.co/workspace/3DHub~b43735a5-8e3e-4211-84cf-a9f563daabaa/collection/33643682-64353deb-3113-49c8-a861-8126b1d05465?action=share&source=collection_link&creator=33644922"
+	},
+	"item": [
+		{
+			"name": "Registro",
+			"item": [
+				{
+					"name": "Crear Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is a JSON object\", function () {\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"// Verificar que la respuesta contiene la clave \"message\" con el valor \"Usuario creado exitosamente\"\r",
+									"pm.test(\"Response body contains success message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.equal(\"Usuario creado exitosamente\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"dni\": \"111000111A\",\r\n    \"username\": \"admin\",\r\n    \"email\": \"admin@3dhub.com\",\r\n    \"password\": \"admin\",\r\n    \"lon\": \"-5.0\",\r\n    \"address\": \"Calle del admin\",\r\n    \"factAddress\": \"Calle del admin\",\r\n    \"roles\": [\"ROLE_ADMIN\",\"ROLE_DESIGNER\",\"ROLE_MANUFACTURER\"],\r\n    \"iban\":\"ES7921000813610123456789\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/auth/createUser",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth",
+								"createUser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Diseñador2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is a JSON object\", function () {\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"dni\": \"123456789A\",\r\n    \"username\": \"diseñador2\",\r\n    \"email\": \"diseñador2@3dhub.com\",\r\n    \"password\": \"diseñador2\",\r\n    \"lat\": \"10.0\",\r\n    \"lon\": \"-5.0\",\r\n    \"address\": \"Calle del diseñador\",\r\n    \"factAddress\": \"Calle del diseñador\",\r\n    \"roles\": [\"ROLE_DESIGNER\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/auth/createUser",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth",
+								"createUser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Fabricante",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is a JSON object\", function () {\r",
+									"    pm.response.to.be.json;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"dni\": \"333000333A\",\r\n    \"username\": \"fabricante3\",\r\n    \"email\": \"fabricante3@3dhub.com\",\r\n    \"password\": \"fabricante3\",\r\n    \"address\": \"Calle del fabricante3\",\r\n    \"roles\": [\"ROLE_MANUFACTURER\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/auth/createUser",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth",
+								"createUser"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Logins",
+			"item": [
+				{
+					"name": "Login Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Verificar que la respuesta es un objeto JSON\r",
+									"pm.test(\"Response is a JSON object\", function () {\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"// Verificar que la respuesta contiene la clave \"Message\"\r",
+									"pm.test(\"Response contains 'Message' key\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"Message\");\r",
+									"});\r",
+									"\r",
+									"// Verificar que la clave \"Message\" tiene el valor esperado\r",
+									"pm.test(\"Response 'Message' value is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.Message).to.equal(\"Autenticacion correcta\");\r",
+									"});\r",
+									"\r",
+									"// Verificar que la respuesta contiene la clave \"Username\"\r",
+									"pm.test(\"Response contains 'Username' key\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"Username\");\r",
+									"});\r",
+									"\r",
+									"// Verificar que la respuesta contiene la clave \"Roles\"\r",
+									"pm.test(\"Response contains 'Roles' key\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"Roles\");\r",
+									"});\r",
+									"\r",
+									"// Verificar que la respuesta contiene la clave \"token\"\r",
+									"pm.test(\"Response contains 'token' key\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"token\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"admin\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Diseñador",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseBody = pm.response.json();\r",
+									"var token = responseBody.token;\r",
+									"pm.globals.set(\"TOKEN\", token);\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Verificar que la respuesta es un objeto JSON\r",
+									"pm.test(\"Response is a JSON object\", function () {\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"// Verificar que la respuesta contiene la clave \"Message\"\r",
+									"pm.test(\"Response contains 'Message' key\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"Message\");\r",
+									"});\r",
+									"\r",
+									"// Verificar que la clave \"Message\" tiene el valor esperado\r",
+									"pm.test(\"Response 'Message' value is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.Message).to.equal(\"Autenticacion correcta\");\r",
+									"});\r",
+									"\r",
+									"// Verificar que la respuesta contiene la clave \"Username\"\r",
+									"pm.test(\"Response contains 'Username' key\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"Username\");\r",
+									"});\r",
+									"\r",
+									"// Verificar que la respuesta contiene la clave \"Roles\"\r",
+									"pm.test(\"Response contains 'Roles' key\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"Roles\");\r",
+									"});\r",
+									"\r",
+									"// Verificar que la respuesta contiene la clave \"token\"\r",
+									"pm.test(\"Response contains 'token' key\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"token\");\r",
+									"});\r",
+									"\r",
+									"// Verificar que la clave \"Roles\" contiene el rol correcto\r",
+									"pm.test(\"Response 'Roles' contains correct role\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.Roles[0].authority).to.equal(\"ROLE_DESIGNER\");\r",
+									"});\r",
+									"pm.test(\"Response body contains authentication token\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.token).to.exist;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"diseñador\",\r\n    \"password\": \"diseñador\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Fabricante",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"// Verificar que la respuesta es un objeto JSON\r",
+									"pm.test(\"Response is a JSON object\", function () {\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"// Verificar que la respuesta contiene la clave \"Message\"\r",
+									"pm.test(\"Response contains 'Message' key\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"Message\");\r",
+									"});\r",
+									"\r",
+									"// Verificar que la clave \"Message\" tiene el valor esperado\r",
+									"pm.test(\"Response 'Message' value is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.Message).to.equal(\"Autenticacion correcta\");\r",
+									"});\r",
+									"\r",
+									"// Verificar que la respuesta contiene la clave \"Username\"\r",
+									"pm.test(\"Response contains 'Username' key\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"Username\");\r",
+									"});\r",
+									"\r",
+									"// Verificar que la respuesta contiene la clave \"Roles\"\r",
+									"pm.test(\"Response contains 'Roles' key\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"Roles\");\r",
+									"});\r",
+									"\r",
+									"// Verificar que la respuesta contiene la clave \"token\"\r",
+									"pm.test(\"Response contains 'token' key\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"token\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"var responseBody = pm.response.json();\r",
+									"var token = responseBody.token;\r",
+									"pm.globals.set(\"TOKENFABRICANTE\", token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"fabricante\",\r\n    \"password\": \"fabricante\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJkaXNlw7FhZG9yIiwiaWF0IjoxNzE0NzY2ODY1LCJleHAiOjE3MTQ4NTMyNjV9.LbU6CLyaeZGcmIQgIlafF4qci2FPVxov5x_jpOigD2bIDB1s8lWAkHyRAFwJAfkm",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Impresoras",
+			"item": [
+				{
+					"name": "Crear Impresora ***",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.text();",
+									"postman.setGlobalVariable(\"TOKENFABRICANTE\", data.token);",
+									"",
+									"pm.test(\"Status code is 201 (OK)\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJmYWJyaWNhbnRlIiwiaWF0IjoxNzE1MDAzOTQzLCJleHAiOjE3MTU2MDg3NDN9.ioudT5rAlbL0vgLLLZNN5CZZrXg0m3RSJKFrMOuJ5AasxgeBUpHaMIbVJv1rD4hz",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "data",
+									"value": "{\"modelName\": \"Ender 3\",\"printerLocation\": \"Oficina\",\"printerType\": \"FDM\",\"servicePrice\": 10.5,\"maxUnities\": 5,\"manufacturationSpeed\": \"Rápida\",\"maxWidth\": 220.0,\"maxHeight\": 250.0,\"printerPrecision\": 0.1,\"color\": \"BLACK\",\"material\": \"PLASTIC\",\"idFabricante\": 123}",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "postman-cloud:///1ef03d6e-e9a5-40b0-a337-8de0236c1e21"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/printers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"printers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Todas Impresoras ***",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = JSON.parse(responseBody);\r",
+									"postman.setGlobalVariable(\"TOKENFABRICANTE\", data.token);\r",
+									"\r",
+									"\r",
+									"pm.test(\"Status code is 200 (OK)\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// Verificar que la respuesta contenga datos de impresoras\r",
+									"pm.test(\"Response contains printer data\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.printers).to.be.an(\"array\").that.is.not.empty;\r",
+									"    pm.expect(jsonData.printers[0]).to.have.property(\"modelName\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData.printers[0]).to.have.property(\"printerLocation\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData.printers[0]).to.have.property(\"printerType\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData.printers[0]).to.have.property(\"servicePrice\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData.printers[0]).to.have.property(\"maxUnities\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData.printers[0]).to.have.property(\"manufacturationSpeed\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData.printers[0]).to.have.property(\"maxWidth\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData.printers[0]).to.have.property(\"maxHeight\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData.printers[0]).to.have.property(\"printerPrecision\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData.printers[0]).to.have.property(\"color\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData.printers[0]).to.have.property(\"material\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData.printers[0]).to.have.property(\"idFabricante\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData.printers[0]).to.have.property(\"id\").that.is.a(\"number\");\r",
+									"});\r",
+									"\r",
+									"// Verificar que la respuesta contenga datos de reseñas\r",
+									"pm.test(\"Response contains rating data\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.ratings).to.be.an(\"array\").that.is.not.empty;\r",
+									"    pm.expect(jsonData.ratings[0]).to.have.property(\"date\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData.ratings[0]).to.have.property(\"manufacturerRating\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData.ratings[0]).to.have.property(\"productRating\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData.ratings[0]).to.have.property(\"textRating\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData.ratings[0]).to.have.property(\"order_id\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData.ratings[0]).to.have.property(\"printer_id\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData.ratings[0]).to.have.property(\"id\").that.is.a(\"number\");\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/printers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"printers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Todas Impresoras Filtro ***",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response time is within an acceptable range\", function () {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"var template = `\r",
+									"<style type=\"text/css\">\r",
+									"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}\r",
+									"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}\r",
+									"    .tftable tr {background-color:#ffffff;}\r",
+									"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}\r",
+									"    .tftable tr:hover {background-color:#e0ffff;}\r",
+									"</style>\r",
+									"\r",
+									"<table class=\"tftable\" border=\"1\">\r",
+									"    <tr>\r",
+									"        <th>Model Name</th>\r",
+									"        <th>Printer Location</th>\r",
+									"        <th>Printer Type</th>\r",
+									"        <th>Service Price</th>\r",
+									"        <th>Max Unities</th>\r",
+									"    </tr>\r",
+									"    \r",
+									"    {{#each response.printers}}\r",
+									"        <tr>\r",
+									"            <td>{{modelName}}</td>\r",
+									"            <td>{{printerLocation}}</td>\r",
+									"            <td>{{printerType}}</td>\r",
+									"            <td>{{servicePrice}}</td>\r",
+									"            <td>{{maxUnities}}</td>\r",
+									"        </tr>\r",
+									"    {{/each}}\r",
+									"</table>\r",
+									"`;\r",
+									"\r",
+									"function constructVisualizerPayload() {\r",
+									"    return { response: pm.response.json() }\r",
+									"}\r",
+									"\r",
+									"pm.visualizer.set(template, constructVisualizerPayload());"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/printers/filter?printerType=MSLA",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"printers",
+								"filter"
+							],
+							"query": [
+								{
+									"key": "printerType",
+									"value": "MSLA"
+								},
+								{
+									"key": "material",
+									"value": "PLASTIC",
+									"disabled": true
+								},
+								{
+									"key": "color",
+									"value": "BLUE",
+									"disabled": true
+								},
+								{
+									"key": "maxUnities",
+									"value": "3",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Impresoras Ordenadas***",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/printers/near?location=Avenida Complutense",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"printers",
+								"near"
+							],
+							"query": [
+								{
+									"key": "location",
+									"value": "Avenida Complutense"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Impresoras Fabricante***",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Content-Type header is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJmYWJyaWNhbnRlIiwiaWF0IjoxNzE0OTQ5MTQ1LCJleHAiOjE3MTU1NTM5NDV9.cuI_eaveUc5vF9A1OHrZyUpXa1hO7GL_vlmiYVq7Nvt21zrUvhN11pMsUlePDxtw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/printers/manufacturer",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"printers",
+								"manufacturer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Impresoras y Valoraciones Fabricante ***",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = JSON.parse(responseBody);\r",
+									"postman.setGlobalVariable(\"TOKENFABRICANTE\", data.token);\r",
+									"\r",
+									"pm.test(\"Status code is 200 (OK)\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"// Verificar que la respuesta contenga datos de impresoras\r",
+									"pm.test(\"Response contains printer data\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.printers).to.be.an(\"array\").that.is.not.empty;\r",
+									"\r",
+									"    // Verificar propiedades de cada impresora\r",
+									"    jsonData.printers.forEach(function(printer) {\r",
+									"        pm.expect(printer).to.have.property(\"modelName\").that.is.a(\"string\");\r",
+									"        pm.expect(printer).to.have.property(\"printerLocation\").that.is.a(\"string\");\r",
+									"        pm.expect(printer).to.have.property(\"printerType\").that.is.a(\"string\");\r",
+									"        pm.expect(printer).to.have.property(\"servicePrice\").that.is.a(\"number\");\r",
+									"        pm.expect(printer).to.have.property(\"maxUnities\").that.is.a(\"number\");\r",
+									"        pm.expect(printer).to.have.property(\"manufacturationSpeed\").that.is.a(\"string\");\r",
+									"        pm.expect(printer).to.have.property(\"maxWidth\").that.is.a(\"number\");\r",
+									"        pm.expect(printer).to.have.property(\"maxHeight\").that.is.a(\"number\");\r",
+									"        pm.expect(printer).to.have.property(\"printerPrecision\").that.is.a(\"number\");\r",
+									"        pm.expect(printer).to.have.property(\"color\").that.is.a(\"string\");\r",
+									"        pm.expect(printer).to.have.property(\"material\").that.is.a(\"string\");\r",
+									"        pm.expect(printer).to.have.property(\"idFabricante\").that.is.a(\"number\");\r",
+									"        pm.expect(printer).to.have.property(\"id\").that.is.a(\"number\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// Verificar que la respuesta contenga datos de calificaciones\r",
+									"pm.test(\"Response contains rating data\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.ratings).to.be.an(\"array\").that.is.not.empty;\r",
+									"\r",
+									"    // Verificar propiedades de cada calificación\r",
+									"    jsonData.ratings.forEach(function(rating) {\r",
+									"        pm.expect(rating).to.have.property(\"date\").that.is.a(\"string\");\r",
+									"        pm.expect(rating).to.have.property(\"manufacturerRating\").that.is.a(\"number\");\r",
+									"        pm.expect(rating).to.have.property(\"productRating\").that.is.a(\"number\");\r",
+									"        pm.expect(rating).to.have.property(\"textRating\").that.is.a(\"string\");\r",
+									"        pm.expect(rating).to.have.property(\"order_id\").that.is.a(\"number\");\r",
+									"        pm.expect(rating).to.have.property(\"printer_id\").that.is.a(\"number\");\r",
+									"        pm.expect(rating).to.have.property(\"id\").that.is.a(\"number\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJmYWJyaWNhbnRlIiwiaWF0IjoxNzE0OTg0NTM3LCJleHAiOjE3MTU1ODkzMzd9.QbOOpFHEZhPTDm1YYqh1HeUK2gxWuOO6Tiay8SVUY7p516pmwGVOyW44mJgMIhPM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/printers/ratings",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"printers",
+								"ratings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Impresora",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.text();",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJmYWJyaWNhbnRlIiwiaWF0IjoxNzE0OTg0NjM3LCJleHAiOjE3MTU1ODk0Mzd9.IfaSTyPllk5yGAblx1wjil1QJ7mRixpUrxbKOi4gL_SjOL3w3KR4_rdm8yhzWf19",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/printers/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"printers",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pedidos",
+			"item": [
+				{
+					"name": "Crear pedido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = JSON.parse(responseBody);\r",
+									"postman.setGlobalVariable(\"TOKEN\", data.token);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJkaXNlw7FhZG9yIiwiaWF0IjoxNzE0OTM2MDQzLCJleHAiOjE3MTU1NDA4NDN9.EXc3kQtAcVnmM9ZK2YRrNRI3LJIFiHmlLuXGXDbvonRFY8_AL7ZQN3KEreU1DOub",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "data",
+									"value": "{\"manufacturerDate\":\"2022-11-16\",\"deliveryDate\":\"2022-11-16\",\"quantity\":3,\"specs\":\"Debe de tener cosas\",\"printer_id\":7,\"address\":\"Calle de la Princesa, 1, 28008 Madrid, España\"}",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "postman-cloud:///1ef0b1b5-1fd1-4de0-9f92-671adf43c1d6"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/orders",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editar estado del pedido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = JSON.parse(responseBody);\r",
+									"postman.setGlobalVariable(\"TOKEN\", data.token);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJkaXNlw7FhZG9yIiwiaWF0IjoxNzE0OTg1ODE4LCJleHAiOjE3MTU1OTA2MTh9.Mm6IIVGaQz24y78OnWGzOtGRIIeMjbQ7g-EdY9CAYpxfTdW2sYmnCqhpMSUkUBGn",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"DELIVERED\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/orders/1/status",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"orders",
+								"1",
+								"status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Carrito ***",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = JSON.parse(responseBody);\r",
+									"postman.setGlobalVariable(\"TOKEN\", data.token);\r",
+									"\r",
+									"// Verificar el código de estado de la respuesta\r",
+									"pm.test(\"Status code is 200 (OK)\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Verificar que la respuesta contiene datos de impresoras\r",
+									"pm.test(\"Response contains printer data\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.printers).to.be.an(\"array\").that.is.not.empty;\r",
+									"});\r",
+									"\r",
+									"// Verificar que la respuesta contiene datos de pedidos\r",
+									"pm.test(\"Response contains order data\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.orders).to.be.an(\"array\").that.is.not.empty;\r",
+									"});\r",
+									"\r",
+									"// Verificar que la respuesta contiene datos de usuarios\r",
+									"pm.test(\"Response contains user data\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.users).to.be.an(\"array\").that.is.not.empty;\r",
+									"});\r",
+									"\r",
+									"\r",
+									" pm.test(\"Orders state is 'KART'\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    jsonData.orders.forEach(function (order) {\r",
+									"        pm.expect(order.status).to.equal(\"KART\");\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJkaXNlw7FhZG9yIiwiaWF0IjoxNzE0OTI4NTgyLCJleHAiOjE3MTU1MzMzODJ9.p-N9qgO8VOoCSVy5IbFqkG5bdrLkKup4m7xnNf3AOGgePfCrfKNScXQybUHyyrPl",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/orders/kart",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"orders",
+								"kart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener datos de un pedido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJkaXNlw7FhZG9yIiwiaWF0IjoxNzE0OTg2MjY0LCJleHAiOjE3MTU1OTEwNjR9.GlldDMiLdV6TA9RmdL8hegziGnQY-O02F_TaKq0uD3ZUrTMV9JI9tr0HN_FhaM0a",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/orders/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"orders",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pedidos de un Diseñador ***",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = JSON.parse(responseBody);\r",
+									"postman.setGlobalVariable(\"TOKEN\", data.token);\r",
+									"\r",
+									"// Verificar el código de estado de la respuesta\r",
+									"pm.test(\"Status code is 200 (OK)\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Verificar que la respuesta contiene datos de impresoras\r",
+									"pm.test(\"Response contains printer data\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.printers).to.be.an(\"array\").that.is.not.empty;\r",
+									"});\r",
+									"\r",
+									"// Verificar que la respuesta contiene datos de pedidos\r",
+									"pm.test(\"Response contains order data\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.orders).to.be.an(\"array\").that.is.not.empty;\r",
+									"});\r",
+									"\r",
+									"// Verificar que la respuesta contiene datos de usuarios\r",
+									"pm.test(\"Response contains user data\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.users).to.be.an(\"array\").that.is.not.empty;\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJkaXNlw7FhZG9yIiwiaWF0IjoxNzE0OTg2MjY0LCJleHAiOjE3MTU1OTEwNjR9.GlldDMiLdV6TA9RmdL8hegziGnQY-O02F_TaKq0uD3ZUrTMV9JI9tr0HN_FhaM0a",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/orders/designer",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"orders",
+								"designer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pedidos de un diseñador sin carrito",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJkaXNlw7FhZG9yIiwiaWF0IjoxNzE0OTg2MjY0LCJleHAiOjE3MTU1OTEwNjR9.GlldDMiLdV6TA9RmdL8hegziGnQY-O02F_TaKq0uD3ZUrTMV9JI9tr0HN_FhaM0a",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/orders/designerExcludingKart",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"orders",
+								"designerExcludingKart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pedidos de un Diseñador y reseñas",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJkaXNlw7FhZG9yIiwiaWF0IjoxNzE0OTg2MjY0LCJleHAiOjE3MTU1OTEwNjR9.GlldDMiLdV6TA9RmdL8hegziGnQY-O02F_TaKq0uD3ZUrTMV9JI9tr0HN_FhaM0a",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/orders/designerRatings",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"orders",
+								"designerRatings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pedidos de un Fabricante y reseñas ***",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = JSON.parse(responseBody);\r",
+									"postman.setGlobalVariable(\"TOKENFABRICANTE\", data.token);\r",
+									"\r",
+									"// Verificar el código de estado de la respuesta\r",
+									"pm.test(\"Status code is 200 (OK)\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Verificar que la respuesta contiene datos de calificaciones de fabricantes\r",
+									"pm.test(\"Response contains manufacturer rating data\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.ratings).to.be.an(\"array\").that.is.not.empty;\r",
+									"\r",
+									"});\r",
+									"\r",
+									"// Verificar que la respuesta contiene datos de pedidos\r",
+									"pm.test(\"Response contains order data\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.orders).to.be.an(\"array\").that.is.not.empty;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJmYWJyaWNhbnRlIiwiaWF0IjoxNzE0OTg2MzY4LCJleHAiOjE3MTU1OTExNjh9.oPQ3a0PzRO8ODPRr6_2ibB-12cCt9y0E60_oL8L1WxJBNy8GUgkinKgY_qZLaNIo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/orders/manufacturerRatings",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"orders",
+								"manufacturerRatings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Pedido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = JSON.parse(responseBody);\r",
+									"postman.setGlobalVariable(\"TOKEN\", data.token);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJmYWJyaWNhbnRlIiwiaWF0IjoxNzE0OTg2MzY4LCJleHAiOjE3MTU1OTExNjh9.oPQ3a0PzRO8ODPRr6_2ibB-12cCt9y0E60_oL8L1WxJBNy8GUgkinKgY_qZLaNIo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/orders/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"orders",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get File",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJmYWJyaWNhbnRlIiwiaWF0IjoxNzE0OTg2MzY4LCJleHAiOjE3MTU1OTExNjh9.oPQ3a0PzRO8ODPRr6_2ibB-12cCt9y0E60_oL8L1WxJBNy8GUgkinKgY_qZLaNIo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/orders/12/file",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"orders",
+								"12",
+								"file"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Valoraciones",
+			"item": [
+				{
+					"name": "Crear reseña ***",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201 (OK)\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJkaXNlw7FhZG9yIiwiaWF0IjoxNzE0OTg2MjY0LCJleHAiOjE3MTU1OTEwNjR9.GlldDMiLdV6TA9RmdL8hegziGnQY-O02F_TaKq0uD3ZUrTMV9JI9tr0HN_FhaM0a",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "data",
+									"value": "{\"manufacturerRating\": 4,\"productRating\": 5,\"textRating\": \"Excelente calidad de impresión\",\"order_id\": 4}",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "postman-cloud:///1ef03d6e-e9a5-40b0-a337-8de0236c1e21"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/ratings",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"ratings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar reseña ***",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJkaXNlw7FhZG9yIiwiaWF0IjoxNzE0OTg2MjY0LCJleHAiOjE3MTU1OTEwNjR9.GlldDMiLdV6TA9RmdL8hegziGnQY-O02F_TaKq0uD3ZUrTMV9JI9tr0HN_FhaM0a",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/ratings/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"ratings",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Services",
+			"item": [
+				{
+					"name": "Enviar Email",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"toUser\":[\"sergiot1805@gmail.com\"],\r\n    \"subject\":\"Asunto\",\r\n    \"message\":\"holi\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/customerService/sendMail",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"customerService",
+								"sendMail"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "API Distancia",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://maps.googleapis.com/maps/api/distancematrix/json?origins=40.4245177,-3.7120681&destinations=41.3808046,2.1158872&key=AIzaSyBpo1XjPia4u_NUHO60g8kILg9vgZb9AP0&units=decimal",
+							"protocol": "https",
+							"host": [
+								"maps",
+								"googleapis",
+								"com"
+							],
+							"path": [
+								"maps",
+								"api",
+								"distancematrix",
+								"json"
+							],
+							"query": [
+								{
+									"key": "origins",
+									"value": "40.4245177,-3.7120681"
+								},
+								{
+									"key": "destinations",
+									"value": "41.3808046,2.1158872"
+								},
+								{
+									"key": "key",
+									"value": "AIzaSyBpo1XjPia4u_NUHO60g8kILg9vgZb9AP0"
+								},
+								{
+									"key": "units",
+									"value": "decimal"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Microservicio Pyhton",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "data",
+									"value": "{\"price_filamen\": 0.5,\"filament_width\": 0.1}",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "postman-cloud:///1ef0b1b5-1fd1-4de0-9f92-671adf43c1d6"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:5000/process",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"process"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
