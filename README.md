@@ -1,6 +1,30 @@
 # 3DHub
 Proyecto ISST -Grupo 10 -AMaaS - Marketplace de fabricación aditiva como servicio
 
+# Vista Lógica de la arquitectura
+![image](https://github.com/user-attachments/assets/32caaaf9-0a5d-49e8-a3cd-0711341540b6)
+
+# Vista de despliegue de la arquitectura
+![image](https://github.com/user-attachments/assets/0520ebeb-4524-4285-870f-58b430645e57)
+
+# Modelo de datos
+![image](https://github.com/user-attachments/assets/bf8ce31b-d713-4784-90bb-347ca36a02a6)
+
+# Arrancar Servidor
+- Crear tabla en Base de Datos MySQL con nombre: testdb y definir la contraseña en application.properties
+- Ir al directorio backend\src\main\java\com\dhub\backend\BackendApplication.java
+- Pegar credenciales Json en la carpeta \backend\src\main\resources\credentials.json
+- Debería aparecer un boton "run" en el codigo, si no esperar.
+- Hay que tener instalado python3 y pip3
+En una terminal con Linux escribir los comandos:
+$ python3 iniciar.py
+$ cd microservicios
+python3 microspervicios.py
+- Arrancar servidor frontend con NodeJs
+Escribir en la terminal:
+$ npm install
+$ npm start
+ -Escribir en un navegador localhost:3000
 
 # Fronted
 Sobre node 18.20
@@ -78,25 +102,6 @@ El proyecto utiliza las siguientes dependencias:
 - `spring-security-test` de `org.springframework.security` (solo para pruebas)
 
 Además, el proyecto utiliza el plugin `spring-boot-maven-plugin` de `org.springframework.boot` para la construcción. Este plugin está configurado para excluir `lombok` de `org.projectlombok` durante la construcción.
-
-# Arrancar Servidor
-
-- Crear tabla en Base de Datos MySQL con nombre: testdb
-y definir la contraseña en application.properties
-- Ir al directorio backend\src\main\java\com\dhub\backend\BackendApplication.java
-- Pegar credenciales Json en la carpeta \backend\src\main\resources\credentials.json
-- Debería aparecer un boton "run" en el codigo, si no esperar.
-- Hay que tener instalado python3 y pip3
-En una terminal con Linux escribir los comandos:
-$ python3 iniciar.py
-$ cd microservicios
-python3 microspervicios.py
-- Arrancar servidor frontend con NodeJs
-Escribir en la terminal:
-$ npm install
-$ npm start
- -Escribir en un navegador localhost:3000
- 
 
 Para comprobar como se conectan servidor de back con front se pueden hacer pruebas con los siguientes repositorios:
 
